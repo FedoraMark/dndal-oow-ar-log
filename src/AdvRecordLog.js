@@ -3,7 +3,6 @@ import GameLog from './GameLog';
 import _map from "lodash/map";
 import _size from "lodash/size";
 import Jumbotron from "react-bootstrap/Jumbotron";
-import Container from "react-bootstrap/Container";
 
 import './AdvRecordLog.scss';
 import chara_SamPel from "./data/SamPel.json";

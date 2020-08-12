@@ -16,7 +16,54 @@
     src: url("../fonts/Nodesto-Caps-Condensed.otf") format("opentype");
 }
 
+@font-face {
+    font-family: Bookinsanity;
+
+    src: url("../fonts/Bookinsanity.otf") format("opentype");
+}
+@font-face {
+    font-family: BookinsanityBold;
+
+    src: url("../fonts/Bookinsanity-Bold.otf") format("opentype");
+}
+@font-face {
+    font-family: BookinsanityItalic;
+
+    src: url("../fonts/Bookinsanity-Italic.otf") format("opentype");
+}
+@font-face {
+    font-family: BookinsanityBoldItalic;
+
+    src: url("../fonts/Bookinsanity-BoldItalic.otf") format("opentype");
+}
+
 // VARS
+$color-jumbotronGray: #e9ecef;
+
+// font-families
 $fontFamily-fauxdesto: Fauxdesto, Impact, Charcoal, sans-serif;
 $fontFamily-oswald: Oswald, Helvetica, Arial, sans-serif;
-$fontFamily-handwritten: Chilanka, cursive;;
+$fontFamily-handwritten: Chilanka, cursive;
+$fontFamily-book-normal: Bookinsanity, serif;
+$fontFamily-book-bold: BookinsanityBold, serif;
+$fontFamily-book-italic: BookinsanityItalic, serif;
+$fontFamily-book-boldItalic: BookinsanityBoldItalic, serif;
+
+
+
+// STYLES
+.bookFont {
+    font-family: $fontFamily-book-normal;
+
+    &.bold {
+        font-family: $fontFamily-book-bold;
+    }
+
+    &.italic {
+        font-family: $fontFamily-book-italic;
+    }
+
+    &.bold.italic {
+        font-family: $fontFamily-book-boldItalic;
+    }
+}
