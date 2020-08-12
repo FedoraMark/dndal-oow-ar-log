@@ -48,8 +48,8 @@
 			"code": "ddal-ebep-00",
 			"title": "Epic Fantasy Fight",
 			"event": "Epic",
-			"date": "01-JAN-1990",
-			"dungeonMaster": {"name": "Matt Merc"},
+			"date": "",
+			"dungeonMaster": {"dci": "123"},
 			"notes": {
 				"game": "Lorem ipsum dolor sit amet, consectetur adipisciea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esseecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
 				"player": "Custom notes here."

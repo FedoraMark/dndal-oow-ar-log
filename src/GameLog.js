@@ -36,9 +36,9 @@ class GameLog extends React.Component {
 	render_gameInfo = (event, date, dmObj) => {
 		return(
 			<ul className="infoWrapper">
-				<li><h1 className="date">Date:</h1><p>{date}</p></li>
-				<li><h1 className="event">Event:</h1><p>{event}</p></li>
-				<li><h1 className="dm">Dungeon Master:</h1><p>{dmObj.name}{"dci" in dmObj && " (" + dmObj.dci + ")"}</p></li>
+				{date !== '' && <li><h1 className="date">Date:</h1><p>{date}</p></li>}
+				{event !== '' && <li><h1 className="event">Event:</h1><p>{event}</p></li>}
+				{dmObj !== '' && <li><h1 className="dm">Dungeon Master:</h1><p>{"name" in dmObj && dmObj.name}{"dci" in dmObj && " (" + dmObj.dci + ")"}</p></li>}
 			</ul>
 		);
 	}
