@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from "classnames";
+import Collapse from "react-bootstrap/collapse";
 
 import './GameLog.scss';
 
@@ -18,11 +19,16 @@ class GameLog extends React.Component {
 		isCollapsed: this.props.isCollapsed
 	}
 
+	//FUNCTIONS
+	toggleCollapsed = () => {
+		this.setState({isCollapsed: !this.state.isCollapsed});
+	}
+
 
 	//RENDERERS
 	render_titleAndCode = (code, title) => {
 		return (
-			<div className="titleWrapper">
+			<div className="titleWrapper" onClick={this.toggleCollapsed.bind(this)}>
 				<h1 className="title">Adventure Record: <span>{code.split("-").join("–")}</span> {title}</h1>
 			</div>);
 	}
@@ -43,7 +49,7 @@ class GameLog extends React.Component {
 				<h1>Adventure Notes</h1>
 				<div className="box">
 					<p className="gameNotes bookFont">{notesObj.game}</p>
-					{"player" in notesObj && <p className="playerNotes bookFont"><hr /></p>}
+					{"player" in notesObj && <hr />}
 					{"player" in notesObj && <p className="playerNotes bookFont">{notesObj.player}</p>}
 				</div>
 			</div>
@@ -61,11 +67,13 @@ class GameLog extends React.Component {
 	    	<div className={classnames("gameBox",!this.state.isCollapsed && "expanded")}>
 				{this.render_titleAndCode(data.code,data.title)}
 
-				{!this.state.isCollapsed && <div className="content">
-					{this.render_gameInfo(data.event,data.date,data.dungeonMaster)}
-					{this.render_advNotes(data.notes)}
-					{this.render_advancement(data.advancement)}
-				</div>}
+				<Collapse in={!this.state.isCollapsed}>
+					<div className="content">
+						{this.render_gameInfo(data.event,data.date,data.dungeonMaster)}
+						{this.render_advNotes(data.notes)}
+						{this.render_advancement(data.advancement)}
+					</div>
+				</Collapse>
 	    	</div>
 	  	)
 	}
