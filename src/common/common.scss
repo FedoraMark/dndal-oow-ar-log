@@ -1,0 +1,15 @@
+@import url("https://fonts.googleapis.com/css2?family=Chilanka&family=Oswald:wght@500&display=swap");
+
+// MIXINS
+@mixin flex($align: center, $justify: center, $direction: row) {
+    display: flex;
+    flex-direction: $direction;
+
+    align-items: $align;
+    justify-content: $justify;
+}
+
+// Variables
+$fontFamily-fauxdesto: Geizer, Impact, Charcoal, sans-serif;
+$fontFamily-oswald: Oswald, Helvetica, Arial, sans-serif;
+$fontFamily-handwritten: Chilanka, cursive;;

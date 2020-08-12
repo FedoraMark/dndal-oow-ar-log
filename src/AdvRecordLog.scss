@@ -1,16 +1,72 @@
-// VARIABLES
+// IMPORTS
+@import "./common/common.scss";
 
-
-// MIXINS
-@mixin flex($align: center, $justify:center) {
-    display: flex;
-
-    align-items: $align;
-    justify-content: $justify;
+// STYLES
+.log {
+    @include flex(top, center, column);
 }
 
+.titleBox {
+    margin-top: 1rem;
 
-// SCSS
-.Log {
-    @include flex(top, center);
+    @include flex(top, center, column);
+
+    * {
+        padding: 0;
+        margin: 0;
+
+        font-family: $fontFamily-fauxdesto;
+        font-variant: small-caps;
+
+        text-align: center;
+    }
+
+    h1 {
+        font-size: 5rem;
+
+        letter-spacing: .15rem;
+    }
+
+    h2 {
+        margin: .25rem auto;
+
+        font-size: 4rem;
+        font-weight: normal;
+
+        letter-spacing: .05rem;
+    }
+}
+
+.playerBox {
+    margin: 1rem 0;
+
+    @include flex(center, center, column);
+
+    div {
+        width: 100%;
+
+        * {
+            display: inline-block;
+            width: 50%;
+            padding: 0 .25rem;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            font-family: $fontFamily-oswald;
+            font-size: 1.5rem;
+
+            text-align: right;
+        }
+
+        p {
+            font-family: $fontFamily-handwritten;
+            font-size: 1.5rem;
+        }
+    }
+}
+
+.gameList {
+    @include flex(top, center, column);
 }
