@@ -8,8 +8,8 @@ class GameLog extends React.Component {
 		data: PropTypes.object
 	}
 
-	//RENDERERS
 
+	//RENDERERS
 	render() {
 		const {data} = this.props;
 
@@ -17,7 +17,7 @@ class GameLog extends React.Component {
 
 	  	return (
 	    	<div className="gameBox">
-	    		<h1 className="title">Adventure Record: <span>{data.code}</span> {data.title}</h1>
+	    		<h1 className="title">Adventure Record: <span>{data.code.split("-").join("–")}</span> {data.title}</h1>
 	    	</div>
 	  	)
 	}

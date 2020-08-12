@@ -2,55 +2,66 @@
 @import "./common/common.scss";
 
 // STYLES
+.block {
+    display: block;
+}
+
 .log {
-    @include flex(top, center, column);
+    @include flex(center, flex-start, column);
+    & > div {
+        width: 100%;
+    }
 }
 
 .titleBox {
     margin-top: 1rem;
 
-    @include flex(top, center, column);
+    @include flex(center, flex-start, column);
 
     * {
         padding: 0;
         margin: 0;
 
         font-family: $fontFamily-fauxdesto;
-        font-variant: small-caps;
+        font-weight: normal;
 
         text-align: center;
     }
 
     h1 {
         font-size: 5rem;
-
-        letter-spacing: .15rem;
     }
 
     h2 {
-        margin: .25rem auto;
+        margin: -1rem auto 0;
 
         font-size: 4rem;
-        font-weight: normal;
-
-        letter-spacing: .05rem;
     }
 }
 
 .playerBox {
-    margin: 1rem 0;
+    margin: 0 0 2rem;
 
     @include flex(center, center, column);
 
     div {
         width: 100%;
 
-        * {
+        @include flex(flex-start, flex-start);
+
+        &:not(:last-of-type) {
+            margin-bottom: .25rem;
+        }
+
+        h1,
+        p {
             display: inline-block;
             width: 50%;
             padding: 0 .25rem;
             margin: 0;
             box-sizing: border-box;
+
+            white-space: nowrap;
         }
 
         h1 {
@@ -61,12 +72,20 @@
         }
 
         p {
+            padding-top: .2rem;
+
             font-family: $fontFamily-handwritten;
             font-size: 1.5rem;
+
+            align-self: flex-end;
+        }
+
+        .money:last-of-type .comma {
+            display: none;
         }
     }
 }
 
 .gameList {
-    @include flex(top, center, column);
+    @include flex(center, flex-start, column);
 }

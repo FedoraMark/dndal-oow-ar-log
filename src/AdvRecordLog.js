@@ -1,6 +1,9 @@
 import React from 'react';
 import GameLog from './GameLog';
 import _map from "lodash/map";
+import _size from "lodash/size";
+import Jumbotron from "react-bootstrap/Jumbotron";
+import Container from "react-bootstrap/Container";
 
 import './AdvRecordLog.scss';
 import chara_SamPel from "./data/SamPel.json";
@@ -9,15 +12,7 @@ class AdvRecordLog extends React.Component {
 	state = {
 		charData: chara_SamPel
 	};
-
-	//FUNCTIONS
-	parseArray = (array) => {
-		console.log(array);
-		
-		{_map(array, item => {
-			return <p>{item}</p>
-		})}
-	}
+	
 
 	//RENDERERS
 	render_pageInfo = () => {
@@ -42,11 +37,25 @@ class AdvRecordLog extends React.Component {
 				</div>
 				<div>
 					<h1>Classes & Levels:</h1>
-					{this.parseArray(data.classes)}
+					<p>
+						{_map(data.classes, (level, clss) => {
+							return(
+								<span className="block" key={clss}>{clss + " (" + level + ")"}</span>
+							);
+						})}
+					</p>
 				</div>
 				<div>
 					<h1>Current Wealth:</h1>
-					{this.parseArray(data.wealth)}
+					<p>
+						{_map(data.wealth, (amount, denom) => {
+							return(
+								<span className="money" key={denom}>
+									<span>{amount + denom}</span><span className="comma">, </span>
+								</span>
+							);
+						})}
+					</p>
 				</div>
 			</div>
 		);
@@ -55,8 +64,8 @@ class AdvRecordLog extends React.Component {
 	render_gameLogs = (gameList) => {
 		return (
 			<div className="gameList">
-				{_map(gameList, gameObj => {
-					return <GameLog data={gameObj} />
+				{_map(gameList, (gameObj, key) => {
+					return <GameLog key={key} data={gameObj} />
 				})}
 			</div>
 		);
@@ -67,7 +76,7 @@ class AdvRecordLog extends React.Component {
 
 	  	return (
 	    	<div className="log">
-	    		{this.render_pageInfo()}
+	    		<Jumbotron>{this.render_pageInfo()}</Jumbotron>
 	    		{this.render_playerInfo(this.state.charData)}
 	    		{this.render_gameLogs(this.state.charData.games)}
 	    	</div>

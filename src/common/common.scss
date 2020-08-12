@@ -9,7 +9,14 @@
     justify-content: $justify;
 }
 
-// Variables
-$fontFamily-fauxdesto: Geizer, Impact, Charcoal, sans-serif;
+// FONTS
+@font-face {
+    font-family: Fauxdesto;
+
+    src: url("../fonts/Nodesto-Caps-Condensed.otf") format("opentype");
+}
+
+// VARS
+$fontFamily-fauxdesto: Fauxdesto, Impact, Charcoal, sans-serif;
 $fontFamily-oswald: Oswald, Helvetica, Arial, sans-serif;
 $fontFamily-handwritten: Chilanka, cursive;;

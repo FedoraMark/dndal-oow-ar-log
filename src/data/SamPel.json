@@ -1,8 +1,9 @@
 {
 	"character": "Sam Pel",
-	"classes": [
-		{"Dungeon Master": 20}
-	],
+	"classes": {
+		"Dungeon Master": 19,
+		"Player": 1
+	},
 	"player": "Gary Gygax",
 	"wealth": {
 		"pp": 1000,
