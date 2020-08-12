@@ -1,0 +1,16 @@
+// VARIABLES
+
+
+// MIXINS
+@mixin flex($align: center, $justify:center) {
+    display: flex;
+
+    align-items: $align;
+    justify-content: $justify;
+}
+
+
+// SCSS
+.Log {
+    @include flex(top, center);
+}
