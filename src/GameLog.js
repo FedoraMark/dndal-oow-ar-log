@@ -5,10 +5,10 @@ import Collapse from "react-bootstrap/collapse";
 import Container from "react-bootstrap/Container";
 import Select from "./selectors/Select";
 
-
 import './GameLog.scss';
 
 class GameLog extends React.Component {
+
 	static propTypes = {
 		data: PropTypes.object.isRequired,
 		isCollapsed: PropTypes.bool
@@ -76,7 +76,7 @@ class GameLog extends React.Component {
 			<Container className="advWrapper wrapper">
 					<h1>Advancement</h1>
 					<div className="box">
-						<Select label={advObj.level} type="checkbox" isSelected={advObj.isSelected} />
+						<Select label={advObj.label} type="checkbox" isSelected={advObj.isSelected} />
 						<p className="bookFont centerText">{advObj.note}</p>
 					</div>
 			</Container>

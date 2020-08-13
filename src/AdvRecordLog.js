@@ -1,9 +1,10 @@
 import React from 'react';
 import GameLog from './GameLog';
-import _map from "lodash/map";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Container from "react-bootstrap/Container";
+import _map from "lodash/map";
 
+import Wealth from './common/Wealth';
 import './AdvRecordLog.scss';
 import chara_SamPel from "./data/SamPel.json";
 
@@ -12,7 +13,6 @@ class AdvRecordLog extends React.Component {
 		charData: chara_SamPel
 	};
 	
-
 	//RENDERERS
 	render_pageInfo = () => {
 		return (
@@ -57,13 +57,7 @@ class AdvRecordLog extends React.Component {
 				<div>
 					<h1>Current Wealth:</h1>
 					<p>
-						{_map(data.wealth, (amount, denom) => {
-							return(
-								<span className="money" key={denom}>
-									<span>{amount + denom}</span><span className="comma">, </span>
-								</span>
-							);
-						})}
+						<Wealth wealthObj={data.wealth} />
 					</p>
 				</div>
 			</Container>
@@ -74,18 +68,16 @@ class AdvRecordLog extends React.Component {
 		return (
 			<Container className="gameList">
 				{_map(gameList, (gameObj, key) => {
-					return <GameLog key={key} data={gameObj} />
+					return <GameLog key={key} data={gameObj} isCollapsed={true} />
 				})}
 			</Container>
 		);
 	}
 
 	render() {
-		console.log(this.state.charData);
-
 	  	return (
 	    	<div className="log">
-	    		<Jumbotron>{this.render_pageInfo()}</Jumbotron>
+	    		<Jumbotron><Container>{this.render_pageInfo()}</Container></Jumbotron>
 	    		{this.render_playerInfo(this.state.charData)}
 	    		{this.render_gameLogs(this.state.charData.games)}
 	    	</div>
