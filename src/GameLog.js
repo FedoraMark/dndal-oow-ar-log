@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from "classnames";
 import Collapse from "react-bootstrap/collapse";
 import Container from "react-bootstrap/Container";
+import Select from "./selectors/Select";
 
 
 import './GameLog.scss';
@@ -31,7 +32,7 @@ class GameLog extends React.Component {
 	render_titleAndCode = (code, title) => {
 		return (
 			<div className="titleWrapper" onClick={this.toggleCollapsed.bind(this)}>
-				<h1 className="title">Adventure Record: <span>{code.split("-").join("–")}</span> {title}</h1>
+				<h1 className="title">Adventure Record: <span dangerouslySetInnerHTML={{ __html: code.split("-").join("<span class='hyphen'>-</span>") }}></span> {title}</h1>
 			</div>);
 	}
 
@@ -62,7 +63,7 @@ class GameLog extends React.Component {
 			<Container className="notesWrapper wrapper">
 					<h1>Adventure Notes</h1>
 					<div className="box">
-						<p className="gameNotes bookFont">{notesObj.game}</p>
+						<p className="gameNotes bookFont" dangerouslySetInnerHTML={{ __html: notesObj.game }} />
 						{"player" in notesObj && <hr />}
 						{"player" in notesObj && <p className="playerNotes bookFont">{notesObj.player}</p>}
 					</div>
@@ -75,6 +76,8 @@ class GameLog extends React.Component {
 			<Container className="advWrapper wrapper">
 					<h1>Advancement</h1>
 					<div className="box">
+						<Select label={advObj.level} type="checkbox" isSelected={advObj.isSelected} />
+						<p className="bookFont centerText">{advObj.note}</p>
 					</div>
 			</Container>
 		);
@@ -102,7 +105,7 @@ class GameLog extends React.Component {
 
 	render_legacy = (legacyObj) => {
 		return(
-			<Container className="legacyContainer" className="legacyWrapper wrapper">
+			<Container className="legacyWrapper wrapper">
 					<h1>Legacy Events</h1>
 					<div className="box">
 					</div>
@@ -114,7 +117,7 @@ class GameLog extends React.Component {
 		const {data} = this.props;
 
 	  	return (
-	    	<div className={classnames("gameBox",!this.state.isCollapsed && "expanded")}>
+	    	<Container fluid className={classnames("gameBox",!this.state.isCollapsed && "expanded")}>
 				{this.render_titleAndCode(data.code,data.title)}
 
 				<Collapse in={!this.state.isCollapsed}>
@@ -136,7 +139,7 @@ class GameLog extends React.Component {
 					</div>
 				</Collapse>
 
-	    	</div>
+	    	</Container>
 	  	)
 	}
 }

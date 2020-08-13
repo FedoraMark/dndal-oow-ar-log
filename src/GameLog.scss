@@ -3,7 +3,7 @@
 
 // STYLES
 .gameBox {
-    width: 60%;
+    padding: 0 !important;
     margin: 1rem auto;
 
     text-align: center;
@@ -15,7 +15,6 @@
         &:focus {
             cursor: pointer;
         }
-
 
         .title {
             padding: .5rem;
@@ -30,6 +29,11 @@
 
             span {
                 text-transform: uppercase;
+
+                .hyphen {
+                    position: relative;
+                    bottom: 1rem;
+                }
             }
         }
     }
@@ -85,20 +89,24 @@
                 padding: 1rem;
 
                 border: 1px solid darkgray;
+
+                p {
+                    margin: 0;
+
+                    font-size: 1rem;
+
+                    text-align: left;
+                }
             }
         }
 
         .notesWrapper {
-            p {
-                margin: 0;
+            i {
+                font-family: $fontFamily-book-italic;
+            }
 
-                font-size: 1rem;
-
-                text-align: left;
-
-                &.playerNotes {
-                    font-family: $fontFamily-handwritten;
-                }
+            .playerNotes {
+                font-family: $fontFamily-handwritten;
             }
         }
 

@@ -1,0 +1,29 @@
+// IMPORTS
+@import "../common/common.scss";
+
+.selectWrapper {
+    margin-bottom: .75rem;
+
+    &:hover,
+    &:focus {
+        cursor: pointer;
+    }
+
+    .checkArea {
+        flex-wrap: nowrap;
+    }
+
+    .label {
+        min-height: calc(1.5em + .75rem + 2px);
+        padding: .25rem .25rem .25rem .75rem;
+        margin: 0;
+
+        line-height: calc(1.5em + 5px);
+
+        border: 1px solid #ced4da;
+        border-radius: 0 .25rem .25rem 0;
+        background-clip: padding-box;
+
+        flex-grow: 1;
+    }
+}

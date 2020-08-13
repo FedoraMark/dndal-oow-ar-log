@@ -1,8 +1,8 @@
 import React from 'react';
 import GameLog from './GameLog';
 import _map from "lodash/map";
-import _size from "lodash/size";
 import Jumbotron from "react-bootstrap/Jumbotron";
+import Container from "react-bootstrap/Container";
 
 import './AdvRecordLog.scss';
 import chara_SamPel from "./data/SamPel.json";
@@ -25,7 +25,7 @@ class AdvRecordLog extends React.Component {
 
 	render_playerInfo = (data) => {
 		return (
-			<div className="playerBox">
+			<Container fluid className="playerBox">
 				<div>
 					<h1>Player Name:</h1>
 					<p>{data.player}</p>
@@ -45,6 +45,16 @@ class AdvRecordLog extends React.Component {
 					</p>
 				</div>
 				<div>
+					<h1>Tier:</h1>
+					<p>{data.tier}</p>
+				</div>
+				{"base" in data &&
+					<div>
+						<h1>Assigned Base:</h1>
+						<p>{data.base}</p>
+					</div>
+				}
+				<div>
 					<h1>Current Wealth:</h1>
 					<p>
 						{_map(data.wealth, (amount, denom) => {
@@ -56,17 +66,17 @@ class AdvRecordLog extends React.Component {
 						})}
 					</p>
 				</div>
-			</div>
+			</Container>
 		);
 	}
 
 	render_gameLogs = (gameList) => {
 		return (
-			<div className="gameList">
+			<Container className="gameList">
 				{_map(gameList, (gameObj, key) => {
 					return <GameLog key={key} data={gameObj} />
 				})}
-			</div>
+			</Container>
 		);
 	}
 
