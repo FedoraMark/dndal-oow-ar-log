@@ -48,6 +48,7 @@
 
             list-style: none;
 
+            flex-wrap: wrap;
             @include flex(center, center);
 
             li {
