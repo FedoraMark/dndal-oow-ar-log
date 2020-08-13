@@ -55,16 +55,25 @@ $fontFamily-book-boldItalic: BookinsanityBoldItalic, serif;
 .bookFont {
     font-family: $fontFamily-book-normal;
 
+    b,
     &.bold {
         font-family: $fontFamily-book-bold;
+        font-weight: bold;
     }
 
+    i,
     &.italic {
         font-family: $fontFamily-book-italic;
+        font-style: italic;
     }
 
+    u,
     &.bold.italic {
         font-family: $fontFamily-book-boldItalic;
+        font-style: italic;
+        font-weight: bold;
+
+        text-decoration: none;
     }
 }
 
