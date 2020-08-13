@@ -38,7 +38,6 @@
         padding: 0;
         margin: 0;
 
-
         .infoWrapper {
             padding: 0;
             margin-bottom: .5rem;
@@ -73,7 +72,7 @@
         }
 
         .wrapper {
-            margin: 0 1rem 1rem;
+            margin: 0 0 .5rem;
 
             h1 {
                 margin: 0;
@@ -99,6 +98,29 @@
 
                 &.playerNotes {
                     font-family: $fontFamily-handwritten;
+                }
+            }
+        }
+
+        .twoCol {
+            margin-bottom: 1rem;
+
+            @include flex(stretch, center);
+
+            .arCol {
+                flex-basis: 0;
+                flex-grow: 1;
+            }
+
+            .legacyWrapper {
+                height: 100%;
+
+                @include flex(stretch, stretch, column);
+
+                .box {
+                    margin-bottom: .5rem;
+
+                    flex-grow: 1;
                 }
             }
         }
