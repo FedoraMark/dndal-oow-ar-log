@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 import classnames from "classnames";
 import Collapse from "react-bootstrap/collapse";
 import Container from "react-bootstrap/Container";
+import Form from "react-bootstrap/Form";
+import _map from "lodash/map";
 
+import Event from "./selectors/Event";
 import Select from "./selectors/Select";
 import Wealth from "./common/Wealth";
 
@@ -29,26 +32,26 @@ class GameLog extends React.Component {
         this.setState({ isCollapsed: !this.state.isCollapsed });
     }
 
-
     //RENDERERS
-    render_titleAndCode = (code, title) => {
+    render_titleAndCode = (type, code, title) => {
         return (
             <div className="titleWrapper" onClick={this.toggleCollapsed.bind(this)}>
-				<h1 className="title">Adventure Record: <span className="code" dangerouslySetInnerHTML={{ __html: code.split("-").join("<span class='hyphen'>-</span>") }}></span> {title}</h1>
+				<h1 className="title">{type}: <span className="code" dangerouslySetInnerHTML={{ __html: code.split("-").join("<span class='hyphen'>-</span>") }}></span> {title}</h1>
 			</div>);
     }
 
     render_gameInfo = (event, date, dmObj, tier) => {
         var dmStr = '';
-        if ("name" in dmObj) {
-            dmStr = dmObj.name;
-            if ("dci" in dmObj) {
-                dmStr = dmStr + " (" + dmObj.dci + ")";
-            }
-        } else if ("dci" in dmObj) {
-            dmStr = dmObj.dci;
-        }
-
+        if (dmObj !== undefined) {
+	        if ("name" in dmObj) {
+	            dmStr = dmObj.name;
+	            if ("dci" in dmObj) {
+	                dmStr = dmStr + " (" + dmObj.dci + ")";
+	            }
+	        } else if ("dci" in dmObj) {
+	            dmStr = dmObj.dci;
+	        }
+	    }
 
         return (
             <Container>
@@ -56,7 +59,7 @@ class GameLog extends React.Component {
 					{date !== undefined && <li><h1 className="date">Date:</h1><p>{date}</p></li>}
 					{event !== undefined && <li><h1 className="event">Event:</h1><p>{event}</p></li>}
 					{tier !== undefined && <li><h1 className="tier">Tier:</h1><p>{tier}</p></li>}
-					{dmStr !== undefined && <li><h1 className="dm">Dungeon Master:</h1><p>{dmStr}</p></li>}					
+					{dmStr !== '' && <li><h1 className="dm">Dungeon Master:</h1><p>{dmStr}</p></li>}					
 				</ul>
 			</Container>
         );
@@ -80,8 +83,8 @@ class GameLog extends React.Component {
             <Container className="advWrapper wrapper">
 					<h1>Advancement</h1>
 					<div className="box">
-						<Select label={advObj.label} type="checkbox" isSelected={advObj.isSelected} />
-						<p className="bookFont centerText">{advObj.note}</p>
+						<Select label={advObj.label} type="checkbox" isSelected={advObj.isSelected} isBold />
+						<p className="bookFont footnote">{advObj.footnote}</p>
 					</div>
 			</Container>
         );
@@ -91,7 +94,7 @@ class GameLog extends React.Component {
         return (
             <Container className="rewardsWrapper wrapper">
 					<h1>Rewards</h1>
-					<div className="box">
+					<div className="box content">
 					</div>
 			</Container>
         );
@@ -109,7 +112,6 @@ class GameLog extends React.Component {
 						<div className="amount cell">
 							<span className="val"><Wealth wealthObj={wealthObj.starting} /></span>
 						</div>
-
 
 						<div className="header cell">
 							Gold Spent (<span>-</span>)
@@ -141,8 +143,14 @@ class GameLog extends React.Component {
         return (
             <Container className="legacyWrapper wrapper">
 					<h1>Legacy Events</h1>
-					<div className="box">
-					</div>
+					<Container className="box">
+						<div className="content">
+							{_map(legacyObj.events, (event, key) => {
+								return <Event eventObj={event} key={key} />
+							})}
+						</div>
+						<div className="footnote bookFont">{legacyObj.footnote}</div>
+					</Container>
 			</Container>
         );
     }
@@ -152,7 +160,7 @@ class GameLog extends React.Component {
 
         return (
             <Container fluid className={classnames("gameBox",!this.state.isCollapsed && "expanded")}>
-				{this.render_titleAndCode(data.code,data.title)}
+				{this.render_titleAndCode(data.type,data.code,data.title)}
 
 				<Collapse in={!this.state.isCollapsed}>
 					<div className="content">

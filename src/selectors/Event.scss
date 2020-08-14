@@ -1,0 +1,74 @@
+// IMPORTS
+@import "../common/common.scss";
+
+// STYLES
+.eventWrapper {
+    margin-bottom: 1rem;
+
+    line-height: .6;
+
+    text-align: left;
+
+    @include flex(flex-start,flex-start);
+
+    &:not(:last-of-type) {
+        margin-bottom: 2rem;
+    }
+
+    &:hover,
+    &:focus {
+        cursor: pointer;
+    }
+
+    &:before {
+        position: absolute;
+        top: .3rem;
+        left: .35rem;
+
+        height: 100%;
+
+        content: "";
+
+        border-left: 1px solid darkgray;
+    }
+
+    input {
+        z-index: 1;
+
+        margin: .1rem 0 0 -.1rem;
+
+        opacity: 1;
+    }
+
+    .contents {
+        display: inline-block;
+        padding-top: .1rem;
+
+        h1 {
+            display: inline;
+            margin-right: .5rem;
+
+            font-size: 16px;
+        }
+
+        p {
+            display: inline;
+        }
+
+        .table {
+            padding: 0 0 0 1rem;
+            margin: .4rem 0 0;
+
+            list-style: none;
+
+            b {
+                color: #333;
+            }
+        }
+
+        .checkboxes {
+            padding: 0;
+            margin: .5rem 0 -.5rem;
+        }
+    }
+}

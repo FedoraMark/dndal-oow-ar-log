@@ -10,6 +10,7 @@ import Wealth from './common/Wealth';
 import './AdvRecordLog.scss';
 
 import chara_SamPel from "./data/SamPel.json";
+import games_oow from "./data/oowGames.json";
 
 class AdvRecordLog extends React.Component {
     state = {
@@ -29,7 +30,15 @@ class AdvRecordLog extends React.Component {
     render_gameLogs = (gameList) => {
         return (
             <Container className="gameList">
-				{_map(gameList, (gameObj, key) => {
+				{/* {_map(gameList, (gameObj, key) => { */}
+				{/* 	return <GameLog key={key} data={gameObj} isCollapsed={false} /> */}
+				{/* })} */}
+
+				{_map(this.state.charData.games, (gameObj, key) => {
+					return <GameLog key={key} data={gameObj} isCollapsed={true} />
+				})}
+
+				{_map(games_oow, (gameObj, key) => {
 					return <GameLog key={key} data={gameObj} isCollapsed={false} />
 				})}
 			</Container>
@@ -51,6 +60,8 @@ class AdvRecordLog extends React.Component {
 		    		/>
 		    	</Container>
 	    		{this.render_gameLogs(this.state.charData.games)}
+
+	    		<Jumbotron className="footer" />
 	    	</div>
         );
     }

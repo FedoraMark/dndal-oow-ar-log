@@ -38,6 +38,7 @@
 }
 
 // VARS
+$color-background: white;
 $color-jumbotronGray: #e9ecef;
 $color-bshr: rgba(0,0,0,.1);
 
@@ -55,6 +56,7 @@ $fontFamily-book-boldItalic: BookinsanityBoldItalic, serif;
 // STYLES
 .bookFont {
     font-family: $fontFamily-book-normal;
+    line-height: 1.25;
 
     b,
     &.bold {
@@ -76,8 +78,4 @@ $fontFamily-book-boldItalic: BookinsanityBoldItalic, serif;
 
         text-decoration: none;
     }
-}
-
-.centerText {
-    text-align: center !important;
 }
