@@ -39,49 +39,6 @@
     }
 }
 
-.playerBox {
-    margin: 0 0 2rem;
-
-    @include flex(center, center, column);
-
-    div {
-        width: 100%;
-
-        @include flex(flex-start, flex-start);
-
-        &:not(:last-of-type) {
-            margin-bottom: .25rem;
-        }
-
-        h1,
-        p {
-            display: inline-block;
-            width: 50%;
-            padding: 0 .25rem;
-            margin: 0;
-            box-sizing: border-box;
-
-            white-space: nowrap;
-        }
-
-        h1 {
-            font-family: $fontFamily-oswald;
-            font-size: 1.5rem;
-
-            text-align: right;
-        }
-
-        p {
-            padding-top: .2rem;
-
-            font-family: $fontFamily-handwritten;
-            font-size: 1.5rem;
-
-            align-self: flex-end;
-        }
-    }
-}
-
 .gameList {
     @include flex(center, flex-start, column);
 }
