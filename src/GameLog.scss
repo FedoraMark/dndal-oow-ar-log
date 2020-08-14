@@ -134,10 +134,23 @@
 
             .rewardsWrapper {
                 flex-grow: 1;
+
                 @include flex(stretch,stretch,column);
 
                 .content {
                     flex-grow: 1;
+
+                    .rewardGroup {
+                        @include flex(flex-start, flex-start, column);
+
+                        &:not(:last-of-type) {
+                            margin-bottom: 1rem;
+                        }
+
+                        h1 {
+                            font-size: 16px;
+                        }
+                    }
                 }
             }
 
@@ -208,6 +221,7 @@
                     margin-bottom: .5rem;
 
                     flex-grow: 1;
+
                     @include flex(flex-start, center, column);
 
                     .content {

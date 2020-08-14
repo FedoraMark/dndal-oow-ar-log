@@ -7,15 +7,21 @@ import "./Wealth.scss";
 class Wealth extends React.Component {
 
 	static propTypes = {
-		wealthObj: PropTypes.object.isRequired,
+		wealthObj: PropTypes.object,
+		isEmpty : PropTypes.bool
+	}
+
+	static defaultProps = {
+		isEmpty: false,
+		wealthObj: {}
 	}
 
 	state = {
-		pp: this.props.wealthObj.pp === undefined ? 0 : this.props.wealthObj.pp,
-		gp: this.props.wealthObj.gp === undefined ? 0 : this.props.wealthObj.gp,
-		ep: this.props.wealthObj.ep === undefined ? 0 : this.props.wealthObj.ep,
-		sp: this.props.wealthObj.sp === undefined ? 0 : this.props.wealthObj.sp,
-		cp: this.props.wealthObj.cp === undefined ? 0 : this.props.wealthObj.cp,
+		pp: this.props.wealthObj.pp === undefined || this.props.isEmpty ? 0 : this.props.wealthObj.pp,
+		gp: this.props.wealthObj.gp === undefined || this.props.isEmpty ? 0 : this.props.wealthObj.gp,
+		ep: this.props.wealthObj.ep === undefined || this.props.isEmpty ? 0 : this.props.wealthObj.ep,
+		sp: this.props.wealthObj.sp === undefined || this.props.isEmpty ? 0 : this.props.wealthObj.sp,
+		cp: this.props.wealthObj.cp === undefined || this.props.isEmpty ? 0 : this.props.wealthObj.cp,
 	}
 
 	render() {

@@ -1,0 +1,81 @@
+// IMPORTS
+@import "../common/common.scss";
+
+.selectWrapper {
+    margin-bottom: .75rem;
+
+    &:not(:last-of-type) {
+        margin-bottom: .25rem;
+    }
+
+    &:hover,
+    &:focus {
+        cursor: pointer;
+    }
+
+    .checkArea {
+        flex-wrap: nowrap;
+    }
+
+    .radioArea {
+        @include flex(flex-start, stretch, column);
+
+        .option {
+            width: 100%;
+
+            @include flex(stretch, flex-start);
+
+            .input-group-text {
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+            }
+
+            &:not(:last-of-type) {
+                .input-group-text,
+                .label {
+                    border-bottom: 0;
+                    border-bottom-right-radius: 0;
+                    border-bottom-left-radius: 0;
+                }
+            }
+
+            &:not(:first-of-type) {
+                .input-group-text,
+                .label {
+                    border-top: 1px solid $color-bsborder;
+                    border-top-left-radius: 0;
+                    border-top-right-radius: 0;
+                }
+            }
+        }
+    }
+
+    .label {
+        display: flex !important;
+        min-height: calc(1.5em + .75rem + 2px);
+        padding: .25rem .25rem .25rem .75rem;
+        margin: 0;
+
+        align-items: center !important;
+        justify-content: flex-start !important;
+        flex-grow: 1;
+
+        border: 1px solid #ced4da;
+        border-radius: 0 .25rem .25rem 0;
+        background-clip: padding-box;
+
+        &.bold {
+            line-height: calc(1.5em + 6px);
+        }
+    }
+}
+
+.disabled {
+    opacity: .5;
+    color: #999;
+
+    &:hover,
+    &:focus {
+        // cursor: default;
+    }
+}

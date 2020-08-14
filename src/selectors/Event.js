@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap';
 import Select from './Select';
+import Option from './Option';
 import _map from "lodash/map";
 
 import "./Event.scss";
@@ -24,11 +25,11 @@ class Event extends Component {
 
     //FUNCTIONS
     toggleSelect = () => {
-        this.setState({ isSelected: !this.state.isSelected });
+        this.setSelect(!this.state.isSelected);
     }
 
     setSelect = (val) => {
-    	this.setState({ isSelected: val });
+        this.setState({ isSelected: val });
     }
 
     //RENDERERS
@@ -47,6 +48,12 @@ class Event extends Component {
 							})}
 							
 						</ul>
+					}
+
+					{"radios" in this.state.eventObj && 
+						<div className="radios" onClick={this.setSelect.bind(this, true)}>
+							<Option options={this.state.eventObj.radios}  isDisabled={!this.state.isSelected} />
+						</div>
 					}
 					
 					{"table" in this.state.eventObj && 

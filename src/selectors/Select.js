@@ -2,16 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import InputGroup from 'react-bootstrap/InputGroup';
+import _map from 'lodash/map';
 
-import './Select.scss';
+import './SelectOption.scss';
 
 class Select extends React.Component {
     static propTypes = {
         isSelected: PropTypes.bool,
         isDisabled: PropTypes.bool,
         label: PropTypes.string.isRequired,
-        type: PropTypes.string.isRequired, // "checkbox", "radio" (TBD), "switch" (TBD)
-        selection: PropTypes.object,
+        type: PropTypes.string.isRequired, // "checkbox", "switch" (TBD)
         isBold: PropTypes.bool
     }
 
@@ -19,17 +19,19 @@ class Select extends React.Component {
         isSelected: false,
         isDisabled: false,
         isBold: false,
-        selection: null
     }
 
     state = {
         isSelected: this.props.isSelected,
         isDisabled: this.props.isDisabled,
-        selection: this.props.selection
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({ isDisabled: nextProps.isDisabled });
+        this.setState({ isDisabled: nextProps.isDisabled }, () => {
+        	if (this.state.isDisabled) {
+        		this.setState({isSelected: false});
+        	}
+        });
     }
 
     //FUNCTIONS

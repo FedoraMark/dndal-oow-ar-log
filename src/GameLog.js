@@ -8,6 +8,7 @@ import _map from "lodash/map";
 
 import Event from "./selectors/Event";
 import Select from "./selectors/Select";
+import Option from "./selectors/Option";
 import Wealth from "./common/Wealth";
 
 import './GameLog.scss';
@@ -95,6 +96,22 @@ class GameLog extends React.Component {
             <Container className="rewardsWrapper wrapper">
 					<h1>Rewards</h1>
 					<div className="box content">
+						{_map(rewardObj, (rewardGroup, key) => {
+							return  (
+								<div key={key} className="rewardGroup">
+									<h1 className="bookFont bold">{rewardGroup.instruction}</h1>
+									{"options" in rewardGroup && <Option options={rewardGroup.options} />}
+
+									{"selections" in rewardGroup &&
+										<span>
+											{_map(rewardGroup.selections, (selection, key) => {
+												return <Select key={key} label={selection} type="checkbox" />
+											})}
+										</span>
+									}
+								</div>
+							)
+						})}
 					</div>
 			</Container>
         );
@@ -103,38 +120,37 @@ class GameLog extends React.Component {
     render_wealth = (wealthObj) => {
         return (
             <Container className="wealthWrapper wrapper">
-					<h1>Character Wealth</h1>
-						
-					<Container className="wealthContent box">
-						<div className="header cell">
-							Starting Gold
-						</div>
-						<div className="amount cell">
-							<span className="val"><Wealth wealthObj={wealthObj.starting} /></span>
-						</div>
+				<h1>Character Wealth</h1>
+					
+				<Container className="wealthContent box">
+					<div className="header cell">
+						Starting Gold
+					</div>
+					<div className="amount cell">
+						<span className="val"><Wealth isEmpty wealthObj={wealthObj === undefined ? undefined : wealthObj.starting} /></span>
+					</div>
 
-						<div className="header cell">
-							Gold Spent (<span>-</span>)
-						</div>
-						<div className="amount cell">
-							<span className="val"><Wealth wealthObj={wealthObj.spent} /></span>
-						</div>
+					<div className="header cell">
+						Gold Spent (<span>-</span>)
+					</div>
+					<div className="amount cell">
+						<span className="val"><Wealth isEmpty wealthObj={wealthObj === undefined ? undefined : wealthObj.spent} /></span>
+					</div>
 
-						<div className="header cell">
-							Gold Earned (+)
-						</div>
-						<div className="amount cell">
-							<span className="val"><Wealth wealthObj={wealthObj.earned} /></span>
-						</div>
+					<div className="header cell">
+						Gold Earned (+)
+					</div>
+					<div className="amount cell">
+						<span className="val"><Wealth isEmpty wealthObj={wealthObj === undefined ? undefined : wealthObj.earned} /></span>
+					</div>
 
-						<div className="header cell bottom">
-							Ending Gold
-						</div>
-						<div className="amount cell bottom">
-							<span className="val"><Wealth wealthObj={wealthObj.ending} /></span>
-						</div>
-					</Container>
-				
+					<div className="header cell bottom">
+						Ending Gold
+					</div>
+					<div className="amount cell bottom">
+						<span className="val"><Wealth isEmpty wealthObj={wealthObj === undefined ? undefined : wealthObj.ending} /></span>
+					</div>
+				</Container>
 			</Container>
         );
     }
@@ -142,15 +158,15 @@ class GameLog extends React.Component {
     render_legacy = (legacyObj) => {
         return (
             <Container className="legacyWrapper wrapper">
-					<h1>Legacy Events</h1>
-					<Container className="box">
-						<div className="content">
-							{_map(legacyObj.events, (event, key) => {
-								return <Event eventObj={event} key={key} />
-							})}
-						</div>
-						<div className="footnote bookFont">{legacyObj.footnote}</div>
-					</Container>
+				<h1>Legacy Events</h1>
+				<Container className="box">
+					<div className="content">
+						{_map(legacyObj.events, (event, key) => {
+							return <Event eventObj={event} key={key} />
+						})}
+					</div>
+					<div className="footnote bookFont">{legacyObj.footnote}</div>
+				</Container>
 			</Container>
         );
     }
