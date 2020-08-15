@@ -213,7 +213,6 @@ class GameLog extends React.Component {
 		    	</Container>
         	)
 	    } else if (data.record === "salvage") {
-	    	console.log('test');
 	    	return (
 	            <Container fluid className={classnames("gameBox salvageBox",!this.state.isCollapsed && "expanded")}>
 					{this.render_missionTitle(data.type,data.title)}

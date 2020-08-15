@@ -30,13 +30,12 @@ class AdvRecordLog extends React.Component {
     render_gameLogs = (gameList) => {
         return (
             <Container className="gameList">
-				{_map(this.state.charData.games, (gameObj, key) => {
-					return <GameLog key={key} data={gameObj} isCollapsed={true} />
-				})}
+				{/* {_map(this.state.charData.games, (gameObj, key) => { */}
+				{/* 	return <GameLog key={key} data={gameObj} isCollapsed={true} /> */}
+				{/* })} */}
 
 				{_map(games_oow.records, (gameObj, key) => {
-					console.log(gameList);
-					return <GameLog key={key} data={gameObj} isCollapsed={key !== gameList.length} />
+					return <GameLog key={key} data={gameObj} isCollapsed={key !== gameList.length+1} />
 				})}
 			</Container>
         );

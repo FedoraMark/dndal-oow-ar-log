@@ -171,8 +171,9 @@
       "record": "game",
       "code": "ddal-ebep-01",
       "title": "The Iron Titan",
-      "type": "Epic Adventure Record",
+      "type": "Adventure Record",
       "tier": 1,
+      "event": "Epic",
       "notes": {
         "game": "You helped the brokers of Salvation save the outpost from Big Moe, a warforged colossus awakened by the Order of the Emerald Claw."
       },
@@ -219,59 +220,123 @@
       }
     },
     {
-  "record": "game",
-  "code": "ddal-eb-04",
-  "title": "The Third Protocol",
-  "type": "Adventure Record",
-  "tier": 1,
-  "notes": {
-    "game": "Shortly after you returned to the salvage outpost of Salvation, a group of assassins arrived to claim the <i>Oracle of War</i> from your party. You defeated them but learned that powerful forces are hunting for the <i>Oracle</i>."
-  },
-  "advancement": {
-    "label": "You gain one level for completing this adventure.",
-    "footnote": "(If you decline this level, you still record legacy events but cannot claim any rewards or legacy event benefits for this adventure.)"
-  },
-  "rewards": [
-    {
-      "instruction": "You gain the following rewards:",
-      "selections": [
-        "100 gp from Saal Dreadstroke's satchel.",
-        "The <i>Oracle Detector</i>. This device emits a low beep when pointed in the direction of the <i>Oracle of War</i>. It has an additional minor magical property: it amplifies its vearer's voice, making it sound up to ten times louder than normal. This item doesn't count toward a character's magic item limit."
-      ]
+      "record": "game",
+      "code": "ddal-eb-04",
+      "title": "The Third Protocol",
+      "type": "Adventure Record",
+      "tier": 1,
+      "notes": {
+        "game": "Shortly after you returned to the salvage outpost of Salvation, a group of assassins arrived to claim the <i>Oracle of War</i> from your party. You defeated them but learned that powerful forces are hunting for the <i>Oracle</i>."
+      },
+      "advancement": {
+        "label": "You gain one level for completing this adventure.",
+        "footnote": "(If you decline this level, you still record legacy events but cannot claim any rewards or legacy event benefits for this adventure.)"
+      },
+      "rewards": [
+        {
+          "instruction": "You gain the following rewards:",
+          "selections": [
+            "100 gp from Saal Dreadstroke's satchel.",
+            "The <i>Oracle Detector</i>. This device emits a low beep when pointed in the direction of the <i>Oracle of War</i>. It has an additional minor magical property: it amplifies its vearer's voice, making it sound up to ten times louder than normal. This item doesn't count toward a character's magic item limit."
+          ]
+        },
+        {
+          "instruction": "Choose ONE bonus reward:",
+          "options": [
+            "Chain mail for looting the blacksmith (area 6).",
+            "50 gp for helping the guest in the Salvation Hotel (area 7).",
+            "Any three items from the following list for looting the blacksmith (area 6): longsword, shield, light hammer, mace, greatsword, warhammer, chain (50 fteet), caltrops (box of 100), flask of alchemist's fire.",
+            "A <i>potion of healing</i> and an <i>oil of slipperiness</i> for visiting the aporthecary.",
+            "A vial of acid and a vial of basic poison for visitng the apothecary (area 14).",
+            "A <i>circlet of blasting</i> for visiting Erix Thorn the provisioner (area 10)."
+          ]
+        }
+      ],
+      "legacy": {
+        "events": [
+          {
+            "title": "Captured Assassin",
+            "description": "You captured Saal Dreadstroke or some of his cronies alive. Now you must decide what to do with them.",
+            "radios": [
+              "Turn them over to the Brelish authorities and gain 20 gp per captive.",
+              "Hold on to them in the hope that they could be useful. After each adventure that they remain in captivity, you must pay 3 gp per captive on supplies."
+            ]
+          },
+          {
+            "title": "Still Alive",
+            "description": "Despite all the horrors you've seen, your friend Kalli (or the replacement you made for this character during DDAL-EB-01 <i>The Night Land</i> remains alive and on your side. What does she do next?.",
+            "radios": [
+              "Kalli heads to Morgrave University in Sharn to investigate the <i>Oracle of War</i>",
+              "Kalli remains in Salvation and tries to set herself up as a salvage broker."
+            ]
+          }
+        ],
+        "footnote": "(A character that dies during an adventure should still receive any legacy events that they earned, based on the discretion of the DM. If they declined the level, they cannot gain any benefits from legacy events that are provided when a level is gained.)"
+      }
     },
     {
-      "instruction": "Choose ONE bonus reward:",
-      "options": [
-        "Chain mail for looting the blacksmith (area 6).",
-        "50 gp for helping the guest in the Salvation Hotel (area 7).",
-        "Any three items from the following list for looting the blacksmith (area 6): longsword, shield, light hammer, mace, greatsword, warhammer, chain (50 fteet), caltrops (box of 100), flask of alchemist's fire.",
-        "A <i>potion of healing</i> and an <i>oil of slipperiness</i> for visiting the aporthecary.",
-        "A vial of acid and a vial of basic poison for visitng the apothecary (area 14).",
-        "A <i>circlet of blasting</i> for visiting Erix Thorn the provisioner (area 10)."
-      ]
-    }
-  ],
-  "legacy": {
-    "events": [
-      {
-        "title": "Captured Assassin",
-        "description": "You captured Saal Dreadstroke or some of his cronies alive. Now you must decide what to do with them.",
-        "radios": [
-          "Turn them over to the Brelish authorities and gain 20 gp per captive.",
-          "Hold on to them in the hope that they could be useful. After each adventure that they remain in captivity, you must pay 3 gp per captive on supplies."
-        ]
+      "record": "game",
+      "code": "ddal-eb-05",
+      "title": "A Century of Ashes",
+      "type": "Adventure Record",
+      "tier": 2,
+      "notes": {
+        "game": "You traveled to Sharn to seek information about the <i>Oracle of War</i> from the sages at Morgrave University. You helped the sage  Zell Mar overcome his nerves during dinner, and made contact with the sphinx Flamewind to learn more about the Draconic Prophecy. In doing so, you learned that you are not the only ones searching for answers about the device . . ."
       },
-      {
-        "title": "Still Alive",
-        "description": "Despite all the horrors you've seen, your friend Kalli (or the replacement you made for this character during DDAL-EB-01 <i>The Night Land</i> remains alive and on your side. What does she do next?.",
-        "radios": [
-          "Kalli heads to Morgrave University in Sharn to investigate the <i>Oracle of War</i>",
-          "Kalli remains in Salvation and tries to set herself up as a salvage broker."
-        ]
+      "advancement": {
+        "label": "You gain one level for completing this adventure.",
+        "footnote": "(If you decline this level, you still record legacy events but cannot claim any rewards or legacy event benefits for this adventure.)"
+      },
+      "rewards": [
+        {
+          "instruction": "You gain the following rewards:",
+          "selections": [
+            "150 gp fro defeating Andhedra the rakshasa."
+          ]
+        },
+        {
+          "instruction": "Choose ONE bonus reward:",
+          "options": [
+            "A <i>potion of poison</i> for defeating Andhedra the rakshasa.",
+            "A <i>dust of disappearance</i> for defeating Andhedra the racshasa.",
+            "A pair of <i>sending stones</i> for helping Zell impress Jia."
+          ]
+        }
+      ],
+      "legacy": {
+        "events": [
+          {
+            "title": "Stakeout",
+            "description": "The inquisitve you hired to locate Irullan Karnach after DDAL-EBEP-01 <i>The Iron Titan</i> has tailed her to an apartment in Sharn and is monitoring her movements. He'll keep you appraised of any developments."
+          },
+          {
+            "title": "Love Cats",
+            "description": "With your assistance, Zell Mar impressed Jia during dinner. At the end of this adventure, you go carousing with Zell and Jia in the bars of Sharn. Roll a 66 and consult the chart below:",
+            "table": [
+              "<b>1–2:</b> You got into a fight and made an enemy who may cause trouble for you in the future.",
+              "<b>3:</b> You found love! You are now dating someone.",
+              "<b>4:</b> You gambled and earned 50 gp.",
+              "<b>5–6:</b> You saved a couple from muggers. Start the next adventure with one extra hero point."
+            ]
+          },
+          {
+            "title": "Maker's Mark",
+            "description": "Zell Mar identified the missing dwarf Sulring Mroranon as the creator of the <i>Oracle of War</i>.",
+            "checkboxes": [
+              "At the end of this adventure, your group can choose to spend 150 gp to trace Sulring's family and learn of his whereabouts on the Day of Mourning. This information becomes inportant in DDAL-EB-08 <i>Parliament of Gears</i>."
+            ]
+          },
+          {
+            "title": "Crystal Skull",
+            "description": "You learned from the surviving members of Graystrife that Irullan Karnach stole a crystal kull from them that has the power to bring the dead back to life."
+          },
+          {
+            "title": "Flamewind's Favored",
+            "description": "You impressed the sphinx Flamewind with your performance during a duel."
+          }
+        ],
+        "footnote": "(A character that dies during an adventure should still receive any legacy events that they earned, based on the discretion of the DM. If they declined the level, they cannot gain any benefits from legacy events that are provided when a level is gained.)"
       }
-    ],
-    "footnote": "(A character that dies during an adventure should still receive any legacy events that they earned, based on the discretion of the DM. If they declined the level, they cannot gain any benefits from legacy events that are provided when a level is gained.)"
-  }
-}
+    }
   ]
 }
