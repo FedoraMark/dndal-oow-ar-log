@@ -337,6 +337,185 @@
         ],
         "footnote": "(A character that dies during an adventure should still receive any legacy events that they earned, based on the discretion of the DM. If they declined the level, they cannot gain any benefits from legacy events that are provided when a level is gained.)"
       }
+    },
+    {
+      "record": "game",
+      "code": "ddal-eb-06",
+      "title": "The Last Word",
+      "type": "Adventure Record",
+      "tier": 2,
+      "notes": {
+        "game": "The sphinx  Flamewind deciphered the prophecy spoken by the <i>Oracle of War</i> and sent you to Wroat to foil a Thranish spy's strike against the King's Dark Lanterns. You infiltrated a royal armistice ball to idenify the spy and uncover their mission."
+      },
+      "advancement": {
+        "label": "You gain one level for completing this adventure.",
+        "footnote": "(If you decline this level, you still record legacy events but cannot claim any rewards or legacy event benefits for this adventure.)"
+      },
+      "rewards": [
+        {
+          "instruction": "You gain the following rewards:",
+          "selections": [
+            "250 gp from Flamewind for identifying the spy (regardless of the success or failure of the spy's mission)."
+          ]
+        },
+        {
+          "instruction": "Choose ONE bonus reward:",
+          "options": [
+            "100 gp and a <i>potion of healing</i> for defeatig Decius and Daykar.",
+            "A <i>+1 weapon</i> from Flamewind for identifying the spy (regardless of the success or failure of the spy's mission).",
+            "A <i>ring of evasion</i> from Orsino for helping him.",
+            "A <i>wand of fear</i> for defeating Idiga Mol Doras."
+          ]
+        }
+      ],
+      "legacy": {
+        "events": [
+          {
+            "title": "Dark Lanterns Flicker",
+            "description": "Mercutia ir'Gontarli was assassinated during the ball. The city of Wroat is put on high alert as rumors swirl about who could be responsible. This event has repercussions later in the campaign."
+          },
+          {
+            "title": "Silver Torch Extinguished",
+            "description": "Oliviér ir'Volett was exposed during the ball as a spy and assassin and paid the ultimate price. As the authorities trace his steps, word spreads that the nation of Thrane could be responsible for the killing. This even has repercussions later in the campaign."
+          },
+          {
+            "title": "Runaway Lovers",
+            "description": "You help Orsino and Cesaria escape to build new lives for themselves. They are forever grateful for your assistance.",
+            "checkboxes": [
+              "Once only, during any adventure in the <i>Oracle of War</i> campaign, you can call on Orsino for assistance. You must have at least 8 hours free to contact him. Orsino's spy network can answer three questions for you, as per the <i>commune</i> spell. When you use this legacy event, all players in your group must remove it from their Adventure Records."
+            ]
+          }
+        ],
+        "footnote": "(A character that dies during an adventure should still receive any legacy events that they earned, based on the discretion of the DM. If they declined the level, they cannot gain any benefits from legacy events that are provided when a level is gained.)"
+      }
+    },
+    {
+      "record": "game",
+      "code": "ddal-eb-07",
+      "title": "Song of the Sky",
+      "type": "Adventure Record",
+      "tier": 2,
+      "notes": {
+        "game": "YYou visited Sharn's could district, Skyway, to locate Sky Blue, a thief mentioned in the verse of the Draconic Prophecy spoken by the <i>Oracle of War</i>. You weren't the only ones hunting for her—salvage broker Irullan Karnach had hired a criminal gang to kidnap her. You rescued Sky Blue from the gang and face off against Karnach."
+      },
+      "advancement": {
+        "label": "You gain one level for completing this adventure.",
+        "footnote": "(If you decline this level, you still record legacy events but cannot claim any rewards or legacy event benefits for this adventure.)"
+      },
+      "rewards": [
+        {
+          "instruction": "You gain ONE of the following rewards:",
+          "options": [
+            "200 gp from Flamewind for bringing Sky Blue to Lareth Hall.",
+            "100 gp from Sky Blue for helping her escape the city."
+          ]
+        },
+        {
+          "instruction": "Choose ONE bonus reward:",
+          "options": [
+            "A <i>feather token</i> for winning the steeplechase.",
+            "A suit of plate armor for defeating Bugrilda.",
+            "5 flasks of alchemist's fire for defeating Snarla and Snagrat.",
+            "50 gp for stealing one of Sky Blue's stashes.",
+            "A <i>soarsled</i> (see Handout 4)",
+            "A <i>necklace of adaptation</i> for defeating Irullan Karnach."
+          ]
+        }
+      ],
+      "legacy": {
+        "events": [
+          {
+            "title": "Emerald Claw Captive",
+            "description": "You capture Emeral Claw agent Irullan Karnach alive. At the end of the this adventure, you must decide what to do with her.",
+            "radios": [
+              "Hand her over to the Brelish authorities and claim a reward of 100 gp.",
+              "Keep her as a captive. While she remains alive, you must pay 10 gp at the end of each adventure to cover the expenses of her incarceration. If you have access to your own prison cell, you can keep her imprisoned for free.",
+              "Execute her."
+            ]
+          },
+          {
+            "title": "Wing and a Prayer",
+            "description": "You left the city with Sky Blue to go in search of her father, who supposedly died during the Last War. Flamewind is unhappy that you defied her and sends spies to locate you.",
+            "checkboxes": [
+              "At the end of each adventure in this campaign (including this one), your party must succeed on a group DC 10 Wisdom (Insight) check to stay ahead of the sphinx's agents. If your group fails, tick this box and stop making checks. You are now being watched!"
+            ]
+          },
+          {
+            "title": "Mark of the Sphinx",
+            "description": "You took Sky Blue to the sphinx Flamewind, who gave her a protective amulet to wear. Flamewind has asked you to look after the girl, and promised she'll be in touch."
+          },
+          {
+            "title": "The Show Must Go On",
+            "description": "The bard Stormflower helped you save Sky Blue and is now committed to forging your legend in song.",
+            "checkboxes": [
+              "If you write Stormflower a song of at least three verses and hand it to your DM before playing DDAL-EB-08 <i>Parliament of Gears</i>, Stormflower makes you an honorary member of the Circle of Song: a secret alliance of bards and entertainers."
+            ]
+          },
+          {
+            "title": "Flamewind's Favored",
+            "description": "You impressed the sphinx Flamewind with your performance during a steeplechase."
+          }
+        ],
+        "footnote": "(A character that dies during an adventure should still receive any legacy events that they earned, based on the discretion of the DM. If they declined the level, they cannot gain any benefits from legacy events that are provided when a level is gained.)"
+      }
+    },
+    {
+      "record": "game",
+      "code": "ddal-eb-08",
+      "title": "Parliament of Gears",
+      "type": "Adventure Record",
+      "tier": 2,
+      "notes": {
+        "game": "One the orders of Captain Alain ir'Ranek of the Brelish flying fortress Argonth, you mounted a rescue mission into the Mournland to retrieve captives taken by warforged raiding parties. What you discovered whas a highly organized military force carrying out the Lord of Blades' orders. Whoever this mysterious leader is, he's given orders to harvest resources and personnel to assist a dwarven artificer under his \"care.\""
+      },
+      "advancement": {
+        "label": "You gain one level for completing this adventure.",
+        "footnote": "(If you decline this level, you still record legacy events but cannot claim any rewards or legacy event benefits for this adventure.)"
+      },
+      "rewards": [
+        {
+          "instruction": "You gain the following rewards:",
+          "selections": [
+            "250 gp from Captain Alain ir'Ranek for attempting to resuce the captives (regardless of successs or failure).",
+            "A Lamannian flint shard."
+          ]
+        },
+        {
+          "instruction": "Choose ONE bonus reward:",
+          "options": [
+            "A <i>+2 halberd</i> for searching the captain's room (area U3).",
+            "An <i>orb of shielding (Lamannian flint)</i> for searching the workship (area M3).",
+            "An <i>elemental gem (blue sapphire)</i> if Wooaaii survives.",
+            "A <i>potion of healing</i> and 100 gp for searching the stores (area M6).",
+            "A <i>potion of healing</i>, a <i>potion of comprehension</i>, a <i>potion of resistance (acid)</i>, or a <i>potion of resistance (lightning)</i> from Kalli Alran."
+          ]
+        }
+      ],
+      "legacy": {
+        "events": [
+          {
+            "title": "Beard Braid",
+            "description": "Tellarak Natharon, nephew of the <i>Oracle of War</i>'s creator Sulrin Mroranon, gave you a beard braid to identify yourselves to his uncle."
+          },
+          {
+            "title": "Bested Captain Reeve",
+            "description": "You fought Captain Reeve of the 1st Mobile Division and lived to tell the tale. Once per adventure in the <i>Oracle of War</i> campaign, you can use this legacy even to gain advantage on an Intimidation or Persuasion check made to interact with a warforged."
+          },
+          {
+            "title": "Eternal Gratitude",
+            "description": "You rescued one or more captives from the Blades' <i>Conclave</i>. They won't forget your bravery and go out of their way to repay you. If you rescued any of the captives liste below, you gain their benefits:",
+            "checkboxes": [
+              "<b>Breyten Bokk d'Orien</b> grants you a single spell component of up to 500 gp in value.",
+              "<b>Bunty Griswold</b> leaves your group a legacy in her will. At the start of each Core Storyline adventure in the <i>Oracle of War</i> campaign, roll a d20. On a 1, Bunty dies and each character with this legacy event gains 250 gp. All playes in your group must remove this legacy event from their Adventure Records.",
+              "<b>Dabren Ty</b> can silver one of your weapons or up to 20 pieces of ammunition.",
+              "<b>Jurian Saal</b> gifts you a <i>potion of healing</i>.",
+              "<b>Kronce</b> offers to help you out on a mission. You may call on the <b>veteran</b> to accompany you on any adventure in the <i>Oracle of War</i> campaign. When you use this legacy event, all players in your group must remove it from their Adventure Records.",
+              "<b>Larten</b> gives you a map of Cyre which grants you advantage to all Wisdom (Survival) checks made to navigate the Mournland."
+            ]
+          }
+        ],
+        "footnote": "(A character that dies during an adventure should still receive any legacy events that they earned, based on the discretion of the DM. If they declined the level, they cannot gain any benefits from legacy events that are provided when a level is gained.)"
+      }
     }
   ]
 }
