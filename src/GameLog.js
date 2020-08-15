@@ -37,15 +37,15 @@ class GameLog extends React.Component {
     render_titleAndCode = (type, code, title) => {
         return (
             <div className="titleWrapper" onClick={this.toggleCollapsed.bind(this)}>
-				<h1 className="title">{type}: <span className="code" dangerouslySetInnerHTML={{ __html: code.split("-").join("<span class='hyphen'>-</span>") }}></span> {title}</h1>
-			</div>);
-    }
-
-    render_missionTitle = (type, title) => {
-        return (
-            <div className="titleWrapper" onClick={this.toggleCollapsed.bind(this)}>
-				<h1 className="title">{type}: {title}</h1>
-			</div>);
+				<h1 className="title fauxdesto">
+					<span className="type">{type}:</span>
+					<span className="name">
+						{code !== null && <span className="code" dangerouslySetInnerHTML={{ __html: code.split("-").join("<span class='hyphen'>-</span>") }}></span>}
+						<span className="fauxdesto italic">{title}</span>
+					</span>
+				</h1>
+			</div>
+		);
     }
 
     render_gameInfo = (event, date, dmObj, tier) => {
@@ -81,7 +81,7 @@ class GameLog extends React.Component {
 					<div className="box">
 						{"game" in notesObj &&<p className="gameNotes bookFont" dangerouslySetInnerHTML={{ __html: notesObj.game }} />}
 						{("game" in notesObj && "player" in notesObj) && <hr />}
-						{"player" in notesObj && <p className="playerNotes bookFont">{notesObj.player}</p>}
+						{"player" in notesObj && <p className="playerNotes handwritten">{notesObj.player}</p>}
 					</div>
 			</Container>
         )
@@ -215,7 +215,7 @@ class GameLog extends React.Component {
 	    } else if (data.record === "salvage") {
 	    	return (
 	            <Container fluid className={classnames("gameBox salvageBox",!this.state.isCollapsed && "expanded")}>
-					{this.render_missionTitle(data.type,data.title)}
+					{this.render_titleAndCode(data.type,null,data.title)}
 
 					<Collapse in={!this.state.isCollapsed}>
 						<div className="content">

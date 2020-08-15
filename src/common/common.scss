@@ -15,6 +15,11 @@
 
     src: url("../fonts/Nodesto-Caps-Condensed.otf") format("opentype");
 }
+@font-face {
+    font-family: FauxdestoItalic;
+
+    src: url("../fonts/Nodesto-Caps-Condensed-Italic.otf") format("opentype");
+}
 
 @font-face {
     font-family: Bookinsanity;
@@ -45,6 +50,7 @@ $color-bsbg: #e9ecef;
 
 // font-families
 $fontFamily-fauxdesto: Fauxdesto, Impact, Charcoal, sans-serif;
+$fontFamily-fauxdesto-italic: FauxdestoItalic, Impact, Charcoal, sans-serif;
 $fontFamily-oswald: Oswald, Helvetica, Arial, sans-serif;
 $fontFamily-handwritten: Chilanka, cursive;
 $fontFamily-book-normal: Bookinsanity, serif;
@@ -79,6 +85,19 @@ $fontFamily-book-boldItalic: BookinsanityBoldItalic, serif;
 
         text-decoration: none;
     }
+}
+
+.fauxdesto {
+    font-family: $fontFamily-fauxdesto;
+
+    &.italic {
+        font-family: $fontFamily-fauxdesto-italic;
+        font-style: italic;
+    }
+}
+
+.handwritten {
+    font-family: $fontFamily-handwritten;
 }
 
 // Extra small devices (portrait phones, less than 576px)

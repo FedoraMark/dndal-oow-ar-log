@@ -17,34 +17,44 @@
             cursor: pointer;
         }
 
+        .type {
+            padding-right: 1rem;
+
+            text-align: left;
+            white-space: nowrap;
+        }
+
         .title {
             padding: .5rem 1rem;
             margin: 0;
 
-            font-family: $fontFamily-fauxdesto;
-            font-size: 3.5rem;
+            font-size: 2rem;
             font-weight: normal;
 
             background: $color-bsbg;
 
-            @include flex();
+            @include flex(flex-start, space-between);
 
-            .code {
-                padding-right: 1rem;
+            .name {
+                text-align: right;
 
-                flex-grow: 1;
+                @include flex(center, flex-end, column);
 
-                font-size: 3.25rem;
+                .code {
+                    width: 100%;
 
-                text-transform: uppercase;
+                    font-size: 2rem;
 
-                @include flex(center, flex-end);
+                    text-transform: uppercase;
 
-                .hyphen {
-                    position: relative;
-                    bottom: 1rem;
+                    @include flex(center, flex-end);
 
-                    margin: 0 .05rem;
+                    .hyphen {
+                        position: relative;
+                        bottom: .55rem;
+
+                        margin: 0 .05rem;
+                    }
                 }
             }
         }
@@ -53,6 +63,31 @@
     .content {
         padding: 0;
         margin: 0;
+
+        .wrapper {
+            margin: 0 0 .5rem;
+
+            & > h1 {
+                margin: 0;
+
+                font-family: $fontFamily-fauxdesto;
+                font-size: 3rem;
+            }
+
+            .box {
+                padding: 1rem;
+
+                border: 1px solid darkgray;
+
+                p {
+                    margin: 0;
+
+                    font-size: 1rem;
+
+                    text-align: left;
+                }
+            }
+        }
 
         .infoWrapper {
             padding: 0;
@@ -104,39 +139,11 @@
             }
         }
 
-        .wrapper {
-            margin: 0 0 .5rem;
-
-            & > h1 {
-                margin: 0;
-
-                font-family: $fontFamily-fauxdesto;
-                font-size: 3rem;
-            }
-
-            .box {
-                padding: 1rem;
-
-                border: 1px solid darkgray;
-
-                p {
-                    margin: 0;
-
-                    font-size: 1rem;
-
-                    text-align: left;
-                }
-            }
-        }
-
-        .notesWrapper {
-            .playerNotes {
-                font-family: $fontFamily-handwritten;
-            }
-        }
 
         .twoCol {
             margin-bottom: .5rem;
+
+            flex-direction: column;
 
             @include flex(stretch, center, column);
 
@@ -294,20 +301,7 @@
 
 // Extra small devices (portrait phones, less than 576px)
 // No media query for `xs` since this is the default in Bootstrap
-.gameBox .titleWrapper {
-    .title,
-    .title .code {
-        font-size: 2rem;
 
-        .hyphen {
-            bottom: .55rem;
-        }
-    }
-}
-
-.twoCol {
-    flex-direction: column;
-}
 
 // Small devices (landscape phones, 576px and up)
 @media (min-width:576px) {
@@ -317,11 +311,26 @@
 @media (min-width:768px) {
     .gameBox .titleWrapper {
         .title,
-        .title .code {
-            font-size: 2.5rem;
+        .title .name {
+            font-size: 2rem;
 
-            .hyphen {
-                bottom: .7rem;
+            .code {
+                width: auto;
+                padding-right: .5rem;
+
+                font-size: 2rem;
+
+                .hyphen {
+                    bottom: .6rem;
+                }
+            }
+        }
+
+        .title {
+            align-items: center;
+
+            .name {
+                flex-direction: row;
             }
         }
     }
@@ -331,11 +340,17 @@
 @media (min-width:992px) {
     .gameBox .titleWrapper {
         .title,
-        .title .code {
-            font-size: 3.25rem;
+        .title .name {
+            font-size: 3rem;
 
-            .hyphen {
-                bottom: 1rem;
+            .code {
+                padding-right: .75rem;
+
+                font-size: 3rem;
+
+                .hyphen {
+                    bottom: .75rem;
+                }
             }
         }
     }
