@@ -1,6 +1,11 @@
 // IMPORTS
 @import "./common/common.scss";
 
+// VARS
+// $symbol-times: "\00D7";
+
+
+
 // STYLES
 .gameBox {
     padding: 0 !important;
@@ -148,7 +153,22 @@
                         }
 
                         h1 {
+                            width: 100%;
+
                             font-size: 16px;
+
+                            @include flex(center, flex-start);
+
+                            .instructions {
+                                flex-grow: 1;
+
+                                text-align: left;
+                            }
+
+                            .button {
+                                width: 20px;
+                                height: 20px;
+                            }
                         }
                     }
                 }

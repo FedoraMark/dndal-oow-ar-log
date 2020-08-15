@@ -99,8 +99,12 @@ class GameLog extends React.Component {
 						{_map(rewardObj, (rewardGroup, key) => {
 							return  (
 								<div key={key} className="rewardGroup">
-									<h1 className="bookFont bold">{rewardGroup.instruction}</h1>
-									{"options" in rewardGroup && <Option options={rewardGroup.options} />}
+									<h1 className="bookFont bold">
+										<span className="instructions">{rewardGroup.instruction}</span>
+										{"options" in rewardGroup && <div className="button" />}
+									</h1>
+
+									{"options" in rewardGroup && <Option options={rewardGroup.options} canBlank />}
 
 									{"selections" in rewardGroup &&
 										<span>

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import InputGroup from 'react-bootstrap/InputGroup';
+import Fade from 'react-bootstrap/Fade'
 import _map from 'lodash/map';
 
 import './SelectOption.scss';
@@ -18,7 +19,7 @@ class Option extends React.Component {
     static defaultProps = {
         selection: null,
         isDisabled: false,
-        canBlank: false
+        canBlank: false,
     }
 
     state = {
@@ -42,9 +43,19 @@ class Option extends React.Component {
     }
 
     //RENDERERS
+    render_blankButton = () => {
+
+    }
+
     render() {
         return (
             <div className={classnames("selectWrapper radio", this.state.isDisabled && "disabled")} >
+                {this.props.canBlank &&
+                    <Fade in={this.state.selection !== null}>
+                        <div className="button" onClick={this.setSelection.bind(this,null)} />
+                    </Fade>
+                }
+
 				<InputGroup className="radioArea">
 					{_map(this.props.options, (option, key) => {
 						return (

@@ -1,8 +1,28 @@
 // IMPORTS
 @import "../common/common.scss";
 
+// ANIMS
+@keyframes spinOnceFast {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(180deg);
+    }
+}
+
+// STYLES
 .selectWrapper {
+    position: relative;
+
+    width: 100%;
     margin-bottom: .75rem;
+
+    -webkit-transition: all .25s ease;
+       -moz-transition: all .25s ease;
+        -ms-transition: all .25s ease;
+         -o-transition: all .25s ease;
+            transition: all .25s ease;
 
     &:not(:last-of-type) {
         margin-bottom: .25rem;
@@ -11,6 +31,11 @@
     &:hover,
     &:focus {
         cursor: pointer;
+    }
+
+    &.disabled {
+        opacity: .5;
+        color: #999;
     }
 
     .checkArea {
@@ -78,14 +103,70 @@
             line-height: calc(1.5em + 6px);
         }
     }
-}
 
-.disabled {
-    opacity: .5;
-    color: #999;
+    .button {
+        position: absolute;
+        top: calc(-.5rem + -20px);
+        right: 0;
 
-    &:hover,
-    &:focus {
-        // cursor: default;
+        width: 20px;
+        height: 20px;
+
+        box-sizing: border-box;
+
+        -webkit-transition: all .25s ease;
+           -moz-transition: all .25s ease;
+            -ms-transition: all .25s ease;
+             -o-transition: all .25s ease;
+                transition: all .25s ease;
+
+        color: $color-bsborder;
+        border: 2px solid currentColor;
+        border-radius: 10px;
+
+        @include flex();
+
+
+        &:before {
+            position: absolute;
+            top: 7px;
+
+            width: 12px;
+            height: 2px;
+
+            content: "";
+
+            -webkit-transform: rotate(-45deg);
+                    transform: rotate(-45deg);
+
+            background-color: currentColor;
+        }
+
+        &:after {
+            position: absolute;
+            top: 7px;
+
+            width: 12px;
+            height: 2px;
+
+            content: "";
+
+            -webkit-transform: rotate(45deg);
+                    transform: rotate(45deg);
+
+            background-color: currentColor;
+        }
+
+        &:hover,
+        &:focus {
+            cursor: pointer;
+
+            animation-name: spinOnceFast;
+            animation-duration: 500ms;
+            animation-timing-function: ease;
+            animation-iteration-count: 1;
+
+            color: black;
+        }
     }
 }
