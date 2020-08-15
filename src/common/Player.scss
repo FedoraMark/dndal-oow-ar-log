@@ -3,11 +3,9 @@
 .playerBox {
     margin: 0 0 1rem;
 
-    @include flex(center, center, column);
+    @include flex(center, stretch, column);
 
     div {
-        width: 100%;
-
         @include flex(flex-start, flex-start);
 
         &:not(:last-of-type) {
@@ -76,6 +74,8 @@
 // Extra small devices (portrait phones, less than 576px)
 // No media query for `xs` since this is the default in Bootstrap
 .playerBox div {
+    width: 100%;
+
     h1,
     p {
         width: auto;
@@ -91,11 +91,16 @@
 
 // Medium devices (tablets, 768px and up)
 @media (min-width: 768px) {
+    .playerBox div {
+        width: initial;
+    }
 }
 
 // Large devices (desktops, 992px and up)
 @media (min-width: 992px) {
     .playerBox div {
+        width: 100%;
+
         h1,
         p {
             width: 50%;

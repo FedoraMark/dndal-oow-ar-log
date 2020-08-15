@@ -294,6 +294,16 @@
 
 // Medium devices (tablets, 768px and up)
 @media (min-width:768px) {
+    .gameBox .titleWrapper {
+        .title,
+        .title .code {
+            font-size: 2.5rem;
+
+            .hyphen {
+                bottom: .7rem;
+            }
+        }
+    }
 }
 
 // Large devices (desktops, 992px and up)

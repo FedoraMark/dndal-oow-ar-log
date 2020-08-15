@@ -21,7 +21,7 @@
       "code": "ddal-eb-01",
       "title": "The Night Land",
       "type": "Adventure Record",
-      "event": "Game",
+      "event": "None",
       "date": "01-JAN-2000",
       "tier": 1,
       "dungeonMaster": {
@@ -96,12 +96,13 @@
         "footnote": "(A character that dies during an adventure should still receive any legacy events that they earned, based on the discretion of the DM. If they declined the level, they cannot gain any benefits from legacy events that are provided when a level is gained.)"
       }
     },
+
     {
       "record": "salvage",
       "mission": "Example Salvage Mission Name",
-      "event": "Game",
+      "event": "Normal game",
       "date": "01-JAN-2000",
-      "tier": 0,
+      "tier": 1,
       "dungeonMaster": {
         "name": "Matt Merc",
         "dci": "1234567890"
@@ -109,12 +110,12 @@
       "salvage": "100 salvage",
       "leveled": true
     },
+
     {
       "record": "dmgame",
       "code": "ddal-eb-00",
       "title": "Day of Mourning",
       "type": "Sample Dungeon Master",
-      "event": "Game",
       "date": "01-JAN-2000",
       "tier": 0,
       "dungeonMaster": {

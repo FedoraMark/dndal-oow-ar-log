@@ -59,6 +59,17 @@
 
 // Small devices (landscape phones, 576px and up)
 @media (min-width: 576px) {
+    .log .titleBox {
+        h1 {
+            font-size: 5rem;
+        }
+
+        h2 {
+            margin: -1rem auto 0;
+
+            font-size: 4rem;
+        }
+    }
 }
 
 // Medium devices (tablets, 768px and up)
