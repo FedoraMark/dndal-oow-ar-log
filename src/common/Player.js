@@ -68,6 +68,22 @@ export class Player extends Component {
 					<p>{this.state.character}</p>
 				</div>
 
+				{this.state.base !== null &&
+					<div>
+						<h1>Assigned Base:</h1>
+						<p>{this.state.base}</p>
+					</div>
+				}
+
+				{this.state.wealth !== null &&
+					<div>
+						<h1>Current Wealth:</h1>
+						<p>
+							<Wealth wealthObj={this.state.wealth} />
+						</p>
+					</div>
+				}
+
 				{this.state.classes !== null &&
 					<div>
 						<h1>Classes & Levels:</h1>
@@ -91,22 +107,6 @@ export class Player extends Component {
 							<li className={this.state.tier > 3 && "filled"}>4</li>
 						</ul>
 						{/* <p>{this.state.tier}</p> */}
-					</div>
-				}
-
-				{this.state.base !== null &&
-					<div>
-						<h1>Assigned Base:</h1>
-						<p>{this.state.base}</p>
-					</div>
-				}
-
-				{this.state.wealth !== null &&
-					<div>
-						<h1>Current Wealth:</h1>
-						<p>
-							<Wealth wealthObj={this.state.wealth} />
-						</p>
 					</div>
 				}
 			</Container>

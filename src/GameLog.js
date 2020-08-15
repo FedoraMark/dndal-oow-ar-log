@@ -57,10 +57,10 @@ class GameLog extends React.Component {
         return (
             <Container>
 				<ul className="infoWrapper">
-					{date !== undefined && <li><h1 className="date">Date:</h1><p>{date}</p></li>}
-					{event !== undefined && <li><h1 className="event">Event:</h1><p>{event}</p></li>}
-					{tier !== undefined && <li><h1 className="tier">Tier:</h1><p>{tier}</p></li>}
-					{dmStr !== '' && <li><h1 className="dm">Dungeon Master:</h1><p>{dmStr}</p></li>}					
+					{date !== undefined && <li className="date"><h1>Date:</h1><p>{date}</p></li>}
+					{event !== undefined && <li className="event"><h1>Event:</h1><p>{event}</p></li>}
+					{tier !== undefined && <li className="tier"><h1>Tier:</h1><p>{tier}</p></li>}
+					{dmStr !== '' && <li className="dm"><h1>Dungeon Master:</h1><p>{dmStr}</p></li>}
 				</ul>
 			</Container>
         );

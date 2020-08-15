@@ -1,7 +1,5 @@
 // IMPORTS
 @import "./common/common.scss";
-// VARS
-// $symbol-times: "\00D7";
 
 // STYLES
 .gameBox {
@@ -80,6 +78,20 @@
 
                     font-family: $fontFamily-handwritten;
                     font-size: 1.25rem;
+                }
+
+                &.tier p {
+                    width: 1.5rem;
+                    height: 1.5rem;
+                    padding: .3rem 0 0;
+                    margin: -.1rem 0 0;
+
+                    box-sizing: border-box;
+
+                    border: 1px solid gray;
+                    border-radius: 50%;
+
+                    @include flex();
                 }
             }
         }
