@@ -127,28 +127,28 @@ class GameLog extends React.Component {
 						Starting Gold
 					</div>
 					<div className="amount cell">
-						<span className="val"><Wealth isEmpty wealthObj={wealthObj === undefined ? undefined : wealthObj.starting} /></span>
+						<span className="val"><Wealth isEmpty={wealthObj === undefined} wealthObj={wealthObj === undefined ? undefined : wealthObj.starting} /></span>
 					</div>
 
 					<div className="header cell">
 						Gold Spent (<span>-</span>)
 					</div>
 					<div className="amount cell">
-						<span className="val"><Wealth isEmpty wealthObj={wealthObj === undefined ? undefined : wealthObj.spent} /></span>
+						<span className="val"><Wealth colorless /*loss*/ isEmpty={wealthObj === undefined} wealthObj={wealthObj === undefined ? undefined : wealthObj.spent} /></span>
 					</div>
 
 					<div className="header cell">
 						Gold Earned (+)
 					</div>
 					<div className="amount cell">
-						<span className="val"><Wealth isEmpty wealthObj={wealthObj === undefined ? undefined : wealthObj.earned} /></span>
+						<span className="val"><Wealth colorless /*gain*/ isEmpty={wealthObj === undefined} wealthObj={wealthObj === undefined ? undefined : wealthObj.earned} /></span>
 					</div>
 
 					<div className="header cell bottom">
 						Ending Gold
 					</div>
 					<div className="amount cell bottom">
-						<span className="val"><Wealth isEmpty wealthObj={wealthObj === undefined ? undefined : wealthObj.ending} /></span>
+						<span className="val"><Wealth isEmpty={wealthObj === undefined} wealthObj={wealthObj === undefined ? undefined : wealthObj.ending} /></span>
 					</div>
 				</Container>
 			</Container>

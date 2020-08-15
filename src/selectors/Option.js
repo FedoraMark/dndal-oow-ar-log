@@ -12,11 +12,13 @@ class Option extends React.Component {
         options: PropTypes.array.isRequired,
         selection: PropTypes.bool,
         isDisabled: PropTypes.bool,
+        canBlank: PropTypes.bool
     }
 
     static defaultProps = {
         selection: null,
-        isDisabled: false
+        isDisabled: false,
+        canBlank: false
     }
 
     state = {

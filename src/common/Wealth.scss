@@ -1,3 +1,18 @@
-.money .comma:last-of-type {
-    display: none;
+// STYLES
+.money {
+    &.gain:not(.loss) {
+        color: #16a085;
+    }
+
+    &.loss:not(.gain) {
+        color: #e74c3c;
+    }
+
+    &.colorless {
+        color: #7f8c8d !important;
+    }
+
+    .comma:last-of-type {
+        display: none;
+    }
 }

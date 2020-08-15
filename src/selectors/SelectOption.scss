@@ -25,9 +25,19 @@
 
             @include flex(stretch, flex-start);
 
+            .input-group-text,
+            .label {
+                border-radius: 10px;
+            }
+
             .input-group-text {
                 border-top-right-radius: 0;
                 border-bottom-right-radius: 0;
+            }
+
+            .label {
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
             }
 
             &:not(:last-of-type) {
@@ -53,7 +63,7 @@
     .label {
         display: flex !important;
         min-height: calc(1.5em + .75rem + 2px);
-        padding: .25rem .25rem .25rem .75rem;
+        padding: .25rem .75rem;
         margin: 0;
 
         align-items: center !important;
