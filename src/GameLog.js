@@ -101,7 +101,7 @@ class GameLog extends React.Component {
 								<div key={key} className="rewardGroup">
 									<h1 className="bookFont bold">
 										<span className="instructions">{rewardGroup.instruction}</span>
-										{"options" in rewardGroup && <div className="button" />}
+										{"options" in rewardGroup && <div className="buttonArea" />}
 									</h1>
 
 									{"options" in rewardGroup && <Option options={rewardGroup.options} canBlank />}
