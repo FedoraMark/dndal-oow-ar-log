@@ -32,7 +32,7 @@ class AdvRecordLog extends React.Component {
             <Container className="gameList">
 				{_map(this.state.charData.games, (gameObj, key) => {
 					if (["game","dmgame"].includes(gameObj.record) ) {
-						return <GameLog key={key} data={gameObj} isCollapsed={gameObj.type === "Sample AR"} />
+						return <GameLog key={key} data={gameObj} isCollapsed={gameObj.type.includes("Sample")} />
 					}
 				})}
 
@@ -50,6 +50,7 @@ class AdvRecordLog extends React.Component {
 	    		<Container>
 	    			<Player
 		    			player={this.state.charData.player}
+		    			dci={this.state.charData.dci}
 		    			character={this.state.charData.character}
 		    			classes={this.state.charData.classes}
 		    			tier={this.state.charData.tier}

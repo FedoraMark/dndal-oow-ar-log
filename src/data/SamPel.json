@@ -1,11 +1,12 @@
 {
   "player": "Gary Gygax",
+  "dci": "0000000001",
   "character": "Sam Pel",
   "classes": {
     "Dungeon Master": 19,
     "Player": 1
   },
-  "tier": 4,
+  "tier": 1,
   "base": "Fort Kickass",
   "wealth": {
     "pp": 1000,
@@ -109,10 +110,10 @@
       "leveled": true
     },
     {
-      "record": "game",
+      "record": "dmgame",
       "code": "ddal-eb-00",
       "title": "Day of Mourning",
-      "type": "Sample AR",
+      "type": "Sample Dungeon Master",
       "event": "Game",
       "date": "01-JAN-2000",
       "tier": 0,

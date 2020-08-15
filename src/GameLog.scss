@@ -1,10 +1,7 @@
 // IMPORTS
 @import "./common/common.scss";
-
 // VARS
 // $symbol-times: "\00D7";
-
-
 
 // STYLES
 .gameBox {
@@ -15,7 +12,6 @@
 
     border: 2px solid black;
     background: $color-background;
-
 
     .titleWrapper {
         &:hover,
@@ -31,7 +27,7 @@
             font-size: 3.5rem;
             font-weight: normal;
 
-            background: $color-jumbotronGray;
+            background: $color-bsbg;
 
             .code {
                 font-size: 3.25rem;
@@ -41,6 +37,8 @@
                 .hyphen {
                     position: relative;
                     bottom: 1rem;
+
+                    margin: 0 .05rem;
                 }
             }
         }
@@ -52,7 +50,7 @@
 
         .infoWrapper {
             padding: 0;
-            margin-bottom: .5rem;
+            margin: .25rem auto .5rem;
 
             list-style: none;
 
@@ -73,6 +71,8 @@
 
                     font-family: $fontFamily-fauxdesto;
                     font-size: 1.5rem;
+
+                    white-space: nowrap;
                 }
 
                 p {
@@ -118,10 +118,10 @@
         .twoCol {
             margin-bottom: .5rem;
 
-            @include flex(stretch, center);
+            @include flex(stretch, center, column);
 
             .leftCol {
-                @include flex(stretch,stretch,column);
+                @include flex(stretch, stretch, column);
             }
 
             .arCol {
@@ -140,7 +140,7 @@
             .rewardsWrapper {
                 flex-grow: 1;
 
-                @include flex(stretch,stretch,column);
+                @include flex(stretch, stretch, column);
 
                 .content {
                     flex-grow: 1;
@@ -203,9 +203,8 @@
                     font-family: $fontFamily-fauxdesto;
                     font-size: 1.5rem;
 
+                    white-space: nowrap;
                     text-transform: uppercase;
-
-
 
                     span {
                         position: relative;
@@ -258,4 +257,51 @@
             }
         }
     }
+}
+
+// Extra small devices (portrait phones, less than 576px)
+// No media query for `xs` since this is the default in Bootstrap
+.gameBox .titleWrapper {
+    .title,
+    .title .code {
+        font-size: 2rem;
+
+        .hyphen {
+            bottom: .55rem;
+        }
+    }
+}
+
+.twoCol {
+    flex-direction: column;
+}
+
+// Small devices (landscape phones, 576px and up)
+@media (min-width:576px) {
+}
+
+// Medium devices (tablets, 768px and up)
+@media (min-width:768px) {
+}
+
+// Large devices (desktops, 992px and up)
+@media (min-width:992px) {
+    .gameBox .titleWrapper {
+        .title,
+        .title .code {
+            font-size: 3.25rem;
+
+            .hyphen {
+                bottom: 1rem;
+            }
+        }
+    }
+
+    .twoCol {
+        flex-direction: row !important;
+    }
+}
+
+// Extra large devices (large desktops, 1200px and up)
+@media (min-width:1200px) {
 }

@@ -17,9 +17,9 @@
         h1,
         p {
             display: inline-block;
-            width: 50%;
             padding: 0 .25rem;
             margin: 0;
+
             box-sizing: border-box;
 
             white-space: nowrap;
@@ -40,5 +40,72 @@
 
             align-self: flex-end;
         }
+
+        .tierList {
+            padding: 0 0 .2rem .2rem;
+            margin: 0;
+
+            list-style: none;
+
+            @include flex(center, flex-start);
+
+            li {
+                width: 2rem;
+                height: 2rem;
+                margin-right: .25rem;
+
+                font-family: $fontFamily-handwritten;
+                font-size: 1.5rem;
+
+                text-align: center;
+
+                color: $color-bsborder;
+                border: 2px solid $color-bsborder;
+                border-radius: 50%;
+
+                &.filled {
+                    color: black;
+                    border-color: gray;
+                    background: $color-bsbg;
+                }
+            }
+        }
     }
+}
+
+// Extra small devices (portrait phones, less than 576px)
+// No media query for `xs` since this is the default in Bootstrap
+.playerBox div {
+    h1,
+    p {
+        width: auto;
+    }
+    p {
+        white-space: break-spaces;
+    }
+}
+
+// Small devices (landscape phones, 576px and up)
+@media (min-width: 576px) {
+}
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) {
+}
+
+// Large devices (desktops, 992px and up)
+@media (min-width: 992px) {
+    .playerBox div {
+        h1,
+        p {
+            width: 50%;
+        }
+        p {
+            white-space: initial;
+        }
+    }
+}
+
+// Extra large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) {
 }

@@ -107,11 +107,11 @@ class GameLog extends React.Component {
 									{"options" in rewardGroup && <Option options={rewardGroup.options} canBlank />}
 
 									{"selections" in rewardGroup &&
-										<span>
+										<>
 											{_map(rewardGroup.selections, (selection, key) => {
 												return <Select key={key} label={selection} type="checkbox" />
 											})}
-										</span>
+										</>
 									}
 								</div>
 							)

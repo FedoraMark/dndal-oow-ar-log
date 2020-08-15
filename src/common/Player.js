@@ -10,6 +10,7 @@ import "./Player.scss";
 export class Player extends Component {
     static propTypes = {
         player: PropTypes.string,
+        dci: PropTypes.string,
         character: PropTypes.string.isRequired,
         classes: PropTypes.object,
         tier: PropTypes.number,
@@ -19,6 +20,7 @@ export class Player extends Component {
 
     static defaultProps = {
         player: null,
+        dci: null,
         classes: null,
         tier: null,
         base: null,
@@ -27,6 +29,7 @@ export class Player extends Component {
 
     state = {
         player: this.props.player,
+        dci: this.props.dci,
         character: this.props.character,
         classes: this.props.classes,
         tier: this.props.tier,
@@ -34,13 +37,29 @@ export class Player extends Component {
         wealth: this.props.wealth
     }
 
+    //FUNCTIONS
+    getPlayerDciStr = () => {
+    	var str = '';
+        if (this.state.player !== null) {
+            str = this.state.player;
+            if (this.state.dci !== null) {
+                str = str + " (" + this.state.dci + ")";
+            }
+        } else if (this.state.dci !== null) {
+            str = this.state.dci;
+        }
+
+        return str;
+    }
+
+    //RENDERERS
     render() {
         return (
             <Container fluid className="playerBox">
-            	{this.state.player !== null &&
+            	{(this.state.player !== null || this.state.dci !== null) &&
 					<div>
-						<h1>Player Name:</h1>
-						<p>{this.state.player}</p>
+						<h1>Player {this.state.player !== null ? "Name" : "DCI"}:</h1>
+						<p>{this.getPlayerDciStr()}</p>
 					</div>
 				}
 
@@ -65,7 +84,13 @@ export class Player extends Component {
 				{this.state.tier !== null &&
 					<div>
 						<h1>Tier:</h1>
-						<p>{this.state.tier}</p>
+						<ul className="tierList">
+							<li className={this.state.tier > 0 && "filled"}>1</li>
+							<li className={this.state.tier > 1 && "filled"}>2</li>
+							<li className={this.state.tier > 2 && "filled"}>3</li>
+							<li className={this.state.tier > 3 && "filled"}>4</li>
+						</ul>
+						{/* <p>{this.state.tier}</p> */}
 					</div>
 				}
 
