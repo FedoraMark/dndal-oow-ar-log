@@ -63,7 +63,7 @@ class Option extends React.Component {
 								<InputGroup.Prepend>
 									<InputGroup.Radio checked={this.state.selection === key} disabled={this.state.isDisabled} onChange={this.setSelection.bind(this,key)} />
 								</InputGroup.Prepend>
-							   	<p className="label bookFont">{option}</p>
+							   	<p className="label bookFont" dangerouslySetInnerHTML={{ __html: option }} />
 						   	</div>
 						);
 					})}

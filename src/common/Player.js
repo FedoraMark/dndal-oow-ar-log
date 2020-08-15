@@ -101,10 +101,10 @@ export class Player extends Component {
 					<div>
 						<h1>Tier:</h1>
 						<ul className="tierList">
-							<li className={this.state.tier > 0 && "filled"}>1</li>
-							<li className={this.state.tier > 1 && "filled"}>2</li>
-							<li className={this.state.tier > 2 && "filled"}>3</li>
-							<li className={this.state.tier > 3 && "filled"}>4</li>
+							<li className={this.state.tier > 0 ? "filled": ''}>1</li>
+							<li className={this.state.tier > 1 ? "filled": ''}>2</li>
+							<li className={this.state.tier > 2 ? "filled": ''}>3</li>
+							<li className={this.state.tier > 3 ? "filled": ''}>4</li>
 						</ul>
 						{/* <p>{this.state.tier}</p> */}
 					</div>

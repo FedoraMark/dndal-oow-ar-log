@@ -39,7 +39,7 @@ class Event extends Component {
 				<input type="checkbox" className="custom-control-input" checked={this.state.isSelected} onChange={this.toggleSelect.bind(this)} />
 	        	<span className="contents">
 		        	<h1 className="bookFont bold" onClick={this.toggleSelect.bind(this)}>{this.state.eventObj.title}.</h1>
-					<p className="bookFont" onClick={this.toggleSelect.bind(this)}>{this.state.eventObj.description}</p>
+					<p className="bookFont" onClick={this.toggleSelect.bind(this)} dangerouslySetInnerHTML={{ __html: this.state.eventObj.description }} />
 
 					{"checkboxes" in this.state.eventObj && 
 						<ul className="checkboxes" onClick={this.setSelect.bind(this, true)}>
@@ -52,7 +52,7 @@ class Event extends Component {
 
 					{"radios" in this.state.eventObj && 
 						<div className="radios" onClick={this.setSelect.bind(this, true)}>
-							<Option options={this.state.eventObj.radios}  isDisabled={!this.state.isSelected} />
+							<Option options={this.state.eventObj.radios} isDisabled={!this.state.isSelected} />
 						</div>
 					}
 					

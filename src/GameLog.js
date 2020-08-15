@@ -41,9 +41,17 @@ class GameLog extends React.Component {
 			</div>);
     }
 
+    render_missionTitle = (type, title) => {
+        return (
+            <div className="titleWrapper" onClick={this.toggleCollapsed.bind(this)}>
+				<h1 className="title">{type}: {title}</h1>
+			</div>);
+    }
+
     render_gameInfo = (event, date, dmObj, tier) => {
-        var dmStr = '';
-        if (dmObj !== undefined) {
+        var dmStr = dmObj !== undefined && dmObj.isDm ? "(me)" : '';
+
+        if (dmObj !== undefined && !dmObj.isDm) {
 	        if ("name" in dmObj) {
 	            dmStr = dmObj.name;
 	            if ("dci" in dmObj) {
@@ -66,13 +74,13 @@ class GameLog extends React.Component {
         );
     }
 
-    render_advNotes = (notesObj) => {
+    render_advNotes = (notesObj, suppressTitle) => {
         return (
             <Container className="notesWrapper wrapper">
-					<h1>Adventure Notes</h1>
+					{!suppressTitle && <h1>Adventure Notes</h1>}
 					<div className="box">
-						<p className="gameNotes bookFont" dangerouslySetInnerHTML={{ __html: notesObj.game }} />
-						{"player" in notesObj && <hr />}
+						{"game" in notesObj &&<p className="gameNotes bookFont" dangerouslySetInnerHTML={{ __html: notesObj.game }} />}
+						{("game" in notesObj && "player" in notesObj) && <hr />}
 						{"player" in notesObj && <p className="playerNotes bookFont">{notesObj.player}</p>}
 					</div>
 			</Container>
@@ -85,7 +93,7 @@ class GameLog extends React.Component {
 					<h1>Advancement</h1>
 					<div className="box">
 						<Select label={advObj.label} type="checkbox" isSelected={advObj.isSelected} isBold />
-						<p className="bookFont footnote">{advObj.footnote}</p>
+						<p className="bookFont footnote" dangerouslySetInnerHTML={{ __html:  advObj.footnote }} />
 					</div>
 			</Container>
         );
@@ -169,7 +177,7 @@ class GameLog extends React.Component {
 							return <Event eventObj={event} key={key} />
 						})}
 					</div>
-					<div className="footnote bookFont">{legacyObj.footnote}</div>
+					<div className="footnote bookFont" dangerouslySetInnerHTML={{ __html: legacyObj.footnote }} />
 				</Container>
 			</Container>
         );
@@ -178,31 +186,64 @@ class GameLog extends React.Component {
     render() {
         const { data } = this.props;
 
-        return (
-            <Container fluid className={classnames("gameBox",!this.state.isCollapsed && "expanded")}>
-				{this.render_titleAndCode(data.type,data.code,data.title)}
+        if (data.record === "game") {
+	        return (
+	            <Container fluid className={classnames("gameBox",!this.state.isCollapsed && "expanded")}>
+					{this.render_titleAndCode(data.type,data.code,data.title)}
 
-				<Collapse in={!this.state.isCollapsed}>
-					<div className="content">
-						{this.render_gameInfo(data.event,data.date,data.dungeonMaster,data.tier)}
-						{this.render_advNotes(data.notes)}
+					<Collapse in={!this.state.isCollapsed}>
+						<div className="content">
+							{this.render_gameInfo(data.event,data.date,data.dungeonMaster,data.tier)}
+							{this.render_advNotes(data.notes)}
 
-						<div className="twoCol">
-							<div className="leftCol arCol">
-								{this.render_advancement(data.advancement)}
-								{this.render_rewards(data.rewards)}
-								{this.render_wealth(data.gameWealth)}
-							</div>
+							<div className="twoCol">
+								<div className="leftCol arCol">
+									{this.render_advancement(data.advancement)}
+									{this.render_rewards(data.rewards)}
+									{this.render_wealth(data.gameWealth)}
+								</div>
 
-							<div className="rightCol arCol">
-								{this.render_legacy(data.legacy)}
+								<div className="rightCol arCol">
+									{this.render_legacy(data.legacy)}
+								</div>
 							</div>
 						</div>
-					</div>
-				</Collapse>
+					</Collapse>
 
-	    	</Container>
-        )
+		    	</Container>
+        	)
+	    } else if (data.record === "salvage") {
+	    	console.log('test');
+	    	return (
+	            <Container fluid className={classnames("gameBox salvageBox",!this.state.isCollapsed && "expanded")}>
+					{this.render_missionTitle(data.type,data.title)}
+
+					<Collapse in={!this.state.isCollapsed}>
+						<div className="content">
+							{this.render_gameInfo(undefined,data.date,data.dungeonMaster,data.tier)}
+
+							<div className="twoCol">
+								<div className="leftCol arCol">
+									SALVAGE<br />
+									LEVEL UP?
+								</div>
+
+								<div className="rightCol arCol">
+									WEALTH
+								</div>
+							</div>
+
+							{this.render_advNotes(data.notes, true)}
+						</div>
+					</Collapse>
+
+		    	</Container>
+        	)
+	    } else if (data.record === "notes") {
+
+	    }
+
+	    return <></>
     }
 }
 

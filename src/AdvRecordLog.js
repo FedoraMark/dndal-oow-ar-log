@@ -31,14 +31,12 @@ class AdvRecordLog extends React.Component {
         return (
             <Container className="gameList">
 				{_map(this.state.charData.games, (gameObj, key) => {
-					if (["game","dmgame"].includes(gameObj.record) ) {
-						return <GameLog key={key} data={gameObj} isCollapsed={gameObj.type.includes("Sample")} />
-					}
+					return <GameLog key={key} data={gameObj} isCollapsed={true} />
 				})}
 
-				{/* {_map(games_oow.records, (gameObj, key) => { */}
-				{/* 	return <GameLog key={key} data={gameObj} isCollapsed={false} /> */}
-				{/* })} */}
+				{_map(games_oow.records, (gameObj, key) => {
+					return <GameLog key={key} data={gameObj} isCollapsed={true} />
+				})}
 			</Container>
         );
     }

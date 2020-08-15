@@ -25,6 +25,7 @@
       "date": "01-JAN-2000",
       "tier": 1,
       "dungeonMaster": {
+        "isDm": false,
         "name": "Don John Malister",
         "dci": "3141592653"
       },
@@ -40,7 +41,7 @@
         {
           "instruction": "You gain the following rewards:",
           "selections": [
-            "10 gp from Belaluur for rescuting Garundah (5 gp if she died).",
+            "10 gp from Belaluur for rescuing Garundah (5 gp if she died).",
             "10 gp from Whist's crew for saving their lives.",
             "10 gp from Evanazer for scouting the tunnel."
           ]
@@ -96,31 +97,15 @@
         "footnote": "(A character that dies during an adventure should still receive any legacy events that they earned, based on the discretion of the DM. If they declined the level, they cannot gain any benefits from legacy events that are provided when a level is gained.)"
       }
     },
-
     {
-      "record": "salvage",
-      "mission": "Example Salvage Mission Name",
-      "event": "Normal game",
-      "date": "01-JAN-2000",
-      "tier": 1,
-      "dungeonMaster": {
-        "name": "Matt Merc",
-        "dci": "1234567890"
-      },
-      "salvage": "100 salvage",
-      "leveled": true
-    },
-
-    {
-      "record": "dmgame",
+      "record": "game",
       "code": "ddal-eb-00",
       "title": "Day of Mourning",
-      "type": "Sample Dungeon Master",
+      "type": "Sample DM Record",
       "date": "01-JAN-2000",
       "tier": 0,
       "dungeonMaster": {
-        "name": "Matt Merc",
-        "dci": "1234567890"
+        "isDm": true
       },
       "notes": {
         "game": "Lorem ipsum dolor sit amet, <i>consectetur adipiscing elit</i>, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim <b>veniam</b>, quis nostrud exercitation ullamco laboris nisi ut aliquip <u>ex ea commodo consequat</u>. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
@@ -133,7 +118,7 @@
       },
       "rewards": [],
       "legacy": {
-        "footnote": "(A character that dies during an adventure should still receive any legacy events that they earned, based on the discretion of the DM. If they declined the level, they cannot gain any benefits from legacy events that are provided when a level is gained.)"
+        "footnote": "(When you run an adventure, you earn the Adventure Record for that adventure, which you may apply to one of your <i>Oracle of War</i> characters. Apply the same rewards to the Adventure Record as your group earned, including legacy events. If a legacy event was awarded to a specific character, you may tick that event for your own character too.)"
       },
       "gameWealth": {
         "starting": {
@@ -148,6 +133,44 @@
         "ending": {
           "gp": 128
         }
+      }
+    },
+    {
+      "record": "salvage",
+      "title": "Example Salvage Mission Name",
+      "type": "Salvage Mission",
+      "date": "01-JAN-2000",
+      "tier": 1,
+      "dungeonMaster": {
+        "isDm": false,
+        "name": "Matt Merc",
+        "dci": "1234567890"
+      },
+      "salvage": "100 salvage",
+      "leveled": true,
+      "notes": {
+        "player": "This is a sample salvage mission note."
+      },
+      "wealth": {
+        "spent": {}
+      }
+    },
+    {
+      "record": "salvage",
+      "title": "Salvation",
+      "type": "Sample DM Salvage",
+      "date": "01-JAN-2000",
+      "tier": 1,
+      "dungeonMaster": {
+        "isDm": true
+      },
+      "salvage": "100 salvage",
+      "leveled": true,
+      "notes": {
+        "player": "This is a sample salvage mission note."
+      },
+      "wealth": {
+        "spent": {}
       }
     }
   ]

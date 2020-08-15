@@ -143,6 +143,8 @@
 
             .advWrapper {
                 .footnote {
+                    font-size: .95rem;
+
                     text-align: center !important;
 
                     color: gray;
@@ -262,10 +264,21 @@
                     .footnote {
                         padding-top: .75rem;
 
+                        font-size: .95rem;
+
                         color: gray;
                         border-top: 1px solid $color-bshr;
                     }
                 }
+            }
+        }
+    }
+
+
+    &.salvageBox {
+        .notesWrapper {
+            .box {
+                margin-bottom: 1rem;
             }
         }
     }

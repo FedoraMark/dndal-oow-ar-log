@@ -52,7 +52,7 @@ class Select extends React.Component {
 						<InputGroup.Prepend>
 							<InputGroup.Checkbox checked={this.state.isSelected} disabled={this.state.isDisabled} onChange={this.toggleSelect.bind(this)} />
 						</InputGroup.Prepend>
-					   	<p className={classnames("label bookFont", this.props.isBold && "bold")}>{label}</p>
+					   	<p className={classnames("label bookFont", this.props.isBold && "bold")} dangerouslySetInnerHTML={{ __html: label }} />
 					</InputGroup>
 				</div>
             );

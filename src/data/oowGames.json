@@ -17,7 +17,7 @@
         {
           "instruction": "You gain the following rewards:",
           "selections": [
-            "10 gp from Belaluur for rescuting Garundah (5 gp if she died).",
+            "10 gp from Belaluur for rescuing Garundah (5 gp if she died).",
             "10 gp from Whist's crew for saving their lives.",
             "10 gp from Evanazer for scouting the tunnel."
           ]
@@ -57,6 +57,62 @@
               "<b>Less than 5:</b> Remove 10 gp from your gold total, as Irullan tells her network of vendors to charge more for your necessities.",
               "<b>6–13:</b> Remove 5 gp from your gold total, as Irullan tells her network of vendors to charge more for your necessities.",
               "<b>19+:</b> You find vendors in town who don't like Irullan, and they sympathize with you and give you discounts. Add 10 gp to your gold total."
+            ]
+          }
+        ],
+        "footnote": "(A character that dies during an adventure should still receive any legacy events that they earned, based on the discretion of the DM. If they declined the level, they cannot gain any benefits from legacy events that are provided when a level is gained.)"
+      }
+    },
+    {
+      "record": "game",
+      "code": "ddal-eb-02",
+      "title": "Voice in the Machine",
+      "type": "Adventure Record",
+      "tier": 1,
+      "notes": {
+        "game": "You entered the Mournland to track down the Gray Dogs, a missing salvage crew. When you found them, you uncovered a strange relic from a basement in Kalazart—the <i>Oracle of War</i>. This artifact provided tactical assistance that helped your group escape when you were surrounded by warforged outlaws."
+      },
+      "advancement": {
+        "label": "You gain one level for completing this adventure.",
+        "footnote": "(If you decline this level, you still record legacy events but cannot claim any rewards or legacy event benefits for this adventure.)"
+      },
+      "rewards": [
+        {
+          "instruction": "You gain the following rewards:",
+          "selections": [
+            "50 gp from Belaluur for rescuing the Gray Dogs or returning to Salvation with their gear. You <b>must</b> return to Salvation to claim this reward."
+          ]
+        },
+        {
+          "instruction": "Choose ONE bonus reward:",
+          "options": [
+            "A <i>potion of healing</i> from the corpse in Carpet Realm (area 2).",
+            "25 gp for ransacking Dragon's Hoard (area 4).",
+            "A <i>rope of climbing</i> for defeating the raiders in Musk (area 9).",
+            "A suit of <i>mithral chain mail</i> for defeating the iron juggernaut.",
+            "A <i>potion of clairvoyance</i> from Garundah if she is still alive."
+          ]
+        }
+      ],
+      "legacy": {
+        "events": [
+          {
+            "title": "A Friend Indeed",
+            "description": "You listened to Kalli Alran (or the NPC friend you created during DDAL-EB-01 <i>The Night Land</i> and went back to save her trapped comrade. At the end of this adventure, choose one of the following benefits:",
+            "radios": [
+              "Your friend applies a temporary enhancement to your armor, granting you +1 AC for the duration of your next adventure.",
+              "Your firend gives you a <i>potion of healing<i>."
+            ]
+          },
+          {
+            "title": "Hard Call",
+            "description": "You angered Kalli Alran (or the NPC friend you created during DDAL-EB-01 <i>The Night Land</i>) by not risking your lives to save her trapped comrade. At the end of this adventure, each surviving member of the Gray Dogs—apart from your friend—slips you 5 gp as thanks."
+          },
+          {
+            "title": "White Rose",
+            "description": "You fround a preserved white rose in the same marketplace that you found the <i>Oracle of War<i>.",
+            "checkboxes": [
+              "Tick this if you identified the rose. At the end of the adventure, you can spend 5 gp to identify it as a rare Orioth rose from the distant jungle of Dajar Orioth in the elven nation of Aerenal."
             ]
           }
         ],
