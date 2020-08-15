@@ -1,10 +1,10 @@
 {
   "records": [
     {
+      "record": "game",
       "code": "ddal-eb-01",
       "title": "The Night Land",
       "type": "Adventure Record",
-      "event": "Game",
       "tier": 1,
       "notes": {
         "game": "Arriving at the Mournland salvage outpost of Salvation, your party undertook three separate quests into the \"Gray.\" In doing so, you discovered the existence of an Emerald Claw spy inside the settlement."
