@@ -139,10 +139,11 @@
 
 
         .twoCol {
-            display: block;
             margin-bottom: .5rem;
 
             flex-direction: column;
+
+
 
             .leftCol {
                 @include flex(stretch, stretch, column);
@@ -313,7 +314,7 @@
 @media (min-width:768px) {
     .gameBox {
         .content .wrapper > h1 {
-            font-size: 3rem;
+            font-size: 2.5rem;
         }
 
         .titleWrapper {
@@ -347,26 +348,33 @@
 
 // Large devices (desktops, 992px and up)
 @media (min-width:992px) {
-    .gameBox .titleWrapper {
-        .title,
-        .title .name {
-            font-size: 3rem;
-
-            .code {
-                width: auto;
-                padding-right: .75rem;
-
+    .gameBox {
+        .titleWrapper {
+            .title,
+            .title .name {
                 font-size: 3rem;
 
-                .hyphen {
-                    bottom: .75rem;
+                .code {
+                    width: auto;
+                    padding-right: .75rem;
+
+                    font-size: 3rem;
+
+                    .hyphen {
+                        bottom: .75rem;
+                    }
                 }
             }
         }
-    }
 
-    .twoCol {
-        @include flex(stretch, center, column);
+        .content {
+            .wrapper > h1 {
+                font-size: 3rem;
+            }
+            .twoCol {
+                @include flex(stretch, center, row);
+            }
+        }
     }
 }
 
