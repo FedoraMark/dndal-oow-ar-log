@@ -301,21 +301,38 @@
 
 // Small devices (landscape phones, 576px and up)
 @media (min-width:576px) {
-    .gameBox .content {
-        .bookFont {
-            font-size: 1rem;
-        }
-
-        .instructions {
-            font-size: .9rem;
-        }
-
-        .footnote {
-            font-size: .95rem;
-        }
-
+    .gameBox {
         .titleWrapper .title {
             font-size: 2rem;
+        }
+
+        .content {
+            .bookFont {
+                font-size: .9rem;
+            }
+
+            .instructions {
+                font-size: .9rem;
+            }
+
+            .footnote {
+                font-size: .95rem;
+            }
+
+            .twoCol {
+                .wealthWrapper {
+                    .header {
+                        font-size: 1.1rem;
+                    }
+
+                    .amount {
+                        font-size: .9rem;
+                        .val {
+                            top: .1rem;
+                        }
+                    }
+                }
+            }
         }
     }
 }
@@ -323,6 +340,32 @@
 // Medium devices (tablets, 768px and up)
 @media (min-width:768px) {
     .gameBox {
+        .titleWrapper .title {
+            font-size: 2.25rem;
+
+            .name {
+                .code {
+                    width: auto;
+                    padding-right: .5rem;
+
+                    .hyphen {
+                        bottom: .6rem;
+                    }
+                }
+            }
+
+            .title {
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            // .type {
+            //     display: flex;
+
+            //     flex-grow: 1;
+            // }
+        }
+
         .content {
             .bookFont {
                 font-size: .8rem;
@@ -344,36 +387,12 @@
                 font-size: 2rem;
             }
 
-
-
-            .titleWrapper .title {
-                font-size: 2.25rem;
-
-                .name {
-                    .code {
-                        width: auto;
-                        padding-right: .5rem;
-
-                        .hyphen {
-                            bottom: .6rem;
-                        }
-                    }
-                }
-
-                .title {
-                    align-items: center;
-                    justify-content: space-between;
-                }
-
-                // .type {
-                //     display: flex;
-
-                //     flex-grow: 1;
-                // }
-            }
-
             .twoCol {
                 @include flex(stretch, center, row);
+
+                .leftCol {
+                    margin-right: -15px;
+                }
 
                 .wealthWrapper {
                     .header {
@@ -381,9 +400,11 @@
                     }
 
                     .amount {
-                        top: .1rem;
-
                         font-size: .9rem;
+
+                        .val {
+                            top: .15rem;
+                        }
                     }
                 }
             }
@@ -437,9 +458,11 @@
                     }
 
                     .amount {
-                        top: .25rem;
-
                         font-size: 1.3rem;
+
+                        .val {
+                            top: .25rem;
+                        }
                     }
                 }
             }
