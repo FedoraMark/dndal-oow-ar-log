@@ -151,8 +151,6 @@
 
             .advWrapper {
                 .footnote {
-                    font-size: .95rem;
-
                     text-align: center !important;
 
                     color: gray;
@@ -272,8 +270,6 @@
                     .footnote {
                         padding-top: .75rem;
 
-                        font-size: .95rem;
-
                         color: gray;
                         border-top: 1px solid $color-bshr;
                     }
@@ -282,12 +278,8 @@
         }
     }
 
-    &.salvageBox {
-        .notesWrapper {
-            .box {
-                margin-bottom: 1rem;
-            }
-        }
+    &.salvageBox .notesWrapper .box {
+        margin-bottom: 1rem;
     }
 }
 
@@ -295,18 +287,36 @@
 // No media query for `xs` since this is the default in Bootstrap
 .gameBox .content {
     .bookFont {
-        font-size: .75rem;
+        font-size: .8rem;
     }
 
     .instructions {
         font-size: .9rem;
     }
+
+    .footnote {
+        font-size: .75rem;
+    }
 }
 
 // Small devices (landscape phones, 576px and up)
 @media (min-width:576px) {
-    .gameBox .titleWrapper .title {
-        font-size: 2rem;
+    .gameBox .content {
+        .bookFont {
+            font-size: 1rem;
+        }
+
+        .instructions {
+            font-size: .9rem;
+        }
+
+        .footnote {
+            font-size: .95rem;
+        }
+
+        .titleWrapper .title {
+            font-size: 2rem;
+        }
     }
 }
 
@@ -314,39 +324,69 @@
 @media (min-width:768px) {
     .gameBox {
         .content {
+            .bookFont {
+                font-size: .8rem;
+
+                &.gameNotes {
+                    font-size: .9rem;
+                }
+            }
+
+            .instructions {
+                font-size: .9rem;
+            }
+
+            .footnote {
+                font-size: .75rem;
+            }
+
             .sectionTitle {
                 font-size: 2rem;
             }
 
+
+
+            .titleWrapper .title {
+                font-size: 2.25rem;
+
+                .name {
+                    .code {
+                        width: auto;
+                        padding-right: .5rem;
+
+                        .hyphen {
+                            bottom: .6rem;
+                        }
+                    }
+                }
+
+                .title {
+                    align-items: center;
+                    justify-content: space-between;
+                }
+
+                // .type {
+                //     display: flex;
+
+                //     flex-grow: 1;
+                // }
+            }
+
             .twoCol {
                 @include flex(stretch, center, row);
-            }
-        }
 
-        .titleWrapper .title {
-            font-size: 2.25rem;
+                .wealthWrapper {
+                    .header {
+                        font-size: 1.1rem;
+                    }
 
-            .name {
-                .code {
-                    width: auto;
-                    padding-right: .5rem;
+                    .amount {
+                        top: .1rem;
 
-                    .hyphen {
-                        bottom: .6rem;
+                        font-size: .9rem;
                     }
                 }
             }
-
-            .title {
-                align-items: center;
-                justify-content: space-between;
-            }
-
-            // .type {
-            //     display: flex;
-
-            //     flex-grow: 1;
-            // }
         }
     }
 }
@@ -376,10 +416,32 @@
 
             .bookFont {
                 font-size: 1rem;
+
+                &.gameNotes {
+                    font-size: 1rem;
+                }
             }
 
             .instructions {
                 font-size: 1rem;
+            }
+
+            .footnote {
+                font-size: .95rem;
+            }
+
+            .twoCol {
+                .wealthWrapper {
+                    .header {
+                        font-size: 1.5rem;
+                    }
+
+                    .amount {
+                        top: .25rem;
+
+                        font-size: 1.3rem;
+                    }
+                }
             }
         }
     }
