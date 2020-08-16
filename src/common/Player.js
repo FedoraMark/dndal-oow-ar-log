@@ -56,41 +56,25 @@ export class Player extends Component {
     render() {
         return (
             <Container fluid className="playerBox">
-            	{(this.state.player !== null || this.state.dci !== null) &&
-					<div>
+				<div className="infoItem">
+					<h1>Character Name:</h1>
+					<p>{this.state.character}</p>
+				</div>
+
+				{(this.state.player !== null || this.state.dci !== null) &&
+					<div className="infoItem">
 						<h1>Player {this.state.player !== null ? "Name" : "DCI"}:</h1>
 						<p>{this.getPlayerDciStr()}</p>
 					</div>
 				}
 
-				<div>
-					<h1>Character Name:</h1>
-					<p>{this.state.character}</p>
-				</div>
-
-				{this.state.base !== null &&
-					<div>
-						<h1>Assigned Base:</h1>
-						<p>{this.state.base}</p>
-					</div>
-				}
-
-				{this.state.wealth !== null &&
-					<div>
-						<h1>Current Wealth:</h1>
-						<p>
-							<Wealth wealthObj={this.state.wealth} />
-						</p>
-					</div>
-				}
-
 				{this.state.classes !== null &&
-					<div>
+					<div className="infoItem">
 						<h1>Classes & Levels:</h1>
 						<p>
 							{_map(this.state.classes, (level, clss) => {
 								return(
-									<span className="block" key={clss}>{clss + " (" + level + ")"}</span>
+									<span className="class" key={clss}>{clss + " (" + level + ")"}<span className="comma">, </span></span>
 								);
 							})}
 						</p>
@@ -98,7 +82,7 @@ export class Player extends Component {
 				}
 
 				{this.state.tier !== null &&
-					<div>
+					<div className="infoItem">
 						<h1>Tier:</h1>
 						<ul className="tierList">
 							<li className={this.state.tier > 0 ? "filled": ''}>1</li>
@@ -107,6 +91,22 @@ export class Player extends Component {
 							<li className={this.state.tier > 3 ? "filled": ''}>4</li>
 						</ul>
 						{/* <p>{this.state.tier}</p> */}
+					</div>
+				}
+
+				{this.state.base !== null &&
+					<div className="infoItem">
+						<h1>Assigned Base:</h1>
+						<p>{this.state.base}</p>
+					</div>
+				}
+
+				{this.state.wealth !== null &&
+					<div className="infoItem">
+						<h1>Current Wealth:</h1>
+						<p>
+							<Wealth wealthObj={this.state.wealth} />
+						</p>
 					</div>
 				}
 			</Container>

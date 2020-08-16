@@ -3,13 +3,14 @@
 .playerBox {
     margin: 0 0 1rem;
 
-    @include flex(center, stretch, column);
+    flex-wrap: wrap;
+    @include flex();
 
-    div {
-        @include flex(flex-start, flex-start);
+    .infoItem {
+        @include flex(flex-start);
 
         &:not(:last-of-type) {
-            margin-bottom: .25rem;
+            margin-right: 1rem;
         }
 
         h1,
@@ -19,24 +20,29 @@
             margin: 0;
 
             box-sizing: border-box;
-
-            white-space: nowrap;
         }
 
         h1 {
             font-family: $fontFamily-oswald;
-            font-size: 1.5rem;
+            font-size: 1.25rem;
 
             text-align: right;
+            white-space: nowrap;
         }
 
         p {
-            padding-top: .2rem;
+            padding-top: .1rem;
 
             font-family: $fontFamily-handwritten;
-            font-size: 1.5rem;
+            font-size: 1.25rem;
+
+            white-space: break-spaces;
 
             align-self: flex-end;
+
+            .class:last-of-type .comma {
+                display: none;
+            }
         }
 
         .tierList {
@@ -48,12 +54,12 @@
             @include flex(center, flex-start);
 
             li {
-                width: 2rem;
-                height: 2rem;
+                width: 1.75rem;
+                height: 1.75rem;
                 margin-right: .25rem;
 
                 font-family: $fontFamily-handwritten;
-                font-size: 1.5rem;
+                font-size: 1.25rem;
 
                 text-align: center;
 
@@ -73,18 +79,6 @@
 
 // Extra small devices (portrait phones, less than 576px)
 // No media query for `xs` since this is the default in Bootstrap
-.playerBox div {
-    width: 100%;
-
-    h1,
-    p {
-        width: auto;
-    }
-
-    p {
-        white-space: break-spaces;
-    }
-}
 
 // Small devices (landscape phones, 576px and up)
 @media (min-width: 576px) {
@@ -92,25 +86,10 @@
 
 // Medium devices (tablets, 768px and up)
 @media (min-width: 768px) {
-    .playerBox div {
-        width: initial;
-    }
 }
 
 // Large devices (desktops, 992px and up)
 @media (min-width: 992px) {
-    .playerBox div {
-        width: 100%;
-
-        h1,
-        p {
-            width: 50%;
-        }
-
-        p {
-            white-space: initial;
-        }
-    }
 }
 
 // Extra large devices (large desktops, 1200px and up)

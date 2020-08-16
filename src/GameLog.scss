@@ -120,11 +120,11 @@
                     font-size: 1.25rem;
                 }
 
-                &.tier p {
+                &.tier > p {
                     width: 1.5rem;
                     height: 1.5rem;
                     padding: .3rem 0 0;
-                    margin: -.1rem 0 0;
+                    margin: 0;
 
                     box-sizing: border-box;
 
