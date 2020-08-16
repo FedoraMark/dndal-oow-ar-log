@@ -5,7 +5,6 @@ import Container from "react-bootstrap/Container";
 import _map from "lodash/map";
 
 import Player from './common/Player';
-import Wealth from './common/Wealth';
 
 import './AdvRecordLog.scss';
 

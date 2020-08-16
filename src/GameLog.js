@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import classnames from "classnames";
 import Collapse from "react-bootstrap/collapse";
 import Container from "react-bootstrap/Container";
-import Form from "react-bootstrap/Form";
 import _map from "lodash/map";
 
 import Event from "./selectors/Event";

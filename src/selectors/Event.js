@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Container from 'react-bootstrap/Container';
-import Form from 'react-bootstrap';
 import Select from './Select';
 import Option from './Option';
 import _map from "lodash/map";

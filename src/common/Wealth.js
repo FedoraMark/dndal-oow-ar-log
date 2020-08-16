@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import _map from "lodash/map";
 import classnames from "classnames";
 
 import "./Wealth.scss";
@@ -32,7 +31,7 @@ class Wealth extends React.Component {
     }
 
     render() {
-        const { wealthObj, gain, loss, colorless } = this.props;
+        const { gain, loss, colorless } = this.props;
 
         let style = classnames("money", gain && "gain", loss && "loss", colorless && "colorless");
 
