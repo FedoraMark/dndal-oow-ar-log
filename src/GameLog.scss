@@ -38,9 +38,7 @@
             @include flex(flex-start, center);
 
             .name {
-                text-align: right;
-
-                @include flex(center, flex-end);
+                @include flex(center, flex-end, column);
 
                 .code {
                     font-size: 2rem;
@@ -71,7 +69,7 @@
                 margin: 0;
 
                 font-family: $fontFamily-fauxdesto;
-                font-size: 3rem;
+                font-size: 2.25rem;
             }
 
             .box {
@@ -305,34 +303,45 @@
 
 // Small devices (landscape phones, 576px and up)
 @media (min-width:576px) {
+    .gameBox .titleWrapper .title .name {
+        flex-direction: row;
+
+        text-align: right;
+    }
 }
 
 // Medium devices (tablets, 768px and up)
 @media (min-width:768px) {
-    .gameBox .titleWrapper {
-        .title,
-        .title .name {
-            font-size: 2.25rem;
+    .gameBox {
+        .content .wrapper > h1 {
+            font-size: 3rem;
+        }
 
-            .code {
-                width: auto;
-                padding-right: .5rem;
-
+        .titleWrapper {
+            .title,
+            .title .name {
                 font-size: 2.25rem;
 
-                .hyphen {
-                    bottom: .6rem;
+                .code {
+                    width: auto;
+                    padding-right: .5rem;
+
+                    font-size: 2.25rem;
+
+                    .hyphen {
+                        bottom: .6rem;
+                    }
                 }
             }
-        }
 
-        .title {
-            align-items: center;
-            justify-content: space-between;
-        }
+            .title {
+                align-items: center;
+                justify-content: space-between;
+            }
 
-        .type {
-            display: flex;
+            .type {
+                display: flex;
+            }
         }
     }
 }
