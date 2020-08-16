@@ -117,6 +117,10 @@
             font-size: 1.25rem;
         }
 
+        p .class:not(:last-of-type) {
+            margin-right: .5rem;
+        }
+
         &.tierItem .tierList li {
             width: 1.75rem;
             height: 1.75rem;
