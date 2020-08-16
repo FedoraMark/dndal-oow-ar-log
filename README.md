@@ -7,4 +7,5 @@ Log for Adventure Records for the Adventurers League Eberron setting campaign, *
 ## Demo
 
 ***WORK IN PROGRESS***
+
 https://fedoramark.github.io/dndal-oow-ar-log/
