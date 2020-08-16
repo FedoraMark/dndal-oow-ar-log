@@ -37,7 +37,7 @@ class GameLog extends React.Component {
         return (
             <div className="titleWrapper" onClick={this.toggleCollapsed.bind(this)}>
 				<h1 className="title fauxdesto">
-					<span className="type">{type}:</span>
+					{/* <span className="type">{type}:</span> */}
 					<span className="name">
 						{code !== null && <span className="code" dangerouslySetInnerHTML={{ __html: code.split("-").join("<span class='hyphen'>-</span>") }}></span>}
 						<span className="fauxdesto italic">{title}</span>
@@ -76,7 +76,7 @@ class GameLog extends React.Component {
     render_advNotes = (notesObj, suppressTitle) => {
         return (
             <Container className="notesWrapper wrapper">
-					{!suppressTitle && <h1>Adventure Notes</h1>}
+					{!suppressTitle && <h1 className="sectionTitle">Adventure Notes</h1>}
 					<div className="box">
 						{"game" in notesObj &&<p className="gameNotes bookFont" dangerouslySetInnerHTML={{ __html: notesObj.game }} />}
 						{("game" in notesObj && "player" in notesObj) && <hr />}
@@ -89,7 +89,7 @@ class GameLog extends React.Component {
     render_advancement = (advObj) => {
         return (
             <Container className="advWrapper wrapper">
-					<h1>Advancement</h1>
+					<h1 className="sectionTitle">Advancement</h1>
 					<div className="box">
 						<Select label={advObj.label} type="checkbox" isSelected={advObj.isSelected} isBold />
 						<p className="bookFont footnote" dangerouslySetInnerHTML={{ __html:  advObj.footnote }} />
@@ -101,7 +101,7 @@ class GameLog extends React.Component {
     render_rewards = (rewardObj) => {
         return (
             <Container className="rewardsWrapper wrapper">
-					<h1>Rewards</h1>
+					<h1 className="sectionTitle">Rewards</h1>
 					<div className="box content">
 						{_map(rewardObj, (rewardGroup, key) => {
 							return  (
@@ -131,7 +131,7 @@ class GameLog extends React.Component {
     render_wealth = (wealthObj) => {
         return (
             <Container className="wealthWrapper wrapper">
-				<h1>Character Wealth</h1>
+				<h1 className="sectionTitle">Character Wealth</h1>
 					
 				<Container className="wealthContent box">
 					<div className="header cell">
@@ -169,7 +169,7 @@ class GameLog extends React.Component {
     render_legacy = (legacyObj) => {
         return (
             <Container className="legacyWrapper wrapper">
-				<h1>Legacy Events</h1>
+				<h1 className="sectionTitle">Legacy Events</h1>
 				<Container className="box">
 					<div className="content">
 						{_map(legacyObj.events, (event, key) => {

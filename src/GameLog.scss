@@ -17,20 +17,20 @@
             cursor: pointer;
         }
 
-        .type {
-            display: none;
-            padding-right: 1rem;
+        // .type {
+        //     display: none;
+        //     padding-right: 1rem;
 
-            text-align: left;
-            white-space: nowrap;
-        }
+        //     text-align: left;
+        //     white-space: nowrap;
+        // }
 
         .title {
             width: 100%;
-            padding: .5rem 1rem;
+            padding: 1rem;
             margin: 0;
 
-            font-size: 2rem;
+            font-size: 1.75rem;
             font-weight: normal;
 
             background: $color-bsbg;
@@ -38,12 +38,11 @@
             @include flex(flex-start, center);
 
             .name {
-                @include flex(center, flex-end, column);
+                flex-wrap: wrap;
+                @include flex(center, center, row);
 
                 .code {
                     padding: 0 .5rem;
-
-                    font-size: 2rem;
 
                     text-transform: uppercase;
 
@@ -51,7 +50,7 @@
 
                     .hyphen {
                         position: relative;
-                        bottom: .55rem;
+                        bottom: .45rem;
 
                         margin: 0 .05rem;
                     }
@@ -64,15 +63,15 @@
         padding: 0;
         margin: 0;
 
+        .sectionTitle {
+            margin: 0;
+
+            font-family: $fontFamily-fauxdesto;
+            font-size: 1.75rem;
+        }
+
         .wrapper {
             margin: 0 0 .5rem;
-
-            & > h1 {
-                margin: 0;
-
-                font-family: $fontFamily-fauxdesto;
-                font-size: 2.25rem;
-            }
 
             .box {
                 padding: 1rem;
@@ -81,8 +80,6 @@
 
                 p {
                     margin: 0;
-
-                    font-size: 1rem;
 
                     text-align: left;
                 }
@@ -139,11 +136,9 @@
             }
         }
 
-
         .twoCol {
             display: block;
             margin-bottom: .5rem;
-
 
             .leftCol {
                 @include flex(stretch, stretch, column);
@@ -287,7 +282,6 @@
         }
     }
 
-
     &.salvageBox {
         .notesWrapper {
             .box {
@@ -299,34 +293,43 @@
 
 // Extra small devices (portrait phones, less than 576px)
 // No media query for `xs` since this is the default in Bootstrap
+.gameBox .content {
+    .bookFont {
+        font-size: .75rem;
+    }
 
+    .instructions {
+        font-size: .9rem;
+    }
+}
 
 // Small devices (landscape phones, 576px and up)
 @media (min-width:576px) {
-    .gameBox .titleWrapper .title .name {
-        flex-direction: row;
-
-        text-align: right;
+    .gameBox .titleWrapper .title {
+        font-size: 2rem;
     }
 }
 
 // Medium devices (tablets, 768px and up)
 @media (min-width:768px) {
     .gameBox {
-        .content .wrapper > h1 {
-            font-size: 2.5rem;
+        .content {
+            .sectionTitle {
+                font-size: 2rem;
+            }
+
+            .twoCol {
+                @include flex(stretch, center, row);
+            }
         }
 
-        .titleWrapper {
-            .title,
-            .title .name {
-                font-size: 2.25rem;
+        .titleWrapper .title {
+            font-size: 2.25rem;
 
+            .name {
                 .code {
                     width: auto;
                     padding-right: .5rem;
-
-                    font-size: 2.25rem;
 
                     .hyphen {
                         bottom: .6rem;
@@ -339,9 +342,11 @@
                 justify-content: space-between;
             }
 
-            .type {
-                display: flex;
-            }
+            // .type {
+            //     display: flex;
+
+            //     flex-grow: 1;
+            // }
         }
     }
 }
@@ -349,16 +354,13 @@
 // Large devices (desktops, 992px and up)
 @media (min-width:992px) {
     .gameBox {
-        .titleWrapper {
-            .title,
-            .title .name {
-                font-size: 3rem;
+        .titleWrapper .title {
+            font-size: 2.75rem;
 
+            .name {
                 .code {
                     width: auto;
                     padding-right: .75rem;
-
-                    font-size: 3rem;
 
                     .hyphen {
                         bottom: .75rem;
@@ -368,11 +370,16 @@
         }
 
         .content {
-            .wrapper > h1 {
-                font-size: 3rem;
+            .sectionTitle {
+                font-size: 2.5rem;
             }
-            .twoCol {
-                @include flex(stretch, center, row);
+
+            .bookFont {
+                font-size: 1rem;
+            }
+
+            .instructions {
+                font-size: 1rem;
             }
         }
     }
