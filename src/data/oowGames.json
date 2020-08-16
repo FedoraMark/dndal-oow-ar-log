@@ -169,58 +169,6 @@
     },
     {
       "record": "game",
-      "code": "ddal-ebep-01",
-      "title": "The Iron Titan",
-      "type": "Adventure Record",
-      "tier": 1,
-      "event": "Epic",
-      "notes": {
-        "game": "You helped the brokers of Salvation save the outpost from Big Moe, a warforged colossus awakened by the Order of the Emerald Claw."
-      },
-      "advancement": {
-        "label": "You gain one level for completing this adventure.",
-        "footnote": "(<b>Important:</b> If you forgo advancement from an EPIC, you still gain all of the following rewards.)"
-      },
-      "rewards": [
-        {
-          "instruction": "You gain the following rewards:",
-          "selections": [
-            "200 gp from the brokers of Salvation for defending the outpost.",
-            "A <i>potion of healing</i> from the brokers for defending Salvation."
-          ]
-        },
-        {
-          "instruction": "Choose ONE bonus reward:",
-          "options": [
-            "<i>Rope of climbinb</i>",
-            "<i>+1 shield</i>",
-            "<i>Lantern of revealing</i>"
-          ]
-        }
-      ],
-      "legacy": {
-        "events": [
-          {
-            "title": "Fallen Titan",
-            "description": "The forces of Salvation defeated the warforged colossus Big Moe. One of the salvage brokers, Irullan Karnach, fled town just before the attack. Chould she have been involved somehow?",
-            "checkboxes": [
-              "If you're interested in tailing Karnach, your group can invest 200 gp after this adventure to hire a House Medani inquisitive to track her down. Your contact, Ivelo d'Medani, discovers a lead that she's headed to Sharn. If you visit Sharn in a future adventure, you can locate Ivelo for more information."
-            ]
-          },
-          {
-            "title": "Death is a Door",
-            "description": "You died defending Salvation from its enemies. Mysterious forces brought you back to life, but you don't know who they were or how they wielded such powerful magic."
-          },
-          {
-            "title": "Enmity of the Claw",
-            "description": "You captured a battle standard carried by an undead minion of the Emerald Claw. Your actions have been noted by the Order and they've vowed to punish you in the future."
-          }
-        ],
-        "footnote": "(A character that dies during an adventure should still receive any legacy events that they earned, based on the discretion of the DM. If they declined the level, they cannot gain any benefits from legacy events that are provided when a level is gained.)"
-      }
-    },
-    {
-      "record": "game",
       "code": "ddal-eb-04",
       "title": "The Third Protocol",
       "type": "Adventure Record",
@@ -269,6 +217,58 @@
               "Kalli heads to Morgrave University in Sharn to investigate the <i>Oracle of War</i>",
               "Kalli remains in Salvation and tries to set herself up as a salvage broker."
             ]
+          }
+        ],
+        "footnote": "(A character that dies during an adventure should still receive any legacy events that they earned, based on the discretion of the DM. If they declined the level, they cannot gain any benefits from legacy events that are provided when a level is gained.)"
+      }
+    },
+    {
+      "record": "game",
+      "code": "ddal-ebep-01",
+      "title": "The Iron Titan",
+      "type": "Adventure Record",
+      "tier": 1,
+      "event": "Epic",
+      "notes": {
+        "game": "You helped the brokers of Salvation save the outpost from Big Moe, a warforged colossus awakened by the Order of the Emerald Claw."
+      },
+      "advancement": {
+        "label": "You gain one level for completing this adventure.",
+        "footnote": "(<b>Important:</b> If you forgo advancement from an EPIC, you still gain all of the following rewards.)"
+      },
+      "rewards": [
+        {
+          "instruction": "You gain the following rewards:",
+          "selections": [
+            "200 gp from the brokers of Salvation for defending the outpost.",
+            "A <i>potion of healing</i> from the brokers for defending Salvation."
+          ]
+        },
+        {
+          "instruction": "Choose ONE bonus reward:",
+          "options": [
+            "<i>Rope of climbinb</i>",
+            "<i>+1 shield</i>",
+            "<i>Lantern of revealing</i>"
+          ]
+        }
+      ],
+      "legacy": {
+        "events": [
+          {
+            "title": "Fallen Titan",
+            "description": "The forces of Salvation defeated the warforged colossus Big Moe. One of the salvage brokers, Irullan Karnach, fled town just before the attack. Chould she have been involved somehow?",
+            "checkboxes": [
+              "If you're interested in tailing Karnach, your group can invest 200 gp after this adventure to hire a House Medani inquisitive to track her down. Your contact, Ivelo d'Medani, discovers a lead that she's headed to Sharn. If you visit Sharn in a future adventure, you can locate Ivelo for more information."
+            ]
+          },
+          {
+            "title": "Death is a Door",
+            "description": "You died defending Salvation from its enemies. Mysterious forces brought you back to life, but you don't know who they were or how they wielded such powerful magic."
+          },
+          {
+            "title": "Enmity of the Claw",
+            "description": "You captured a battle standard carried by an undead minion of the Emerald Claw. Your actions have been noted by the Order and they've vowed to punish you in the future."
           }
         ],
         "footnote": "(A character that dies during an adventure should still receive any legacy events that they earned, based on the discretion of the DM. If they declined the level, they cannot gain any benefits from legacy events that are provided when a level is gained.)"

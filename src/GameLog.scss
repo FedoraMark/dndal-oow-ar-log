@@ -139,11 +139,10 @@
 
 
         .twoCol {
+            display: block;
             margin-bottom: .5rem;
 
             flex-direction: column;
-
-            @include flex(stretch, center, column);
 
             .leftCol {
                 @include flex(stretch, stretch, column);
@@ -367,7 +366,7 @@
     }
 
     .twoCol {
-        flex-direction: row !important;
+        @include flex(stretch, center, column);
     }
 }
 
