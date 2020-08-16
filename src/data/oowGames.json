@@ -39,8 +39,8 @@
             "description": "You saved the goblin Garundah, and she is eternally grateful. At the end of this adventure, choose one of the following benefits:",
             "radios": [
               "Copy a 1st-level wizard spell from legal sources into your spellbook, ritual book, or Book of Shadows at no cost.",
-              "Gain fluency in Goblin",
-              "Take an extra 10 gp in treasure"
+              "Gain fluency in Goblin.",
+              "Take an extra 10 gp in treasure."
             ]
           },
           {
@@ -194,7 +194,7 @@
             "Chain mail for looting the blacksmith (area 6).",
             "50 gp for helping the guest in the Salvation Hotel (area 7).",
             "Any three items from the following list for looting the blacksmith (area 6): longsword, shield, light hammer, mace, greatsword, warhammer, chain (50 fteet), caltrops (box of 100), flask of alchemist's fire.",
-            "A <i>potion of healing</i> and an <i>oil of slipperiness</i> for visiting the aporthecary.",
+            "A <i>potion of healing</i> and an <i>oil of slipperiness</i> for visiting the apothecary (area 14).",
             "A vial of acid and a vial of basic poison for visitng the apothecary (area 14).",
             "A <i>circlet of blasting</i> for visiting Erix Thorn the provisioner (area 10)."
           ]
@@ -247,7 +247,7 @@
         {
           "instruction": "Choose ONE bonus reward:",
           "options": [
-            "<i>Rope of climbinb</i>",
+            "<i>Rope of climbing</i>",
             "<i>+1 shield</i>",
             "<i>Lantern of revealing</i>"
           ]
@@ -291,7 +291,7 @@
         {
           "instruction": "You gain the following rewards:",
           "selections": [
-            "150 gp fro defeating Andhedra the rakshasa."
+            "150 gp for defeating Andhedra the rakshasa."
           ]
         },
         {
@@ -311,7 +311,7 @@
           },
           {
             "title": "Love Cats",
-            "description": "With your assistance, Zell Mar impressed Jia during dinner. At the end of this adventure, you go carousing with Zell and Jia in the bars of Sharn. Roll a 66 and consult the chart below:",
+            "description": "With your assistance, Zell Mar impressed Jia during dinner. At the end of this adventure, you go carousing with Zell and Jia in the bars of Sharn. Roll a d6 and consult the chart below:",
             "table": [
               "<b>1–2:</b> You got into a fight and made an enemy who may cause trouble for you in the future.",
               "<b>3:</b> You found love! You are now dating someone.",
