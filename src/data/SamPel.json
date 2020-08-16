@@ -3,11 +3,11 @@
   "dci": "0000000001",
   "character": "Sam Pel",
   "classes": {
-    "Dungeon Master": 19,
-    "Player": 1
+    "Dungeon Master": 5,
+    "Player": 3
   },
   "tier": 2,
-  "base": "Fort Kickass",
+  "base": "Fortress of Doom",
   "wealth": {
     "pp": 1000,
     "gp": 100,

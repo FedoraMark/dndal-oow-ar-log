@@ -34,7 +34,7 @@ class AdvRecordLog extends React.Component {
 				{/* })} */}
 
 				{_map(games_oow.records, (gameObj, key) => {
-					return <GameLog key={key} data={gameObj} isCollapsed={key !== games_oow.records.length-1} />
+					return <GameLog key={key} data={gameObj} isCollapsed={true} />
 				})}
 			</Container>
         );
