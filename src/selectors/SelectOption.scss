@@ -6,6 +6,7 @@
     from {
         transform: rotate(0deg);
     }
+
     to {
         transform: rotate(180deg);
     }
@@ -102,7 +103,8 @@
         b,
         i,
         u {
-            display: contents; //BUGGY? NEEDS FIX
+            display: contents;
+            //BUGGY? NEEDS FIX
         }
 
         &.bold {
@@ -131,7 +133,6 @@
         border-radius: 10px;
 
         @include flex();
-
 
         &:before {
             position: absolute;
