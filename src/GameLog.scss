@@ -221,7 +221,7 @@
 
                 .header {
                     font-family: $fontFamily-fauxdesto;
-                    font-size: 1.5rem;
+                    font-size: 1.1rem;
 
                     white-space: nowrap;
                     text-transform: uppercase;
@@ -233,10 +233,10 @@
                 }
 
                 .amount {
-                    padding-left: 1.5rem;
+                    padding-left: 1rem;
 
                     font-family: $fontFamily-handwritten;
-                    font-size: 1.3rem;
+                    font-size: .9rem;
 
                     text-transform: lowercase;
 
@@ -244,7 +244,7 @@
 
                     .val {
                         position: relative;
-                        top: .25rem;
+                        top: .1rem;
 
                         display: inline-block;
                     }
@@ -318,21 +318,6 @@
             .footnote {
                 font-size: .95rem;
             }
-
-            .twoCol {
-                .wealthWrapper {
-                    .header {
-                        font-size: 1.1rem;
-                    }
-
-                    .amount {
-                        font-size: .9rem;
-                        .val {
-                            top: .1rem;
-                        }
-                    }
-                }
-            }
         }
     }
 }
@@ -396,14 +381,14 @@
 
                 .wealthWrapper {
                     .header {
-                        font-size: 1.1rem;
+                        font-size: 1.2rem;
                     }
 
                     .amount {
-                        font-size: .9rem;
+                        font-size: 1rem;
 
                         .val {
-                            top: .15rem;
+                            top: .175rem;
                         }
                     }
                 }
