@@ -6,71 +6,92 @@
     flex-wrap: wrap;
     @include flex();
 
-    .infoItem {
-        @include flex(flex-start);
+    .row {
+        padding: .1rem  0;
 
-        &:not(:last-of-type) {
-            margin-right: 1rem;
-        }
+        @include flex();
 
-        h1,
-        p {
-            display: inline-block;
-            padding: 0 .25rem;
-            margin: 0;
+        .infoItem {
+            margin: 0 .5rem;
 
-            box-sizing: border-box;
-        }
+            @include flex(flex-start);
 
-        h1 {
-            font-family: $fontFamily-oswald;
-            font-size: 1.25rem;
+            h1,
+            p {
+                display: inline-block;
+                padding: 0 .25rem;
+                margin: 0;
 
-            text-align: right;
-            white-space: nowrap;
-        }
+                box-sizing: border-box;
 
-        p {
-            padding-top: .1rem;
-
-            font-family: $fontFamily-handwritten;
-            font-size: 1.25rem;
-
-            white-space: break-spaces;
-
-            align-self: flex-end;
-
-            .class:last-of-type .comma {
-                display: none;
+                font-size: 1rem;
             }
-        }
 
-        .tierList {
-            padding: 0 0 .2rem .2rem;
-            margin: 0;
+            h1 {
+                font-family: $fontFamily-oswald;
 
-            list-style: none;
+                white-space: nowrap;
+            }
 
-            @include flex(center, flex-start);
-
-            li {
-                width: 1.75rem;
-                height: 1.75rem;
-                margin-right: .25rem;
+            p {
+                padding-top: .1rem;
 
                 font-family: $fontFamily-handwritten;
-                font-size: 1.25rem;
 
-                text-align: center;
+                white-space: break-spaces;
 
-                color: $color-bsborder;
-                border: 2px solid $color-bsborder;
-                border-radius: 50%;
+                @include flex(flex-start);
 
-                &.filled {
-                    color: black;
-                    border-color: gray;
-                    background: $color-bsbg;
+                .class {
+                    white-space: nowrap;
+
+                    &:not(:last-of-type) {
+                        margin-right: .25rem;
+                    }
+
+                    &:last-of-type .comma {
+                        display: none;
+                    }
+                }
+            }
+
+            &.tierItem {
+                margin: .1rem 0 -.1rem;
+
+                .tierList {
+                    padding: 0 0 .2rem .2rem;
+                    margin: 0;
+
+                    list-style: none;
+
+                    @include flex(center, flex-start);
+
+                    li {
+                        width: 1.25rem;
+                        height: 1.25rem;
+                        padding-top: .25rem;
+
+                        font-family: $fontFamily-handwritten;
+                        font-size: 1rem;
+
+                        text-align: center;
+
+                        color: $color-bsborder;
+                        border: 2px solid $color-bsborder;
+                        border-radius: 50%;
+
+                        @include flex();
+
+                        &:not(:last-of-type) {
+                            margin-right: .25rem;
+                        }
+
+                        &.filled {
+                            color: black;
+                            border-color: gray;
+                            background: $color-bsbg;
+                        }
+                    }
                 }
             }
         }
@@ -81,17 +102,30 @@
 // No media query for `xs` since this is the default in Bootstrap
 
 // Small devices (landscape phones, 576px and up)
-@media (min-width: 576px) {
+@media (min-width:576px) {
 }
 
 // Medium devices (tablets, 768px and up)
-@media (min-width: 768px) {
+@media (min-width:768px) {
 }
 
 // Large devices (desktops, 992px and up)
-@media (min-width: 992px) {
+@media (min-width:992px) {
+    .playerBox .row .infoItem {
+        p,
+        h1 {
+            font-size: 1.25rem;
+        }
+
+        &.tierItem .tierList li {
+            width: 1.75rem;
+            height: 1.75rem;
+
+            font-size: 1.25rem;
+        }
+    }
 }
 
 // Extra large devices (large desktops, 1200px and up)
-@media (min-width: 1200px) {
+@media (min-width:1200px) {
 }
