@@ -18,6 +18,7 @@
         }
 
         .type {
+            display: none;
             padding-right: 1rem;
 
             text-align: left;
@@ -25,6 +26,7 @@
         }
 
         .title {
+            width: 100%;
             padding: .5rem 1rem;
             margin: 0;
 
@@ -33,16 +35,14 @@
 
             background: $color-bsbg;
 
-            @include flex(flex-start, space-between);
+            @include flex(flex-start, center);
 
             .name {
                 text-align: right;
 
-                @include flex(center, flex-end, column);
+                @include flex(center, flex-end);
 
                 .code {
-                    width: 100%;
-
                     font-size: 2rem;
 
                     text-transform: uppercase;
@@ -328,10 +328,11 @@
 
         .title {
             align-items: center;
+            justify-content: space-between;
+        }
 
-            .name {
-                flex-direction: row;
-            }
+        .type {
+            display: flex;
         }
     }
 }
@@ -344,6 +345,7 @@
             font-size: 3rem;
 
             .code {
+                width: auto;
                 padding-right: .75rem;
 
                 font-size: 3rem;
