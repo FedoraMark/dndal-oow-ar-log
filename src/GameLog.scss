@@ -41,6 +41,8 @@
                 @include flex(center, flex-end, column);
 
                 .code {
+                    padding: 0 .5rem;
+
                     font-size: 2rem;
 
                     text-transform: uppercase;
@@ -139,10 +141,8 @@
 
 
         .twoCol {
+            display: block;
             margin-bottom: .5rem;
-
-            flex-direction: column;
-
 
 
             .leftCol {
