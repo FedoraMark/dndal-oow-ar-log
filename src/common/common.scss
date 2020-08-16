@@ -61,6 +61,10 @@ $fontFamily-book-boldItalic: BookinsanityBoldItalic, serif;
 
 
 // STYLES
+body {
+    min-width: 375px;
+}
+
 .bookFont {
     font-family: $fontFamily-book-normal;
     line-height: 1.25;

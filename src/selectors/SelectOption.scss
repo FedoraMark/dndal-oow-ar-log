@@ -106,10 +106,6 @@
             display: contents;
             //BUGGY? NEEDS FIX
         }
-
-        &.bold {
-            line-height: calc(1.5em + 6px);
-        }
     }
 
     .button {
