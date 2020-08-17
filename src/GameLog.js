@@ -189,7 +189,7 @@ class GameLog extends React.Component {
     render() {
         const { data, style, className } = this.props;
 
-        if (data.record === "game") {
+        if (["game","epic"].includes(data.record)) {
 	        return (
 	            <Container fluid className={classnames(className,"gameBox",!this.state.isCollapsed && "expanded")} style={style}>
 					{this.render_titleAndCode(data.type,data.code,data.title)}
