@@ -125,25 +125,29 @@
 
 // Small devices (landscape phones, 576px and up)
 @media (min-width: 576px) {
-    .title,
-    .code {
-        display: inline-block;
-    }
+    .cardWrapper {
+        .title,
+        .code {
+            display: inline-block;
+        }
 
-    .title {
-        margin: 0 .75rem 0 0 !important;
+        .title {
+            margin: 0 .75rem 0 0 !important;
+        }
     }
 }
 
 // Medium devices (tablets, 768px and up)
 @media (min-width: 768px) {
-    .title,
-    .code {
-        display: block;
-    }
+    .cardWrapper {
+        .title,
+        .code {
+            display: block;
+        }
 
-    .title {
-        margin: 0 0 .5rem !important;
+        .title {
+            margin: 0 0 .5rem !important;
+        }
     }
 }
 
