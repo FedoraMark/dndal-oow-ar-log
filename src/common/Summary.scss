@@ -2,12 +2,12 @@
 @import "./common.scss";
 
 // MIXIN
-@mixin multiLineEllipsis($lineHeight: 1.2em, $lineCount: 1, $bgColor: white) {
+@mixin multiLineEllipsis($lineHeight: 1.2rem, $lineCount: 1, $bgColor: white) {
     position: relative;
 
     max-height: $lineHeight * $lineCount;
-    padding-right: 1em;
-    margin-right: -1em;
+    padding-right: 1rem;
+    margin-right: -1rem;
     overflow: hidden;
 
     line-height: $lineHeight;
@@ -22,9 +22,9 @@
 
         content: "";
 
-        -webkit-box-shadow: inset 0 -90px 20px -60px rgba(255,255,255,.75);
-           -moz-box-shadow: inset 0 -90px 20px -60px rgba(255,255,255,.75);
-                box-shadow: inset 0 -90px 20px -60px rgba(255,255,255,.75);
+        -webkit-box-shadow: inset 0 -90px 20px -50px $color-background-darker-alpha;
+           -moz-box-shadow: inset 0 -90px 20px -50px $color-background-darker-alpha;
+                box-shadow: inset 0 -90px 20px -50px $color-background-darker-alpha;
     }
 }
 
@@ -35,6 +35,8 @@
 
     width: 100%;
     height: 100%;
+
+    background: $color-background-darker !important;
 
     .tier {
         position: absolute;
@@ -48,6 +50,7 @@
 
         border: 1px solid gray;
         border-radius: 50%;
+        background: $color-background-white;
 
         @include flex();
 
@@ -72,7 +75,7 @@
         // white-space: nowrap;
         // text-overflow: ellipsis;
 
-        @include multiLineEllipsis($lineHeight: 1.2em, $lineCount: 4, $bgColor: white);
+        @include multiLineEllipsis($lineHeight: 1.2rem, $lineCount: 4, $bgColor: white);
     }
 
     .ellipsis {

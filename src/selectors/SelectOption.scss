@@ -25,6 +25,8 @@
          -o-transition: all .25s ease;
             transition: all .25s ease;
 
+    background: white;
+
     &:not(:last-of-type) {
         margin-bottom: .25rem;
     }
@@ -130,7 +132,7 @@
         border: 2px solid currentColor;
         border-radius: 10px;
         outline: none;
-        background: $color-background;
+        background: $color-background-white;
 
         @include flex();
 

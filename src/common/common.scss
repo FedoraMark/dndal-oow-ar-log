@@ -43,7 +43,10 @@
 }
 
 // VARS
-$color-background: white;
+$color-background-white: white;
+$color-background-darker: #f9f9f9;
+$color-background-darker-alpha
+: rgba(249,249,249,.75);
 $color-bshr: rgba(0,0,0,.1);
 $color-bsborder: #ced4da;
 $color-bsbg: #e9ecef;
@@ -63,6 +66,8 @@ $fontFamily-book-boldItalic: BookinsanityBoldItalic, serif;
 // STYLES
 body {
     min-width: 375px;
+
+    background-color: $color-background-darker !important;
 }
 
 .bookFont {

@@ -1,4 +1,5 @@
 import React from 'react';
+import classnames from 'classnames';
 import _map from "lodash/map";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Container from "react-bootstrap/Container";
@@ -26,14 +27,14 @@ class AdvRecordLog extends React.Component {
 
     //FUNCTIONS
 
-    setShowAddRecordArea = (newState) => {
-    	this.setState({showAddRecordArea: newState});
+    toggleAddRecordArea = () => {
+    	this.setState({showAddRecordArea: !this.state.showAddRecordArea});
     }
 
 
     //RENDERERS
     render_gameLogs = () => {
-    	if (this.state.charData.games.length === 0) {
+    	if (this.state.charData.games.length !== 0) {
     		return (
     			<Container className="gameList">
     				{this.render_newRecordArea({})}
@@ -43,7 +44,7 @@ class AdvRecordLog extends React.Component {
 
         return (
             <Container className="gameList">
-				{_map(this.state.charData, (gameObj, key) => {
+				{_map(games_oow.records, (gameObj, key) => {
 					let delayTime = 200;
 					return (
 						<>
@@ -59,9 +60,9 @@ class AdvRecordLog extends React.Component {
     render_newRecordArea = (btnStyle) => {
     	return (
     		<>
-    			{!this.state.showAddRecordArea && 
-    				<Button className={"newButton " + fadeInUp} style={btnStyle} variant="light" size="lg" block onClick={this.setShowAddRecordArea.bind(this,true)}>Add Record</Button>
-    			}
+    			<Button className={classnames("newButton",fadeInUp, this.state.showAddRecordArea ? "isOpen" : '')} style={btnStyle} variant="light" size="lg" block onClick={this.toggleAddRecordArea.bind(this)}>
+    				{!this.state.showAddRecordArea ? "Add Record" : "Cancel" }
+    			</Button>
 
 	    		<Collapse in={this.state.showAddRecordArea} mountOnEnter unmountOnExit>
 		    		<Container className="addLogWrapper" as="ul">
