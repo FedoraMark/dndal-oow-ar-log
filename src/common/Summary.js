@@ -13,26 +13,33 @@ class Summary extends Component {
 
 	render() {
 		const {gameData} = this.props;
-
-		let epic = gameData.record.toUpperCase() === "EPIC" ? " (epic)" : '';
 		
 		return (
 			<Card className="cardWrapper">
 				<Card.Body>
-					<OverlayTrigger placement="left" overlay={
-						<Tooltip>
-				          Tier {gameData.tier}
-				        </Tooltip>
-					}>
-						<div className="tier fauxdesto">{gameData.tier}</div>
-					</OverlayTrigger>
+					<div className="infoDots">
+						<OverlayTrigger placement="left" overlay={
+							<Tooltip>
+					          Tier {gameData.tier}
+					        </Tooltip>
+						}>
+							<div className="dot fauxdesto">{gameData.tier}</div>
+						</OverlayTrigger>
+
+						{gameData.record.toUpperCase() === "EPIC" &&
+							<OverlayTrigger placement="left" overlay={<Tooltip>Epic</Tooltip>}>
+								<span className="dot fauxdesto">E</span>
+							</OverlayTrigger>
+						}
+					</div>
 
 					<Card.Title className="title">{gameData.title}</Card.Title>
-					<Card.Subtitle className="code">{gameData.code}{epic}</Card.Subtitle>
+					<Card.Subtitle className="code">
+						{gameData.code}
+					</Card.Subtitle>
 					<Card.Text className="notes bookFont" dangerouslySetInnerHTML={{ __html: gameData.notes.game }} />
 					<Card.Text className="ellipsis">...</Card.Text>
-					<Card.Link href="#">Add Record</Card.Link>
-					<Card.Link href="#">View Summary</Card.Link>
+					{/* <Card.Link className="link" href="#">View Summary</Card.Link> */}
 				</Card.Body>
 			</Card>
 		);

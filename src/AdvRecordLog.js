@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import _map from "lodash/map";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Container from "react-bootstrap/Container";
+import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 import Collapse from 'react-bootstrap/Collapse';
 
@@ -47,10 +48,7 @@ class AdvRecordLog extends React.Component {
 				{_map(games_oow.records, (gameObj, key) => {
 					let delayTime = 200;
 					return (
-						<>
-							<GameLog className={fadeInUp} style={{animationDelay: (delayTime*key)+"ms"}} key={key} data={gameObj} isCollapsed={true} />
-				    		{key === games_oow.records.length-1 && this.render_newRecordArea({animationDelay: (delayTime*(key+1))+"ms"})}
-						</>
+						<GameLog className={fadeInUp} style={{animationDelay: (delayTime*key)+"ms"}} key={key} data={gameObj} isCollapsed={true} />
 					);
 				})}
 			</Container>
@@ -59,23 +57,25 @@ class AdvRecordLog extends React.Component {
 
     render_newRecordArea = (btnStyle) => {
     	return (
-    		<>
+    		<Container className="newRecordWrapper">
     			<Button className={classnames("newButton",fadeInUp, this.state.showAddRecordArea ? "isOpen" : '')} style={btnStyle} variant="light" size="lg" block onClick={this.toggleAddRecordArea.bind(this)}>
     				{!this.state.showAddRecordArea ? "Add Record" : "Cancel" }
     			</Button>
 
 	    		<Collapse in={this.state.showAddRecordArea} mountOnEnter unmountOnExit>
-		    		<Container className="addLogWrapper" as="ul">
-		    			{_map(games_oow.records, (game, key) => {
-		    				return (
-		    					<li className="addItem" id={game.code}>
-		    						<Summary gameData={game} />
-		    					</li>
-		    				);
-		    			})}
-		    		</Container>
+		    		<div>
+		    			<ul className="addLogWrapper">
+			    			{_map(games_oow.records, (game, key) => {
+			    				return (
+			    					<li className="addItem" id={game.code}>
+			    						<Summary gameData={game} />
+			    					</li>
+			    				);
+			    			})}
+		    			</ul>
+		    		</div>
 	    		</Collapse>
-	    	</>
+	    	</Container>
     	)
     }
 
@@ -103,6 +103,8 @@ class AdvRecordLog extends React.Component {
 		    			wealth={chara_SamPel.wealth}
 		    		/>
 		    	</Container>
+
+		    	{this.render_newRecordArea()}
 
 	    		{this.render_gameLogs()}
 

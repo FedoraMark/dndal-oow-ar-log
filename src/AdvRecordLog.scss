@@ -47,29 +47,32 @@
         @include flex(center, flex-start, column);
     }
 
-    .newButton {
-        margin: 1rem 0 0;
+    .newRecordWrapper {
+        margin: 0 0 1rem;
 
-        font-family: $fontFamily-oswald;
-        font-weight: 300;
+        .newButton {
+            font-family: $fontFamily-oswald;
+            font-weight: 300;
 
-        -webkit-transition: all .25s ease;
-           -moz-transition: all .25s ease;
-            -ms-transition: all .25s ease;
-             -o-transition: all .25s ease;
-                transition: all .25s ease;
+            -webkit-transition: all .25s ease;
+               -moz-transition: all .25s ease;
+                -ms-transition: all .25s ease;
+                 -o-transition: all .25s ease;
+                    transition: all .25s ease;
 
-        border-color: $color-bsborder;
-        background: $color-bsbg;
+            border-color: $color-bsborder;
+            background: $color-bsbg;
+            box-shadow: none;
 
-        &:hover {
-            border-color: black;
-            background: $color-bsborder;
-        }
+            &:hover {
+                border-color: black;
+                background: $color-bsborder;
+            }
 
-        &.isOpen {
-            border-bottom-right-radius: 0;
-            border-bottom-left-radius: 0;
+            &.isOpen {
+                border-bottom-right-radius: 0;
+                border-bottom-left-radius: 0;
+            }
         }
     }
 
@@ -81,7 +84,7 @@
         list-style: none;
 
         border-radius: 0 0 5px 5px;
-        background: $color-background-white;
+        background: $color-background-darker;
         -webkit-box-shadow: inset 0 0 15px -10px rgba(0, 0, 0, .75);
            -moz-box-shadow: inset 0 0 15px -10px rgba(0, 0, 0, .75);
                 box-shadow: inset 0 0 15px -10px rgba(0, 0, 0, .75);

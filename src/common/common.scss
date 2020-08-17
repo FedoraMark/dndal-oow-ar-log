@@ -45,8 +45,7 @@
 // VARS
 $color-background-white: white;
 $color-background-darker: #f9f9f9;
-$color-background-darker-alpha
-: rgba(249,249,249,.75);
+$color-background-card-alpha: rgba(255,255,255,.75);
 $color-bshr: rgba(0,0,0,.1);
 $color-bsborder: #ced4da;
 $color-bsbg: #e9ecef;
@@ -67,7 +66,7 @@ $fontFamily-book-boldItalic: BookinsanityBoldItalic, serif;
 body {
     min-width: 375px;
 
-    background-color: $color-background-darker !important;
+    background-color: $color-background-white !important;
 }
 
 .bookFont {
@@ -107,6 +106,10 @@ body {
 
 .handwritten {
     font-family: $fontFamily-handwritten;
+}
+
+.oswald {
+    font-family: $fontFamily-oswald;
 }
 
 // Extra small devices (portrait phones, less than 576px)
