@@ -10,17 +10,21 @@ import Select from "./selectors/Select";
 import Option from "./selectors/Option";
 import Wealth from "./common/Wealth";
 
+import "animate.css";
 import './GameLog.scss';
 
 class GameLog extends React.Component {
 
     static propTypes = {
         data: PropTypes.object.isRequired,
-        isCollapsed: PropTypes.bool
+        isCollapsed: PropTypes.bool,
+        className: PropTypes.string
     }
 
     static defaultProps = {
-        isCollapsed: false
+        isCollapsed: false,
+        className: '',
+        style: {}
     }
 
     state = {
@@ -183,11 +187,11 @@ class GameLog extends React.Component {
     }
 
     render() {
-        const { data } = this.props;
+        const { data, style, className } = this.props;
 
         if (data.record === "game") {
 	        return (
-	            <Container fluid className={classnames("gameBox",!this.state.isCollapsed && "expanded")}>
+	            <Container fluid className={classnames(className,"gameBox",!this.state.isCollapsed && "expanded")} style={style}>
 					{this.render_titleAndCode(data.type,data.code,data.title)}
 
 					<Collapse in={!this.state.isCollapsed}>
@@ -213,7 +217,7 @@ class GameLog extends React.Component {
         	)
 	    } else if (data.record === "salvage") {
 	    	return (
-	            <Container fluid className={classnames("gameBox salvageBox",!this.state.isCollapsed && "expanded")}>
+	            <Container fluid className={classnames(className,"gameBox","salvageBox",!this.state.isCollapsed && "expanded")} style={style}>
 					{this.render_titleAndCode(data.type,null,data.title)}
 
 					<Collapse in={!this.state.isCollapsed}>

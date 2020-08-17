@@ -48,6 +48,21 @@
         @include flex(center, flex-start, column);
     }
 
+    .newButton {
+        margin-top: 1rem;
+
+        font-family: $fontFamily-oswald;
+        font-weight: 300;
+
+        border-color: $color-bsborder;
+        background: $color-bsbg;
+
+        &:hover {
+            border-color: black;
+            background: $color-bsborder;
+        }
+    }
+
     .footer {
         margin: 3rem 0 0 !important;
     }
