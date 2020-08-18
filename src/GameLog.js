@@ -41,7 +41,7 @@ class GameLog extends React.Component {
     //RENDERERS
     render_titleAndCode = (type, code, title) => {
         return (
-            <div className="titleWrapper" onClick={this.toggleCollapsed.bind(this)}>
+            <div className={classnames("titleWrapper",!this.props.preview && "sticky")} onClick={this.toggleCollapsed.bind(this)}>
 				<h1 className="title fauxdesto">
 					{/* <span className="type">{type}:</span> */}
 					<span className="name">

@@ -72,10 +72,9 @@ class Summary extends Component {
 					</Card.Subtitle>
 					<Card.Text className="notes bookFont" dangerouslySetInnerHTML={{ __html: gameData.notes.game }} />
 					<Card.Text className="ellipsis">...</Card.Text>
-					{/* <Card.Link className="link" href="#">View Summary</Card.Link> */}
 				</Card.Body>
 
-				<Modal size={"xl"} centered show={this.state.showModal} onHide={this.setShowModal.bind(this,false)}>
+				<Modal size={"xl"} centered scrollable show={this.state.showModal} onHide={this.setShowModal.bind(this,false)}>
 					<Modal.Header closeButton>
 						<Modal.Title>Preview {gameData.type}</Modal.Title>
 					</Modal.Header>

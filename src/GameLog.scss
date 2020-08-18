@@ -39,10 +39,6 @@
     }
 
     .titleWrapper {
-        position: sticky;
-        top: 0;
-        z-index: 100;
-
         -webkit-transition: border-bottom-color .15s ease;
            -moz-transition: border-bottom-color .15s ease;
             -ms-transition: border-bottom-color .15s ease;
@@ -50,6 +46,12 @@
                 transition: border-bottom-color .15s ease;
 
         border: 1px solid $color-bsbg;
+
+        &.sticky {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
 
         &:hover,
         &:focus {
@@ -261,7 +263,7 @@
 
                     span {
                         position: relative;
-                        bottom: .45rem;
+                        bottom: .3rem;
                     }
                 }
 
@@ -332,6 +334,10 @@
     }
 }
 
+.gameBox.preview .content .twoCol .wealthWrapper .header span {
+    bottom: .35rem;
+}
+
 // Small devices (landscape phones, 576px and up)
 @media (min-width:576px) {
     .gameBox {
@@ -350,6 +356,12 @@
 
             .footnote {
                 font-size: .95rem;
+            }
+
+            .twoCol .wealthWrapper .header {
+                span {
+                    bottom: .3rem;
+                }
             }
         }
     }
@@ -467,6 +479,10 @@
                 .wealthWrapper {
                     .header {
                         font-size: 1.5rem;
+
+                        span {
+                            bottom: .45rem;
+                        }
                     }
 
                     .amount {
@@ -591,6 +607,10 @@
                 .wealthWrapper {
                     .header {
                         font-size: 1.5rem;
+
+                        span {
+                            bottom: .45rem;
+                        }
                     }
 
                     .amount {

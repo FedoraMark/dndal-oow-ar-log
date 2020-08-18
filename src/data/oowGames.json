@@ -212,9 +212,9 @@
           },
           {
             "title": "Still Alive",
-            "description": "Despite all the horrors you've seen, your friend Kalli (or the replacement you made for this character during DDAL-EB-01 <i>The Night Land</i>) remains alive and on your side. What does she do next?.",
+            "description": "Despite all the horrors you've seen, your friend Kalli (or the replacement you made for this character during DDAL-EB-01 <i>The Night Land</i>) remains alive and on your side. What does she do next?",
             "radios": [
-              "Kalli heads to Morgrave University in Sharn to investigate the <i>Oracle of War</i>",
+              "Kalli heads to Morgrave University in Sharn to investigate the <i>Oracle of War</i>.",
               "Kalli remains in Salvation and tries to set herself up as a salvage broker."
             ]
           }
@@ -298,7 +298,7 @@
           "instruction": "Choose ONE bonus reward:",
           "options": [
             "A <i>potion of poison</i> for defeating Andhedra the rakshasa.",
-            "A <i>dust of disappearance</i> for defeating Andhedra the racshasa.",
+            "A <i>dust of disappearance</i> for defeating Andhedra the rakshasa.",
             "A pair of <i>sending stones</i> for helping Zell impress Jia."
           ]
         }
@@ -323,7 +323,7 @@
             "title": "Maker's Mark",
             "description": "Zell Mar identified the missing dwarf Sulring Mroranon as the creator of the <i>Oracle of War</i>.",
             "checkboxes": [
-              "At the end of this adventure, your group can choose to spend 150 gp to trace Sulring's family and learn of his whereabouts on the Day of Mourning. This information becomes inportant in DDAL-EB-08 <i>Parliament of Gears</i>."
+              "At the end of this adventure, your group can choose to spend 150 gp to trace Sulring's family and learn of his whereabouts on the Day of Mourning. This information becomes important in DDAL-EB-08 <i>Parliament of Gears</i>."
             ]
           },
           {
@@ -376,7 +376,7 @@
           },
           {
             "title": "Silver Torch Extinguished",
-            "description": "Oliviér ir'Volett was exposed during the ball as a spy and assassin and paid the ultimate price. As the authorities trace his steps, word spreads that the nation of Thrane could be responsible for the killing. This even has repercussions later in the campaign."
+            "description": "Oliviér ir'Volett was exposed during the ball as a spy and assassin and paid the ultimate price. As the authorities trace his steps, word spreads that the nation of Thrane could be responsible for the killing. This event has repercussions later in the campaign."
           },
           {
             "title": "Runaway Lovers",

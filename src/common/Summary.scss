@@ -124,10 +124,6 @@
 
         opacity: .5;
     }
-
-    .link {
-        display: none;
-    }
 }
 
 .modalTitle {
@@ -170,8 +166,7 @@
 @media (min-width: 992px) {
     .cardWrapper {
         .notes,
-        .ellipsis,
-        .link {
+        .ellipsis {
             display: block;
         }
     }
