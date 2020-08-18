@@ -97,7 +97,7 @@ class GameLog extends React.Component {
             <Container className="advWrapper wrapper">
 					<h1 className="sectionTitle">Advancement</h1>
 					<div className="box">
-						<Select label={advObj.label} type="checkbox" isSelected={advObj.isSelected} isBold />
+						<Select label={advObj.label} type="checkbox" isSelected={advObj.isSelected} isBold isDisabled={this.props.preview} />
 						<p className="bookFont footnote" dangerouslySetInnerHTML={{ __html:  advObj.footnote }} />
 					</div>
 			</Container>
@@ -108,7 +108,7 @@ class GameLog extends React.Component {
         return (
             <Container className="rewardsWrapper wrapper">
 					<h1 className="sectionTitle">Rewards</h1>
-					<div className="box content">
+					<div className="box rewardsContent">
 						{_map(rewardObj, (rewardGroup, key) => {
 							return  (
 								<div key={key} className="rewardGroup">
@@ -117,12 +117,12 @@ class GameLog extends React.Component {
 										{"options" in rewardGroup && <div className="buttonArea" />}
 									</h1>
 
-									{"options" in rewardGroup && <Option options={rewardGroup.options} canBlank />}
+									{"options" in rewardGroup && <Option options={rewardGroup.options} canBlank isDisabled={this.props.preview} />}
 
 									{"selections" in rewardGroup &&
 										<>
 											{_map(rewardGroup.selections, (selection, key) => {
-												return <Select key={key} label={selection} type="checkbox" />
+												return <Select key={key} label={selection} type="checkbox" isDisabled={this.props.preview} />
 											})}
 										</>
 									}
@@ -177,9 +177,9 @@ class GameLog extends React.Component {
             <Container className="legacyWrapper wrapper">
 				<h1 className="sectionTitle">Legacy Events</h1>
 				<Container className="box">
-					<div className="content">
+					<div className="legacyContent">
 						{_map(legacyObj.events, (event, key) => {
-							return <Event eventObj={event} key={key} />
+							return <Event eventObj={event} key={key} disable={this.props.preview} />
 						})}
 					</div>
 					<div className="footnote bookFont" dangerouslySetInnerHTML={{ __html: legacyObj.footnote }} />

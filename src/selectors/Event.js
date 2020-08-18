@@ -10,11 +10,13 @@ import "./Event.scss";
 class Event extends Component {
     static propTypes = {
         eventObj: PropTypes.object.isRequired,
-        isSelected: PropTypes.bool
+        isSelected: PropTypes.bool,
+        disable: PropTypes.bool,
     }
 
     static defaultProps = {
-        isSelected: false
+        isSelected: false,
+        disable: false,
     }
 
     state = {
@@ -35,7 +37,7 @@ class Event extends Component {
     render() {
         return (
             <Container className="eventWrapper custom-control custom-checkbox">
-				<input type="checkbox" className="custom-control-input" checked={this.state.isSelected} onChange={this.toggleSelect.bind(this)} />
+				<input type="checkbox" className="custom-control-input" disabled={this.props.disable} checked={this.state.isSelected} onChange={this.toggleSelect.bind(this)} />
 	        	<span className="contents">
 		        	<h1 className="bookFont bold" onClick={this.toggleSelect.bind(this)}>{this.state.eventObj.title}.</h1>
 					<p className="bookFont" onClick={this.toggleSelect.bind(this)} dangerouslySetInnerHTML={{ __html: this.state.eventObj.description }} />
@@ -43,7 +45,7 @@ class Event extends Component {
 					{"checkboxes" in this.state.eventObj && 
 						<ul className="checkboxes" onClick={this.setSelect.bind(this, true)}>
 							{_map(this.state.eventObj.checkboxes, (cell, key) => {
-								return <Select key={key} type="checkbox" isDisabled={!this.state.isSelected} label={cell} />
+								return <Select key={key} type="checkbox" isDisabled={this.props.disable || !this.state.isSelected} label={cell} />
 							})}
 							
 						</ul>
@@ -51,7 +53,7 @@ class Event extends Component {
 
 					{"radios" in this.state.eventObj && 
 						<div className="radios" onClick={this.setSelect.bind(this, true)}>
-							<Option options={this.state.eventObj.radios} isDisabled={!this.state.isSelected} />
+							<Option options={this.state.eventObj.radios} isDisabled={this.props.disable || !this.state.isSelected} />
 						</div>
 					}
 					

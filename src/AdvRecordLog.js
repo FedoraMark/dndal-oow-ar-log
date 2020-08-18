@@ -6,6 +6,7 @@ import Jumbotron from "react-bootstrap/Jumbotron";
 import Container from "react-bootstrap/Container";
 import Button from 'react-bootstrap/Button';
 import Collapse from 'react-bootstrap/Collapse';
+import Card from 'react-bootstrap/Card';
 
 import Player from './common/Player';
 import GameLog from './GameLog';
@@ -54,7 +55,7 @@ class AdvRecordLog extends React.Component {
 					let animClass = this.state.loaded ? fadeIn : fadeInUp;
 
 					return (
-						<GameLog className={animClass} style={{animationDelay: (delayTime*key)+"ms"}} key={key} data={gameObj} isCollapsed={true} />
+						<GameLog className={animClass} style={{animationDelay: (delayTime*key)+"ms"}} key={key} data={gameObj} isCollapsed={!this.state.loaded} />
 					);
 				})}
 			</Container>
@@ -79,6 +80,25 @@ class AdvRecordLog extends React.Component {
 			    					</li>
 			    				);
 			    			})}
+
+			    			<li className="addItem" id="newSalvage">
+			    				<Card className="customItem disabled">
+									<Card.Body>
+										<Card.Title>Salvage Mission</Card.Title>
+										<Card.Subtitle>Salvage mission log</Card.Subtitle>
+									</Card.Body>
+								</Card>
+			    			</li>
+
+			    			<li className="addItem" id="newNotes">
+			    				<Card className="customItem disabled">
+									<Card.Body>
+										<Card.Title>Notes</Card.Title>
+										<Card.Subtitle>Player notes</Card.Subtitle>
+									</Card.Body>
+								</Card>
+			    			</li>
+
 		    			</ul>
 		    		</div>
 	    		</Collapse>

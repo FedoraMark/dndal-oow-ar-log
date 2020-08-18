@@ -93,11 +93,49 @@
         grid-gap: 1rem;
         grid-template-columns: repeat(auto-fill,minmax(15rem, 1fr));
 
+
         li {
             flex-basis: 0;
             flex-grow: 1;
 
             @include flex();
+        }
+
+        .customItem {
+            position: relative;
+
+            width: 100%;
+            height: 100%;
+
+            box-sizing: border-box;
+
+            -webkit-transition: all .25s ease;
+               -moz-transition: all .25s ease;
+                -ms-transition: all .25s ease;
+                 -o-transition: all .25s ease;
+                    transition: all .25s ease;
+
+            border-width: 2px !important;
+            background: $color-background-white !important;
+
+            &:hover,
+            &:focus {
+                cursor: pointer;
+
+                border-color: black;
+            }
+
+            &.disabled {
+                pointer-events: none;
+
+                opacity: .4;
+            }
+
+            .card-title {
+                margin-bottom: .5rem !important;
+
+                font-weight: bold;
+            }
         }
     }
 
