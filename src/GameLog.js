@@ -30,12 +30,23 @@ class GameLog extends React.Component {
     }
 
     state = {
-        isCollapsed: this.props.isCollapsed
+        isCollapsed: this.props.isCollapsed,
+        legacyObj: {}
     }
+
+    componentDidUpdate(prevProps, prevState){
+		if (this.state.legacyObj !== prevState.legacyObj) {
+			console.log(this.state.legacyObj);
+		} 
+	}
 
     //FUNCTIONS
     toggleCollapsed = () => {
         this.setState({ isCollapsed: !this.state.isCollapsed });
+    }
+
+    updateEventHandler = (eventStatus) => {
+    	this.setState({legacyObj: {[this.props.data.code]: {...eventStatus, ...this.state.legacyObj[this.props.data.code]}}});
     }
 
     //RENDERERS
@@ -179,7 +190,7 @@ class GameLog extends React.Component {
 				<Container className="box">
 					<div className="legacyContent">
 						{_map(legacyObj.events, (event, key) => {
-							return <Event eventObj={event} key={key} disable={this.props.preview} />
+							return <Event eventObj={event} key={key} disable={this.props.preview} updateHandler={this.updateEventHandler} />
 						})}
 					</div>
 					<div className="footnote bookFont" dangerouslySetInnerHTML={{ __html: legacyObj.footnote }} />

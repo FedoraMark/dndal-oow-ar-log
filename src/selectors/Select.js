@@ -7,17 +7,21 @@ import './SelectOption.scss';
 
 class Select extends React.Component {
     static propTypes = {
+        arrKey: PropTypes.number,
         isSelected: PropTypes.bool,
         isDisabled: PropTypes.bool,
         label: PropTypes.string.isRequired,
         type: PropTypes.string.isRequired, // "checkbox", "switch" (TBD)
-        isBold: PropTypes.bool
+        isBold: PropTypes.bool,
+        selectHandler: PropTypes.func
     }
 
     static defaultProps = {
+        arrKey: -1,
         isSelected: false,
         isDisabled: false,
         isBold: false,
+        selectHandler: (e) => {}
     }
 
     state = {
@@ -36,8 +40,14 @@ class Select extends React.Component {
     //FUNCTIONS
     toggleSelect = () => {
         if (!this.state.isDisabled) {
-            this.setState({ isSelected: !this.state.isSelected });
+            this.setSelect(!this.state.isSelected);
         }
+    }
+
+    setSelect = (set) => {
+        this.setState({ isSelected: set },
+            this.props.selectHandler(this.props.arrKey, set)
+        );
     }
 
     //RENDERERS

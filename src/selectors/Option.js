@@ -43,16 +43,12 @@ class Option extends React.Component {
     }
 
     //RENDERERS
-    render_blankButton = () => {
-
-    }
-
     render() {
         return (
             <div className={classnames("selectWrapper radio", this.state.isDisabled && "disabled")} >
                 {this.props.canBlank &&
                     <Fade in={this.state.selection !== null}>
-                        <button className={classnames("button", this.state.selection === null && "hidden")} onClick={this.setSelection.bind(this,null)} />
+                        <button className={classnames("button", this.state.selection === null && "hidden")} onClick={this.setSelection.bind(this,-1)} />
                     </Fade>
                 }
 

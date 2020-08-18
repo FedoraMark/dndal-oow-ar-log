@@ -12,16 +12,19 @@ class Event extends Component {
         eventObj: PropTypes.object.isRequired,
         isSelected: PropTypes.bool,
         disable: PropTypes.bool,
+        updateHandler: PropTypes.func
     }
 
     static defaultProps = {
         isSelected: false,
         disable: false,
+        updateHandler: (e) => {}
     }
 
     state = {
         eventObj: this.props.eventObj,
-        isSelected: this.props.isSelected === "true"
+        isSelected: this.props.isSelected === "true",
+        selectionObj: {[this.props.eventObj.title]: {"active": this.props.isSelected, "selections": []}}
     }
 
     //FUNCTIONS
@@ -30,7 +33,28 @@ class Event extends Component {
     }
 
     setSelect = (val) => {
-        this.setState({ isSelected: val });
+    	let title = this.state.eventObj.title;
+        this.setState({ isSelected: val, selectionObj: {[title]: {"active": val, ...this.state.selectionObj[title] }}},
+        	this.props.updateHandler(this.state.selectionObj)
+        );
+    }
+
+    selectHandler = (key, val) => {
+    	let title = this.state.eventObj.title;
+    	var newArr = this.state.selectionObj;
+    	this.state.selectionObj[title].selections[key] = val;
+
+    	this.setState({selectionObj: {[title]: {"selections": newArr, ...this.state.selectionObj[title] }}},
+        	this.props.updateHandler(this.state.selectionObj)
+        );
+    }
+
+    optionHandler = (optionArr) => {
+    	let title = this.state.eventObj.title;
+    	
+    	this.setState({selectionObj: {[title]: {"selections": optionArr, ...this.state.selectionObj[title] }}},
+        	this.props.updateHandler(this.state.selectionObj)
+        );
     }
 
     //RENDERERS
@@ -45,9 +69,8 @@ class Event extends Component {
 					{"checkboxes" in this.state.eventObj && 
 						<ul className="checkboxes" onClick={this.setSelect.bind(this, true)}>
 							{_map(this.state.eventObj.checkboxes, (cell, key) => {
-								return <Select key={key} type="checkbox" isDisabled={this.props.disable || !this.state.isSelected} label={cell} />
+								return <Select key={key} arrKey={key} type="checkbox" isDisabled={this.props.disable || !this.state.isSelected} label={cell} selectHandler={this.selectHandler} />
 							})}
-							
 						</ul>
 					}
 
@@ -62,7 +85,6 @@ class Event extends Component {
 							{_map(this.state.eventObj.table, (cell, key) => {
 								return <li className="bookFont" key={key} dangerouslySetInnerHTML={{ __html: cell }} />
 							})}
-							
 						</ul>
 					}
 		        </span>
