@@ -4,7 +4,6 @@ import _map from "lodash/map";
 import _findIndex from "lodash/findIndex";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Container from "react-bootstrap/Container";
-import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 import Collapse from 'react-bootstrap/Collapse';
 
