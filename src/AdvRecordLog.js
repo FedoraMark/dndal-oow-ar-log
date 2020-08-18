@@ -15,15 +15,16 @@ import Summary from './common/Summary';
 import "animate.css";
 import './AdvRecordLog.scss';
 
-import chara_SamPel from "./data/SamPel.json";
 import games_oow from "./data/oowGames.json";
+import chara_SamPel from "./data/SamPel.json";
+
 
 const fadeInUp = "animate__animated animate__fadeInUp";
 const fadeIn = "animate__animated animate__fadeIn";
 
 class AdvRecordLog extends React.Component {
     state = {
-        charData: {games: []},
+        charData: {player: {character: "Sam Pel", tier: 1, wealth: {}}, games: []},
         showAddRecordArea: false,
         loaded: false
     };
@@ -119,15 +120,8 @@ class AdvRecordLog extends React.Component {
 	    		</Jumbotron>
 
 	    		<Container>
-	    			<Player
-		    			player={chara_SamPel.player}
-		    			dci={chara_SamPel.dci}
-		    			character={chara_SamPel.character}
-		    			classes={chara_SamPel.classes}
-		    			tier={chara_SamPel.tier}
-		    			base={chara_SamPel.base}
-		    			wealth={chara_SamPel.wealth}
-		    		/>
+	    			{/* <Player playerObj={this.state.charData.player} /> */}
+	    			<Player playerObj={chara_SamPel.player} />
 		    	</Container>
 
 		    	{this.render_newRecordArea()}

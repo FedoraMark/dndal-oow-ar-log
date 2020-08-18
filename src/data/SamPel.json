@@ -1,19 +1,21 @@
 {
-  "player": "Gary Gygax",
-  "dci": "0000000001",
-  "character": "Sam Pel",
-  "classes": {
-    "Dungeon Master": 5,
-    "Player": 3
-  },
-  "tier": 2,
-  "base": "Fortress of Doom",
-  "wealth": {
-    "pp": 1000,
-    "gp": 100,
-    "ep": 50,
-    "sp": 10,
-    "cp": 1
+  "player": {
+    "player": "Gary Gygax",
+    "dci": "0000000001",
+    "character": "Sam Pel",
+    "classes": {
+      "Dungeon Master": 5,
+      "Player": 3
+    },
+    "tier": 2,
+    "base": "Fortress of Doom",
+    "wealth": {
+      "pp": 1000,
+      "gp": 100,
+      "ep": 50,
+      "sp": 10,
+      "cp": 1
+    }
   },
   "games": [
     {

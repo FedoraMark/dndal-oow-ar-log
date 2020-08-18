@@ -10,43 +10,28 @@ import "./Player.scss";
 
 export class Player extends Component {
     static propTypes = {
-        player: PropTypes.string,
-        dci: PropTypes.string,
-        character: PropTypes.string.isRequired,
-        classes: PropTypes.object,
-        tier: PropTypes.number,
-        base: PropTypes.string,
-        wealth: PropTypes.object
-    }
-
-    static defaultProps = {
-        player: null,
-        dci: null,
-        classes: null,
-        tier: null,
-        base: null,
-        wealth: null,
+        playerObj: PropTypes.object.isRequired
     }
 
     state = {
-        player: this.props.player,
-        dci: this.props.dci,
-        character: this.props.character,
-        classes: this.props.classes,
-        tier: this.props.tier,
-        base: this.props.base,
-        wealth: this.props.wealth
+        player: this.props.playerObj.player,
+        dci: this.props.playerObj.dci,
+        character: this.props.playerObj.character,
+        classes: this.props.playerObj.classes,
+        tier: this.props.playerObj.tier,
+        base: this.props.playerObj.base,
+        wealth: this.props.playerObj.wealth
     }
 
     //FUNCTIONS
     getPlayerDciStr = () => {
     	var str = '';
-        if (this.state.player !== null) {
+        if (this.state.player !== undefined) {
             str = this.state.player;
-            if (this.state.dci !== null) {
+            if (this.state.dci !== undefined) {
                 str = str + " (" + this.state.dci + ")";
             }
-        } else if (this.state.dci !== null) {
+        } else if (this.state.dci !== undefined) {
             str = this.state.dci;
         }
 
@@ -56,67 +41,61 @@ export class Player extends Component {
     //RENDERERS
     render() {
         return (
-            <Container fluid className="playerBox">
-				<Row>
+			<Row className="playerBox">
+				<div className="infoItem">
+					<h1>Character:</h1>
+					<p>{this.state.character}</p>
+				</div>
+
+				{(this.state.player !== undefined || this.state.dci !== undefined) &&
 					<div className="infoItem">
-						<h1>Character Name:</h1>
-						<p>{this.state.character}</p>
+						<h1>Player:</h1>
+						<p>{this.getPlayerDciStr()}</p>
 					</div>
+				}
+			
+				{this.state.classes !== undefined &&
+					<div className="infoItem">
+						<h1>Classes:</h1>
+						<p>
+							{_map(this.state.classes, (level, clss) => {
+								return(
+									<span className="class" key={clss}>{clss + " (" + level + ")"}<span className="comma">, </span></span>
+								);
+							})}
+						</p>
+					</div>
+				}
 
-					{(this.state.player !== null || this.state.dci !== null) &&
-						<div className="infoItem">
-							<h1>Player {this.state.player !== null ? "Name" : "DCI"}:</h1>
-							<p>{this.getPlayerDciStr()}</p>
-						</div>
-					}
-				</Row>
+				{this.state.tier !== undefined &&
+					<div className="infoItem tierItem">
+						<h1>Tier:</h1>
+						<ul className="tierList">
+							<li className={this.state.tier > 0 ? "filled": ''}>1</li>
+							<li className={this.state.tier > 1 ? "filled": ''}>2</li>
+							<li className={this.state.tier > 2 ? "filled": ''}>3</li>
+							<li className={this.state.tier > 3 ? "filled": ''}>4</li>
+						</ul>
+						{/* <p>{this.state.tier}</p> */}
+					</div>
+				}
+			
+				{this.state.base !== undefined &&
+					<div className="infoItem">
+						<h1>Base:</h1>
+						<p>{this.state.base}</p>
+					</div>
+				}
 
-				<Row>
-					{this.state.classes !== null &&
-						<div className="infoItem">
-							<h1>Classes & Levels:</h1>
-							<p>
-								{_map(this.state.classes, (level, clss) => {
-									return(
-										<span className="class" key={clss}>{clss + " (" + level + ")"}<span className="comma">, </span></span>
-									);
-								})}
-							</p>
-						</div>
-					}
-
-					{this.state.tier !== null &&
-						<div className="infoItem tierItem">
-							<h1>Tier:</h1>
-							<ul className="tierList">
-								<li className={this.state.tier > 0 ? "filled": ''}>1</li>
-								<li className={this.state.tier > 1 ? "filled": ''}>2</li>
-								<li className={this.state.tier > 2 ? "filled": ''}>3</li>
-								<li className={this.state.tier > 3 ? "filled": ''}>4</li>
-							</ul>
-							{/* <p>{this.state.tier}</p> */}
-						</div>
-					}
-				</Row>
-
-				<Row>
-					{this.state.base !== null &&
-						<div className="infoItem">
-							<h1>Assigned Base:</h1>
-							<p>{this.state.base}</p>
-						</div>
-					}
-
-					{this.state.wealth !== null &&
-						<div className="infoItem">
-							<h1>Current Wealth:</h1>
-							<p>
-								<Wealth wealthObj={this.state.wealth} />
-							</p>
-						</div>
-					}
-				</Row>
-			</Container>
+				{this.state.wealth !== undefined &&
+					<div className="infoItem">
+						<h1>Wealth:</h1>
+						<p>
+							<Wealth wealthObj={this.state.wealth} />
+						</p>
+					</div>
+				}
+			</Row>
         );
     }
 }
