@@ -42,7 +42,7 @@ class Event extends Component {
     selectHandler = (key, val) => {
     	let title = this.state.eventObj.title;
     	var newArr = this.state.selectionObj;
-    	this.state.selectionObj[title].selections[key] = val;
+    	newArr[title].selections[key] = val;
 
     	this.setState({selectionObj: {[title]: {"selections": newArr, ...this.state.selectionObj[title] }}},
         	this.props.updateHandler(this.state.selectionObj)
@@ -51,7 +51,7 @@ class Event extends Component {
 
     optionHandler = (optionArr) => {
     	let title = this.state.eventObj.title;
-    	
+
     	this.setState({selectionObj: {[title]: {"selections": optionArr, ...this.state.selectionObj[title] }}},
         	this.props.updateHandler(this.state.selectionObj)
         );
