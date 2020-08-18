@@ -1,6 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import _map from "lodash/map";
+import _findIndex from "lodash/findIndex";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Container from "react-bootstrap/Container";
 import Row from 'react-bootstrap/Row';
@@ -18,37 +19,43 @@ import chara_SamPel from "./data/SamPel.json";
 import games_oow from "./data/oowGames.json";
 
 const fadeInUp = "animate__animated animate__fadeInUp";
+const fadeIn = "animate__animated animate__fadeIn";
 
 class AdvRecordLog extends React.Component {
     state = {
         charData: {games: []},
-        showAddRecordArea: false
+        showAddRecordArea: false,
+        loaded: false
     };
 
+    componentDidMount() {
+    	this.setState({loaded: true});
+    }
 
     //FUNCTIONS
-
     toggleAddRecordArea = () => {
     	this.setState({showAddRecordArea: !this.state.showAddRecordArea});
+    }
+
+    addRecord = (recordObj) => {
+    	let newGameData = this.state.charData.games;
+    	newGameData.push(recordObj)
+
+    	this.setState({charData: {games: newGameData, ...this.state.charData}});
+    	this.toggleAddRecordArea();
     }
 
 
     //RENDERERS
     render_gameLogs = () => {
-    	if (this.state.charData.games.length !== 0) {
-    		return (
-    			<Container className="gameList">
-    				{this.render_newRecordArea({})}
-    			</Container>
-    		)
-    	}
-
         return (
             <Container className="gameList">
-				{_map(games_oow.records, (gameObj, key) => {
-					let delayTime = 200;
+				{_map(this.state.charData.games, (gameObj, key) => {
+					let delayTime = this.state.loaded ? 0 : 200;
+					let animClass = this.state.loaded ? fadeIn : fadeInUp;
+
 					return (
-						<GameLog className={fadeInUp} style={{animationDelay: (delayTime*key)+"ms"}} key={key} data={gameObj} isCollapsed={true} />
+						<GameLog className={animClass} style={{animationDelay: (delayTime*key)+"ms"}} key={key} data={gameObj} isCollapsed={true} />
 					);
 				})}
 			</Container>
@@ -58,7 +65,7 @@ class AdvRecordLog extends React.Component {
     render_newRecordArea = (btnStyle) => {
     	return (
     		<Container className="newRecordWrapper">
-    			<Button className={classnames("newButton",fadeInUp, this.state.showAddRecordArea ? "isOpen" : '')} style={btnStyle} variant="light" size="lg" block onClick={this.toggleAddRecordArea.bind(this)}>
+    			<Button className={classnames("newButton", this.state.showAddRecordArea ? "isOpen" : '')} style={btnStyle} variant="light" size="lg" block onClick={this.toggleAddRecordArea.bind(this)}>
     				{!this.state.showAddRecordArea ? "Add Record" : "Cancel" }
     			</Button>
 
@@ -66,9 +73,10 @@ class AdvRecordLog extends React.Component {
 		    		<div>
 		    			<ul className="addLogWrapper">
 			    			{_map(games_oow.records, (game, key) => {
+
 			    				return (
-			    					<li className="addItem" id={game.code}>
-			    						<Summary gameData={game} />
+			    					<li key={key} className="addItem" id={game.code}>
+			    						<Summary gameData={game} handleAdd={this.addRecord} disabled={_findIndex(this.state.charData.games, (o => {return o.code === game.code})) > -1} />
 			    					</li>
 			    				);
 			    			})}
@@ -80,7 +88,6 @@ class AdvRecordLog extends React.Component {
     }
 
     render() {
-
         return (
             <div className="log">
 	    		<Jumbotron>

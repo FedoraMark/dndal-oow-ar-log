@@ -44,7 +44,7 @@
     .gameList {
         flex-grow: 1;
 
-        @include flex(center, flex-start, column);
+        @include flex(center, flex-end, column-reverse);
     }
 
     .newRecordWrapper {

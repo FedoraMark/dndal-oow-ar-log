@@ -11,19 +11,32 @@
     border: 2px solid black;
     background: $color-background-darker;
 
+    &.preview {
+        margin: 0;
+
+        pointer-events: none;
+
+        *:not(button) {
+            opacity: 1 !important;
+
+            &.checkboxes,
+            &.radios {
+                .label {
+                    color: black !important;
+                }
+            }
+
+            &.money {
+                display: none;
+            }
+        }
+    }
+
     .titleWrapper {
         &:hover,
         &:focus {
             cursor: pointer;
         }
-
-        // .type {
-        //     display: none;
-        //     padding-right: 1rem;
-
-        //     text-align: left;
-        //     white-space: nowrap;
-        // }
 
         .title {
             width: 100%;
@@ -326,7 +339,7 @@
 
 // Medium devices (tablets, 768px and up)
 @media (min-width:768px) {
-    .gameBox {
+    .gameBox:not(.preview) {
         .titleWrapper .title {
             font-size: 2.25rem;
 
@@ -345,12 +358,6 @@
                 align-items: center;
                 justify-content: space-between;
             }
-
-            // .type {
-            //     display: flex;
-
-            //     flex-grow: 1;
-            // }
         }
 
         .content {
@@ -401,7 +408,7 @@
 
 // Large devices (desktops, 992px and up)
 @media (min-width:992px) {
-    .gameBox {
+    .gameBox:not(.preview) {
         .titleWrapper .title {
             font-size: 2.75rem;
 
@@ -455,8 +462,128 @@
             }
         }
     }
+
+    .gameBox.preview {
+        .titleWrapper .title {
+            font-size: 2.25rem;
+
+            .name {
+                .code {
+                    width: auto;
+                    padding-right: .5rem;
+
+                    .hyphen {
+                        bottom: .6rem;
+                    }
+                }
+            }
+
+            .title {
+                align-items: center;
+                justify-content: space-between;
+            }
+        }
+
+        .content {
+            .bookFont {
+                font-size: .8rem;
+
+                &.gameNotes {
+                    font-size: .9rem;
+                }
+            }
+
+            .instructions {
+                font-size: .9rem;
+            }
+
+            .footnote {
+                font-size: .75rem;
+            }
+
+            .sectionTitle {
+                font-size: 2rem;
+            }
+
+            .twoCol {
+                @include flex(stretch, center, row);
+
+                .leftCol {
+                    margin-right: -15px;
+                }
+
+                .wealthWrapper {
+                    .header {
+                        font-size: 1.2rem;
+                    }
+
+                    .amount {
+                        font-size: 1rem;
+
+                        .val {
+                            top: .175rem;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 // Extra large devices (large desktops, 1200px and up)
 @media (min-width:1200px) {
+    .gameBox.preview {
+        .titleWrapper .title {
+            font-size: 2.75rem;
+
+            .name {
+                .code {
+                    width: auto;
+                    padding-right: .75rem;
+
+                    .hyphen {
+                        bottom: .75rem;
+                    }
+                }
+            }
+        }
+
+        .content {
+            .sectionTitle {
+                font-size: 2.5rem;
+            }
+
+            .bookFont {
+                font-size: 1rem;
+
+                &.gameNotes {
+                    font-size: 1rem;
+                }
+            }
+
+            .instructions {
+                font-size: 1rem;
+            }
+
+            .footnote {
+                font-size: .95rem;
+            }
+
+            .twoCol {
+                .wealthWrapper {
+                    .header {
+                        font-size: 1.5rem;
+                    }
+
+                    .amount {
+                        font-size: 1.3rem;
+
+                        .val {
+                            top: .25rem;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

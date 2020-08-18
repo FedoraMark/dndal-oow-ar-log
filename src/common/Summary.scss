@@ -54,6 +54,12 @@
         border-color: black;
     }
 
+    &.disabled {
+        pointer-events: none;
+
+        opacity: .4;
+    }
+
     .infoDots {
         position: absolute;
         top: 0;
@@ -117,6 +123,10 @@
     .link {
         display: none;
     }
+}
+
+.modalTitle {
+    font-style: italic !important;
 }
 
 // Extra small devices (portrait phones, less than 576px)

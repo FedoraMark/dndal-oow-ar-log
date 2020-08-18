@@ -18,13 +18,15 @@ class GameLog extends React.Component {
     static propTypes = {
         data: PropTypes.object.isRequired,
         isCollapsed: PropTypes.bool,
-        className: PropTypes.string
+        className: PropTypes.string,
+        preview: PropTypes.bool
     }
 
     static defaultProps = {
         isCollapsed: false,
         className: '',
-        style: {}
+        style: {},
+        preview: false
     }
 
     state = {
@@ -187,11 +189,11 @@ class GameLog extends React.Component {
     }
 
     render() {
-        const { data, style, className } = this.props;
+        const { data, style, className, preview } = this.props;
 
         if (["game","epic"].includes(data.record)) {
 	        return (
-	            <Container fluid className={classnames(className,"gameBox",!this.state.isCollapsed && "expanded")} style={style}>
+	            <Container fluid className={classnames(className,"gameBox",!this.state.isCollapsed && "expanded", preview && "preview")} style={style}>
 					{this.render_titleAndCode(data.type,data.code,data.title)}
 
 					<Collapse in={!this.state.isCollapsed}>
@@ -217,7 +219,7 @@ class GameLog extends React.Component {
         	)
 	    } else if (data.record === "salvage") {
 	    	return (
-	            <Container fluid className={classnames(className,"gameBox","salvageBox",!this.state.isCollapsed && "expanded")} style={style}>
+	            <Container fluid className={classnames(className,"gameBox","salvageBox",!this.state.isCollapsed && "expanded", preview && "preview")} style={style}>
 					{this.render_titleAndCode(data.type,null,data.title)}
 
 					<Collapse in={!this.state.isCollapsed}>
