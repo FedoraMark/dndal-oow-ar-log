@@ -2,7 +2,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Adventure Records Log for Oracle of War
 
-Log for Adventure Records for the Adventurers League Eberron setting campaign, *Oracle of War*
+Log for Adventure Records for the *Dungeons & Dragons* Adventurers League Eberron setting campaign, *Oracle of War*.
+Made with React.
 
 ## Demo
 
