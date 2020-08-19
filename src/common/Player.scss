@@ -5,12 +5,14 @@
     margin: 0 0 1rem;
 
     flex-wrap: wrap;
+
     @include flex();
 
     .infoItem {
         margin: 0 .5rem;
 
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
+
         @include flex(flex-start);
 
         h1,
