@@ -25,6 +25,7 @@ const fadeIn = "animate__animated animate__fadeIn";
 class AdvRecordLog extends React.Component {
     state = {
         charData: {player: {character: "Sam Pel", tier: 1, wealth: {}}, games: []},
+        gameData: {},
         showAddRecordArea: false,
         loaded: false
     };

@@ -42,12 +42,9 @@ class GameLog extends React.Component {
     updateEventHandler = (eventStatus) => {
     	let code = this.props.data.code;
 
-    	console.log("{...this.state.activeLegacyObj}");
-    	console.log({ ...this.state.activeLegacyObj});
-
     	this.setState({ activeLegacyObj: { ...this.state.activeLegacyObj, [code]: {...this.state.activeLegacyObj[code], ...eventStatus}}},
     		() => {
-    			console.log("newstate");
+    			console.log("GameLog " + code + " state");
     			console.log(this.state.activeLegacyObj);
     		});
     }
