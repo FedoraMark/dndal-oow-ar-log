@@ -24,36 +24,49 @@ class Event extends Component {
     state = {
         eventObj: this.props.eventObj,
         isSelected: this.props.isSelected === "true",
-        selectionObj: {[this.props.eventObj.title]: {"active": this.props.isSelected, "selections": []}}
+        selectionObj: {[this.props.eventObj.title]: {"active": this.props.isSelected, "selections": [], "option": -1}}
     }
 
     //FUNCTIONS
     toggleSelect = () => {
-        this.setSelect(!this.state.isSelected);
+        this.setSelect(!this.state.isSelected, false);
     }
 
-    setSelect = (val) => {
+    setSelect = (val,skip) => {
+    	if (skip) {
+    		return;
+    	}
+
     	let title = this.state.eventObj.title;
-        this.setState({ isSelected: val, selectionObj: {[title]: {"active": val, ...this.state.selectionObj[title] }}},
-        	this.props.updateHandler(this.state.selectionObj)
-        );
+    	let data = val ? {...this.state.selectionObj[title]} : {"selections": [], "option": -1};
+
+    	let selectObj = {[title]: {...data, "active": val }};
+
+		this.setState({ isSelected: val, selectionObj: selectObj },
+        	this.props.updateHandler(selectObj)
+        );	
+
     }
 
     selectHandler = (key, val) => {
     	let title = this.state.eventObj.title;
-    	var newArr = this.state.selectionObj;
-    	newArr[title].selections[key] = val;
 
-    	this.setState({selectionObj: {[title]: {"selections": newArr, ...this.state.selectionObj[title] }}},
-        	this.props.updateHandler(this.state.selectionObj)
+    	var newArr = this.state.selectionObj[title].selections;
+    	newArr[key] = val;
+
+    	let selectObj = {[title]: {"active": true, "selections": newArr  }};
+
+    	this.setState({selectionObj: selectObj},
+        	this.props.updateHandler(selectObj)
         );
     }
 
-    optionHandler = (optionArr) => {
+    optionHandler = (key) => {
     	let title = this.state.eventObj.title;
+    	let selectObj = {[title]: {"active": true, "option": key }};
 
-    	this.setState({selectionObj: {[title]: {"selections": optionArr, ...this.state.selectionObj[title] }}},
-        	this.props.updateHandler(this.state.selectionObj)
+    	this.setState({selectionObj: selectObj},
+        	this.props.updateHandler(selectObj)
         );
     }
 
@@ -63,11 +76,13 @@ class Event extends Component {
             <Container className="eventWrapper custom-control custom-checkbox">
 				<input type="checkbox" className="custom-control-input" disabled={this.props.disable} checked={this.state.isSelected} onChange={this.toggleSelect.bind(this)} />
 	        	<span className="contents">
-		        	<h1 className="bookFont bold" onClick={this.toggleSelect.bind(this)}>{this.state.eventObj.title}.</h1>
-					<p className="bookFont" onClick={this.toggleSelect.bind(this)} dangerouslySetInnerHTML={{ __html: this.state.eventObj.description }} />
+		        	<div className="descriptionWrapper" onClick={this.toggleSelect.bind(this)}>
+		        		<h1 className="bookFont bold">{this.state.eventObj.title}.</h1>
+						<p className="bookFont" dangerouslySetInnerHTML={{ __html: this.state.eventObj.description }} />
+					</div>
 
 					{"checkboxes" in this.state.eventObj && 
-						<ul className="checkboxes" onClick={this.setSelect.bind(this, true)}>
+						<ul className="checkboxes" onClick={this.setSelect.bind(this, true, this.state.isSelected)}>
 							{_map(this.state.eventObj.checkboxes, (cell, key) => {
 								return <Select key={key} arrKey={key} type="checkbox" isDisabled={this.props.disable || !this.state.isSelected} label={cell} selectHandler={this.selectHandler} />
 							})}
@@ -75,8 +90,8 @@ class Event extends Component {
 					}
 
 					{"radios" in this.state.eventObj && 
-						<div className="radios" onClick={this.setSelect.bind(this, true)}>
-							<Option options={this.state.eventObj.radios} isDisabled={this.props.disable || !this.state.isSelected} />
+						<div className="radios" onClick={this.setSelect.bind(this, true, this.state.isSelected)}>
+							<Option options={this.state.eventObj.radios} isDisabled={this.props.disable || !this.state.isSelected} optionHandler={this.optionHandler} />
 						</div>
 					}
 					

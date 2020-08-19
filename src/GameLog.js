@@ -31,14 +31,8 @@ class GameLog extends React.Component {
 
     state = {
         isCollapsed: this.props.isCollapsed,
-        legacyObj: {}
+        activeLegacyObj: {}
     }
-
-    componentDidUpdate(prevProps, prevState){
-		if (this.state.legacyObj !== prevState.legacyObj) {
-			console.log(this.state.legacyObj);
-		} 
-	}
 
     //FUNCTIONS
     toggleCollapsed = () => {
@@ -46,7 +40,16 @@ class GameLog extends React.Component {
     }
 
     updateEventHandler = (eventStatus) => {
-    	this.setState({legacyObj: {[this.props.data.code]: {...eventStatus, ...this.state.legacyObj[this.props.data.code]}}});
+    	let code = this.props.data.code;
+
+    	console.log("{...this.state.activeLegacyObj}");
+    	console.log({ ...this.state.activeLegacyObj});
+
+    	this.setState({ activeLegacyObj: { ...this.state.activeLegacyObj, [code]: {...this.state.activeLegacyObj[code], ...eventStatus}}},
+    		() => {
+    			console.log("newstate");
+    			console.log(this.state.activeLegacyObj);
+    		});
     }
 
     //RENDERERS

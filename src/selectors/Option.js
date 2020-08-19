@@ -13,13 +13,15 @@ class Option extends React.Component {
         options: PropTypes.array.isRequired,
         selection: PropTypes.bool,
         isDisabled: PropTypes.bool,
-        canBlank: PropTypes.bool
+        canBlank: PropTypes.bool,
+        optionHandler: PropTypes.func,
     }
 
     static defaultProps = {
-        selection: null,
+        selection: -1,
         isDisabled: false,
         canBlank: false,
+        optionHandler: (e) => {}
     }
 
     state = {
@@ -29,8 +31,8 @@ class Option extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         this.setState({ isDisabled: nextProps.isDisabled }, () => {
-        	if (this.state.isDisabled) {
-        		this.setState({selection: null});
+        	if (nextProps.isDisabled) {
+        		this.setState({selection: -1});
         	}
         });
     }
@@ -38,7 +40,9 @@ class Option extends React.Component {
     //FUNCTIONS
     setSelection = (id) => {
     	if (!this.state.isDisabled) {
-    		this.setState({selection: id});
+    		this.setState({selection: id},
+                this.props.optionHandler(id)
+            );
     	}
     }
 
@@ -47,8 +51,8 @@ class Option extends React.Component {
         return (
             <div className={classnames("selectWrapper radio", this.state.isDisabled && "disabled")} >
                 {this.props.canBlank &&
-                    <Fade in={this.state.selection !== null}>
-                        <button className={classnames("button", this.state.selection === null && "hidden")} onClick={this.setSelection.bind(this,-1)} />
+                    <Fade in={this.state.selection !== -1}>
+                        <button className={classnames("button", this.state.selection === -1 && "hidden")} onClick={this.setSelection.bind(this,-1)} />
                     </Fade>
                 }
 
