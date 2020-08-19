@@ -11,7 +11,7 @@ class Option extends React.Component {
 
     static propTypes = {
         options: PropTypes.array.isRequired,
-        selection: PropTypes.bool,
+        selection: PropTypes.number,
         isDisabled: PropTypes.bool,
         canBlank: PropTypes.bool,
         optionHandler: PropTypes.func,

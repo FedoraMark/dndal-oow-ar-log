@@ -71,8 +71,7 @@
             @include flex(flex-start, center);
 
             .name {
-                flex-wrap: wrap;
-                @include flex(center, center, row);
+                @include flex(center, center, row, wrap);
 
                 .code {
                     padding: 0 .5rem;
@@ -126,8 +125,7 @@
 
             list-style: none;
 
-            flex-wrap: wrap;
-            @include flex(center, center);
+            @include flex(center, center, column, wrap);
 
             li {
                 margin: 0 1rem;

@@ -19,7 +19,8 @@ class GameLog extends React.Component {
         data: PropTypes.object.isRequired,
         isCollapsed: PropTypes.bool,
         className: PropTypes.string,
-        preview: PropTypes.bool
+        preview: PropTypes.bool,
+        logUpdateHandler: PropTypes.func.isRequired
     }
 
     static defaultProps = {
@@ -44,9 +45,13 @@ class GameLog extends React.Component {
 
     	this.setState({ activeLegacyObj: { ...this.state.activeLegacyObj, [code]: {...this.state.activeLegacyObj[code], ...eventStatus}}},
     		() => {
-    			console.log("GameLog " + code + " state");
-    			console.log(this.state.activeLegacyObj);
+    			// console.log("GameLog " + code + " state");
+    			// console.log(this.state.activeLegacyObj);
+
+    			this.props.logUpdateHandler(this.state.activeLegacyObj);
     		});
+
+    	
     }
 
     //RENDERERS

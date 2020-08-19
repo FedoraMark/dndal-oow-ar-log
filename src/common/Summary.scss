@@ -72,7 +72,6 @@
 
         margin: .5rem;
 
-        flex-wrap: nowrap;
         @include flex(center, flex-start, row-reverse);
 
         .dot {
