@@ -13,7 +13,8 @@ class Select extends React.Component {
         label: PropTypes.string.isRequired,
         type: PropTypes.string.isRequired, // "checkbox", "switch" (TBD)
         isBold: PropTypes.bool,
-        selectHandler: PropTypes.func
+        selectHandler: PropTypes.func,
+        title: PropTypes.string,
     }
 
     static defaultProps = {
@@ -21,19 +22,21 @@ class Select extends React.Component {
         isSelected: false,
         isDisabled: false,
         isBold: false,
-        selectHandler: (e) => {}
+        selectHandler: (e) => {},
+        title: "N-A",
     }
 
     state = {
         isSelected: this.props.isSelected,
-        isDisabled: this.props.isDisabled,
+        isDisabled: this.props.isDisabled
     }
+
 
     componentWillReceiveProps(nextProps) {
         this.setState({ isDisabled: nextProps.isDisabled }, () => {
-        	if (this.state.isDisabled) {
-        		this.setState({isSelected: false});
-        	}
+            if (this.state.isDisabled) {
+                this.setState({ isSelected: false });
+            }
         });
     }
 
@@ -46,7 +49,7 @@ class Select extends React.Component {
 
     setSelect = (set) => {
         this.setState({ isSelected: set },
-            this.props.selectHandler(this.props.arrKey, set)
+            this.props.selectHandler(this.props.arrKey, set, this.props.title)
         );
     }
 
@@ -57,13 +60,13 @@ class Select extends React.Component {
         if (type === "checkbox") {
             return (
                 <div className={classnames("selectWrapper checkbox", this.state.isDisabled && "disabled")} onClick={this.toggleSelect.bind(this)}>
-					<InputGroup className="checkArea">
-						<InputGroup.Prepend>
-							<InputGroup.Checkbox checked={this.state.isSelected} disabled={this.state.isDisabled} onChange={this.toggleSelect.bind(this)} />
-						</InputGroup.Prepend>
-					   	<p className={classnames("label bookFont", isBold && "bold")} dangerouslySetInnerHTML={{ __html: label }} />
-					</InputGroup>
-				</div>
+                    <InputGroup className="checkArea">
+                        <InputGroup.Prepend>
+                            <InputGroup.Checkbox checked={this.state.isSelected} disabled={this.state.isDisabled} onChange={this.toggleSelect.bind(this)} />
+                        </InputGroup.Prepend>
+                        <p className={classnames("label bookFont", isBold && "bold")} dangerouslySetInnerHTML={{ __html: label }} />
+                    </InputGroup>
+                </div>
             );
         }
 

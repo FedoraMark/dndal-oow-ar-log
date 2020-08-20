@@ -15,13 +15,15 @@ class Option extends React.Component {
         isDisabled: PropTypes.bool,
         canBlank: PropTypes.bool,
         optionHandler: PropTypes.func,
+        title: PropTypes.string,
     }
 
     static defaultProps = {
         selection: -1,
         isDisabled: false,
         canBlank: false,
-        optionHandler: (e) => {}
+        optionHandler: (e) => {},
+        title: 'N-A'
     }
 
     state = {
@@ -41,7 +43,7 @@ class Option extends React.Component {
     setSelection = (id) => {
     	if (!this.state.isDisabled) {
     		this.setState({selection: id},
-                this.props.optionHandler(id)
+                this.props.optionHandler(id, this.props.title)
             );
     	}
     }

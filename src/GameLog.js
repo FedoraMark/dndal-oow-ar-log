@@ -4,6 +4,7 @@ import classnames from "classnames";
 import Collapse from "react-bootstrap/collapse";
 import Container from "react-bootstrap/Container";
 import _map from "lodash/map";
+import _pull from "lodash/pull";
 
 import Event from "./selectors/Event";
 import Select from "./selectors/Select";
@@ -20,7 +21,7 @@ class GameLog extends React.Component {
         isCollapsed: PropTypes.bool,
         className: PropTypes.string,
         preview: PropTypes.bool,
-        logUpdateHandler: PropTypes.func.isRequired
+        logUpdateHandler: PropTypes.func
     }
 
     static defaultProps = {
@@ -32,7 +33,8 @@ class GameLog extends React.Component {
 
     state = {
         isCollapsed: this.props.isCollapsed,
-        activeLegacyObj: {}
+        activeLegacyObj: {},
+        rewardGroup0Selections: [] // ASSUMES GROUP-0 IS THE ONLY POSSIBLE 'SELECT' REWARD
     }
 
     //FUNCTIONS
@@ -41,17 +43,36 @@ class GameLog extends React.Component {
     }
 
     updateEventHandler = (eventStatus) => {
-    	let code = this.props.data.code;
+        let code = this.props.data.code;
 
-    	this.setState({ activeLegacyObj: { ...this.state.activeLegacyObj, [code]: {...this.state.activeLegacyObj[code], ...eventStatus}}},
-    		() => {
-    			// console.log("GameLog " + code + " state");
-    			// console.log(this.state.activeLegacyObj);
+        this.setState({ activeLegacyObj: { ...this.state.activeLegacyObj, [code]: { ...this.state.activeLegacyObj[code], ...eventStatus } } },
+            () => {
+                // console.log("updateEventHandler " + code);
+                // console.log(eventStatus);
 
-    			this.props.logUpdateHandler(this.state.activeLegacyObj);
-    		});
+                this.props.logUpdateHandler(this.state.activeLegacyObj);
+            });
+    }
 
-    	
+    advancementHandler = (key, val) => {
+    	this.updateEventHandler({"advancement": {active: val}})
+    }
+
+    selectRewardHandler = (key, val, title) => {
+    	var newArray = this.state.rewardGroup0Selections;
+    	if (!val) {
+    		_pull(newArray, key);
+    	} else {
+    		newArray.push(key);
+    	}
+
+    	this.setState({rewardGroup0Selections: newArray},
+    		this.updateEventHandler({[title]: {selections: newArray}})
+    	);
+    }
+
+    optionRewardHandler = (key, title) => {
+    	this.updateEventHandler({[title]: {option: key}})
     }
 
     //RENDERERS
@@ -66,22 +87,22 @@ class GameLog extends React.Component {
 					</span>
 				</h1>
 			</div>
-		);
+        );
     }
 
     render_gameInfo = (event, date, dmObj, tier) => {
         var dmStr = dmObj !== undefined && dmObj.isDm ? "(me)" : '';
 
         if (dmObj !== undefined && !dmObj.isDm) {
-	        if ("name" in dmObj) {
-	            dmStr = dmObj.name;
-	            if ("dci" in dmObj) {
-	                dmStr = dmStr + " (" + dmObj.dci + ")";
-	            }
-	        } else if ("dci" in dmObj) {
-	            dmStr = dmObj.dci;
-	        }
-	    }
+            if ("name" in dmObj) {
+                dmStr = dmObj.name;
+                if ("dci" in dmObj) {
+                    dmStr = dmStr + " (" + dmObj.dci + ")";
+                }
+            } else if ("dci" in dmObj) {
+                dmStr = dmObj.dci;
+            }
+        }
 
         return (
             <Container>
@@ -113,7 +134,7 @@ class GameLog extends React.Component {
             <Container className="advWrapper wrapper">
 					<h1 className="sectionTitle">Advancement</h1>
 					<div className="box">
-						<Select label={advObj.label} type="checkbox" isSelected={advObj.isSelected} isBold isDisabled={this.props.preview} />
+						<Select label={advObj.label} type="checkbox" isSelected={advObj.isSelected} isBold isDisabled={this.props.preview} selectHandler={this.advancementHandler} />
 						<p className="bookFont footnote" dangerouslySetInnerHTML={{ __html:  advObj.footnote }} />
 					</div>
 			</Container>
@@ -125,20 +146,21 @@ class GameLog extends React.Component {
             <Container className="rewardsWrapper wrapper">
 					<h1 className="sectionTitle">Rewards</h1>
 					<div className="box rewardsContent">
-						{_map(rewardObj, (rewardGroup, key) => {
+						{_map(rewardObj, (rewardGroup, groupKey) => {
+							//CLEANUP - should be type of <Event /> component
 							return  (
-								<div key={key} className="rewardGroup">
+								<div key={groupKey} className="rewardGroup">
 									<h1 className="bookFont bold">
 										<span className="instructions">{rewardGroup.instruction}</span>
 										{"options" in rewardGroup && <div className="buttonArea" />}
 									</h1>
 
-									{"options" in rewardGroup && <Option options={rewardGroup.options} canBlank isDisabled={this.props.preview} />}
+									{"options" in rewardGroup && <Option options={rewardGroup.options} canBlank isDisabled={this.props.preview} title={"rewardGroup" + groupKey} optionHandler={this.optionRewardHandler} />}
 
 									{"selections" in rewardGroup &&
 										<>
-											{_map(rewardGroup.selections, (selection, key) => {
-												return <Select key={key} label={selection} type="checkbox" isDisabled={this.props.preview} />
+											{_map(rewardGroup.selections, (selection, selectKey) => {
+												return <Select key={selectKey} label={selection} type="checkbox" isDisabled={this.props.preview} title={"rewardGroup" + groupKey} arrKey={selectKey} selectHandler={this.selectRewardHandler} />
 											})}
 										</>
 									}
@@ -207,9 +229,9 @@ class GameLog extends React.Component {
     render() {
         const { data, style, className, preview } = this.props;
 
-        if (["game","epic"].includes(data.record)) {
-	        return (
-	            <Container fluid className={classnames(className,"gameBox",!this.state.isCollapsed && "expanded", preview && "preview")} style={style}>
+        if (["game", "epic"].includes(data.record)) {
+            return (
+                <Container fluid className={classnames(className,"gameBox",!this.state.isCollapsed && "expanded", preview && "preview")} style={style}>
 					{this.render_titleAndCode(data.type,data.code,data.title)}
 
 					<Collapse in={!this.state.isCollapsed}>
@@ -232,10 +254,10 @@ class GameLog extends React.Component {
 					</Collapse>
 
 		    	</Container>
-        	)
-	    } else if (data.record === "salvage") {
-	    	return (
-	            <Container fluid className={classnames(className,"gameBox","salvageBox",!this.state.isCollapsed && "expanded", preview && "preview")} style={style}>
+            )
+        } else if (data.record === "salvage") {
+            return (
+                <Container fluid className={classnames(className,"gameBox","salvageBox",!this.state.isCollapsed && "expanded", preview && "preview")} style={style}>
 					{this.render_titleAndCode(data.type,null,data.title)}
 
 					<Collapse in={!this.state.isCollapsed}>
@@ -258,12 +280,12 @@ class GameLog extends React.Component {
 					</Collapse>
 
 		    	</Container>
-        	)
-	    } else if (data.record === "notes") {
+            )
+        } else if (data.record === "notes") {
 
-	    }
+        }
 
-	    return <></>
+        return < > < />
     }
 }
 

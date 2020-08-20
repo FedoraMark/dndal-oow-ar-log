@@ -60,14 +60,16 @@ class AdvRecordLog extends React.Component {
 			statusArr[changeIndex] = logStatusObj;
 		}
 
-		this.setState({ statusData: statusArr });
+		this.setState({ statusData: statusArr },
+			// console.log(this.state.statusData)
+		);
 	};
 
 	//RENDERERS
-	render_gameLogs = () => {
+	render_gameLogs = (gamesObj) => {
 		return (
 			<Container className="gameList">
-				{_map(this.state.gameData, (gameObj, key) => {
+				{_map(gamesObj, (logData, key) => {
 					let delayTime = this.state.loaded ? 0 : 200;
 					let animClass = this.state.loaded ? fadeIn : fadeInUp;
 
@@ -76,7 +78,7 @@ class AdvRecordLog extends React.Component {
 							className={animClass}
 							style={{ animationDelay: delayTime * key + "ms" }}
 							key={key}
-							data={gameObj}
+							data={logData}
 							isCollapsed={!this.state.loaded}
 							logUpdateHandler={this.updateLogStatus}
 						/>
@@ -181,7 +183,8 @@ class AdvRecordLog extends React.Component {
 
 				{this.render_newRecordArea()}
 
-				{this.render_gameLogs()}
+				{this.render_gameLogs(this.state.gameData)}
+				{/* {this.render_gameLogs(games_oow.records)} */}
 
 				<Jumbotron className="footer" />
 			</div>

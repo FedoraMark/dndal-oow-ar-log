@@ -6,6 +6,7 @@
       "title": "The Night Land",
       "type": "Adventure Record",
       "tier": 1,
+      "ordinal": 1,
       "notes": {
         "game": "Arriving at the Mournland salvage outpost of Salvation, your party undertook three separate quests into the \"Gray.\" In doing so, you discovered the existence of an Emerald Claw spy inside the settlement."
       },
@@ -69,6 +70,7 @@
       "title": "Voice in the Machine",
       "type": "Adventure Record",
       "tier": 1,
+      "ordinal": 2,
       "notes": {
         "game": "You entered the Mournland to track down the Gray Dogs, a missing salvage crew. When you found them, you uncovered a strange relic from a basement in Kalazart—the <i>Oracle of War</i>. This artifact provided tactical assistance that helped your group escape when you were surrounded by warforged outlaws."
       },
@@ -125,6 +127,7 @@
       "title": "Where the Dead Wait",
       "type": "Adventure Record",
       "tier": 1,
+      "ordinal": 3,
       "notes": {
         "game": "You were traveling back through the Mournland with the Gray Dogs, a rescued salvage crew, when you were ambushed by a large force of undead and forced to seek refuge in an abandoned cottage. During the siege, the strage artifact known as the <i>Oracle of War</i> malfunctioned and revealed a verse from the Draconic Prophecy. Realizing the value of the device, the Gray Dogs tried to steal it from under your noses."
       },
@@ -173,6 +176,7 @@
       "title": "The Third Protocol",
       "type": "Adventure Record",
       "tier": 1,
+      "ordinal": 4,
       "notes": {
         "game": "Shortly after you returned to the salvage outpost of Salvation, a group of assassins arrived to claim the <i>Oracle of War</i> from your party. You defeated them but learned that powerful forces are hunting for the <i>Oracle</i>."
       },
@@ -228,6 +232,7 @@
       "title": "The Iron Titan",
       "type": "Adventure Record",
       "tier": 1,
+      "ordinal": 5,
       "event": "Epic",
       "notes": {
         "game": "You helped the brokers of Salvation save the outpost from Big Moe, a warforged colossus awakened by the Order of the Emerald Claw."
@@ -280,6 +285,7 @@
       "title": "A Century of Ashes",
       "type": "Adventure Record",
       "tier": 2,
+      "ordinal": 6,
       "notes": {
         "game": "You traveled to Sharn to seek information about the <i>Oracle of War</i> from the sages at Morgrave University. You helped the sage  Zell Mar overcome his nerves during dinner, and made contact with the sphinx Flamewind to learn more about the Draconic Prophecy. In doing so, you learned that you are not the only ones searching for answers about the device . . ."
       },
@@ -344,6 +350,7 @@
       "title": "The Last Word",
       "type": "Adventure Record",
       "tier": 2,
+      "ordinal": 7,
       "notes": {
         "game": "The sphinx  Flamewind deciphered the prophecy spoken by the <i>Oracle of War</i> and sent you to Wroat to foil a Thranish spy's strike against the King's Dark Lanterns. You infiltrated a royal armistice ball to idenify the spy and uncover their mission."
       },
@@ -395,6 +402,7 @@
       "title": "Song of the Sky",
       "type": "Adventure Record",
       "tier": 2,
+      "ordinal": 8,
       "notes": {
         "game": "You visited Sharn's could district, Skyway, to locate Sky Blue, a thief mentioned in the verse of the Draconic Prophecy spoken by the <i>Oracle of War</i>. You weren't the only ones hunting for her—salvage broker Irullan Karnach had hired a criminal gang to kidnap her. You rescued Sky Blue from the gang and face off against Karnach."
       },
@@ -465,6 +473,7 @@
       "title": "Parliament of Gears",
       "type": "Adventure Record",
       "tier": 2,
+      "ordinal": 9,
       "notes": {
         "game": "One the orders of Captain Alain ir'Ranek of the Brelish flying fortress Argonth, you mounted a rescue mission into the Mournland to retrieve captives taken by warforged raiding parties. What you discovered whas a highly organized military force carrying out the Lord of Blades' orders. Whoever this mysterious leader is, he's given orders to harvest resources and personnel to assist a dwarven artificer under his \"care.\""
       },

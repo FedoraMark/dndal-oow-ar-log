@@ -4,6 +4,7 @@ import Container from 'react-bootstrap/Container';
 import Select from './Select';
 import Option from './Option';
 import _map from "lodash/map";
+import _pull from "lodash/pull";
 
 import "./Event.scss";
 
@@ -48,20 +49,24 @@ class Event extends Component {
 
     }
 
-    selectHandler = (key, val) => {
+    eventSelectHandler = (key, val) => {
     	let title = this.state.eventObj.title;
 
-    	var newArr = this.state.selectionObj[title].selections;
-    	newArr[key] = val;
+    	var newArray = this.state.selectionObj[title].selections;
+        if (!val) {
+            _pull(newArray, key);
+        } else {
+            newArray.push(key);
+        }
 
-    	let selectObj = {[title]: {"active": true, "selections": newArr  }};
+    	let selectObj = {[title]: {"active": true, "selections": newArray  }};
 
     	this.setState({selectionObj: selectObj},
         	this.props.updateHandler(selectObj)
         );
     }
 
-    optionHandler = (key) => {
+    eventOptionHandler = (key) => {
     	let title = this.state.eventObj.title;
     	let selectObj = {[title]: {"active": true, "option": key }};
 
@@ -84,14 +89,14 @@ class Event extends Component {
 					{"checkboxes" in this.state.eventObj && 
 						<ul className="checkboxes" onClick={this.setSelect.bind(this, true, this.state.isSelected)}>
 							{_map(this.state.eventObj.checkboxes, (cell, key) => {
-								return <Select key={key} arrKey={key} type="checkbox" isDisabled={this.props.disable || !this.state.isSelected} label={cell} selectHandler={this.selectHandler} />
+								return <Select key={key} arrKey={key} type="checkbox" isDisabled={this.props.disable || !this.state.isSelected} label={cell} selectHandler={this.eventSelectHandler} />
 							})}
 						</ul>
 					}
 
 					{"radios" in this.state.eventObj && 
 						<div className="radios" onClick={this.setSelect.bind(this, true, this.state.isSelected)}>
-							<Option options={this.state.eventObj.radios} isDisabled={this.props.disable || !this.state.isSelected} optionHandler={this.optionHandler} />
+							<Option options={this.state.eventObj.radios} isDisabled={this.props.disable || !this.state.isSelected} optionHandler={this.eventOptionHandler} />
 						</div>
 					}
 					
