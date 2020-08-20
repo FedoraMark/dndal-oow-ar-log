@@ -151,7 +151,7 @@ class AdvRecordLog extends React.Component {
 									<Card.Body>
 										<Card.Title>Notes</Card.Title>
 										<Card.Subtitle>
-											Player notes
+											Player notes and wealth
 										</Card.Subtitle>
 									</Card.Body>
 								</Card>

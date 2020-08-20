@@ -130,10 +130,14 @@
                 opacity: .4;
             }
 
-            .card-title {
-                margin-bottom: .5rem !important;
+            .card-body {
+                @include flex(flex-start, flex-start, column);
 
-                font-weight: bold;
+                .card-title {
+                    margin: 0 .75rem .5rem 0 !important;
+
+                    font-weight: bold;
+                }
             }
         }
     }
@@ -148,26 +152,38 @@
 
 // Small devices (landscape phones, 576px and up)
 @media (min-width:576px) {
-    .log .titleBox {
-        h1 {
-            font-size: 3rem;
+    .log {
+        .titleBox {
+            h1 {
+                font-size: 3rem;
+            }
+
+            h2 {
+                font-size: 2.5rem;
+            }
         }
 
-        h2 {
-            font-size: 2.5rem;
+        .addLogWrapper .customItem .card-body {
+            @include flex(center, flex-start);
         }
     }
 }
 
 // Medium devices (tablets, 768px and up)
 @media (min-width:768px) {
-    .log .titleBox {
-        h1 {
-            font-size: 4rem;
+    .log {
+        .titleBox {
+            h1 {
+                font-size: 4rem;
+            }
+
+            h2 {
+                font-size: 3rem;
+            }
         }
 
-        h2 {
-            font-size: 3rem;
+        .addLogWrapper .customItem .card-body {
+            @include flex(flex-start, flex-start, column);
         }
     }
 }

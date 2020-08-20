@@ -108,21 +108,21 @@
         text-transform: uppercase;
     }
 
-    .notes {
-        display: none;
-        margin: .5rem 0;
+    // .notes {
+    //     display: none;
+    //     margin: .5rem 0;
 
-        @include multiLineEllipsis($lineHeight: 1.2rem, $lineCount: 4, $bgColor: white);
-    }
+    //     @include multiLineEllipsis($lineHeight: 1.2rem, $lineCount: 4, $bgColor: white);
+    // }
 
-    .ellipsis {
-        display: none;
-        margin: -.25rem 0 .5rem;
+    // .ellipsis {
+    //     display: none;
+    //     margin: -.25rem 0 .5rem;
 
-        text-align: center;
+    //     text-align: center;
 
-        opacity: .5;
-    }
+    //     opacity: .5;
+    // }
 }
 
 .modalTitle {
@@ -163,12 +163,12 @@
 
 // Large devices (desktops, 992px and up)
 @media (min-width: 992px) {
-    .cardWrapper {
-        .notes,
-        .ellipsis {
-            display: block;
-        }
-    }
+    // .cardWrapper {
+    //     .notes,
+    //     .ellipsis {
+    //         display: block;
+    //     }
+    // }
 }
 
 // Extra large devices (large desktops, 1200px and up)

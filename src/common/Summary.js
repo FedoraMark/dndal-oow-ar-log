@@ -70,8 +70,8 @@ class Summary extends Component {
 					<Card.Subtitle className="code">
 						{gameData.code}
 					</Card.Subtitle>
-					<Card.Text className="notes bookFont" dangerouslySetInnerHTML={{ __html: gameData.notes.game }} />
-					<Card.Text className="ellipsis">...</Card.Text>
+					{/* <Card.Text className="notes bookFont" dangerouslySetInnerHTML={{ __html: gameData.notes.game }} /> */}
+					{/* <Card.Text className="ellipsis">...</Card.Text> */}
 				</Card.Body>
 
 				<Modal size={"xl"} centered scrollable show={this.state.showModal} onHide={this.setShowModal.bind(this,false)}>
