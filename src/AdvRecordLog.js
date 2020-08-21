@@ -16,7 +16,7 @@ import "animate.css";
 import "./AdvRecordLog.scss";
 
 import games_oow from "./data/oowGames.json";
-import chara_SamPel from "./data/SamPel.json";
+// import chara_SamPel from "./data/SamPel.json";
 
 const fadeInUp = "animate__animated animate__fadeInUp";
 const fadeIn = "animate__animated animate__fadeIn";
@@ -61,7 +61,7 @@ class AdvRecordLog extends React.Component {
 		}
 
 		this.setState({ statusData: statusArr },
-			console.log(this.state.statusData)
+			// console.log(this.state.statusData)
 		);
 	};
 
