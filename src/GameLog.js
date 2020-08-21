@@ -34,7 +34,9 @@ class GameLog extends React.Component {
     state = {
         isCollapsed: this.props.isCollapsed,
         activeLegacyObj: {},
-        rewardGroup0Selections: [] // ASSUMES GROUP-0 IS THE ONLY POSSIBLE 'SELECT' REWARD
+        // didGainLevel: false,
+        rewardGroup0: [],
+        // rewardGroup1: [], // currently unneeded
     }
 
     //FUNCTIONS
@@ -55,18 +57,19 @@ class GameLog extends React.Component {
     }
 
     advancementHandler = (key, val) => {
-    	this.updateEventHandler({"advancement": {active: val}})
+    	// this.setState({didGainLevel: val});
+	    this.updateEventHandler({"advancement": {active: val}}) ;
     }
 
     selectRewardHandler = (key, val, title) => {
-    	var newArray = this.state.rewardGroup0Selections;
+    	var newArray = this.state[title];
     	if (!val) {
     		_pull(newArray, key);
     	} else {
     		newArray.push(key);
     	}
 
-    	this.setState({rewardGroup0Selections: newArray},
+    	this.setState({[title]: newArray},
     		this.updateEventHandler({[title]: {selections: newArray}})
     	);
     }
@@ -142,25 +145,28 @@ class GameLog extends React.Component {
     }
 
     render_rewards = (rewardObj) => {
+    	const {preview} = this.props;
         return (
             <Container className="rewardsWrapper wrapper">
 					<h1 className="sectionTitle">Rewards</h1>
 					<div className="box rewardsContent">
 						{_map(rewardObj, (rewardGroup, groupKey) => {
 							//CLEANUP - should be type of <Event /> component
+							let groupName = "rewardGroup" + groupKey;
+
 							return  (
 								<div key={groupKey} className="rewardGroup">
 									<h1 className="bookFont bold">
-										<span className="instructions">{rewardGroup.instruction}</span>
+										<span className={classnames("instructions" /*, (!preview && !this.state.didGainLevel) && "disabled"*/)}>{rewardGroup.instructions}</span>
 										{"options" in rewardGroup && <div className="buttonArea" />}
 									</h1>
 
-									{"options" in rewardGroup && <Option options={rewardGroup.options} canBlank isDisabled={this.props.preview} title={"rewardGroup" + groupKey} optionHandler={this.optionRewardHandler} />}
+									{"options" in rewardGroup && <Option options={rewardGroup.options} canBlank isDisabled={preview /*&& !this.state.didGainLevel*/} title={groupName} optionHandler={this.optionRewardHandler} />}
 
 									{"selections" in rewardGroup &&
 										<>
 											{_map(rewardGroup.selections, (selection, selectKey) => {
-												return <Select key={selectKey} label={selection} type="checkbox" isDisabled={this.props.preview} title={"rewardGroup" + groupKey} arrKey={selectKey} selectHandler={this.selectRewardHandler} />
+												return <Select key={selectKey} label={selection} type="checkbox" isDisabled={preview /*&& !this.state.didGainLevel*/} title={groupName} arrKey={selectKey} selectHandler={this.selectRewardHandler} />
 											})}
 										</>
 									}

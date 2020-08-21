@@ -16,7 +16,7 @@
       },
       "rewards": [
         {
-          "instruction": "You gain the following rewards:",
+          "instructions": "You gain the following rewards:",
           "selections": [
             "10 gp from Belaluur for rescuing Garundah (5 gp if she died).",
             "10 gp from Whist's crew for saving their lives.",
@@ -24,7 +24,7 @@
           ]
         },
         {
-          "instruction": "Choose ONE bonus reward:",
+          "instructions": "Choose ONE bonus reward:",
           "options": [
             "A vial of antitoxin for recovering the Arrow of Truth.",
             "A flask of alchemist's fire for recovering the Arrow of Truth.",
@@ -80,13 +80,13 @@
       },
       "rewards": [
         {
-          "instruction": "You gain the following rewards:",
+          "instructions": "You gain the following rewards:",
           "selections": [
             "50 gp from Belaluur for rescuing the Gray Dogs or returning to Salvation with their gear. You <b>must</b> return to Salvation to claim this reward."
           ]
         },
         {
-          "instruction": "Choose ONE bonus reward:",
+          "instructions": "Choose ONE bonus reward:",
           "options": [
             "A <i>potion of healing</i> from the corpse in Carpet Realm (area 2).",
             "25 gp for ransacking Dragon's Hoard (area 4).",
@@ -137,13 +137,13 @@
       },
       "rewards": [
         {
-          "instruction": "You gain the following rewards:",
+          "instructions": "You gain the following rewards:",
           "selections": [
             "25 gp as a bonus from Salvation's brokers for returning home alive."
           ]
         },
         {
-          "instruction": "Choose ONE bonus reward:",
+          "instructions": "Choose ONE bonus reward:",
           "options": [
             "25 gp from the purse in the office (area 4).",
             "A bag of ball bearings, two bags of caltrops, two hunting traps, two vials of acid, and a flask of alchemist's fire from the storage closet (area 5).",
@@ -186,14 +186,14 @@
       },
       "rewards": [
         {
-          "instruction": "You gain the following rewards:",
+          "instructions": "You gain the following rewards:",
           "selections": [
             "100 gp from Saal Dreadstroke's satchel.",
             "The <i>Oracle Detector</i>. This device emits a low beep when pointed in the direction of the <i>Oracle of War</i>. It has an additional minor magical property: it amplifies its vearer's voice, making it sound up to ten times louder than normal. This item doesn't count toward a character's magic item limit."
           ]
         },
         {
-          "instruction": "Choose ONE bonus reward:",
+          "instructions": "Choose ONE bonus reward:",
           "options": [
             "Chain mail for looting the blacksmith (area 6).",
             "50 gp for helping the guest in the Salvation Hotel (area 7).",
@@ -243,14 +243,14 @@
       },
       "rewards": [
         {
-          "instruction": "You gain the following rewards:",
+          "instructions": "You gain the following rewards:",
           "selections": [
             "200 gp from the brokers of Salvation for defending the outpost.",
             "A <i>potion of healing</i> from the brokers for defending Salvation."
           ]
         },
         {
-          "instruction": "Choose ONE bonus reward:",
+          "instructions": "Choose ONE bonus reward:",
           "options": [
             "<i>Rope of climbing</i>",
             "<i>+1 shield</i>",
@@ -295,13 +295,13 @@
       },
       "rewards": [
         {
-          "instruction": "You gain the following rewards:",
+          "instructions": "You gain the following rewards:",
           "selections": [
             "150 gp for defeating Andhedra the rakshasa."
           ]
         },
         {
-          "instruction": "Choose ONE bonus reward:",
+          "instructions": "Choose ONE bonus reward:",
           "options": [
             "A <i>potion of poison</i> for defeating Andhedra the rakshasa.",
             "A <i>dust of disappearance</i> for defeating Andhedra the rakshasa.",
@@ -360,13 +360,13 @@
       },
       "rewards": [
         {
-          "instruction": "You gain the following rewards:",
+          "instructions": "You gain the following rewards:",
           "selections": [
             "250 gp from Flamewind for identifying the spy (regardless of the success or failure of the spy's mission)."
           ]
         },
         {
-          "instruction": "Choose ONE bonus reward:",
+          "instructions": "Choose ONE bonus reward:",
           "options": [
             "100 gp and a <i>potion of healing</i> for defeatig Decius and Daykar.",
             "A <i>+1 weapon</i> from Flamewind for identifying the spy (regardless of the success or failure of the spy's mission).",
@@ -412,14 +412,14 @@
       },
       "rewards": [
         {
-          "instruction": "You gain ONE of the following rewards:",
+          "instructions": "You gain ONE of the following rewards:",
           "options": [
             "200 gp from Flamewind for bringing Sky Blue to Lareth Hall.",
             "100 gp from Sky Blue for helping her escape the city."
           ]
         },
         {
-          "instruction": "Choose ONE bonus reward:",
+          "instructions": "Choose ONE bonus reward:",
           "options": [
             "A <i>feather token</i> for winning the steeplechase.",
             "A suit of plate armor for defeating Bugrilda.",
@@ -483,14 +483,14 @@
       },
       "rewards": [
         {
-          "instruction": "You gain the following rewards:",
+          "instructions": "You gain the following rewards:",
           "selections": [
             "250 gp from Captain Alain ir'Ranek for attempting to resuce the captives (regardless of successs or failure).",
             "A Lamannian flint shard."
           ]
         },
         {
-          "instruction": "Choose ONE bonus reward:",
+          "instructions": "Choose ONE bonus reward:",
           "options": [
             "A <i>+2 halberd</i> for searching the captain's room (area U3).",
             "An <i>orb of shielding (Lamannian flint)</i> for searching the workship (area M3).",

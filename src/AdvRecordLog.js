@@ -61,7 +61,7 @@ class AdvRecordLog extends React.Component {
 		}
 
 		this.setState({ statusData: statusArr },
-			// console.log(this.state.statusData)
+			console.log(this.state.statusData)
 		);
 	};
 
@@ -151,9 +151,9 @@ class AdvRecordLog extends React.Component {
 							<li className="addItem" id="newNotes">
 								<Card className="customItem disabled">
 									<Card.Body>
-										<Card.Title>Notes</Card.Title>
+										<Card.Title>Notes / Wealth</Card.Title>
 										<Card.Subtitle>
-											Player notes and wealth
+											Notes and wealth changes
 										</Card.Subtitle>
 									</Card.Body>
 								</Card>
