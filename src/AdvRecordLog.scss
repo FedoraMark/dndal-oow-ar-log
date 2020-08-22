@@ -159,10 +159,17 @@
 
         background: none;
 
+        &:not(.openBar) {
+            .toggle {
+                border-radius: 0 0 50% 0;
+                background: rgba(255,255,255,.85);
+            }
+        }
+
         &.openBar {
             width: 300px;
 
-            background: rgba(0,0,0,.75);
+            background: rgba(0,0,0,.85);
 
             .toggle {
                 span {
@@ -212,7 +219,7 @@
         }
 
         .eventInfo {
-            padding: 0 1rem .5rem 1.5rem !important;
+            padding: 0 1.5rem .5rem !important;
             margin: -.5rem 0 !important;
 
             background-color: rgba(0, 0, 0, .25) !important;
@@ -231,7 +238,7 @@
 
                 box-sizing: border-box;
 
-                border-left: 2px solid rgba(255, 255, 255, .25) !important;
+                border-left: 2px solid rgba(255, 255, 255, .5) !important;
             }
         }
 
