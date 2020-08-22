@@ -32,7 +32,8 @@ class AdvRecordLog extends React.Component {
 		statusData: [],
 		showAddRecordArea: false,
 		loaded: false,
-		isSidebarOpen: false
+		isSidebarOpen: false,
+		sideBar: {}
 	};
 
 	componentDidMount() {
@@ -257,10 +258,11 @@ class AdvRecordLog extends React.Component {
 
 					{this.state.isSidebarOpen && _map(eventArr, (event, key) => {
 						let statusInfo = this.getStatusInfo(event.code, event.title);
+						let keyCodeTitle = event.code + " " + event.title;
 
 						return (
 							<SideNav.Nav key={key}>
-								<NavItem eventKey={event.code + "_" + event.title} navitemClassName="eventItem">
+								<NavItem eventKey={keyCodeTitle} expanded={this.state.sideBar[keyCodeTitle]} navitemClassName="eventItem">
 								 	<NavIcon><Badge pill variant="light">&nbsp;</Badge></NavIcon>
 									<NavText>
 										<span className="title text bookFont bold">{statusInfo.title}</span>
@@ -306,8 +308,8 @@ class AdvRecordLog extends React.Component {
 
 				{this.render_newRecordArea()}
 
-				{this.render_gameLogs(this.state.gameData)}
-				{/* {this.render_gameLogs(games_oow.records)} */}
+				{/* {this.render_gameLogs(this.state.gameData)} */}
+				{this.render_gameLogs(games_oow.records)}
 
 				<Jumbotron className="footer" />
 			</div>

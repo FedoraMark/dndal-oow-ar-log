@@ -15,10 +15,7 @@
         margin-bottom: 2rem;
     }
 
-    &:hover,
-    &:focus {
-        cursor: pointer;
-    }
+
 
     &:before {
         position: absolute;
@@ -46,6 +43,11 @@
     .contents {
         display: inline-block;
         padding-top: .1rem;
+
+        &:hover,
+        &:focus {
+            cursor: pointer;
+        }
 
         .descriptionWrapper {
             width: 100%;
