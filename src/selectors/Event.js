@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Container from 'react-bootstrap/Container';
-import Select from './Select';
-import Option from './Option';
 import _map from "lodash/map";
 import _pull from "lodash/pull";
 
-import "./Event.scss";
+import Select from 'selectors/Select';
+import Option from 'selectors/Option';
+
+import "selectors/Event.scss";
 
 class Event extends Component {
     static propTypes = {
@@ -25,7 +26,7 @@ class Event extends Component {
     state = {
         eventObj: this.props.eventObj,
         isSelected: this.props.isSelected === "true",
-        selectionObj: {[this.props.eventObj.title]: {"active": this.props.isSelected, "selections": [], "option": -1}}
+        selectionObj: {[this.props.eventObj.title]: {active: this.props.isSelected, selections: [], option: -1}}
     }
 
     //FUNCTIONS
@@ -39,9 +40,9 @@ class Event extends Component {
     	}
 
     	let title = this.state.eventObj.title;
-    	let data = val ? {...this.state.selectionObj[title]} : {"selections": [], "option": -1};
+    	let data = val ? {...this.state.selectionObj[title]} : {selections: [], option: -1};
 
-    	let selectObj = {[title]: {...data, "active": val }};
+    	let selectObj = {[title]: {...data, legacy: true, active: val }};
 
 		this.setState({ isSelected: val, selectionObj: selectObj },
         	this.props.updateHandler(selectObj)
@@ -59,7 +60,7 @@ class Event extends Component {
             newArray.push(key);
         }
 
-    	let selectObj = {[title]: {"active": true, "selections": newArray  }};
+    	let selectObj = {[title]: {legacy: true, active: true, selections: newArray  }};
 
     	this.setState({selectionObj: selectObj},
         	this.props.updateHandler(selectObj)
@@ -68,7 +69,7 @@ class Event extends Component {
 
     eventOptionHandler = (key) => {
     	let title = this.state.eventObj.title;
-    	let selectObj = {[title]: {"active": true, "option": key }};
+    	let selectObj = {[title]: {legacy: true, active: true, option: key }};
 
     	this.setState({selectionObj: selectObj},
         	this.props.updateHandler(selectObj)
@@ -101,10 +102,11 @@ class Event extends Component {
 					}
 					
 					{"table" in this.state.eventObj && 
-						<ul className="table" onClick={this.toggleSelect.bind(this)}>
-							{_map(this.state.eventObj.table, (cell, key) => {
-								return <li className="bookFont" key={key} dangerouslySetInnerHTML={{ __html: cell }} />
-							})}
+						<ul className="table" onClick={this.setSelect.bind(this, true, this.state.isSelected)}>
+                            <Option options={this.state.eventObj.table} isDisabled={this.props.disable || !this.state.isSelected} optionHandler={this.eventOptionHandler} />
+							{/* {_map(this.state.eventObj.table, (cell, key) => { */}
+							{/* 	return <li className="bookFont" key={key} dangerouslySetInnerHTML={{ __html: cell }} /> */}
+							{/* })} */}
 						</ul>
 					}
 		        </span>

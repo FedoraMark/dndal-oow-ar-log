@@ -1,18 +1,19 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 import classnames from "classnames";
 import Collapse from "react-bootstrap/collapse";
 import Container from "react-bootstrap/Container";
 import _map from "lodash/map";
 import _pull from "lodash/pull";
 
-import Event from "./selectors/Event";
-import Select from "./selectors/Select";
-import Option from "./selectors/Option";
-import Wealth from "./common/Wealth";
+import { getFirstObject, getFirstKey } from "utils/Util";
+import Event from "selectors/Event";
+import Select from "selectors/Select";
+import Option from "selectors/Option";
+import Wealth from "common/Wealth";
 
 import "animate.css";
-import './GameLog.scss';
+import "GameLog.scss";
 
 class GameLog extends React.Component {
 
@@ -46,19 +47,24 @@ class GameLog extends React.Component {
 
     updateEventHandler = (eventStatus) => {
         let code = this.props.data.code;
+        var alObj = this.state.activeLegacyObj;
 
-        this.setState({ activeLegacyObj: { ...this.state.activeLegacyObj, [code]: { ...this.state.activeLegacyObj[code], ...eventStatus } } },
-            () => {
-                // console.log("updateEventHandler " + code);
-                // console.log(eventStatus);
+        if (getFirstObject(eventStatus).active) {
+        	// IF ACTIVE
+	        alObj = {[code]: { ...this.state.activeLegacyObj[code], ...eventStatus } };
+	    } else {
+	    	//IF DISABLED
+	    	delete alObj[code][getFirstKey(eventStatus)];
+	    }
 
-                this.props.logUpdateHandler(this.state.activeLegacyObj);
-            });
+	    this.setState({ activeLegacyObj: alObj },
+			this.props.logUpdateHandler(alObj)
+		);
     }
 
     advancementHandler = (key, val) => {
     	// this.setState({didGainLevel: val});
-	    this.updateEventHandler({"advancement": {active: val}}) ;
+	    this.updateEventHandler({"advancement": {legacy: false, active: val}}) ;
     }
 
     selectRewardHandler = (key, val, title) => {
@@ -70,12 +76,12 @@ class GameLog extends React.Component {
     	}
 
     	this.setState({[title]: newArray},
-    		this.updateEventHandler({[title]: {selections: newArray}})
+    		this.updateEventHandler({[title]: {legacy: false, active: true, selections: newArray}})
     	);
     }
 
     optionRewardHandler = (key, title) => {
-    	this.updateEventHandler({[title]: {option: key}})
+    	this.updateEventHandler({[title]: {legacy: false, active: true, option: key}})
     }
 
     //RENDERERS

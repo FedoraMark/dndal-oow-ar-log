@@ -1,5 +1,5 @@
 // IMPORTS
-@import "../common/common.scss";
+@import "utils/common.scss";
 
 // STYLES
 .eventWrapper {
@@ -22,10 +22,10 @@
 
     &:before {
         position: absolute;
-        top: 1.15rem;
+        top: .2rem;
         left: 5px;
 
-        height: calc(100% - 1.15rem);
+        height: 100%;
 
         box-sizing: border-box;
 
@@ -61,17 +61,27 @@
             }
         }
 
-        .table {
-            padding: 0 0 0 1rem;
-            margin: .4rem 0 0;
-
-            list-style: none;
-        }
+        // .table {
+        //     padding: 0 0 0 1rem;
+        //     margin: .4rem 0 0;
+        //     list-style: none;
+        // }
 
         .checkboxes,
-        .radios {
+        .radios,
+        .table {
             padding: 0;
             margin: .5rem 0 -.5rem;
+        }
+
+        .table {
+            * {
+                border-color: white !important;
+            }
+
+            .input-group-text {
+                background: none;
+            }
         }
     }
 }
@@ -82,23 +92,23 @@
 
 // Small devices (landscape phones, 576px and up)
 @media (min-width: 576px) {
-    .eventWrapper .contents .table {
-        padding-left: 1rem;
-    }
+    // .eventWrapper .contents .table {
+    //     padding-left: 1rem;
+    // }
 }
 
 // Medium devices (tablets, 768px and up)
 @media (min-width: 768px) {
-    .eventWrapper .contents .table {
-        padding-left: .5rem;
-    }
+    // .eventWrapper .contents .table {
+    //     padding-left: .5rem;
+    // }
 }
 
 // Large devices (desktops, 992px and up)
 @media (min-width: 992px) {
-    .eventWrapper .contents .table {
-        padding-left: 1rem;
-    }
+    // .eventWrapper .contents .table {
+    //     padding-left: 1rem;
+    // }
 }
 
 // Extra large devices (large desktops, 1200px and up)

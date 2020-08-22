@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import InputGroup from 'react-bootstrap/InputGroup';
 
-import './SelectOption.scss';
+import 'selectors/SelectOption.scss';
 
 class Select extends React.Component {
     static propTypes = {

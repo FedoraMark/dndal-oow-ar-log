@@ -7,9 +7,9 @@ import Tooltip from 'react-bootstrap/Tooltip';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 
-import GameLog from '../GameLog.js';
+import GameLog from 'GameLog.js';
 
-import "./Summary.scss";
+import "common/Summary.scss";
 
 class Summary extends Component {
 	static propTypes = {

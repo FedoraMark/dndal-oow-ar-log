@@ -1,5 +1,5 @@
 // IMPORTS
-@import "./common/common.scss";
+@import "./utils/common.scss";
 
 // STYLES
 .gameBox {
@@ -21,6 +21,10 @@
         margin: 0;
 
         pointer-events: none;
+
+        input {
+            visibility: hidden;
+        }
 
 
         *:not(button) {

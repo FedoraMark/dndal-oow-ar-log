@@ -1,5 +1,5 @@
 // IMPORTS
-@import "./common/common.scss";
+@import "./utils/common.scss";
 
 // STYLES
 .block {
@@ -144,6 +144,112 @@
 
     .footer {
         margin: 3rem 0 0 !important;
+    }
+
+    .activeBarWrapper {
+        position: fixed;
+
+        overflow-y: scroll;
+
+        -webkit-transition: all .25s ease;
+           -moz-transition: all .25s ease;
+            -ms-transition: all .25s ease;
+             -o-transition: all .25s ease;
+                transition: all .25s ease;
+
+        background: none;
+
+        &.openBar {
+            width: 300px;
+
+            background: rgba(0,0,0,.75);
+
+            .toggle {
+                span {
+                    color: white !important;
+                }
+            }
+        }
+
+        .toggle,
+        .text {
+            color: white !important;
+        }
+
+        .message {
+            position: absolute;
+            top: 0;
+            left: 0;
+
+            height: 100%;
+            min-width: 240px;
+            padding-left: 60px;
+
+            font-size: 1.1rem;
+            font-weight: lighter;
+
+            @include flex(center, flex-start);
+        }
+
+        .badge {
+            font-size: .8rem;
+        }
+
+        .title {
+            font-size: 1.1rem;
+            line-height: 3.1;
+        }
+
+        .eventItem {
+            margin-top: 3px;
+
+            & + div > div {
+                &:after,
+                &:before {
+                    display: none !important;
+                }
+            }
+        }
+
+        .eventInfo {
+            padding: 0 1rem .5rem 1.5rem !important;
+            margin: -.5rem 0 !important;
+
+            background-color: rgba(0, 0, 0, .25) !important;
+
+            .code {
+                font-weight: bold;
+            }
+
+            .desc {
+                line-height: 1rem;
+            }
+
+            .list {
+                padding-left: .75rem;
+                margin: -.5rem 0 1rem;
+
+                box-sizing: border-box;
+
+                border-left: 2px solid rgba(255, 255, 255, .25) !important;
+            }
+        }
+
+        .toggle {
+            span {
+                color: black !important;
+            }
+
+            span:not(.number) {
+                background-color: currentColor !important;
+            }
+
+            .number {
+                position: absolute;
+                top: .75rem;
+                right: .5rem;
+            }
+        }
     }
 }
 

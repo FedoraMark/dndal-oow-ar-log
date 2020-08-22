@@ -5,7 +5,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Fade from 'react-bootstrap/Fade'
 import _map from 'lodash/map';
 
-import './SelectOption.scss';
+import 'selectors/SelectOption.scss';
 
 class Option extends React.Component {
 

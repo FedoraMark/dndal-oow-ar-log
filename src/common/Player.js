@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Row from 'react-bootstrap/Row'
 import _map from 'lodash/map';
 
-import Wealth from "./Wealth.js";
+import Wealth from "common/Wealth";
 
 import "./Player.scss";
 
