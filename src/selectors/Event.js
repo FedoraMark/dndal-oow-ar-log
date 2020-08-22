@@ -31,14 +31,10 @@ class Event extends Component {
 
     //FUNCTIONS
     toggleSelect = () => {
-        this.setSelect(!this.state.isSelected, false);
+        this.setSelect(!this.state.isSelected);
     }
 
-    setSelect = (val,skip) => {
-    	if (skip) {
-    		return;
-    	}
-
+    setSelect = (val, skip) => {
     	let title = this.state.eventObj.title;
     	let data = val ? {...this.state.selectionObj[title]} : {selections: [], option: -1};
 
@@ -80,7 +76,7 @@ class Event extends Component {
     render() {
         return (
             <Container className="eventWrapper custom-control custom-checkbox">
-				<input type="checkbox" className="custom-control-input" disabled={this.props.disable} checked={this.state.isSelected} onChange={this.toggleSelect.bind(this)} />
+				<input type="checkbox" className="custom-control-input" disabled={this.props.disable} checked={this.state.isSelected} onClick={this.setSelect.bind(this, !this.state.isSelected)} />
 	        	<span className="contents">
 		        	<div className="descriptionWrapper" onClick={this.toggleSelect.bind(this)}>
 		        		<h1 className="bookFont bold">{this.state.eventObj.title}.</h1>
@@ -88,7 +84,7 @@ class Event extends Component {
 					</div>
 
 					{"checkboxes" in this.state.eventObj && 
-						<ul className="checkboxes" onClick={this.setSelect.bind(this, true, this.state.isSelected)}>
+						<ul className="checkboxes" onClick={this.setSelect.bind(this, true)}>
 							{_map(this.state.eventObj.checkboxes, (cell, key) => {
 								return <Select key={key} arrKey={key} type="checkbox" isDisabled={this.props.disable || !this.state.isSelected} label={cell} selectHandler={this.eventSelectHandler} />
 							})}
@@ -96,17 +92,14 @@ class Event extends Component {
 					}
 
 					{"radios" in this.state.eventObj && 
-						<div className="radios" onClick={this.setSelect.bind(this, true, this.state.isSelected)}>
+						<div className="radios" onClick={this.setSelect.bind(this, true)}>
 							<Option options={this.state.eventObj.radios} isDisabled={this.props.disable || !this.state.isSelected} optionHandler={this.eventOptionHandler} />
 						</div>
 					}
 					
 					{"table" in this.state.eventObj && 
-						<ul className="table" onClick={this.setSelect.bind(this, true, this.state.isSelected)}>
+						<ul className="table" onClick={this.setSelect.bind(this, true)}>
                             <Option options={this.state.eventObj.table} isDisabled={this.props.disable || !this.state.isSelected} optionHandler={this.eventOptionHandler} />
-							{/* {_map(this.state.eventObj.table, (cell, key) => { */}
-							{/* 	return <li className="bookFont" key={key} dangerouslySetInnerHTML={{ __html: cell }} /> */}
-							{/* })} */}
 						</ul>
 					}
 		        </span>

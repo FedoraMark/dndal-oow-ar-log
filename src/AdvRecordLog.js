@@ -13,7 +13,7 @@ import Collapse from "react-bootstrap/Collapse";
 import SideNav, { NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
 import ClickOutside from 'react-click-outside';
 
-import { fadeInUp, fadeIn, getFirstObject, getFirstKey, getStatusInfo } from "utils/Util";
+import { fadeInUp, fadeIn, getFirstObject, getFirstKey } from "utils/Util";
 import Player from "common/Player";
 import GameLog from "GameLog";
 import Summary from "common/Summary";
