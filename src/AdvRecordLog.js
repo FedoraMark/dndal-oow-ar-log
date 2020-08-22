@@ -94,7 +94,7 @@ class AdvRecordLog extends React.Component {
 	if (statusInfo.active && statusInfo.legacy) {
 		eventDetails = {title: title, code: code, description: eventData.description, option: null, selections: []}
 
-		console.log(statusInfo);
+		// console.log(statusInfo);
 
 		if (statusInfo.option !== undefined && statusInfo.option !== -1) {
 			if (eventData.radios) {
