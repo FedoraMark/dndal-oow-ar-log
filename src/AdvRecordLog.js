@@ -33,7 +33,6 @@ class AdvRecordLog extends React.Component {
 		showAddRecordArea: false,
 		loaded: false,
 		isSidebarOpen: false,
-		sideBar: {}
 	};
 
 	componentDidMount() {
@@ -95,6 +94,7 @@ class AdvRecordLog extends React.Component {
 	if (statusInfo.active && statusInfo.legacy) {
 		eventDetails = {title: title, code: code, description: eventData.description, option: null, selections: []}
 
+		console.log(statusInfo);
 
 		if (statusInfo.option !== undefined && statusInfo.option !== -1) {
 			if (eventData.radios) {
@@ -260,9 +260,11 @@ class AdvRecordLog extends React.Component {
 						let statusInfo = this.getStatusInfo(event.code, event.title);
 						let keyCodeTitle = event.code + " " + event.title;
 
+						// console.log(statusInfo);
+
 						return (
 							<SideNav.Nav key={key}>
-								<NavItem eventKey={keyCodeTitle} expanded={this.state.sideBar[keyCodeTitle]} navitemClassName="eventItem">
+								<NavItem eventKey={keyCodeTitle} navitemClassName="eventItem">
 								 	<NavIcon><Badge pill variant="light">&nbsp;</Badge></NavIcon>
 									<NavText>
 										<span className="title text bookFont bold">{statusInfo.title}</span>

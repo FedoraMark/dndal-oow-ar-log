@@ -49,6 +49,7 @@ class GameLog extends React.Component {
         let code = this.props.data.code;
         var alObj = this.state.activeLegacyObj;
 
+
         if (getFirstObject(eventStatus).active) {
         	// IF ACTIVE
 	        alObj = {[code]: { ...this.state.activeLegacyObj[code], ...eventStatus } };
