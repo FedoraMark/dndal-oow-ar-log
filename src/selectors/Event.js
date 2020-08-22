@@ -76,7 +76,7 @@ class Event extends Component {
     render() {
         return (
             <Container className="eventWrapper custom-control custom-checkbox">
-				<input type="checkbox" className="custom-control-input" disabled={this.props.disable} checked={this.state.isSelected} onClick={this.setSelect.bind(this, !this.state.isSelected)} />
+				<input type="checkbox" className="custom-control-input" disabled={this.props.disable} checked={this.state.isSelected} onClick={this.toggleSelect.bind(this)} />
 	        	<span className="contents">
 		        	<div className="descriptionWrapper" onClick={this.toggleSelect.bind(this)}>
 		        		<h1 className="bookFont bold">{this.state.eventObj.title}.</h1>
