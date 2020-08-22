@@ -308,8 +308,8 @@ class AdvRecordLog extends React.Component {
 
 				{this.render_newRecordArea()}
 
-				{/* {this.render_gameLogs(this.state.gameData)} */}
-				{this.render_gameLogs(games_oow.records)}
+				{this.render_gameLogs(this.state.gameData)}
+				{/* {this.render_gameLogs(games_oow.records)} */}
 
 				<Jumbotron className="footer" />
 			</div>
