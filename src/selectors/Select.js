@@ -15,6 +15,7 @@ class Select extends React.Component {
         isBold: PropTypes.bool,
         selectHandler: PropTypes.func,
         title: PropTypes.string,
+        isExpended: PropTypes.bool,
     }
 
     static defaultProps = {
@@ -24,17 +25,19 @@ class Select extends React.Component {
         isBold: false,
         selectHandler: (e) => {},
         title: "N-A",
+        isExpended: false,
     }
 
     state = {
         isSelected: this.props.isSelected,
-        isDisabled: this.props.isDisabled
+        isDisabled: this.props.isDisabled,
+        isExpended: this.props.isExpended
     }
 
 
     componentWillReceiveProps(nextProps) {
-        this.setState({ isDisabled: nextProps.isDisabled }, () => {
-            if (this.state.isDisabled) {
+        this.setState({ isSelected: nextProps.isSelected, isDisabled: nextProps.isDisabled, isExpended: nextProps.isExpended }, () => {
+            if (nextProps.isDisabled && !nextProps.isExpended) {
                 this.setState({ isSelected: false });
             }
         });

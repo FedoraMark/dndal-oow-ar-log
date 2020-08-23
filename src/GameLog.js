@@ -35,7 +35,6 @@ class GameLog extends React.Component {
     state = {
         isCollapsed: this.props.isCollapsed,
         activeLegacyObj: {},
-        // didGainLevel: false,
         rewardGroup0: [],
         // rewardGroup1: [], // currently unneeded
     }
@@ -58,13 +57,14 @@ class GameLog extends React.Component {
 	    	delete alObj[code][getFirstKey(eventStatus)];
 	    }
 
+	    // console.log(alObj);
+
 	    this.setState({ activeLegacyObj: alObj },
 			this.props.logUpdateHandler(alObj)
 		);
     }
 
     advancementHandler = (key, val) => {
-    	// this.setState({didGainLevel: val});
 	    this.updateEventHandler({"advancement": {legacy: false, active: val}}) ;
     }
 
@@ -90,7 +90,6 @@ class GameLog extends React.Component {
         return (
             <div className={classnames("titleWrapper",!this.props.preview && "sticky")} onClick={this.toggleCollapsed.bind(this)}>
 				<h1 className="title fauxdesto">
-					{/* <span className="type">{type}:</span> */}
 					<span className="name">
 						{code !== null && <span className="code" dangerouslySetInnerHTML={{ __html: code.split("-").join("<span class='hyphen'>-</span>") }}></span>}
 						<span className="fauxdesto italic">{title}</span>
@@ -140,11 +139,27 @@ class GameLog extends React.Component {
     }
 
     render_advancement = (advObj) => {
+    	const {data, preview} = this.props;
+
+		let isSelected =
+			this.state.activeLegacyObj[data.code] !== undefined &&
+			this.state.activeLegacyObj[data.code].advancement !== undefined
+				? this.state.activeLegacyObj[data.code].advancement.active
+				: false;
+
         return (
             <Container className="advWrapper wrapper">
 					<h1 className="sectionTitle">Advancement</h1>
 					<div className="box">
-						<Select label={advObj.label} type="checkbox" isSelected={advObj.isSelected} isBold isDisabled={this.props.preview} selectHandler={this.advancementHandler} />
+						<Select
+							label={advObj.label}
+							type="checkbox"
+							isSelected={advObj.isSelected}
+							isBold
+							isDisabled={preview}
+							isSelected={isSelected}
+							selectHandler={this.advancementHandler}
+						/>
 						<p className="bookFont footnote" dangerouslySetInnerHTML={{ __html:  advObj.footnote }} />
 					</div>
 			</Container>
@@ -152,28 +167,37 @@ class GameLog extends React.Component {
     }
 
     render_rewards = (rewardObj) => {
-    	const {preview} = this.props;
+    	const {data, preview} = this.props;
+
         return (
             <Container className="rewardsWrapper wrapper">
 					<h1 className="sectionTitle">Rewards</h1>
 					<div className="box rewardsContent">
 						{_map(rewardObj, (rewardGroup, groupKey) => {
+							
 							//CLEANUP - should be type of <Event /> component
 							let groupName = "rewardGroup" + groupKey;
+							var option = -1;
+							var selectArray = [];
+								
+							if (this.state.activeLegacyObj[data.code] !== undefined && this.state.activeLegacyObj[data.code][groupName] !== undefined) {
+								option = this.state.activeLegacyObj[data.code][groupName].option;
+								selectArray = this.state.activeLegacyObj[data.code][groupName].selections;
+							}
 
 							return  (
 								<div key={groupKey} className="rewardGroup">
 									<h1 className="bookFont bold">
-										<span className={classnames("instructions" /*, (!preview && !this.state.didGainLevel) && "disabled"*/)}>{rewardGroup.instructions}</span>
+										<span className={classnames("instructions")}>{rewardGroup.instructions}</span>
 										{"options" in rewardGroup && <div className="buttonArea" />}
 									</h1>
 
-									{"options" in rewardGroup && <Option options={rewardGroup.options} canBlank isDisabled={preview /*&& !this.state.didGainLevel*/} title={groupName} optionHandler={this.optionRewardHandler} />}
+									{"options" in rewardGroup && <Option options={rewardGroup.options} canBlank isDisabled={preview} selection={option} title={groupName} optionHandler={this.optionRewardHandler} />}
 
 									{"selections" in rewardGroup &&
 										<>
 											{_map(rewardGroup.selections, (selection, selectKey) => {
-												return <Select key={selectKey} label={selection} type="checkbox" isDisabled={preview /*&& !this.state.didGainLevel*/} title={groupName} arrKey={selectKey} selectHandler={this.selectRewardHandler} />
+												return <Select key={selectKey} label={selection} type="checkbox" isDisabled={preview} isSelected={selectArray.includes(selectKey)} title={groupName} arrKey={selectKey} selectHandler={this.selectRewardHandler} />
 											})}
 										</>
 									}
@@ -224,13 +248,20 @@ class GameLog extends React.Component {
     }
 
     render_legacy = (legacyObj) => {
+    	const { data, preview } = this.props;
+
         return (
             <Container className="legacyWrapper wrapper">
 				<h1 className="sectionTitle">Legacy Events</h1>
 				<Container className="box">
 					<div className="legacyContent">
 						{_map(legacyObj.events, (event, key) => {
-							return <Event eventObj={event} key={key} disable={this.props.preview} updateHandler={this.updateEventHandler} />
+							var statusObj = {};
+							if (this.state.activeLegacyObj[data.code] !== undefined && this.state.activeLegacyObj[data.code][event.title] !== undefined) {
+						    	statusObj = this.state.activeLegacyObj[data.code][event.title];
+						    }
+
+							return <Event eventObj={event} key={key} disable={preview} status={statusObj} updateHandler={this.updateEventHandler} />
 						})}
 					</div>
 					<div className="footnote bookFont" dangerouslySetInnerHTML={{ __html: legacyObj.footnote }} />

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Container from 'react-bootstrap/Container';
 import _map from "lodash/map";
 import _pull from "lodash/pull";
+import classnames from "classnames";
 
 import Select from 'selectors/Select';
 import Option from 'selectors/Option';
@@ -14,19 +15,27 @@ class Event extends Component {
         eventObj: PropTypes.object.isRequired,
         isSelected: PropTypes.bool,
         disable: PropTypes.bool,
-        updateHandler: PropTypes.func
+        updateHandler: PropTypes.func,
+        status: PropTypes.object,
     }
 
     static defaultProps = {
         isSelected: false,
         disable: false,
-        updateHandler: (e) => {}
+        updateHandler: (e) => {},
+        status: {}
+
     }
 
     state = {
         eventObj: this.props.eventObj,
         isSelected: this.props.isSelected === "true",
-        selectionObj: {[this.props.eventObj.title]: {active: this.props.isSelected, selections: [], option: -1}}
+        selectionObj: {[this.props.eventObj.title]: {active: this.props.isSelected, selections: [], option: -1}},
+        status: this.props.status
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({ status: nextProps.status });
     }
 
     //FUNCTIONS
@@ -35,7 +44,7 @@ class Event extends Component {
     }
 
     setSelect = (val, skip) => {
-        if (skip) {
+        if (this.state.status.expended || skip) {
             return;
         }
 
@@ -78,9 +87,11 @@ class Event extends Component {
 
     //RENDERERS
     render() {
+        let disableSubOptions = this.props.disable || !this.state.isSelected || this.state.status.expended;
+
         return (
-            <Container className="eventWrapper custom-control custom-checkbox">
-				<input type="checkbox" className="custom-control-input" disabled={this.props.disable} checked={this.state.isSelected} onChange={(e) => {}} onClick={this.toggleSelect.bind(this)} />
+            <Container className={classnames("eventWrapper","custom-control","custom-checkbox", this.state.status.expended && "expended")}>
+				<input type="checkbox" className="custom-control-input" disabled={this.props.disable || this.state.status.expended} checked={this.state.isSelected} onChange={(e) => {}} onClick={this.toggleSelect.bind(this)} />
 	        	<span className="contents">
 		        	<div className="descriptionWrapper" onClick={this.toggleSelect.bind(this)}>
 		        		<h1 className="bookFont bold">{this.state.eventObj.title}.</h1>
@@ -90,20 +101,21 @@ class Event extends Component {
 					{"checkboxes" in this.state.eventObj && 
 						<ul className="checkboxes" onClick={this.setSelect.bind(this, true, this.state.isSelected)}>
 							{_map(this.state.eventObj.checkboxes, (cell, key) => {
-								return <Select key={key} arrKey={key} type="checkbox" isDisabled={this.props.disable || !this.state.isSelected} label={cell} selectHandler={this.eventSelectHandler} />
+                                let selectionsArray = this.state.status.selections !== undefined ? this.state.status.selections : [];
+								return <Select key={key} arrKey={key} type="checkbox" isDisabled={disableSubOptions} isSelected={selectionsArray.includes(key)} isExpended={this.state.status.expended} label={cell} selectHandler={this.eventSelectHandler} />
 							})}
 						</ul>
 					}
 
 					{"radios" in this.state.eventObj && 
 						<div className="radios" onClick={this.setSelect.bind(this, true, this.state.isSelected)}>
-							<Option options={this.state.eventObj.radios} isDisabled={this.props.disable || !this.state.isSelected} optionHandler={this.eventOptionHandler} />
+							<Option options={this.state.eventObj.radios} isDisabled={disableSubOptions} isExpended={this.state.status.expended} selection={this.state.status.option} optionHandler={this.eventOptionHandler} />
 						</div>
 					}
 					
 					{"table" in this.state.eventObj && 
 						<ul className="table" onClick={this.setSelect.bind(this, true, this.state.isSelected)}>
-                            <Option options={this.state.eventObj.table} isDisabled={this.props.disable || !this.state.isSelected} optionHandler={this.eventOptionHandler} />
+                            <Option options={this.state.eventObj.table} isDisabled={disableSubOptions} isExpended={this.state.status.expended} selection={this.state.status.option} optionHandler={this.eventOptionHandler} />
 						</ul>
 					}
 		        </span>

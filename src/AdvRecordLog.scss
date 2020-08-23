@@ -198,13 +198,41 @@
             @include flex(center, flex-start);
         }
 
+
+
         .badge {
             font-size: .8rem;
         }
 
+
         .title {
             font-size: 1.1rem;
             line-height: 3.1;
+        }
+
+        .eventItem,
+        .eventInfo {
+            &.expended {
+                * {
+                    text-decoration: line-through currentColor solid;
+
+                    -webkit-transition: all .25s ease;
+                       -moz-transition: all .25s ease;
+                        -ms-transition: all .25s ease;
+                         -o-transition: all .25s ease;
+                            transition: all .25s ease;
+
+                    color: gray !important;
+                }
+
+                .title {
+                    text-decoration: line-through currentColor solid;
+                }
+
+                .list {
+                    border-left-color: darken(gray, 25%) !important;
+                }
+            }
         }
 
         .eventItem {
@@ -228,6 +256,40 @@
 
             .code {
                 font-weight: bold;
+
+                @include flex(center,space-between);
+
+                .custom-switch {
+                    margin-bottom: -.2rem;
+                    margin-left: .5rem;
+
+                    .custom-control-label {
+                        &:before,
+                        &:after {
+                            outline: none !important;
+                            box-shadow: none !important;
+                        }
+
+                        &:before {
+                            border-color: darkgray;
+                            background-color: white;
+                        }
+
+                        &:after {
+                            background-color: darkgray;
+                        }
+                    }
+                    .custom-control-input:checked ~ .custom-control-label {
+                        &:before {
+                            border-color: gray;
+                            background-color: darkgray;
+                        }
+
+                        &:after {
+                            background-color: gray;
+                        }
+                    }
+                }
             }
 
             .desc {

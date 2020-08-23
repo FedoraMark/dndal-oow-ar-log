@@ -4,11 +4,13 @@ import _map from "lodash/map";
 import _find from 'lodash/find';
 import _findIndex from "lodash/findIndex";
 import _sortBy from "lodash/sortBy";
+import _filter from "lodash/filter";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Badge from 'react-bootstrap/Badge';
+import Form from 'react-bootstrap/Form'
 import Collapse from "react-bootstrap/Collapse";
 import SideNav, { NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
 import ClickOutside from 'react-click-outside';
@@ -33,6 +35,7 @@ class AdvRecordLog extends React.Component {
 		showAddRecordArea: false,
 		loaded: false,
 		isSidebarOpen: false,
+		eventArr: []
 	};
 
 	componentDidMount() {
@@ -52,11 +55,22 @@ class AdvRecordLog extends React.Component {
 		this.toggleAddRecordArea();
 	};
 
+	toggleExpendedEvent = (code, title) => {		
+		var newStatusData = this.state.statusData;
+		let index = _findIndex(newStatusData, (e) => {
+			return getFirstKey(e) === code;
+		});
+
+		newStatusData[index][code][title].expended = newStatusData[index][code][title].expended === true ? false : true;
+
+		this.setState({statusData: newStatusData});
+	}
+
 	updateLogStatus = (logStatusObj) => {
 		let statusArr = this.state.statusData;
 
 		let changeIndex = _findIndex(statusArr, (o) => {
-			return Object.keys(o)[0] === Object.keys(logStatusObj)[0];
+			return getFirstKey(o) === getFirstKey(logStatusObj);
 		});
 
 		if (changeIndex === -1) {
@@ -65,57 +79,88 @@ class AdvRecordLog extends React.Component {
 			statusArr[changeIndex] = logStatusObj;
 		}
 
-		this.setState({ statusData: statusArr },
-			// console.log(this.state.statusData)
-		);
+		this.setState({ statusData: statusArr });
 	};
 
 	// get detailed status info for given code and event title
 	getStatusInfo = (code, title) => {
-	// console.log(code + " - " + title);
+		// console.log(code + " - " + title);
 
-	let statusInfo = _find(this.state.statusData, (o) => {
-		return getFirstKey(o) === code;
-	})[code][title];
-	// console.log(statusInfo);
-
-	let recordData = _find(games_oow.records, (r) => {
-		return r.code === code;
-	});
-	// console.log(recordData.legacy.events);
-
-	let eventData = _find(recordData.legacy.events, (e) => {
-		return e.title === title;
-	});
-	// console.log(eventData); 
-
-	//description, title, checkboxes, radios, table
-	var eventDetails = {};
-	if (statusInfo.active && statusInfo.legacy) {
-		eventDetails = {title: title, code: code, description: eventData.description, option: null, selections: []}
-
+		let statusInfo = _find(this.state.statusData, (o) => {
+			return getFirstKey(o) === code;
+		})[code][title];
 		// console.log(statusInfo);
 
-		if (statusInfo.option !== undefined && statusInfo.option !== -1) {
-			if (eventData.radios) {
-				eventDetails.option = eventData.radios[statusInfo.option];
-			} else if (eventData.table) {
-				eventDetails.option = eventData.table[statusInfo.option];
+		let recordData = _find(games_oow.records, (r) => {
+			return r.code === code;
+		});
+		// console.log(recordData.legacy.events);
+
+		let eventData = _find(recordData.legacy.events, (e) => {
+			return e.title === title;
+		});
+		// console.log(eventData); 
+
+		//description, title, checkboxes, radios, table
+		var eventDetails = {};
+		if (statusInfo.active && statusInfo.legacy) {
+			let expendedBool = statusInfo.expended !== undefined ? statusInfo.expended : false; // TEMPORARY
+
+			eventDetails = {title: title, code: code, description: eventData.description, option: null, selections: [], expended: expendedBool}
+
+			// console.log(statusInfo);
+
+			if (statusInfo.option !== undefined && statusInfo.option !== -1) {
+				if (eventData.radios) {
+					eventDetails.option = eventData.radios[statusInfo.option];
+				} else if (eventData.table) {
+					eventDetails.option = eventData.table[statusInfo.option];
+				}
+			}
+
+			if (statusInfo.selections && statusInfo.selections.length > 0) {
+				eventDetails.selections = [];
+				statusInfo.selections.forEach((s) => {
+					eventDetails.selections.push(eventData.checkboxes[s])
+				});
+				eventDetails.selections.sort();
 			}
 		}
 
-		if (statusInfo.selections && statusInfo.selections.length > 0) {
-			eventDetails.selections = [];
-			statusInfo.selections.forEach((s) => {
-				eventDetails.selections.push(eventData.checkboxes[s])
-			});
-			eventDetails.selections.sort();
-		}
-	}
-	// console.log(eventDetails);
+		// console.log(eventDetails);
 
-	return eventDetails; 
-};
+		return eventDetails; 
+	};
+
+	setSidebarInfo = (getActiveLength) => {
+		var eventArr = [];
+
+		this.state.statusData.forEach((log) => {
+			_map(getFirstObject(log), (event, title) => {
+				if (event.legacy) {
+					eventArr.push({title: title, code: getFirstKey(log), event: event});
+				}
+			})
+		});
+
+		// return current length of active only
+		if (getActiveLength) {
+			return _filter(eventArr, (a) => {
+				return a.event.expended !== true;
+			}).length;
+		}
+
+		eventArr = _sortBy(
+		    _sortBy(eventArr, (o) => {
+		        return o.title.toUpperCase();
+		    }),
+		    (o) => {
+		        return o.event.expended === true;
+		    }
+		);
+
+		this.setState({eventArr: eventArr});
+	}
 
 	//RENDERERS
 	render_gameLogs = (gamesObj) => {
@@ -218,22 +263,9 @@ class AdvRecordLog extends React.Component {
 	};
 
 	render_activeEventSideBar = () => {
-		var eventArr = [];
-
-		this.state.statusData.forEach((log) => {
-			_map(getFirstObject(log), (event, title) => {
-				if (event.legacy) {
-					eventArr.push({title: title, code: getFirstKey(log), event: event});
-				}
-			})
-		});
-
-		eventArr = _sortBy(eventArr, (o) => {
-			return o.title.toUpperCase();
-		})
-
-		let messagePlural = eventArr.length === 1 ? "event" : "events";
-		let messageText = eventArr.length === 0 ? "No legacy events" :  eventArr.length + " legacy " + messagePlural;
+		let eventLength = this.setSidebarInfo(true);
+		let messagePlural = eventLength === 1 ? "event" : "events";
+		let messageText = eventLength === 0 ? "No active legacy events" :  eventLength + " active legacy " + messagePlural;
 
 		return (
 			<ClickOutside
@@ -243,12 +275,12 @@ class AdvRecordLog extends React.Component {
 		    >
 				<SideNav
 					expanded={this.state.isSidebarOpen}
-					onToggle={(e) => { this.setState({isSidebarOpen: e});} }
+					onToggle={(e) => { this.setSidebarInfo(false); this.setState({isSidebarOpen: e});} }
 					className={classnames("activeBarWrapper", this.state.isSidebarOpen && "openBar")}
 				>
 					<SideNav.Toggle className="toggle">
-						{!this.state.isSidebarOpen && eventArr.length > 0 && 
-							<Badge pill variant="light" className="number">{eventArr.length}</Badge>
+						{!this.state.isSidebarOpen && eventLength > 0 && 
+							<Badge pill variant="light" className="number">{eventLength}</Badge>
 						}
 
 						{this.state.isSidebarOpen &&
@@ -256,26 +288,38 @@ class AdvRecordLog extends React.Component {
 						}
 					</SideNav.Toggle>
 
-					{this.state.isSidebarOpen && _map(eventArr, (event, key) => {
+					{this.state.isSidebarOpen && _map(this.state.eventArr, (event, key) => {
 						let statusInfo = this.getStatusInfo(event.code, event.title);
 						let keyCodeTitle = event.code + " " + event.title;
 
-						// console.log(statusInfo);
-
 						return (
 							<SideNav.Nav key={key}>
-								<NavItem eventKey={keyCodeTitle} navitemClassName="eventItem">
-								 	<NavIcon><Badge pill variant="light">&nbsp;</Badge></NavIcon>
+								<NavItem eventKey={keyCodeTitle} navitemClassName={classnames("eventItem", statusInfo.expended && "expended")}>
+								 	<NavIcon>
+								 		<Badge pill variant={statusInfo.expended ? "secondary" : "light"}>&nbsp;</Badge>
+								 	</NavIcon>
 									<NavText>
 										<span className="title text bookFont bold">{statusInfo.title}</span>
 									</NavText>
-									<NavItem navitemClassName="eventInfo">
+									<NavItem navitemClassName={classnames("eventInfo", statusInfo.expended && "expended")}>
 										<NavText>
-											<div className="code text">{statusInfo.code.toUpperCase()}</div>
+											<div className="code text">
+												<span>{statusInfo.code.toUpperCase()}</span>
+												<Form>
+													<Form.Check 
+													    type="switch"
+													    id={keyCodeTitle + " isExpended"}
+													    label=""
+													    onClick={this.toggleExpendedEvent.bind(this,event.code, event.title)}
+													    checked={statusInfo.expended}
+													    onChange={(e) => {}}
+													/>
+												</Form>
+											</div>
 											<p className="description text bookFont" dangerouslySetInnerHTML={{ __html: statusInfo.description }} />
 											{statusInfo.option !== null && <div className="list text bookFont" dangerouslySetInnerHTML={{ __html: statusInfo.option }} />}
-											{statusInfo.selections.length > 0 && _map(statusInfo.selections, (selection) => {
-												return <div className="list text bookFont" dangerouslySetInnerHTML={{ __html: selection }} />
+											{statusInfo.selections.length > 0 && _map(statusInfo.selections, (selection, key) => {
+												return <div key={key} className="list text bookFont" dangerouslySetInnerHTML={{ __html: selection }} />
 											})}
 										</NavText>
 									</NavItem>

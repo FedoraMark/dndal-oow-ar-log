@@ -16,6 +16,7 @@ class Option extends React.Component {
         canBlank: PropTypes.bool,
         optionHandler: PropTypes.func,
         title: PropTypes.string,
+        isExpended: PropTypes.bool
     }
 
     static defaultProps = {
@@ -23,17 +24,19 @@ class Option extends React.Component {
         isDisabled: false,
         canBlank: false,
         optionHandler: (e) => {},
-        title: 'N-A'
+        title: 'N-A',
+        isExpended: false,
     }
 
     state = {
         selection: this.props.selection,
-        isDisabled: this.props.isDisabled
+        isDisabled: this.props.isDisabled,
+        isExpended: this.props.isExpended
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({ isDisabled: nextProps.isDisabled }, () => {
-        	if (nextProps.isDisabled) {
+        this.setState({ isDisabled: nextProps.isDisabled, selection: nextProps.selection, isExpended: nextProps.isExpended }, () => {
+            if (nextProps.isDisabled && !nextProps.isExpended) {
         		this.setState({selection: -1});
         	}
         });
@@ -50,6 +53,8 @@ class Option extends React.Component {
 
     //RENDERERS
     render() {
+        
+
         return (
             <div className={classnames("selectWrapper radio", this.state.isDisabled && "disabled")} >
                 {this.props.canBlank &&

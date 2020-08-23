@@ -15,8 +15,6 @@
         margin-bottom: 2rem;
     }
 
-
-
     &:before {
         position: absolute;
         top: .2rem;
@@ -78,6 +76,14 @@
             .input-group-text {
                 background: none;
             }
+        }
+    }
+
+    &.expended {
+        * {
+            text-decoration: line-through gray solid;
+
+            color: darkgray;
         }
     }
 }
