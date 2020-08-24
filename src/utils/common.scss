@@ -4,9 +4,25 @@
 @mixin flex($align: center, $justify: center, $direction: row, $wrap: nowrap) {
     display: flex;
 
-    align-items: $align;
     justify-content: $justify;
     flex-direction: $direction;
+    align-items: $align;
+}
+
+@mixin transition($props: all, $time: .25s, $ease: ease) {
+    -webkit-transition: $props $time $ease;
+       -moz-transition: $props $time $ease;
+        -ms-transition: $props $time $ease;
+         -o-transition: $props $time $ease;
+            transition: $props $time $ease;
+}
+
+@mixin container() {
+    border-radius: 0 0 5px 5px;
+    background: $color-background-darker;
+    -webkit-box-shadow: inset 0 0 15px -10px rgba(0, 0, 0, .75);
+       -moz-box-shadow: inset 0 0 15px -10px rgba(0, 0, 0, .75);
+            box-shadow: inset 0 0 15px -10px rgba(0, 0, 0, .75);
 }
 
 // FONTS
@@ -48,7 +64,12 @@ $color-background-darker: #f9f9f9;
 $color-background-card-alpha: rgba(255,255,255,.75);
 $color-bshr: rgba(0,0,0,.1);
 $color-bsborder: #ced4da;
-$color-bsbg: #e9ecef;
+$color-active-background: darken(gray, 25%);
+$color-active-text: white;
+$color-inactive-background: #e9ecef;
+$color-inactive-text: black;
+$color-hover-background: black;
+$color-hover-text: white;
 
 // font-families
 $fontFamily-fauxdesto: Fauxdesto, Impact, Charcoal, sans-serif;

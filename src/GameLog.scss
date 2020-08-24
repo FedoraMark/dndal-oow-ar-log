@@ -43,13 +43,9 @@
     }
 
     .titleWrapper {
-        -webkit-transition: border-bottom-color .15s ease;
-           -moz-transition: border-bottom-color .15s ease;
-            -ms-transition: border-bottom-color .15s ease;
-             -o-transition: border-bottom-color .15s ease;
-                transition: border-bottom-color .15s ease;
+        border: 1px solid $color-inactive-background;
 
-        border: 1px solid $color-bsbg;
+        @include transition(border-bottom-color, .15s, ease);
 
         &.sticky {
             position: sticky;
@@ -70,7 +66,7 @@
             font-size: 1.75rem;
             font-weight: normal;
 
-            background: $color-bsbg;
+            background: $color-inactive-background;
 
             @include flex(flex-start, center);
 
@@ -225,11 +221,7 @@
 
                                 text-align: left;
 
-                                -webkit-transition: all .25s ease;
-                                   -moz-transition: all .25s ease;
-                                    -ms-transition: all .25s ease;
-                                     -o-transition: all .25s ease;
-                                        transition: all .25s ease;
+                                @include transition();
 
                                 &.disabled {
                                     opacity: .5;
@@ -402,8 +394,8 @@
             }
 
             .title {
-                align-items: center;
                 justify-content: space-between;
+                align-items: center;
             }
         }
 
@@ -530,8 +522,8 @@
             }
 
             .title {
-                align-items: center;
                 justify-content: space-between;
+                align-items: center;
             }
         }
 

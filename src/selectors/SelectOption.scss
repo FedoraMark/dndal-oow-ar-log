@@ -19,13 +19,9 @@
     width: 100%;
     margin-bottom: .75rem;
 
-    -webkit-transition: all .25s ease;
-       -moz-transition: all .25s ease;
-        -ms-transition: all .25s ease;
-         -o-transition: all .25s ease;
-            transition: all .25s ease;
-
     background: white;
+
+    @include transition();
 
     &:not(:last-of-type) {
         margin-bottom: .25rem;
@@ -122,12 +118,6 @@
 
         box-sizing: border-box;
 
-        -webkit-transition: all .25s ease;
-           -moz-transition: all .25s ease;
-            -ms-transition: all .25s ease;
-             -o-transition: all .25s ease;
-                transition: all .25s ease;
-
         color: $color-bsborder;
         border: 2px solid currentColor;
         border-radius: 10px;
@@ -135,6 +125,7 @@
         background: $color-background-white;
 
         @include flex();
+        @include transition();
 
         &:before {
             position: absolute;

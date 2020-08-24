@@ -51,27 +51,31 @@
         margin: 1rem 0;
 
         .newButton {
-            font-family: $fontFamily-oswald;
+            font-size: 2rem;
             font-weight: 300;
 
-            -webkit-transition: all .25s ease;
-               -moz-transition: all .25s ease;
-                -ms-transition: all .25s ease;
-                 -o-transition: all .25s ease;
-                    transition: all .25s ease;
-
-            border-color: $color-bsborder;
-            background: $color-bsbg;
+            border-width: 2px;
+            border-color: black;
+            outline: none;
+            background: $color-inactive-background;
             box-shadow: none;
 
-            &:hover {
-                border-color: black;
-                background: $color-bsborder;
-            }
+            @include transition();
 
             &.isOpen {
+                color: $color-active-text;
+                border-color: $color-active-background;
+                border-bottom-color: transparent;
                 border-bottom-right-radius: 0;
                 border-bottom-left-radius: 0;
+                background: $color-active-background;
+            }
+
+            &:hover,
+            &:active {
+                color: white !important;
+                border-color: black !important;
+                background: black !important;
             }
         }
     }
@@ -81,17 +85,13 @@
         padding: 1rem;
         margin: 0 0 1rem;
 
+        grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+        grid-gap: 1rem;
+        grid-auto-rows: 1fr;
+
         list-style: none;
 
-        border-radius: 0 0 5px 5px;
-        background: $color-background-darker;
-        -webkit-box-shadow: inset 0 0 15px -10px rgba(0, 0, 0, .75);
-           -moz-box-shadow: inset 0 0 15px -10px rgba(0, 0, 0, .75);
-                box-shadow: inset 0 0 15px -10px rgba(0, 0, 0, .75);
-
-        grid-auto-rows: 1fr;
-        grid-gap: 1rem;
-        grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+        @include container();
 
         li {
             flex-basis: 0;
@@ -108,14 +108,10 @@
 
             box-sizing: border-box;
 
-            -webkit-transition: all .25s ease;
-               -moz-transition: all .25s ease;
-                -ms-transition: all .25s ease;
-                 -o-transition: all .25s ease;
-                    transition: all .25s ease;
-
             border-width: 2px !important;
             background: $color-background-white !important;
+
+            @include transition();
 
             &:hover,
             &:focus {
@@ -151,13 +147,9 @@
 
         overflow-y: scroll;
 
-        -webkit-transition: all .25s ease;
-           -moz-transition: all .25s ease;
-            -ms-transition: all .25s ease;
-             -o-transition: all .25s ease;
-                transition: all .25s ease;
-
         background: none;
+
+        @include transition();
 
         &:not(.openBar) {
             .toggle {
@@ -202,6 +194,10 @@
 
         .badge {
             font-size: .8rem;
+
+            text-decoration: none !important;
+
+            color: transparent !important;
         }
 
 
@@ -216,13 +212,9 @@
                 * {
                     text-decoration: line-through currentColor solid;
 
-                    -webkit-transition: all .25s ease;
-                       -moz-transition: all .25s ease;
-                        -ms-transition: all .25s ease;
-                         -o-transition: all .25s ease;
-                            transition: all .25s ease;
-
                     color: gray !important;
+
+                    @include transition();
                 }
 
                 .title {
@@ -252,7 +244,8 @@
 
             cursor: auto !important;
 
-            background-color: rgba(0, 0, 0, .25) !important;
+            background-color: rgba(0, 0, 0, .25)
+            !important;
 
             .code {
                 font-weight: bold;

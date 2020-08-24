@@ -1,0 +1,40 @@
+@import "utils/common.scss";
+$hw: 1.25rem; // height and width
+$offset: 1rem;
+
+.editButtonWrapper {
+    position: absolute;
+    top: -$offset;
+    right: -$offset;
+
+    display: flex;
+    width: $hw;
+    height: $hw;
+    padding: .5rem;
+
+    align-items: center;
+    justify-content: center;
+    box-sizing: content-box;
+
+    font-size: medium;
+
+    color: $color-inactive-text;
+    border: 5px solid white;
+    border-radius: 100%;
+    background: $color-inactive-background;
+
+    @include transition();
+
+    &:hover,
+    &:focus {
+        cursor: pointer;
+
+        color: $color-hover-text;
+        background: $color-hover-background;
+    }
+}
+
+.active {
+    color: $color-active-text;
+    background: $color-active-background;
+}

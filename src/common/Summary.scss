@@ -38,14 +38,10 @@
 
     box-sizing: border-box;
 
-    -webkit-transition: all .25s ease;
-       -moz-transition: all .25s ease;
-        -ms-transition: all .25s ease;
-         -o-transition: all .25s ease;
-            transition: all .25s ease;
-
     border-width: 2px !important;
     background: $color-background-white !important;
+
+    @include transition();
 
     &:hover,
     &:focus {

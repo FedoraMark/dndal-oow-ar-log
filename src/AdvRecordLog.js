@@ -191,6 +191,7 @@ class AdvRecordLog extends React.Component {
 				<Button
 					className={classnames(
 						"newButton",
+						"fauxdesto",
 						this.state.showAddRecordArea ? "isOpen" : ""
 					)}
 					style={btnStyle}
