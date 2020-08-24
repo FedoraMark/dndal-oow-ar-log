@@ -118,6 +118,16 @@
             border-bottom-right-radius: 0;
             border-bottom-left-radius: 0;
             background: $color-active-background;
+
+            .infoItem.tierItem .tierList li {
+                background: $color-active-background;
+
+                &.filled {
+                    color: $color-active-text;
+                    border-color: $color-active-text;
+                    background: gray;
+                }
+            }
         }
     }
 
