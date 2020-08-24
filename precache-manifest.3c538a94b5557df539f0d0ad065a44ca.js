@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "899b2b795f426043331408482e24cc66",
+    "revision": "0106b2eab887c0604da69f904a896c0c",
     "url": "/dndal-oow-ar-log/index.html"
   },
   {
@@ -8,8 +8,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/dndal-oow-ar-log/static/css/2.70ee5d5c.chunk.css"
   },
   {
-    "revision": "7f8a9ed6ced22a766b07",
-    "url": "/dndal-oow-ar-log/static/css/main.c32355df.chunk.css"
+    "revision": "1940ccbe180922c3be1d",
+    "url": "/dndal-oow-ar-log/static/css/main.8fb80556.chunk.css"
   },
   {
     "revision": "ed3cf3a34604eb7daf19",
@@ -20,7 +20,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/dndal-oow-ar-log/static/js/2.00821659.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "7f8a9ed6ced22a766b07",
+    "revision": "1940ccbe180922c3be1d",
     "url": "/dndal-oow-ar-log/static/js/main.d32b976f.chunk.js"
   },
   {
