@@ -290,7 +290,7 @@ class GameLog extends React.Component {
 
         if (["game", "epic"].includes(data.record)) {
             return (
-                <Container fluid className={classnames(className,"gameBox",!this.state.isCollapsed && "expanded", preview && "preview", this.state.isEditing && "editing")} style={style}>
+                <Container fluid className={classnames(className,"gameBox",(!this.state.isCollapsed && !this.state.isEditing) && "expanded", preview && "preview", this.state.isEditing && "editing")} style={style}>
 					{this.render_titleAndCode(data.type,data.code,data.title)}
 
 					<Collapse in={!this.state.isCollapsed && !this.state.isEditing}>

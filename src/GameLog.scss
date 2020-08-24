@@ -37,7 +37,7 @@
     }
 
     .titleWrapper {
-        border: 1px solid $color-background-darker;
+        border: 1px solid $color-inactive-background;
         border-radius: .1rem;
 
         @include transition(border-color);
