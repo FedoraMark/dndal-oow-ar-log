@@ -1,7 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import Collapse from "react-bootstrap/collapse";
+import Collapse from "react-bootstrap/Collapse";
+import Fade from "react-bootstrap/Fade";
 import Container from "react-bootstrap/Container";
 import _map from "lodash/map";
 import _pull from "lodash/pull";
@@ -11,6 +12,7 @@ import Event from "selectors/Event";
 import Select from "selectors/Select";
 import Option from "selectors/Option";
 import Wealth from "common/Wealth";
+import EditButton from "common/EditButton";
 
 import "animate.css";
 import "GameLog.scss";
@@ -29,7 +31,8 @@ class GameLog extends React.Component {
         isCollapsed: false,
         className: '',
         style: {},
-        preview: false
+        preview: false,
+        isEditing: false,
     }
 
     state = {
@@ -41,8 +44,14 @@ class GameLog extends React.Component {
 
     //FUNCTIONS
     toggleCollapsed = () => {
-        this.setState({ isCollapsed: !this.state.isCollapsed });
+    	if (!this.state.isEditing) {
+        	this.setState({ isCollapsed: !this.state.isCollapsed });
+        }
     }
+
+    editInfo = () => {
+		this.setState({ isEditing: !this.state.isEditing });
+	};
 
     updateEventHandler = (eventStatus) => {
         let code = this.props.data.code;
@@ -88,8 +97,14 @@ class GameLog extends React.Component {
     //RENDERERS
     render_titleAndCode = (type, code, title) => {
         return (
-            <div className={classnames("titleWrapper",!this.props.preview && "sticky")} onClick={this.toggleCollapsed.bind(this)}>
-				<h1 className="title fauxdesto">
+            <div className={classnames("titleWrapper",!this.props.preview && "sticky")}>
+            	{!this.props.preview && 
+            		<Fade in={!this.state.isCollapsed} mountOnEnter unmountOnExit>
+            			<EditButton onClick={this.editInfo.bind()} active={this.state.isEditing} />
+            		</Fade>
+            	}
+
+				<h1 className="title fauxdesto" onClick={this.toggleCollapsed.bind(this)}>
 					<span className="name">
 						{code !== null && <span className="code" dangerouslySetInnerHTML={{ __html: code.split("-").join("<span class='hyphen'>-</span>") }}></span>}
 						<span className="fauxdesto italic">{title}</span>
@@ -275,10 +290,10 @@ class GameLog extends React.Component {
 
         if (["game", "epic"].includes(data.record)) {
             return (
-                <Container fluid className={classnames(className,"gameBox",!this.state.isCollapsed && "expanded", preview && "preview")} style={style}>
+                <Container fluid className={classnames(className,"gameBox",!this.state.isCollapsed && "expanded", preview && "preview", this.state.isEditing && "editing")} style={style}>
 					{this.render_titleAndCode(data.type,data.code,data.title)}
 
-					<Collapse in={!this.state.isCollapsed}>
+					<Collapse in={!this.state.isCollapsed && !this.state.isEditing}>
 						<div className="content">
 							{this.render_gameInfo(data.event,data.date,data.dungeonMaster,data.tier)}
 							{this.render_advNotes(data.notes)}
@@ -300,6 +315,7 @@ class GameLog extends React.Component {
 		    	</Container>
             )
         } else if (data.record === "salvage") {
+        	// TO BE DONE
             return (
                 <Container fluid className={classnames(className,"gameBox","salvageBox",!this.state.isCollapsed && "expanded", preview && "preview")} style={style}>
 					{this.render_titleAndCode(data.type,null,data.title)}
@@ -326,7 +342,7 @@ class GameLog extends React.Component {
 		    	</Container>
             )
         } else if (data.record === "notes") {
-
+        	// TO BE DONE
         }
 
         return < > < />

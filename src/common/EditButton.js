@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import { FiEdit, FiX } from "react-icons/fi";
+import { FaSave } from "react-icons/fa";
 
 import style from "./EditButton.module.scss";
 
@@ -10,6 +11,7 @@ class EditButton extends Component {
 		onClick: PropTypes.func.isRequired,
 		className: PropTypes.string,
 		active: PropTypes.bool,
+		save: PropTypes.bool
 	};
 
 	static defaultProps = {
@@ -38,7 +40,8 @@ class EditButton extends Component {
 				}}
 			>
 				{!this.state.active && <FiEdit />}
-				{this.state.active && <FiX />}
+				{!this.props.save && this.state.active && <FiX />}
+				{this.props.save && this.state.active && <FaSave />}
 			</span>
 		);
 	}

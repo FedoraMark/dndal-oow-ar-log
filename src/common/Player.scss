@@ -14,7 +14,9 @@
         flex-wrap: wrap;
 
         border: 2px solid black;
-        border-radius: .5rem;
+        border-radius: .3rem;
+
+        @include transition();
 
         .playerBoxContent {
             margin-bottom: -.35rem;
@@ -117,10 +119,6 @@
             border-bottom-right-radius: 0;
             border-bottom-left-radius: 0;
             background: $color-active-background;
-
-
-            .playerBoxContent {
-            }
         }
     }
 

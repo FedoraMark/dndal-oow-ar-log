@@ -9,13 +9,8 @@
     text-align: center;
 
     border: 2px solid black;
+    border-radius: .3rem;
     background: $color-background-darker;
-
-    &.expanded {
-        .titleWrapper {
-            border-bottom-color: darkgray !important;
-        }
-    }
 
     &.preview {
         margin: 0;
@@ -25,7 +20,6 @@
         input {
             visibility: hidden;
         }
-
 
         *:not(button) {
             opacity: 1 !important;
@@ -43,9 +37,11 @@
     }
 
     .titleWrapper {
-        border: 1px solid $color-inactive-background;
+        border: 1px solid $color-background-darker;
+        border-radius: .1rem;
 
-        @include transition(border-bottom-color, .15s, ease);
+        @include transition(border-color);
+
 
         &.sticky {
             position: sticky;
@@ -69,6 +65,7 @@
             background: $color-inactive-background;
 
             @include flex(flex-start, center);
+            @include transition();
 
             .name {
                 flex-wrap: wrap;
@@ -92,6 +89,8 @@
             }
         }
     }
+
+
 
     .content {
         padding: 0;
@@ -322,8 +321,33 @@
         }
     }
 
+    &.expanded {
+        .titleWrapper {
+            border-bottom-color: darkgray;
+            border-bottom-right-radius: 0rem;
+            border-bottom-left-radius: 0rem;
+        }
+    }
+
     &.salvageBox .notesWrapper .box {
         margin-bottom: 1rem;
+    }
+
+    &.editing {
+        .titleWrapper {
+            color: $color-active-text;
+            border-color: $color-active-background;
+            background: $color-active-background;
+
+            &:hover,
+            &:focus {
+                cursor: auto;
+            }
+
+            .title {
+                background: $color-active-background;
+            }
+        }
     }
 }
 

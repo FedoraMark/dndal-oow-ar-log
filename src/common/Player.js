@@ -124,7 +124,7 @@ class Player extends Component {
 		return (
 			<div className="editBox">
 				<div className={classnames("playerBox", this.state.isEditing && "editing")}>
-					<EditButton onClick={this.editInfo.bind()} active={this.state.isEditing} />
+					<EditButton save onClick={this.editInfo.bind()} active={this.state.isEditing} />
 					{this.render_displayInfo()}
 				</div>
 

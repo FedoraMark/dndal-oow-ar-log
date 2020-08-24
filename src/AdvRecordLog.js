@@ -185,7 +185,7 @@ class AdvRecordLog extends React.Component {
 		);
 	};
 
-	render_newRecordArea = (btnStyle) => {
+	render_newRecordArea = () => {
 		return (
 			<Container className="newRecordWrapper">
 				<Button
@@ -194,7 +194,6 @@ class AdvRecordLog extends React.Component {
 						"fauxdesto",
 						this.state.showAddRecordArea ? "isOpen" : ""
 					)}
-					style={btnStyle}
 					variant="light"
 					size="lg"
 					block
