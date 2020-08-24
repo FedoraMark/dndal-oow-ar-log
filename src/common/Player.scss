@@ -11,8 +11,6 @@
         width: 100%;
         padding: 1.25rem;
 
-        flex-wrap: wrap;
-
         border: 2px solid black;
         border-radius: .3rem;
 
@@ -21,8 +19,9 @@
         .playerBoxContent {
             margin-bottom: -.35rem;
 
-            @include flex();
+            flex-wrap: wrap;
 
+            @include flex();
 
             .infoItem {
                 margin: 0 .5rem;
