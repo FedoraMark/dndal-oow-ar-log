@@ -169,7 +169,6 @@ class GameLog extends React.Component {
 						<Select
 							label={advObj.label}
 							type="checkbox"
-							isSelected={advObj.isSelected}
 							isBold
 							isDisabled={preview}
 							isSelected={isSelected}
