@@ -9,6 +9,7 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 import Overlay from "react-bootstrap/Overlay";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
+import { useToasts } from 'react-toast-notifications'
 
 import _map from "lodash/map";
 import _each from "lodash/each";
@@ -73,6 +74,14 @@ class Player extends Component {
 		let tempWealthObj = {...this.state.tempObj.wealth, [denom]: (money === "" ? 0 : Math.abs(parseInt(money)))};
 		this.updateTempInfo("wealth", tempWealthObj);
 	}
+
+	calcWealth = () => {
+		let condensedObj = condenseWealth(this.state.tempObj.wealth,this.state.useEP);
+
+		// TOAST: to be done
+
+		this.updateTempInfo("wealth", condensedObj);
+	};
 
 	getTier = () => {
 		var totalLevel = 0;
@@ -271,7 +280,7 @@ class Player extends Component {
 
 						{/* CURRENT WEALTH */}
 						<li className="group wealthWrapper">
-							<InputGroup className="wealthGroup" onClick={this.updateTempInfo.bind(this,"wealth",condenseWealth(this.state.tempObj.wealth,this.state.useEP))}>
+							<InputGroup className="wealthGroup" onClick={this.calcWealth.bind(this)}>
 								<InputGroup.Prepend>
 									<InputGroup.Text id="character-name">
 										<span className="condense">
