@@ -91,7 +91,7 @@ class Event extends Component {
 
         return (
             <Container className={classnames("eventWrapper","custom-control","custom-checkbox", this.state.status.expended && "expended")}>
-				<input type="checkbox" className="custom-control-input" disabled={this.props.disable || this.state.status.expended} checked={this.state.isSelected} onChange={this.toggleSelect.bind(this)} onClick={this.toggleSelect.bind(this)} />
+				<span onClick={this.toggleSelect.bind(this)}><input type="checkbox" className="custom-control-input" disabled={this.props.disable || this.state.status.expended} checked={this.state.isSelected} onChange={this.toggleSelect.bind(this)} onClick={this.toggleSelect.bind(this)} /></span>
 	        	<span className="contents">
 		        	<div className="descriptionWrapper" onClick={this.toggleSelect.bind(this)}>
 		        		<h1 className="bookFont bold">{this.state.eventObj.title}.</h1>
