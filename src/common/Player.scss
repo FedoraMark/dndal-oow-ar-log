@@ -1,4 +1,5 @@
 @import "utils/common.scss";
+$gap: .5rem;
 
 .editBox {
     margin-bottom: 1rem;
@@ -24,7 +25,7 @@
             @include flex();
 
             .infoItem {
-                margin: 0 .5rem;
+                margin: 0 .5rem .25rem;
 
                 flex-wrap: nowrap;
 
@@ -60,7 +61,7 @@
                         white-space: nowrap;
 
                         &:not(:last-of-type) {
-                            margin-right: .25rem;
+                            margin-right: .5rem;
                         }
 
                         &:last-of-type .comma {
@@ -70,11 +71,15 @@
                 }
 
                 &.tierItem {
-                    margin: -.2rem .5rem 0;
+                    margin: -.5rem .5rem 0;
+
+                    h1 {
+                        margin-top: -.1rem;
+                    }
 
                     .tierList {
-                        padding: 0 0 .2rem .2rem;
-                        margin: -.1rem 0 0;
+                        padding: 0 0 0 .2rem;
+                        margin: 0 0 -.1rem;
 
                         list-style: none;
 
@@ -139,9 +144,45 @@
         @include container();
 
         .editingFlex {
+            width: 100%;
             padding: 1rem;
+            margin: 0;
 
-            @include flex();
+            flex-wrap: nowrap;
+
+            list-style: none;
+
+            @include flex(center, stretch, column);
+
+
+            .playerInfoGroup {
+                margin-bottom: $gap;
+            }
+
+            li {
+                width: 100%;
+
+                &:last-of-type {
+                    margin-bottom: 0rem;
+                }
+
+                &.group {
+                    @include flex(center, center, column);
+                }
+
+                .input-group-text {
+                    width: 90px;
+
+                    justify-content: center;
+
+                    font-family: $fontFamily-oswald;
+                    font-weight: 500;
+                }
+            }
+        }
+
+        .condense {
+            display: none;
         }
     }
 }
@@ -155,25 +196,52 @@
 
 // Medium devices (tablets, 768px and up)
 @media (min-width:768px) {
+    .editBox .editingContent .editingFlex li {
+        &.group {
+            flex-direction: row;
+
+            .playerInfoGroup:not(:last-of-type) {
+                margin-right: $gap;
+            }
+        }
+    }
 }
 
 // Large devices (desktops, 992px and up)
 @media (min-width:992px) {
-    .editBox .playerBox .playerBoxContent .infoItem {
-        p,
-        h1 {
-            font-size: 1.25rem;
+    .editBox {
+        .playerBox .playerBoxContent .infoItem {
+            p,
+            h1 {
+                font-size: 1.25rem;
+            }
+
+            p .class:not(:last-of-type) {
+                margin-right: .7rem;
+            }
+
+            &.tierItem {
+                h1 {
+                    margin: 0;
+                }
+
+                .tierList li {
+                    width: 1.75rem;
+                    height: 1.75rem;
+
+                    font-size: 1.25rem;
+                }
+            }
         }
 
-        p .class:not(:last-of-type) {
-            margin-right: .5rem;
-        }
+        .editingContent {
+            .editingFlex li .input-group-text {
+                width: 130px;
+            }
 
-        &.tierItem .tierList li {
-            width: 1.75rem;
-            height: 1.75rem;
-
-            font-size: 1.25rem;
+            .condense {
+                display: initial;
+            }
         }
     }
 }

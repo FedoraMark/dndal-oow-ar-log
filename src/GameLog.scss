@@ -62,10 +62,15 @@
             font-size: 1.6rem;
             font-weight: normal;
 
+            -webkit-transition: border-color, background .25s ease;
+               -moz-transition: border-color, background .25s ease;
+                -ms-transition: border-color, background .25s ease;
+                 -o-transition: border-color, background .25s ease;
+                    transition: border-color, background .25s ease;
+
             background: $color-inactive-background;
 
             @include flex(flex-start, center);
-            @include transition();
 
             .name {
                 flex-wrap: wrap;
@@ -219,8 +224,6 @@
                                 flex-grow: 1;
 
                                 text-align: left;
-
-                                @include transition();
 
                                 &.disabled {
                                     opacity: .5;

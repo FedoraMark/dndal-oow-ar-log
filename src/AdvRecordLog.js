@@ -25,11 +25,12 @@ import "animate.css";
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 
 import games_oow from "./data/oowGames.json";
-// import chara_SamPel from "./data/SamPel.json";
+import chara_SamPel from "./data/SamPel.json";
 
 class AdvRecordLog extends React.Component {
 	state = {
-		charData: { character: "Sam Pel", tier: 1, wealth: {} },
+		charData: chara_SamPel.player,
+		// charData: { character: "Sam Pel", tier: 1, wealth: {} },
 		gameData: [],
 		statusData: [],
 		showAddRecordArea: false,

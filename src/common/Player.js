@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Collapse from "react-bootstrap/Collapse";
-import _map from "lodash/map";
 import classnames from "classnames";
+import Collapse from "react-bootstrap/Collapse";
+import Form from 'react-bootstrap/Form'
+import InputGroup from 'react-bootstrap/InputGroup'
+import _map from "lodash/map";
 
 import Wealth from "common/Wealth";
 import EditButton from "common/EditButton";
@@ -22,8 +24,29 @@ class Player extends Component {
 		tier: this.props.playerObj.tier,
 		base: this.props.playerObj.base,
 		wealth: this.props.playerObj.wealth,
-		isEditing: false,
+		isEditing: true,
+
+		temp_player: this.props.playerObj.player,
+		temp_dci: this.props.playerObj.dci,
+		temp_character: this.props.playerObj.character,
+		temp_classes: this.props.playerObj.classes,
+		temp_tier: this.props.playerObj.tier,
+		temp_base: this.props.playerObj.base,
+		temp_wealth: this.props.playerObj.wealth,
+
 	};
+
+	componentWillReceiveNewProps(newProps) {
+        this.setState({
+            player: newProps.playerObj.player,
+            dci: newProps.playerObj.dci,
+            character: newProps.playerObj.character,
+            classes: newProps.playerObj.classes,
+            tier: newProps.playerObj.tier,
+            base: newProps.playerObj.base,
+            wealth: newProps.playerObj.wealth
+        });
+    }
 
 	//FUNCTIONS
 	getPlayerDciStr = () => {
@@ -43,7 +66,12 @@ class Player extends Component {
 	editInfo = () => {
 		this.setState({ isEditing: !this.state.isEditing });
 	};
+	
+	updateTempInfo = (attr, val) => {
+		this.setState({["temp_" + attr]: val});
+	}
 
+	//RENDERERS
 	render_displayInfo = () => {
 		return (
 			<span className="playerBoxContent">
@@ -111,15 +139,64 @@ class Player extends Component {
 		return (
 			<Collapse in={this.state.isEditing} mountOnEnter unmountOnExit>
 				<div className="editingContent">
-					<div className="editingFlex">
-						TO BE DONE
-					</div>
+
+					<ul className="editingFlex">
+
+						<li className="group">
+							<InputGroup className="playerInfoGroup">
+								<InputGroup.Prepend>
+							    	<InputGroup.Text id="player-name">Player<span className="condense">&nbsp;Name</span></InputGroup.Text>
+							    </InputGroup.Prepend>
+							    <Form.Control className="handwritten"
+							    	id="playerName"
+							    	value={this.state.temp_player}
+							    	onChange={(e) => {this.updateTempInfo("player",e.target.value)}}
+							    />
+							</InputGroup>
+
+							<InputGroup className="playerInfoGroup">
+								<InputGroup.Prepend>
+							    	<InputGroup.Text id="player-dci"><span className="condense">Player&nbsp;</span>DCI&nbsp;#</InputGroup.Text>
+							    </InputGroup.Prepend>
+								<Form.Control className="handwritten"
+							    	id="playerDci"
+							    	value={this.state.temp_dci}
+							    	onChange={(e) => {this.updateTempInfo("dci",e.target.value)}}
+							    />
+							</InputGroup>
+						</li>
+
+						<InputGroup  as="li" className="playerInfoGroup">
+							<InputGroup.Prepend>
+						    	<InputGroup.Text id="character-name">Character<span className="condense">&nbsp;Name</span></InputGroup.Text>
+						    </InputGroup.Prepend>
+						    <Form.Control className="handwritten"
+						    	id="charaName"
+						    	value={this.state.temp_character}
+						    	onChange={(e) => {this.updateTempInfo("character",e.target.value)}}
+						    	placeHolder="(required)"
+						    />
+						</InputGroup>
+
+						<InputGroup  as="li" className="playerInfoGroup">
+							<InputGroup.Prepend>
+						    	<InputGroup.Text id="base-name"><span className="condense">Assigned&nbsp;</span>Base</InputGroup.Text>
+						    </InputGroup.Prepend>
+						    <Form.Control className="handwritten"
+						    	id="baseName"
+						    	value={this.state.temp_base}
+						    	onChange={(e) => {this.updateTempInfo("base",e.target.value)}}
+						    />
+						</InputGroup>
+
+						
+					</ul>
 				</div>
 			</Collapse>
 		);
 	};
 
-	//RENDERERS
+	
 	render() {
 		return (
 			<div className="editBox">

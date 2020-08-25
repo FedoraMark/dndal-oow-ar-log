@@ -9,12 +9,12 @@
     align-items: $align;
 }
 
-@mixin transition($props: all, $time: .25s, $ease: ease) {
-    -webkit-transition: $props $time $ease;
-       -moz-transition: $props $time $ease;
-        -ms-transition: $props $time $ease;
-         -o-transition: $props $time $ease;
-            transition: $props $time $ease;
+@mixin transition($prop: all, $time: .25s, $ease: ease) {
+    -webkit-transition: $prop $time $ease;
+       -moz-transition: $prop $time $ease;
+        -ms-transition: $prop $time $ease;
+         -o-transition: $prop $time $ease;
+            transition: $prop $time $ease;
 }
 
 @mixin container() {
