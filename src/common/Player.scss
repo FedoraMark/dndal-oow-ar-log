@@ -1,5 +1,6 @@
 @import "utils/common.scss";
 $gap: .5rem;
+$halfGap: .25rem;
 
 .editBox {
     margin-bottom: 1rem;
@@ -177,6 +178,129 @@ $gap: .5rem;
 
                     font-family: $fontFamily-oswald;
                     font-weight: 500;
+                }
+            }
+
+            .classLevelWrapper {
+                margin: $gap $gap 0;
+
+                justify-content: flex-start !important;
+
+                font-family: $fontFamily-handwritten;
+
+                .dropdownsWrapper {
+                    flex-wrap: wrap;
+                    flex-grow: 1;
+
+                    @include flex(center, flex-start);
+
+                    .playerInfoGroup {
+                        margin: 0;
+                    }
+
+                    .dropdown-menu {
+                        min-width: initial;
+                    }
+
+                    button {
+                        color: $color-inactive-text;
+                        background: $color-inactive-background;
+                    }
+
+                    .addClassButton {
+                        margin-left: $halfGap;
+
+                        border: none;
+                        outline: none;
+                        background: none;
+                        box-shadow: none;
+
+                        .overlay,
+                        .underlay {
+                            @include transition();
+                        }
+
+                        .overlay {
+                            position: absolute;
+
+                            opacity: 0;
+                        }
+                        .underlay {
+                            color: $color-inactive-text;
+                        }
+
+                        &:hover,
+                        &:focus {
+                            .overlay {
+                                opacity: 1;
+                            }
+                            .underlay {
+                                color: $color-active-text;
+                            }
+                        }
+                    }
+
+                    .levelDropdown a {
+                        text-align: center;
+                    }
+                }
+
+                .playerInfoGroup {
+                    width: auto;
+                    margin-bottom: 0;
+
+                    &:not(:last-of-type) {
+                        margin-right: $gap;
+                    }
+
+                    .remove {
+                        font-weight: 400;
+
+                        @include flex(center, space-between);
+                    }
+                }
+
+                .addClassButton {
+                    font-size: 1.5rem;
+
+                    svg {
+                        margin-bottom: -.25rem;
+                    }
+                }
+            }
+        }
+
+        .wealthWrapper {
+            @include flex(center, flex-start);
+
+            .wealthGroup {
+                width: auto;
+                margin-right: $halfGap;
+            }
+
+            .currencyInputsWrapper {
+                flex-grow: 1;
+
+                @include flex(center, space-between);
+
+                .input-group {
+                    margin: 0 $gap 0 $halfGap;
+
+                    flex-wrap: nowrap;
+
+                    @include flex(stretch, space-between);
+
+                    &:last-of-type {
+                        margin-right: $halfGap;
+                    }
+
+                    input {
+                        flex-grow: 1;
+                    }
+
+                    .input-group-append {
+                        width: 2.5rem;
+                    }
                 }
             }
         }
