@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from "classnames";
+import _isEmpty from 'lodash/isEmpty';
 
 import "common/Wealth.scss";
 
@@ -22,12 +23,26 @@ class Wealth extends React.Component {
         colorless: false
     }
 
+    isInvalid = (val) => {
+        return !val || val === 0;
+    }
+
     state = {
-        pp: this.props.wealthObj.pp === undefined || this.props.isEmpty ? 0 : this.props.wealthObj.pp,
-        gp: this.props.wealthObj.gp === undefined || this.props.isEmpty ? 0 : this.props.wealthObj.gp,
-        ep: this.props.wealthObj.ep === undefined || this.props.isEmpty ? 0 : this.props.wealthObj.ep,
-        sp: this.props.wealthObj.sp === undefined || this.props.isEmpty ? 0 : this.props.wealthObj.sp,
-        cp: this.props.wealthObj.cp === undefined || this.props.isEmpty ? 0 : this.props.wealthObj.cp,
+        pp: this.isInvalid(this.props.wealthObj.pp) || this.props.isEmpty ? 0 : this.props.wealthObj.pp,
+        gp: this.isInvalid(this.props.wealthObj.gp) || this.props.isEmpty ? 0 : this.props.wealthObj.gp,
+        ep: this.isInvalid(this.props.wealthObj.ep) || this.props.isEmpty ? 0 : this.props.wealthObj.ep,
+        sp: this.isInvalid(this.props.wealthObj.sp) || this.props.isEmpty ? 0 : this.props.wealthObj.sp,
+        cp: this.isInvalid(this.props.wealthObj.cp) || this.props.isEmpty ? 0 : this.props.wealthObj.cp,
+    }
+
+    componentWillReceiveProps(newProps) {
+        this.setState({
+            pp: this.isInvalid(newProps.wealthObj.pp) || newProps.isEmpty ? 0 : newProps.wealthObj.pp,
+            gp: this.isInvalid(newProps.wealthObj.gp) || newProps.isEmpty ? 0 : newProps.wealthObj.gp,
+            ep: this.isInvalid(newProps.wealthObj.ep) || newProps.isEmpty ? 0 : newProps.wealthObj.ep,
+            sp: this.isInvalid(newProps.wealthObj.sp) || newProps.isEmpty ? 0 : newProps.wealthObj.sp,
+            cp: this.isInvalid(newProps.wealthObj.cp) || newProps.isEmpty ? 0 : newProps.wealthObj.cp,
+        });
     }
 
     render() {

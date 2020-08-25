@@ -208,12 +208,16 @@ $halfGap: .25rem;
                     }
 
                     .addClassButton {
-                        margin-left: $halfGap;
+                        font-size: 1.5rem;
 
                         border: none;
                         outline: none;
                         background: none;
                         box-shadow: none;
+
+                        svg {
+                            margin-bottom: -.25rem;
+                        }
 
                         .overlay,
                         .underlay {
@@ -259,19 +263,16 @@ $halfGap: .25rem;
                         @include flex(center, space-between);
                     }
                 }
-
-                .addClassButton {
-                    font-size: 1.5rem;
-
-                    svg {
-                        margin-bottom: -.25rem;
-                    }
-                }
             }
         }
 
         .wealthWrapper {
-            @include flex(center, flex-start);
+            display: flex;
+
+            justify-content: stretch !important;
+            flex-direction: row !important;
+            align-items: flex-start !important;
+
 
             .wealthGroup {
                 width: auto;
@@ -279,12 +280,15 @@ $halfGap: .25rem;
             }
 
             .currencyInputsWrapper {
+                padding-right: .5rem;
+
+                flex-wrap: wrap;
                 flex-grow: 1;
 
-                @include flex(center, space-between);
+                @include flex(center, space-between, column);
 
-                .input-group {
-                    margin: 0 $gap 0 $halfGap;
+                .money {
+                    margin: 0 $halfGap $halfGap;
 
                     flex-wrap: nowrap;
 
@@ -320,12 +324,33 @@ $halfGap: .25rem;
 
 // Medium devices (tablets, 768px and up)
 @media (min-width:768px) {
-    .editBox .editingContent .editingFlex li {
-        &.group {
-            flex-direction: row;
+    .editBox {
+        .editingContent {
+            .editingFlex li {
+                &.group {
+                    flex-direction: row;
 
-            .playerInfoGroup:not(:last-of-type) {
-                margin-right: $gap;
+                    .playerInfoGroup:not(:last-of-type) {
+                        margin-right: $gap;
+                    }
+                }
+            }
+
+            .wealthWrapper {
+                flex-direction: row;
+
+                .currencyInputsWrapper {
+                    padding-right: 0;
+
+                    flex-wrap: nowrap;
+                    flex-grow: 1;
+
+                    @include flex(center, space-between, row);
+
+                    .money {
+                        margin: 0 $gap 0 $halfGap;
+                    }
+                }
             }
         }
     }

@@ -6,13 +6,19 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
+import Overlay from "react-bootstrap/Overlay";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
+
 import _map from "lodash/map";
 import _each from "lodash/each";
 import { BsPlusCircle, BsPlusCircleFill } from "react-icons/bs";
 import { AiTwotoneDelete } from "react-icons/ai";
+import { IoIosCalculator } from "react-icons/io"
 
 import Wealth from "common/Wealth";
 import EditButton from "common/EditButton";
+import { condenseWealth } from 'utils/Util';
 
 import "./Player.scss";
 
@@ -24,15 +30,9 @@ class Player extends Component {
 	state = {
 		playerObj: this.props.playerObj,
 		tempObj: JSON.parse(JSON.stringify(this.props.playerObj)),
-		isEditing: false
+		isEditing: true,
+		useEP: true,
 	};
-
-	componentWillReceiveNewProps(newProps) {
-		this.setState({
-			playerObj: this.props.playerObj,
-			tempObj: JSON.parse(JSON.stringify(this.props.playerObj)),
-		});
-	}
 
 	//FUNCTIONS
 	getPlayerDciStr = () => {
@@ -54,19 +54,25 @@ class Player extends Component {
 			this.setState({
 				isEditing: false,
 				playerObj: this.state.tempObj,
-				tempObj: JSON.parse(JSON.stringify(this.state.playerObj))
 			});
 		} else {
-			this.setState({ isEditing: !this.state.isEditing, tempObj: JSON.parse(JSON.stringify(this.state.playerObj)) });
+			this.setState({
+				isEditing: true,
+				tempObj: JSON.parse(JSON.stringify(this.state.playerObj)),
+			});
 		}
 	};
 
 	updateTempInfo = (attr, val) => {
 		var newObj = this.state.tempObj;
 		newObj[attr] = val;
-
 		this.setState({ tempObj: newObj });
 	};
+
+	setTempWealth = (money, denom) => {
+		let tempWealthObj = {...this.state.tempObj.wealth, [denom]: (money === "" ? 0 : Math.abs(parseInt(money)))};
+		this.updateTempInfo("wealth", tempWealthObj);
+	}
 
 	getTier = () => {
 		var totalLevel = 0;
@@ -89,7 +95,10 @@ class Player extends Component {
 		return 4;
 	};
 
-	
+	blurAll = () => {
+		// TO BE DONE
+		// console.log("blurAll");
+	}
 
 	//RENDERERS
 	render_displayInfo = () => {
@@ -104,14 +113,17 @@ class Player extends Component {
 					<div className="infoItem">
 						<h1>Classes:</h1>
 						<p>
-							{_map(this.state.playerObj.classes, (level, clss) => {
-								return (
-									<span className="class" key={clss}>
-										{clss + " (" + level + ")"}
-										<span className="comma">, </span>
-									</span>
-								);
-							})}
+							{_map(
+								this.state.playerObj.classes,
+								(level, clss) => {
+									return (
+										<span className="class" key={clss}>
+											{clss + " (" + level + ")"}
+											<span className="comma">, </span>
+										</span>
+									);
+								}
+							)}
 						</p>
 					</div>
 				)}
@@ -168,7 +180,6 @@ class Player extends Component {
 			<Collapse in={this.state.isEditing} mountOnEnter unmountOnExit>
 				<div className="editingContent">
 					<ul className="editingFlex">
-
 						{/* CHARACTER NAME */}
 						<InputGroup as="li" className="playerInfoGroup">
 							<InputGroup.Prepend>
@@ -260,87 +271,56 @@ class Player extends Component {
 
 						{/* CURRENT WEALTH */}
 						<li className="group wealthWrapper">
-							<InputGroup className="wealthGroup">
+							<InputGroup className="wealthGroup" onClick={this.updateTempInfo.bind(this,"wealth",condenseWealth(this.state.tempObj.wealth,this.state.useEP))}>
 								<InputGroup.Prepend>
 									<InputGroup.Text id="character-name">
 										<span className="condense">
 											Current&nbsp;
 										</span>
 										Wealth
+										<div className="calcMoneyIcon"><IoIosCalculator /></div>
 									</InputGroup.Text>
 								</InputGroup.Prepend>
 							</InputGroup>
 
 							<div className="currencyInputsWrapper">
-								<InputGroup className="pp">
-									<Form.Control
-										className="handwritten"
-										id="baseName"
-									></Form.Control>
-									<InputGroup.Append>
-										<InputGroup.Text id="pp">
-											<span className="bookFont bold">
-												pp
-											</span>
-										</InputGroup.Text>
-									</InputGroup.Append>
-								</InputGroup>
+								{_map(["pp","gp","ep","sp","cp"], (denom, key) => {
+									let conversion = ["platinum (1000cp)","gold (100cp)","ethereum (50cp)","silver (10cp)","copper (1cp)"];
 
-								<InputGroup className="gp">
-									<Form.Control
-										className="handwritten"
-										id="baseName"
-									></Form.Control>
-									<InputGroup.Append>
-										<InputGroup.Text id="gp">
-											<span className="bookFont bold">
-												gp
-											</span>
-										</InputGroup.Text>
-									</InputGroup.Append>
-								</InputGroup>
+									if (!this.state.useEP && denom === "ep") {
+										return <></>;
+									}
 
-								<InputGroup className="ep">
-									<Form.Control
-										className="handwritten"
-										id="baseName"
-									></Form.Control>
-									<InputGroup.Append>
-										<InputGroup.Text id="ep">
-											<span className="bookFont bold">
-												ep
-											</span>
-										</InputGroup.Text>
-									</InputGroup.Append>
-								</InputGroup>
-
-								<InputGroup className="sp">
-									<Form.Control
-										className="handwritten"
-										id="baseName"
-									></Form.Control>
-									<InputGroup.Append>
-										<InputGroup.Text id="sp">
-											<span className="bookFont bold">
-												sp
-											</span>
-										</InputGroup.Text>
-									</InputGroup.Append>
-								</InputGroup>
-
-								<InputGroup className="cp">
-									<Form.Control
-										className="handwritten"
-										id="baseName"
-									></Form.Control>
-									<InputGroup.Append>
-										<InputGroup.Text id="cp">
-											<span className="bookFont bold">
-												cp
-											</span>
-										</InputGroup.Text>
-									</InputGroup.Append>
-								</InputGroup>
+									return (
+										<InputGroup key={key}className={"money " + denom}>
+											<Form.Control
+												className="handwritten"
+												id={denom}
+												type="number"
+												min="0"
+												value={this.state.tempObj.wealth[denom]}
+												onChange={(e) => {
+													this.setTempWealth(e.target.value,denom);
+												}}
+											></Form.Control>
+											<InputGroup.Append>
+												<InputGroup.Text id={denom}>
+													<OverlayTrigger
+														placement="top"
+														overlay={
+															<Tooltip>
+																{conversion[key]}
+															</Tooltip>
+														}
+													>
+														<span className="bookFont bold">{denom}</span>
+													</OverlayTrigger>
+												</InputGroup.Text>
+											</InputGroup.Append>
+										</InputGroup>
+									);
+								})}
+								
 							</div>
 						</li>
 
@@ -385,7 +365,7 @@ class Player extends Component {
 							</div>
 						</li>
 
-						{/* TBD: TIER (automatic) */}
+						{/* TBD: TIER 1,2,3,4,auto */}
 					</ul>
 				</div>
 			</Collapse>
@@ -466,13 +446,16 @@ class Player extends Component {
 						"playerBox",
 						this.state.isEditing && "editing"
 					)}
+
 				>
-					<EditButton
-						save
-						onClick={this.editInfo.bind(this)}
-						active={this.state.isEditing}
-					/>
-					{this.render_displayInfo()}
+					<div ref="playerInfoEditButton" onMouseOver={this.blurAll.bind(this)}>
+						<EditButton
+							save
+							onClick={this.editInfo.bind(this)}
+							active={this.state.isEditing}
+						/>
+						{this.render_displayInfo()}
+					</div>
 				</div>
 
 				{this.render_editInfo()}
