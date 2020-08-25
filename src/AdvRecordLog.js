@@ -30,13 +30,21 @@ import games_oow from "./data/oowGames.json";
 class AdvRecordLog extends React.Component {
 	state = {
 		// charData: chara_SamPel.player,
-		charData: { character: "Sam Pel", tier: 1, wealth: {} },
-		gameData: [],
-		statusData: [],
-		showAddRecordArea: false,
-		loaded: false,
-		isSidebarOpen: false,
-		eventArr: []
+		charData: {
+	        "player": "",
+	        "dci": "",
+	        "character": "Sam Pel",
+	        "classes": null,
+	        "tier": '',
+	        "base": "",
+	        "wealth": {}
+	    },
+	    gameData: [],
+	    statusData: [],
+	    showAddRecordArea: false,
+	    loaded: false,
+	    isSidebarOpen: false,
+	    eventArr: []
 	};
 
 	componentDidMount() {

@@ -22,46 +22,28 @@ class Player extends Component {
 	};
 
 	state = {
-		player: this.props.playerObj.player,
-		dci: this.props.playerObj.dci,
-		character: this.props.playerObj.character,
-		classes: this.props.playerObj.classes,
-		tier: this.props.playerObj.tier,
-		base: this.props.playerObj.base,
-		wealth: this.props.playerObj.wealth,
-		isEditing: false,
-
-		temp_player: this.props.playerObj.player,
-		temp_dci: this.props.playerObj.dci,
-		temp_character: this.props.playerObj.character,
-		temp_classes: this.props.playerObj.classes,
-		temp_tier: this.props.playerObj.tier,
-		temp_base: this.props.playerObj.base,
-		temp_wealth: this.props.playerObj.wealth,
+		playerObj: this.props.playerObj,
+		tempObj: JSON.parse(JSON.stringify(this.props.playerObj)),
+		isEditing: false
 	};
 
 	componentWillReceiveNewProps(newProps) {
 		this.setState({
-			player: newProps.playerObj.player,
-			dci: newProps.playerObj.dci,
-			character: newProps.playerObj.character,
-			classes: newProps.playerObj.classes,
-			tier: newProps.playerObj.tier,
-			base: newProps.playerObj.base,
-			wealth: newProps.playerObj.wealth,
+			playerObj: this.props.playerObj,
+			tempObj: JSON.parse(JSON.stringify(this.props.playerObj)),
 		});
 	}
 
 	//FUNCTIONS
 	getPlayerDciStr = () => {
 		var str = "";
-		if (this.state.player !== undefined) {
-			str = this.state.player;
-			if (this.state.dci !== undefined) {
-				str = str + " (" + this.state.dci + ")";
+		if (!!this.state.playerObj.player) {
+			str = this.state.playerObj.player;
+			if (!!this.state.playerObj.dci) {
+				str = str + " (" + this.state.playerObj.dci + ")";
 			}
-		} else if (this.state.dci !== undefined) {
-			str = this.state.dci;
+		} else if (!!this.state.playerObj.dci) {
+			str = this.state.playerObj.dci;
 		}
 
 		return str;
@@ -71,26 +53,24 @@ class Player extends Component {
 		if (this.state.isEditing) {
 			this.setState({
 				isEditing: false,
-				player: this.state.temp_player,
-				dci: this.state.temp_dci,
-				character: this.state.temp_character,
-				classes: this.state.temp_classes,
-				base: this.state.temp_base,
-				wealth: this.state.temp_wealth,
-				player: this.state.temp_player,
+				playerObj: this.state.tempObj,
+				tempObj: JSON.parse(JSON.stringify(this.state.playerObj))
 			});
+		} else {
+			this.setState({ isEditing: !this.state.isEditing, tempObj: JSON.parse(JSON.stringify(this.state.playerObj)) });
 		}
-
-		this.setState({ isEditing: !this.state.isEditing });
 	};
 
 	updateTempInfo = (attr, val) => {
-		this.setState({ ["temp_" + attr]: val });
+		var newObj = this.state.tempObj;
+		newObj[attr] = val;
+
+		this.setState({ tempObj: newObj });
 	};
 
 	getTier = () => {
 		var totalLevel = 0;
-		_each(this.state.classes, (lv) => {
+		_each(this.state.playerObj.classes, (lv) => {
 			totalLevel += lv;
 		});
 
@@ -109,20 +89,22 @@ class Player extends Component {
 		return 4;
 	};
 
+	
+
 	//RENDERERS
 	render_displayInfo = () => {
 		return (
 			<span className="playerBoxContent">
 				<div className="infoItem">
 					<h1>Character:</h1>
-					<p>{this.state.character}</p>
+					<p>{this.state.playerObj.character}</p>
 				</div>
 
-				{this.state.classes !== undefined && (
+				{!!this.state.playerObj.classes && (
 					<div className="infoItem">
 						<h1>Classes:</h1>
 						<p>
-							{_map(this.state.classes, (level, clss) => {
+							{_map(this.state.playerObj.classes, (level, clss) => {
 								return (
 									<span className="class" key={clss}>
 										{clss + " (" + level + ")"}
@@ -134,7 +116,7 @@ class Player extends Component {
 					</div>
 				)}
 
-				{this.state.tier !== undefined && (
+				{this.state.playerObj.tier !== -1 && (
 					<div className="infoItem tierItem">
 						<h1>Tier:</h1>
 						<ul className="tierList">
@@ -154,26 +136,26 @@ class Player extends Component {
 					</div>
 				)}
 
-				{(this.state.player !== undefined ||
-					this.state.dci !== undefined) && (
+				{(!!this.state.playerObj.player ||
+					!!this.state.playerObj.dci) && (
 					<div className="infoItem">
 						<h1>Player:</h1>
 						<p>{this.getPlayerDciStr()}</p>
 					</div>
 				)}
 
-				{this.state.base !== undefined && (
+				{!!this.state.playerObj.base && (
 					<div className="infoItem">
 						<h1>Base:</h1>
-						<p>{this.state.base}</p>
+						<p>{this.state.playerObj.base}</p>
 					</div>
 				)}
 
-				{this.state.wealth !== undefined && (
+				{!!this.state.playerObj.wealth && (
 					<div className="infoItem">
 						<h1>Wealth:</h1>
 						<p>
-							<Wealth wealthObj={this.state.wealth} />
+							<Wealth wealthObj={this.state.playerObj.wealth} />
 						</p>
 					</div>
 				)}
@@ -186,6 +168,7 @@ class Player extends Component {
 			<Collapse in={this.state.isEditing} mountOnEnter unmountOnExit>
 				<div className="editingContent">
 					<ul className="editingFlex">
+
 						{/* CHARACTER NAME */}
 						<InputGroup as="li" className="playerInfoGroup">
 							<InputGroup.Prepend>
@@ -197,7 +180,7 @@ class Player extends Component {
 							<Form.Control
 								className="handwritten"
 								id="charaName"
-								value={this.state.temp_character}
+								value={this.state.tempObj.character}
 								onChange={(e) => {
 									this.updateTempInfo(
 										"character",
@@ -222,7 +205,7 @@ class Player extends Component {
 								<Form.Control
 									className="handwritten"
 									id="playerName"
-									value={this.state.temp_player}
+									value={this.state.tempObj.player}
 									onChange={(e) => {
 										this.updateTempInfo(
 											"player",
@@ -244,7 +227,7 @@ class Player extends Component {
 								<Form.Control
 									className="handwritten"
 									id="playerDci"
-									value={this.state.temp_dci}
+									value={this.state.tempObj.dci}
 									onChange={(e) => {
 										this.updateTempInfo(
 											"dci",
@@ -268,7 +251,7 @@ class Player extends Component {
 							<Form.Control
 								className="handwritten"
 								id="baseName"
-								value={this.state.temp_base}
+								value={this.state.tempObj.base}
 								onChange={(e) => {
 									this.updateTempInfo("base", e.target.value);
 								}}
@@ -376,7 +359,7 @@ class Player extends Component {
 
 							<div className="dropdownsWrapper">
 								{_map(
-									this.state.temp_classes,
+									this.state.tempObj.classes,
 									(level, clss) => {
 										return (
 											<InputGroup className="playerInfoGroup">
@@ -486,7 +469,7 @@ class Player extends Component {
 				>
 					<EditButton
 						save
-						onClick={this.editInfo.bind()}
+						onClick={this.editInfo.bind(this)}
 						active={this.state.isEditing}
 					/>
 					{this.render_displayInfo()}
