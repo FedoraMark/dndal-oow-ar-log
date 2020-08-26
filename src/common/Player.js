@@ -6,34 +6,60 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
+import SplitButton from "react-bootstrap/SplitButton";
 import Overlay from "react-bootstrap/Overlay";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
-import { useToasts } from 'react-toast-notifications'
+import { useToasts } from "react-toast-notifications";
 
 import _map from "lodash/map";
 import _each from "lodash/each";
 import { BsPlusCircle, BsPlusCircleFill } from "react-icons/bs";
 import { AiTwotoneDelete } from "react-icons/ai";
-import { IoIosCalculator } from "react-icons/io"
+import { IoIosCalculator } from "react-icons/io";
 
 import Wealth from "common/Wealth";
 import EditButton from "common/EditButton";
-import { condenseWealth } from 'utils/Util';
+import { condenseWealth } from "utils/Util";
 
 import "./Player.scss";
+
+function withToast(Component) {
+	return function WrappedComponent(props) {
+		const toastFuncs = useToasts();
+		return <Component {...props} {...toastFuncs} />;
+	};
+}
 
 class Player extends Component {
 	static propTypes = {
 		playerObj: PropTypes.object.isRequired,
+		tierSetting: PropTypes.number,
+		useEp: PropTypes.bool,
 	};
+
+	static defaultProps = {
+		tierSetting: 0,
+		useEp: true
+	}
 
 	state = {
 		playerObj: this.props.playerObj,
 		tempObj: JSON.parse(JSON.stringify(this.props.playerObj)),
 		isEditing: true,
-		useEP: true,
+		tierSetting: this.props.tierSetting,
+		useEp: this.props.useEp,
 	};
+
+	componentWillRecieveProps(newProps) {
+		this.setState({
+			playerObj: newProps.playerObj,
+			tempObj: JSON.parse(JSON.stringify(this.props.playerObj)),
+			isEditing: newProps.isEditing,
+			tierSetting: newProps.tierSetting,
+			useEp: newProps.useEp,
+		});
+	}
 
 	//FUNCTIONS
 	getPlayerDciStr = () => {
@@ -71,19 +97,31 @@ class Player extends Component {
 	};
 
 	setTempWealth = (money, denom) => {
-		let tempWealthObj = {...this.state.tempObj.wealth, [denom]: (money === "" ? 0 : Math.abs(parseInt(money)))};
+		let tempWealthObj = {
+			...this.state.tempObj.wealth,
+			[denom]: money === "" ? 0 : Math.abs(parseInt(money)),
+		};
 		this.updateTempInfo("wealth", tempWealthObj);
-	}
+	};
 
 	calcWealth = () => {
-		let condensedObj = condenseWealth(this.state.tempObj.wealth,this.state.useEP);
+		let condensedObj = condenseWealth(this.state.tempObj.wealth, this.state.useEp);
+		// console.log(JSON.stringify(condensedObj));
+		// console.log(JSON.stringify(this.state.tempObj.wealth));
 
-		// TOAST: to be done
+		let toastMsg = JSON.stringify(condensedObj) == JSON.stringify(this.state.tempObj.wealth) ? "No change to coinage." : "Condensed coinage.";
+		let toastType = JSON.stringify(condensedObj) == JSON.stringify(this.state.tempObj.wealth) ? "info" : "success";
+		
+		this.props.addToast(toastMsg, { appearance: toastType });
 
 		this.updateTempInfo("wealth", condensedObj);
 	};
 
 	getTier = () => {
+		if (this.state.tierSetting > 0) {
+			return this.state.tierSetting
+		}
+
 		var totalLevel = 0;
 		_each(this.state.playerObj.classes, (lv) => {
 			totalLevel += lv;
@@ -105,8 +143,22 @@ class Player extends Component {
 	};
 
 	blurAll = () => {
-		// TO BE DONE
+		// TO BE DONE - to stop quick close
 		// console.log("blurAll");
+	};
+
+	setUseEp = (val) => {
+		// convert EP to SP and add to SP
+		if (!val && this.state.tempObj.wealth.ep !== 0) {
+			var newWealthObj = JSON.parse(JSON.stringify(this.state.tempObj.wealth));
+			let newSp = newWealthObj.ep * 5;
+			newWealthObj.sp = newWealthObj.sp + newSp;
+			newWealthObj.ep = 0;
+			this.updateTempInfo("wealth",newWealthObj);
+			this.props.addToast((newSp/5 + " ep converted into " + newSp + " sp"), { appearance: "warning" });
+		}
+
+		this.setState({useEp: val}); // BUG - CAUSES UNIQUE "KEY" PROP WARNING
 	}
 
 	//RENDERERS
@@ -280,57 +332,90 @@ class Player extends Component {
 
 						{/* CURRENT WEALTH */}
 						<li className="group wealthWrapper">
-							<InputGroup className="wealthGroup" onClick={this.calcWealth.bind(this)}>
+							<InputGroup className="wealthGroup">
 								<InputGroup.Prepend>
-									<InputGroup.Text id="character-name">
+									<InputGroup.Text id="current-wealth">
 										<span className="condense">
 											Current&nbsp;
 										</span>
 										Wealth
-										<div className="calcMoneyIcon"><IoIosCalculator /></div>
 									</InputGroup.Text>
 								</InputGroup.Prepend>
 							</InputGroup>
 
 							<div className="currencyInputsWrapper">
-								{_map(["pp","gp","ep","sp","cp"], (denom, key) => {
-									let conversion = ["platinum (1000cp)","gold (100cp)","ethereum (50cp)","silver (10cp)","copper (1cp)"];
+								{_map(
+									["pp", "gp", "ep", "sp", "cp"],
+									(denom, key) => {
+										let conversion = [
+											"platinum (1000cp)",
+											"gold (100cp)",
+											"ethereum (50cp)",
+											"silver (10cp)",
+											"copper (1cp)",
+										];
 
-									if (!this.state.useEP && denom === "ep") {
-										return <></>;
+										if (
+											!this.state.useEp &&
+											denom === "ep"
+										) {
+											return <></>;
+										}
+
+										return (
+											<InputGroup
+												key={key}
+												className={"money " + denom}
+											>
+												<Form.Control
+													className="handwritten"
+													id={denom}
+													type="number"
+													min="0"
+													value={this.state.tempObj.wealth[denom]}
+													onChange={(e) => {this.setTempWealth(e.target.value, denom);}}
+												></Form.Control>
+												<InputGroup.Append>
+													<InputGroup.Text id={denom}>
+														<OverlayTrigger
+															placement="top"
+															overlay={
+																<Tooltip>{conversion[key]}</Tooltip>
+															}
+														>
+															<span className="bookFont bold">
+																{denom}
+															</span>
+														</OverlayTrigger>
+													</InputGroup.Text>
+												</InputGroup.Append>
+											</InputGroup>
+										);
 									}
-
-									return (
-										<InputGroup key={key}className={"money " + denom}>
-											<Form.Control
-												className="handwritten"
-												id={denom}
-												type="number"
-												min="0"
-												value={this.state.tempObj.wealth[denom]}
-												onChange={(e) => {
-													this.setTempWealth(e.target.value,denom);
-												}}
-											></Form.Control>
-											<InputGroup.Append>
-												<InputGroup.Text id={denom}>
-													<OverlayTrigger
-														placement="top"
-														overlay={
-															<Tooltip>
-																{conversion[key]}
-															</Tooltip>
-														}
-													>
-														<span className="bookFont bold">{denom}</span>
-													</OverlayTrigger>
-												</InputGroup.Text>
-											</InputGroup.Append>
-										</InputGroup>
-									);
-								})}
-								
+								)}
 							</div>
+
+							<InputGroup
+								className="calcButtonGroup"
+								onClick={this.calcWealth.bind(this)}
+							>
+								<InputGroup.Append>
+									<InputGroup.Text id="wealth-calc">
+										<OverlayTrigger
+											placement="top"
+											overlay={
+												<Tooltip>
+													Condense Coinage
+												</Tooltip>
+											}
+										>
+											<span className="calcMoneyIcon">
+												<IoIosCalculator />
+											</span>
+										</OverlayTrigger>
+									</InputGroup.Text>
+								</InputGroup.Append>
+							</InputGroup>
 						</li>
 
 						{/* CLASSES AND LEVELS */}
@@ -348,16 +433,11 @@ class Player extends Component {
 
 							<div className="dropdownsWrapper">
 								{_map(
-									this.state.tempObj.classes,
-									(level, clss) => {
+									this.state.tempObj.classes, (level, clss) => {
 										return (
-											<InputGroup className="playerInfoGroup">
-												{this.render_classDropDown(
-													clss
-												)}
-												{this.render_levelDropDown(
-													level
-												)}
+											<InputGroup className="playerInfoGroup" key="clss">
+												{this.render_classDropDown(clss)}
+												{this.render_levelDropDown(level)}
 											</InputGroup>
 										);
 									}
@@ -374,7 +454,36 @@ class Player extends Component {
 							</div>
 						</li>
 
-						{/* TBD: TIER 1,2,3,4,auto */}
+						{/* OPTIONS */}
+						<li className="group classLevelWrapper">
+							<InputGroup className="playerInfoGroup">
+								<InputGroup.Prepend>
+									<InputGroup.Text id="character-name">Options</InputGroup.Text>
+								</InputGroup.Prepend>
+							</InputGroup>
+
+							<div className="playerInfoOptions">
+								{/* set tier */}
+								<InputGroup className="playerInfoGroup dropdownGroup">
+									 <SplitButton variant="secondary" title={this.state.tierSetting > 0 ? "Tier " + this.state.tierSetting : "Auto tier"} alignRight>
+										<Dropdown.Item href="#" eventKey="0" active={this.state.tierSetting === 0} onSelect={(e) => {this.setState({tierSetting: 0})}}>Auto</Dropdown.Item>
+										<Dropdown.Divider />
+										<Dropdown.Item href="#" eventKey="1" active={this.state.tierSetting === 1} onSelect={(e) => {this.setState({tierSetting: 1})}}>Tier 1</Dropdown.Item>
+										<Dropdown.Item href="#" eventKey="2" active={this.state.tierSetting === 2} onSelect={(e) => {this.setState({tierSetting: 2})}}>Tier 2</Dropdown.Item>
+										<Dropdown.Item href="#" eventKey="3" active={this.state.tierSetting === 3} onSelect={(e) => {this.setState({tierSetting: 3})}}>Tier 3</Dropdown.Item>
+										<Dropdown.Item href="#" eventKey="4" active={this.state.tierSetting === 4} onSelect={(e) => {this.setState({tierSetting: 4})}}>tier 4</Dropdown.Item>
+									</SplitButton>
+								</InputGroup>
+
+								{/* set useEp */}
+								<InputGroup className="playerInfoGroup dropdownGroup">
+									 <SplitButton variant="secondary" title={this.state.useEp ? "Using EP" : "Ignoring EP"} alignRight>
+										<Dropdown.Item href="#" eventKey="t" active={this.state.useEp === true} onSelect={this.setUseEp.bind(this,true)}>Use EP</Dropdown.Item>
+										<Dropdown.Item href="#" eventKey="f" active={this.state.useEp === false} onSelect={this.setUseEp.bind(this,false)}>Ignore EP</Dropdown.Item>
+									</SplitButton>
+								</InputGroup>
+							</div>
+						</li>
 					</ul>
 				</div>
 			</Collapse>
@@ -455,9 +564,11 @@ class Player extends Component {
 						"playerBox",
 						this.state.isEditing && "editing"
 					)}
-
 				>
-					<div ref="playerInfoEditButton" onMouseOver={this.blurAll.bind(this)}>
+					<div
+						className="playerInfoEditButton"
+						onMouseOver={this.blurAll.bind(this)}
+					>
 						<EditButton
 							save
 							onClick={this.editInfo.bind(this)}
@@ -473,4 +584,4 @@ class Player extends Component {
 	}
 }
 
-export default Player;
+export default withToast(Player);

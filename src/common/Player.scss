@@ -273,7 +273,6 @@ $halfGap: .25rem;
             flex-direction: row !important;
             align-items: flex-start !important;
 
-
             .wealthGroup {
                 width: auto;
                 margin-right: $halfGap;
@@ -304,6 +303,60 @@ $halfGap: .25rem;
 
                     .input-group-append {
                         width: 2.5rem;
+                    }
+                }
+            }
+
+            .calcButtonGroup {
+                margin-left: $gap;
+
+                flex-basis: 0;
+
+                cursor: pointer;
+
+                &:hover,
+                &:focus {
+                    #wealth-calc {
+                        color: white;
+                        background-color: $color-active-background;
+                    }
+                }
+
+                .input-group-append {
+                    width: 50px;
+
+                    #wealth-calc {
+                        @include transition();
+
+                        .calcMoneyIcon {
+                            margin-top: -.3rem;
+
+                            font-size: 1.21rem;
+                        }
+                    }
+                }
+            }
+        }
+
+        .playerInfoOptions {
+            flex-grow: 1;
+
+            @include flex(center, flex-start, row);
+
+            .dropdownGroup {
+                font-family: $fontFamily-oswald;
+
+                button:first-of-type {
+                    pointer-events: none; // WILL NOT STOP TABBING
+                }
+
+                .dropdown-menu {
+                    min-width: initial;
+
+                    font-family: $fontFamily-handwritten;
+
+                    .dropdown-item {
+                        text-align: center;
                     }
                 }
             }

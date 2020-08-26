@@ -14,6 +14,7 @@ import Form from 'react-bootstrap/Form'
 import Collapse from "react-bootstrap/Collapse";
 import SideNav, { NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
 import ClickOutside from 'react-click-outside';
+import { ToastProvider } from "react-toast-notifications";
 
 import { fadeInUp, fadeIn, getFirstObject, getFirstKey } from "utils/Util";
 import Player from "common/Player";
@@ -37,7 +38,7 @@ class AdvRecordLog extends React.Component {
 	        "classes": null,
 	        "tier": '',
 	        "base": "",
-	        "wealth": {pp: 0, gp: 0, ep: 0, sp: 0, cp: 0}
+	        "wealth": {cp: 0, sp: 0, ep: 0, gp: 0, pp: 0}
 	    },
 	    gameData: [],
 	    statusData: [],
@@ -344,30 +345,32 @@ class AdvRecordLog extends React.Component {
 
 	render() {
 		return (
-			<div className="log">
+			<ToastProvider autoDismiss autoDismissTimeout="3000">
+				<div className="log">
 
-				{this.render_activeEventSideBar()}
+					{this.render_activeEventSideBar()}
 
-				<Jumbotron>
+					<Jumbotron>
+						<Container>
+							<div className="titleBox">
+								<h1>Eberron: Oracle of War</h1>
+								<h2>Adventure Records Log</h2>
+							</div>
+						</Container>
+					</Jumbotron>
+
 					<Container>
-						<div className="titleBox">
-							<h1>Eberron: Oracle of War</h1>
-							<h2>Adventure Records Log</h2>
-						</div>
+						<Player playerObj={this.state.charData} />
 					</Container>
-				</Jumbotron>
 
-				<Container>
-					<Player playerObj={this.state.charData} />
-				</Container>
+					{this.render_newRecordArea()}
 
-				{this.render_newRecordArea()}
+					{this.render_gameLogs(this.state.gameData)}
+					{/* {this.render_gameLogs(games_oow.records)} */}
 
-				{this.render_gameLogs(this.state.gameData)}
-				{/* {this.render_gameLogs(games_oow.records)} */}
-
-				<Jumbotron className="footer" />
-			</div>
+					<Jumbotron className="footer" />
+				</div>
+			</ToastProvider>
 		);
 	}
 }
