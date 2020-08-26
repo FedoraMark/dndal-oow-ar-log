@@ -30,7 +30,6 @@ class EditButton extends Component {
 	}
 
 	render() {
-		console.log(this.state.cancel);
 		const { onClick, className, active, save, cancel, left } = this.props;
 
 		return (

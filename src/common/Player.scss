@@ -72,6 +72,12 @@ $gapPlusHalf: .75rem;
                     }
                 }
 
+                .classList {
+                    flex-wrap: wrap;
+
+                    @include flex(flex-start, flex-start, row);
+                }
+
                 &.tierItem {
                     margin: -.5rem .5rem 0;
 
@@ -254,13 +260,60 @@ $gapPlusHalf: .75rem;
             }
 
             .classLevelWrapper {
-                margin: $gap;
+                margin: $gap $gap $halfGap;
 
                 justify-content: flex-start !important;
 
                 font-family: $fontFamily-handwritten;
 
+                .leftGroup {
+                    margin-bottom: .25rem !important;
+                }
+
+                .dropdownsWrapper {
+                    flex-wrap: wrap;
+                    flex-grow: 1;
+
+                    @include flex(stretch, flex-start, column);
+
+                    .input-group {
+                        margin: 0 0 $halfGap 0 !important;
+
+                        flex-wrap: nowrap;
+                        flex-grow: 1;
+
+                        .input-group-prepend {
+                            flex-grow: 1;
+
+                            button {
+                                width: 100%;
+                            }
+                        }
+
+                        &.fillerGroup {
+                            height: 0;
+                            margin-bottom: 0 !important;
+                        }
+                    }
+
+                    .dropdown-menu {
+                        min-width: initial;
+                    }
+
+                    button {
+                        font-size: .8rem;
+
+                        color: $color-inactive-text;
+                        background: $color-inactive-background;
+                    }
+
+                    .levelDropdown a {
+                        text-align: center;
+                    }
+                }
+
                 .addClassGroup {
+                    margin-bottom: $halfGap;
                     margin-left: $gap;
 
                     flex-basis: 0;
@@ -287,69 +340,6 @@ $gapPlusHalf: .75rem;
                                 font-size: 1.21rem;
                             }
                         }
-                    }
-                }
-
-                .dropdownsWrapper {
-                    padding-right: .5rem;
-
-                    flex-wrap: wrap;
-                    flex-grow: 1;
-
-                    @include flex(center, space-between, column);
-
-                    .playerInfoGroup {
-                        margin: 0;
-                    }
-
-                    .dropdown-menu {
-                        min-width: initial;
-                    }
-
-                    button {
-                        color: $color-inactive-text;
-                        background: $color-inactive-background;
-                    }
-
-                    .addClassButton {
-                        font-size: 1.5rem;
-
-                        border: none;
-                        outline: none;
-                        background: none;
-                        box-shadow: none;
-
-                        svg {
-                            margin-bottom: -.25rem;
-                        }
-
-                        .overlay,
-                        .underlay {
-                            @include transition();
-                        }
-
-                        .overlay {
-                            position: absolute;
-
-                            opacity: 0;
-                        }
-                        .underlay {
-                            color: $color-inactive-text;
-                        }
-
-                        &:hover,
-                        &:focus {
-                            .overlay {
-                                opacity: 1;
-                            }
-                            .underlay {
-                                color: $color-active-text;
-                            }
-                        }
-                    }
-
-                    .levelDropdown a {
-                        text-align: center;
                     }
                 }
 
@@ -416,7 +406,7 @@ $gapPlusHalf: .75rem;
                             width: 100%;
                             min-width: initial;
 
-                            font-family: $fontFamily-handwritten;
+                            font-family: $fontFamily-oswald;
 
                             .dropdown-item {
                                 text-align: center;
@@ -449,6 +439,14 @@ $gapPlusHalf: .75rem;
             }
         }
 
+        .classLevelWrapper .dropdownsWrapper {
+            flex-direction: column;
+
+            button {
+                font-size: 1rem;
+            }
+        }
+
         .optionsLevelWrapper .playerInfoOptions .dropdownGroup {
             width: auto;
 
@@ -459,13 +457,36 @@ $gapPlusHalf: .75rem;
 
 // Medium devices (tablets, 768px and up)
 @media (min-width:768px) {
-    .editBox .editingContent .editingFlex li {
-        &.group:not(.optionsLevelWrapper) {
-            flex-direction: row;
+    .editBox .editingContent {
+        .editingFlex {
+            li {
+                &.group:not(.optionsLevelWrapper) {
+                    flex-direction: row;
 
-            .playerInfoGroup:not(:last-of-type) {
-                margin-right: $gap;
+                    .playerInfoGroup:not(:last-of-type) {
+                        margin-right: $gap;
+                    }
+                }
             }
+
+            .classLevelWrapper {
+                .dropdownsWrapper {
+                    flex-direction: row;
+
+                    .input-group {
+                        width: 48%;
+                        margin-right: $gap !important;
+                    }
+                }
+
+                .rightGroup {
+                    margin-left: 0;
+                }
+            }
+        }
+
+        .editingFlex .filler1 {
+            display: block;
         }
     }
 }
@@ -524,9 +545,25 @@ $gapPlusHalf: .75rem;
                     }
                 }
 
+                .classLevelWrapper {
+                    .dropdownsWrapper {
+                        .input-group {
+                            width: 32%;
+                        }
+                    }
+
+                    .rightGroup {
+                        margin-left: 0;
+                    }
+                }
+
                 .condense {
                     display: initial;
                 }
+            }
+
+            .editingFlex .filler2 {
+                display: block;
             }
         }
     }

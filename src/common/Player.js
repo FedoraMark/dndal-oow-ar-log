@@ -47,7 +47,7 @@ class Player extends Component {
 	state = {
 		playerObj: this.props.playerObj,
 		tempObj: JSON.parse(JSON.stringify(this.props.playerObj)),
-		isEditing: false,
+		isEditing: false, // TRUE FOR TESTING
 
 		// options
 		autoLeveling: this.props.optionsObj.autoLeveling,
@@ -82,7 +82,6 @@ class Player extends Component {
 	};
 
 	editInfo = (close) => {
-		console.log(close);
 		if (this.state.isEditing && !close) {
 			this.setState({
 				isEditing: false,
@@ -145,11 +144,6 @@ class Player extends Component {
 		return 4;
 	};
 
-	blurAll = () => {
-		// TO BE DONE - to stop quick close
-		// console.log("blurAll");
-	};
-
 	setUseEp = (val) => {
 		// convert EP to SP and add to SP
 		if (!val && this.state.tempObj.wealth.ep !== 0) {
@@ -164,6 +158,14 @@ class Player extends Component {
 		this.setState({useEp: val});
 	}
 
+	addNewClass = () => {
+		var newClassObj = JSON.parse(JSON.stringify(this.state.tempObj.classes));
+		let newClassName = "Multiclass " + (Object.keys(newClassObj).length + 1);
+		newClassObj[newClassName] = 1
+
+		this.updateTempInfo("classes",newClassObj);
+	}
+
 	//RENDERERS
 	render_displayInfo = () => {
 		return (
@@ -172,25 +174,6 @@ class Player extends Component {
 					<h1>Character:</h1>
 					<p>{this.state.playerObj.character}</p>
 				</div>
-
-				{!!this.state.playerObj.classes && (
-					<div className="infoItem">
-						<h1>Classes:</h1>
-						<p>
-							{_map(
-								this.state.playerObj.classes,
-								(level, clss) => {
-									return (
-										<span className="class" key={clss}>
-											{clss + " (" + level + ")"}
-											<span className="comma">, </span>
-										</span>
-									);
-								}
-							)}
-						</p>
-					</div>
-				)}
 
 				{this.state.playerObj.tier !== -1 && (
 					<div className="infoItem tierItem">
@@ -232,6 +215,25 @@ class Player extends Component {
 						<h1>Wealth:</h1>
 						<p>
 							<Wealth wealthObj={this.state.playerObj.wealth} />
+						</p>
+					</div>
+				)}
+
+				{Object.keys(this.state.playerObj.classes).length > 0 && (
+					<div className="infoItem">
+						<h1>{"Class" + (Object.keys(this.state.playerObj.classes).length !== 1 ? "es:" : ':')}</h1>
+						<p className="classList">
+							{_map(
+								this.state.playerObj.classes,
+								(level, clss) => {
+									return (
+										<span className="class" key={clss}>
+											{clss + " (" + level + ")"}
+											<span className="comma">, </span>
+										</span>
+									);
+								}
+							)}
 						</p>
 					</div>
 				)}
@@ -431,18 +433,21 @@ class Player extends Component {
 								{_map(
 									this.state.tempObj.classes, (level, clss) => {
 										return (
-											<InputGroup className="playerInfoGroup" key="clss">
+											<InputGroup className="playerInfoGroup classDropdownGroup" key={clss}>
 												{this.render_classDropDown(clss)}
 												{this.render_levelDropDown(level)}
 											</InputGroup>
 										);
 									}
 								)}
+
+								<InputGroup className="fillerGroup filler1" />
+								<InputGroup className="fillerGroup filler2" />
 							</div>
 
 							<InputGroup
 								className="addClassGroup rightGroup"
-								// onClick={}
+								onClick={this.addNewClass.bind(this)}
 							>
 								<OverlayTrigger placement="left" overlay={<Tooltip>Add Class</Tooltip>}>
 									<InputGroup.Append>
@@ -507,23 +512,23 @@ class Player extends Component {
 				variant="secondary"
 				title={selected}
 			>
-				<Dropdown.Item href="#">Artificer</Dropdown.Item>
-				<Dropdown.Item href="#">Barbarian</Dropdown.Item>
-				<Dropdown.Item href="#">Bard</Dropdown.Item>
-				<Dropdown.Item href="#">Cleric</Dropdown.Item>
-				<Dropdown.Item href="#">Druid</Dropdown.Item>
-				<Dropdown.Item href="#">Fighter</Dropdown.Item>
-				<Dropdown.Item href="#">Monk</Dropdown.Item>
-				<Dropdown.Item href="#">Paladin</Dropdown.Item>
-				<Dropdown.Item href="#">Ranger</Dropdown.Item>
-				<Dropdown.Item href="#">Rogue</Dropdown.Item>
-				<Dropdown.Item href="#">Sorcerer</Dropdown.Item>
-				<Dropdown.Item href="#">Wizard</Dropdown.Item>
-				<Dropdown.Item href="#">Warlock</Dropdown.Item>
+				{!Object.keys(this.state.tempObj.classes).includes("Artificier") && <Dropdown.Item href="#">Artificer</Dropdown.Item>}
+				{!Object.keys(this.state.tempObj.classes).includes("Barbarian") && <Dropdown.Item href="#">Barbarian</Dropdown.Item>}
+				{!Object.keys(this.state.tempObj.classes).includes("Bard") && <Dropdown.Item href="#">Bard</Dropdown.Item>}
+				{!Object.keys(this.state.tempObj.classes).includes("Cleric") && <Dropdown.Item href="#">Cleric</Dropdown.Item>}
+				{!Object.keys(this.state.tempObj.classes).includes("Druid") && <Dropdown.Item href="#">Druid</Dropdown.Item>}
+				{!Object.keys(this.state.tempObj.classes).includes("Fighter") && <Dropdown.Item href="#">Fighter</Dropdown.Item>}
+				{!Object.keys(this.state.tempObj.classes).includes("Monk") && <Dropdown.Item href="#">Monk</Dropdown.Item>}
+				{!Object.keys(this.state.tempObj.classes).includes("Paladin") && <Dropdown.Item href="#">Paladin</Dropdown.Item>}
+				{!Object.keys(this.state.tempObj.classes).includes("Ranger") && <Dropdown.Item href="#">Ranger</Dropdown.Item>}
+				{!Object.keys(this.state.tempObj.classes).includes("Rogue") && <Dropdown.Item href="#">Rogue</Dropdown.Item>}
+				{!Object.keys(this.state.tempObj.classes).includes("Sorcerer") && <Dropdown.Item href="#">Sorcerer</Dropdown.Item>}
+				{!Object.keys(this.state.tempObj.classes).includes("Wizard") && <Dropdown.Item href="#">Wizard</Dropdown.Item>}
+				{!Object.keys(this.state.tempObj.classes).includes("Warlock") && <Dropdown.Item href="#">Warlock</Dropdown.Item>}
 				<Dropdown.Divider />
-				<Dropdown.Item href="#">Blood Hunter</Dropdown.Item>
-				<Dropdown.Item href="#">Mystic</Dropdown.Item>
-				<Dropdown.Item href="#">Other</Dropdown.Item>
+				{!Object.keys(this.state.tempObj.classes).includes("Blood Hunter") && <Dropdown.Item href="#">Blood Hunter</Dropdown.Item>}
+				{!Object.keys(this.state.tempObj.classes).includes("Mystic") && <Dropdown.Item href="#">Mystic</Dropdown.Item>}
+				{!Object.keys(this.state.tempObj.classes).includes("Others") && <Dropdown.Item href="#">Others</Dropdown.Item>}
 				<Dropdown.Divider />
 				<Dropdown.Item className="remove oswald" href="#">
 					<span>Remove</span>
