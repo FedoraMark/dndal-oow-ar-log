@@ -19,7 +19,7 @@ import { IoIosCalculator } from "react-icons/io";
 
 import Wealth from "common/Wealth";
 import EditButton from "common/EditButton";
-import { getTotalCopper, condenseWealth, coins5e } from "utils/Util";
+import { getTotalCopper, condenseWealth } from "utils/Util";
 
 import "./Player.scss";
 
@@ -349,7 +349,7 @@ class Player extends Component {
 							</InputGroup>
 
 							<div className="currencyInputsWrapper middleGroup">
-								{_map(coins5e.reverse(), (denom, key) => {
+								{_map(["cp","sp","ep","gp","pp"].reverse(), (denom, key) => {
 										let conversion = [
 											"platinum (1000cp)",
 											"gold (100cp)",
