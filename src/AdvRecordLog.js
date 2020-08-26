@@ -40,6 +40,11 @@ class AdvRecordLog extends React.Component {
 	        "base": "",
 	        "wealth": {cp: 0, sp: 0, ep: 0, gp: 0, pp: 0}
 	    },
+	    optionsData: {
+	    	autoLeveling: false,
+			tierSetting: 0,
+			useEp: true
+	    },
 	    gameData: [],
 	    statusData: [],
 	    showAddRecordArea: false,
@@ -360,7 +365,7 @@ class AdvRecordLog extends React.Component {
 					</Jumbotron>
 
 					<Container>
-						<Player playerObj={this.state.charData} />
+						<Player playerObj={this.state.charData} optionsData={this.state.optionsData} />
 					</Container>
 
 					{this.render_newRecordArea()}

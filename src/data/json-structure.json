@@ -1,18 +1,25 @@
 {
-  "player": "",
-  "dci": "",
-  "character": "",
-  "classes": {
-    "": 0
+  "player": {
+    "player": "",
+    "dci": "",
+    "character": "",
+    "classes": {
+      "": 0
+    },
+    "tier": 0,
+    "base": "",
+    "wealth": {
+      "pp": 0,
+      "gp": 0,
+      "ep": 0,
+      "sp": 0,
+      "cp": 0
+    }
   },
-  "tier": 0,
-  "base": "",
-  "wealth": {
-    "pp": 0,
-    "gp": 0,
-    "ep": 0,
-    "sp": 0,
-    "cp": 0
+  "options": {
+    "autoLeveling": false,
+    "tierSetting": 0,
+    "useEp": true
   },
   "games": [
     {

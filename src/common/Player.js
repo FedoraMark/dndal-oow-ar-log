@@ -6,48 +6,52 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
-import SplitButton from "react-bootstrap/SplitButton";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import { useToasts } from "react-toast-notifications";
-
 import _map from "lodash/map";
 import _each from "lodash/each";
-import { BsPlusCircle, BsPlusCircleFill } from "react-icons/bs";
+
+import { HiPlusCircle } from "react-icons/hi";
 import { AiTwotoneDelete } from "react-icons/ai";
 import { IoIosCalculator } from "react-icons/io";
 
 import Wealth from "common/Wealth";
 import EditButton from "common/EditButton";
-import { condenseWealth } from "utils/Util";
+import { getTotalCopper, condenseWealth, coins5e } from "utils/Util";
 
 import "./Player.scss";
 
 function withToast(Component) {
 	return function WrappedComponent(props) {
 		const toastFuncs = useToasts();
-		return <Component {...props} {...toastFuncs} />;
+		return <Component {...props} {...toastFuncs} />; //BUG - "Warning: Each child in a list should have a unique "key" prop.""
 	};
 }
 
 class Player extends Component {
 	static propTypes = {
 		playerObj: PropTypes.object.isRequired,
-		tierSetting: PropTypes.number,
-		useEp: PropTypes.bool,
+		optionsObj: PropTypes.object,
 	};
 
 	static defaultProps = {
-		tierSetting: 0,
-		useEp: true
+		optionsObj: { 
+			autoLeveling: false,
+			tierSetting: 0,
+			useEp: true
+		}
 	}
 
 	state = {
 		playerObj: this.props.playerObj,
 		tempObj: JSON.parse(JSON.stringify(this.props.playerObj)),
 		isEditing: true,
-		tierSetting: this.props.tierSetting,
-		useEp: this.props.useEp,
+
+		// options
+		autoLeveling: this.props.optionsObj.autoLeveling,
+		tierSetting: this.props.optionsObj.tierSetting,
+		useEp: this.props.optionsObj.useEp,
 	};
 
 	componentWillRecieveProps(newProps) {
@@ -55,8 +59,9 @@ class Player extends Component {
 			playerObj: newProps.playerObj,
 			tempObj: JSON.parse(JSON.stringify(this.props.playerObj)),
 			isEditing: newProps.isEditing,
-			tierSetting: newProps.tierSetting,
-			useEp: newProps.useEp,
+			autoLeveling: newProps.optionsObj.autoLeveling,
+			tierSetting: newProps.optionsObj.tierSetting,
+			useEp: newProps.optionsObj.useEp,
 		});
 	}
 
@@ -104,7 +109,7 @@ class Player extends Component {
 	};
 
 	calcWealth = () => {
-		let condensedObj = condenseWealth(this.state.tempObj.wealth, this.state.useEp);
+		let condensedObj = condenseWealth(getTotalCopper(this.state.tempObj.wealth), this.state.useEp);
 		let toastMsg = JSON.stringify(condensedObj) === JSON.stringify(this.state.tempObj.wealth) ? "No change to coinage." : "Condensed coinage.";
 		let toastType = JSON.stringify(condensedObj) === JSON.stringify(this.state.tempObj.wealth) ? "info" : "success";
 		
@@ -154,7 +159,7 @@ class Player extends Component {
 			this.props.addToast((newSp/5 + " ep converted into " + newSp + " sp"), { appearance: "warning" });
 		}
 
-		this.setState({useEp: val}); // BUG - CAUSES UNIQUE "KEY" PROP WARNING
+		this.setState({useEp: val});
 	}
 
 	//RENDERERS
@@ -220,7 +225,7 @@ class Player extends Component {
 					</div>
 				)}
 
-				{!!this.state.playerObj.wealth && (
+				{!!this.state.playerObj.wealth && getTotalCopper(this.state.playerObj.wealth) > 0 && (
 					<div className="infoItem">
 						<h1>Wealth:</h1>
 						<p>
@@ -327,8 +332,8 @@ class Player extends Component {
 						</InputGroup>
 
 						{/* CURRENT WEALTH */}
-						<li className="group wealthWrapper">
-							<InputGroup className="wealthGroup">
+						<li className="group wealthWrapper splitGroupWrapper">
+							<InputGroup className="wealthGroup leftGroup">
 								<InputGroup.Prepend>
 									<InputGroup.Text id="current-wealth">
 										<span className="condense">
@@ -339,10 +344,8 @@ class Player extends Component {
 								</InputGroup.Prepend>
 							</InputGroup>
 
-							<div className="currencyInputsWrapper">
-								{_map(
-									["pp", "gp", "ep", "sp", "cp"],
-									(denom, key) => {
+							<div className="currencyInputsWrapper middleGroup">
+								{_map(coins5e.reverse(), (denom, key) => {
 										let conversion = [
 											"platinum (1000cp)",
 											"gold (100cp)",
@@ -368,8 +371,9 @@ class Player extends Component {
 													id={denom}
 													type="number"
 													min="0"
-													value={this.state.tempObj.wealth[denom]}
+													value={this.state.tempObj.wealth[denom].toString().replace(/^0+/, '')}
 													onChange={(e) => {this.setTempWealth(e.target.value, denom);}}
+													placeholder="0"
 												></Form.Control>
 												<InputGroup.Append>
 													<InputGroup.Text id={denom}>
@@ -392,31 +396,25 @@ class Player extends Component {
 							</div>
 
 							<InputGroup
-								className="calcButtonGroup"
+								className="calcButtonGroup rightGroup"
 								onClick={this.calcWealth.bind(this)}
 							>
-								<InputGroup.Append>
-									<InputGroup.Text id="wealth-calc">
-										<OverlayTrigger
-											placement="top"
-											overlay={
-												<Tooltip>
-													Condense Coinage
-												</Tooltip>
-											}
-										>
-											<span className="calcMoneyIcon">
-												<IoIosCalculator />
-											</span>
-										</OverlayTrigger>
-									</InputGroup.Text>
-								</InputGroup.Append>
+								<OverlayTrigger
+									placement="left"
+									overlay={<Tooltip>Condense Coinage</Tooltip>}
+								>
+									<InputGroup.Append>
+										<InputGroup.Text id="wealth-calc">
+											<span className="calcMoneyIcon"><IoIosCalculator /></span>
+										</InputGroup.Text>
+									</InputGroup.Append>
+								</OverlayTrigger>
 							</InputGroup>
 						</li>
 
 						{/* CLASSES AND LEVELS */}
-						<li className="group classLevelWrapper">
-							<InputGroup className="playerInfoGroup">
+						<li className="group classLevelWrapper splitGroupWrapper">
+							<InputGroup className="playerInfoGroup leftGroup">
 								<InputGroup.Prepend>
 									<InputGroup.Text id="character-name">
 										Classes
@@ -427,7 +425,7 @@ class Player extends Component {
 								</InputGroup.Prepend>
 							</InputGroup>
 
-							<div className="dropdownsWrapper">
+							<div className="dropdownsWrapper middleGroup">
 								{_map(
 									this.state.tempObj.classes, (level, clss) => {
 										return (
@@ -438,45 +436,59 @@ class Player extends Component {
 										);
 									}
 								)}
-
-								<button className="addClassButton">
-									<span className="overlay">
-										<BsPlusCircleFill />
-									</span>
-									<span className="underlay">
-										<BsPlusCircle />
-									</span>
-								</button>
 							</div>
+
+							<InputGroup
+								className="addClassGroup rightGroup"
+								// onClick={}
+							>
+								<OverlayTrigger placement="left" overlay={<Tooltip>Add Class</Tooltip>}>
+									<InputGroup.Append>
+										<InputGroup.Text id="add-class">
+											<span className="plusIcon">
+												<HiPlusCircle />
+											</span>
+										</InputGroup.Text>
+									</InputGroup.Append>
+								</OverlayTrigger>
+							</InputGroup>
 						</li>
 
 						{/* OPTIONS */}
-						<li className="group classLevelWrapper">
-							<InputGroup className="playerInfoGroup">
+						<li className="group optionsLevelWrapper splitGroupWrapper">
+							<InputGroup className="playerInfoGroup leftGroup">
 								<InputGroup.Prepend>
-									<InputGroup.Text id="character-name">Options</InputGroup.Text>
+									<InputGroup.Text id="character-options">Options</InputGroup.Text>
 								</InputGroup.Prepend>
 							</InputGroup>
 
 							<div className="playerInfoOptions">
+								{/* set leveling */}
+								<InputGroup className="playerInfoGroup dropdownGroup">
+									 <DropdownButton variant="secondary" title={this.state.autoLeveling ? "Auto Levels" : "Manual Levels"} alignRight>
+										<Dropdown.Item href="#" eventKey="f" active={this.state.autoLeveling === false} onSelect={(e) => {this.setState({autoLeveling: false})}}>Manual</Dropdown.Item>
+										<Dropdown.Item href="#" eventKey="t" active={this.state.autoLeveling === true} onSelect={(e) => {this.setState({autoLeveling: true})}}>Auto</Dropdown.Item>
+									</DropdownButton>
+								</InputGroup>
+
 								{/* set tier */}
 								<InputGroup className="playerInfoGroup dropdownGroup">
-									 <SplitButton variant="secondary" title={this.state.tierSetting > 0 ? "Tier " + this.state.tierSetting : "Auto Tier"} alignRight>
+									 <DropdownButton variant="secondary" title={this.state.tierSetting > 0 ? "Tier " + this.state.tierSetting : "Auto Tier"} alignRight>
 										<Dropdown.Item href="#" eventKey="0" active={this.state.tierSetting === 0} onSelect={(e) => {this.setState({tierSetting: 0})}}>Auto</Dropdown.Item>
 										<Dropdown.Divider />
 										<Dropdown.Item href="#" eventKey="1" active={this.state.tierSetting === 1} onSelect={(e) => {this.setState({tierSetting: 1})}}>Tier 1</Dropdown.Item>
 										<Dropdown.Item href="#" eventKey="2" active={this.state.tierSetting === 2} onSelect={(e) => {this.setState({tierSetting: 2})}}>Tier 2</Dropdown.Item>
 										<Dropdown.Item href="#" eventKey="3" active={this.state.tierSetting === 3} onSelect={(e) => {this.setState({tierSetting: 3})}}>Tier 3</Dropdown.Item>
 										<Dropdown.Item href="#" eventKey="4" active={this.state.tierSetting === 4} onSelect={(e) => {this.setState({tierSetting: 4})}}>Tier 4</Dropdown.Item>
-									</SplitButton>
+									</DropdownButton>
 								</InputGroup>
 
 								{/* set useEp */}
 								<InputGroup className="playerInfoGroup dropdownGroup">
-									 <SplitButton variant="secondary" title={this.state.useEp ? "Using EP" : "Ignoring EP"} alignRight>
+									 <DropdownButton variant="secondary" title={this.state.useEp ? "Using EP" : "Ignoring EP"} alignRight>
 										<Dropdown.Item href="#" eventKey="t" active={this.state.useEp === true} onSelect={this.setUseEp.bind(this,true)}>Use EP</Dropdown.Item>
 										<Dropdown.Item href="#" eventKey="f" active={this.state.useEp === false} onSelect={this.setUseEp.bind(this,false)}>Ignore EP</Dropdown.Item>
-									</SplitButton>
+									</DropdownButton>
 								</InputGroup>
 							</div>
 						</li>

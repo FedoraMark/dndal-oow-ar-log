@@ -4,6 +4,7 @@ import Container from 'react-bootstrap/Container';
 import _map from "lodash/map";
 import _pull from "lodash/pull";
 import classnames from "classnames";
+import Statebox from "react-three-state-checkbox";
 
 import Select from 'selectors/Select';
 import Option from 'selectors/Option';
@@ -62,6 +63,11 @@ class Event extends Component {
     eventSelectHandler = (key, val) => {
     	let title = this.state.eventObj.title;
 
+        // prevent duplicates
+        if (this.state.selectionObj[title].selections.includes(key)) {
+            return;
+        }
+
     	var newArray = this.state.selectionObj[title].selections;
         if (!val) {
             _pull(newArray, key);
@@ -91,7 +97,15 @@ class Event extends Component {
 
         return (
             <Container className={classnames("eventWrapper","custom-control","custom-checkbox", this.state.status.expended && "expended")}>
-				<input type="checkbox" className="custom-control-input" disabled={this.props.disable || this.state.status.expended} checked={this.state.isSelected} onChange={this.toggleSelect.bind(this)} onClick={this.toggleSelect.bind(this)} />
+                <span onClick={this.toggleSelect.bind(this)}>
+                    <Statebox
+                        className="custom-control-input"
+                        disabled={this.props.disable || this.state.status.expended}
+                        indeterminate={this.state.isSelected && this.state.status.expended}
+                        checked={this.state.isSelected}
+                        onChange={this.toggleSelect.bind(this)}
+                    />
+                </span>
 	        	<span className="contents">
 		        	<div className="descriptionWrapper" onClick={this.toggleSelect.bind(this)}>
 		        		<h1 className="bookFont bold">{this.state.eventObj.title}.</h1>

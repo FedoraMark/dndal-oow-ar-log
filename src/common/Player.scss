@@ -155,7 +155,6 @@ $halfGap: .25rem;
 
             @include flex(center, stretch, column);
 
-
             .playerInfoGroup {
                 margin-bottom: $gap;
             }
@@ -165,10 +164,6 @@ $halfGap: .25rem;
 
                 &:last-of-type {
                     margin-bottom: 0rem;
-                }
-
-                &.group {
-                    @include flex(center, center, column);
                 }
 
                 .input-group-text {
@@ -181,18 +176,126 @@ $halfGap: .25rem;
                 }
             }
 
+            .splitGroupWrapper {
+                @include flex(stretch, stretch);
+            }
+
+            .wealthWrapper {
+                .wealthGroup {
+                    width: auto;
+                    margin-right: $halfGap;
+                }
+
+                .currencyInputsWrapper {
+                    padding-right: $halfGap;
+
+                    flex-wrap: wrap;
+                    flex-grow: 1;
+
+                    @include flex(center, space-between, column);
+
+                    .money {
+                        margin: 0 $halfGap $halfGap;
+
+                        flex-wrap: nowrap;
+
+                        @include flex(stretch, space-between);
+
+                        .input-group-append {
+                            width: 2.5rem;
+                            margin-right: 0 !important;
+                        }
+
+                        &:last-of-type {
+                            margin-right: $halfGap;
+                            margin-bottom: 0;
+                        }
+
+                        input {
+                            flex-grow: 1;
+                        }
+
+                        .input-group-append {
+                            margin-right: -$halfGap;
+                        }
+                    }
+                }
+
+                .calcButtonGroup {
+                    margin-left: $gap;
+
+                    flex-basis: 0;
+
+                    cursor: pointer;
+
+                    &:hover,
+                    &:focus {
+                        #wealth-calc {
+                            color: white;
+                            background-color: $color-active-background;
+                        }
+                    }
+
+                    .input-group-append {
+                        width: 50px;
+
+                        #wealth-calc {
+                            @include transition();
+
+                            .calcMoneyIcon {
+                                margin-top: -.3rem;
+
+                                font-size: 1.21rem;
+                            }
+                        }
+                    }
+                }
+            }
+
             .classLevelWrapper {
-                margin: $gap $gap 0;
+                margin: $gap;
 
                 justify-content: flex-start !important;
 
                 font-family: $fontFamily-handwritten;
 
+                .addClassGroup {
+                    margin-left: $gap;
+
+                    flex-basis: 0;
+
+                    cursor: pointer;
+
+                    &:hover,
+                    &:focus {
+                        #add-class {
+                            color: white;
+                            background-color: $color-active-background;
+                        }
+                    }
+
+                    .input-group-append {
+                        width: 50px;
+
+                        #add-class {
+                            @include transition();
+
+                            .plusIcon {
+                                margin-top: -.3rem;
+
+                                font-size: 1.21rem;
+                            }
+                        }
+                    }
+                }
+
                 .dropdownsWrapper {
+                    padding-right: .5rem;
+
                     flex-wrap: wrap;
                     flex-grow: 1;
 
-                    @include flex(center, flex-start);
+                    @include flex(center, space-between, column);
 
                     .playerInfoGroup {
                         margin: 0;
@@ -264,106 +367,67 @@ $halfGap: .25rem;
                     }
                 }
             }
-        }
 
-        .wealthWrapper {
-            display: flex;
+            .optionsLevelWrapper {
+                margin: 0 $gap;
+                margin-bottom: -$halfGap !important;
 
-            justify-content: stretch !important;
-            flex-direction: row !important;
-            align-items: flex-start !important;
+                .leftGroup {
+                    margin: 0 $halfGap $halfGap 0;
 
-            .wealthGroup {
-                width: auto;
-                margin-right: $halfGap;
-            }
-
-            .currencyInputsWrapper {
-                padding-right: .5rem;
-
-                flex-wrap: wrap;
-                flex-grow: 1;
-
-                @include flex(center, space-between, column);
-
-                .money {
-                    margin: 0 $halfGap $halfGap;
-
-                    flex-wrap: nowrap;
-
-                    @include flex(stretch, space-between);
-
-                    &:last-of-type {
-                        margin-right: $halfGap;
-                    }
-
-                    input {
-                        flex-grow: 1;
-                    }
-
-                    .input-group-append {
-                        width: 2.5rem;
-                    }
-                }
-            }
-
-            .calcButtonGroup {
-                margin-left: $gap;
-
-                flex-basis: 0;
-
-                cursor: pointer;
-
-                &:hover,
-                &:focus {
-                    #wealth-calc {
-                        color: white;
-                        background-color: $color-active-background;
-                    }
+                    flex-basis: 0;
                 }
 
-                .input-group-append {
-                    width: 50px;
+                .playerInfoOptions {
+                    flex-wrap: wrap;
+                    flex-grow: 1;
 
-                    #wealth-calc {
-                        @include transition();
+                    @include flex(center, flex-start, row);
 
-                        .calcMoneyIcon {
-                            margin-top: -.3rem;
+                    .dropdownGroup {
+                        width: 100%;
+                        margin: 0 0 $halfGap $halfGap;
 
-                            font-size: 1.21rem;
+                        font-family: $fontFamily-oswald;
+
+                        white-space: nowrap;
+
+
+                        .dropdown {
+                            width: 100%;
+
+                            button {
+                                width: 100%;
+                                padding-right: 2rem;
+                                padding-left: 1rem;
+
+                                &:after {
+                                    position: absolute;
+                                    top: 1rem;
+                                    right: .75rem;
+
+                                    margin: 0;
+                                }
+                            }
+                        }
+
+                        .dropdown-menu {
+                            width: 100%;
+                            min-width: initial;
+
+                            font-family: $fontFamily-handwritten;
+
+                            .dropdown-item {
+                                text-align: center;
+                            }
                         }
                     }
                 }
             }
-        }
 
-        .playerInfoOptions {
-            flex-grow: 1;
-
-            @include flex(center, flex-start, row);
-
-            .dropdownGroup {
-                font-family: $fontFamily-oswald;
-
-                button:first-of-type {
-                    pointer-events: none; // WILL NOT STOP TABBING
-                }
-
-                .dropdown-menu {
-                    min-width: initial;
-
-                    font-family: $fontFamily-handwritten;
-
-                    .dropdown-item {
-                        text-align: center;
-                    }
-                }
+            .condense {
+                display: none;
             }
-        }
-
-        .condense {
-            display: none;
         }
     }
 }
@@ -373,37 +437,27 @@ $halfGap: .25rem;
 
 // Small devices (landscape phones, 576px and up)
 @media (min-width:576px) {
+    .editBox .editingContent .editingFlex {
+        .wealthWrapper .currencyInputsWrapper .money .input-group-append {
+            width: auto;
+        }
+
+        .optionsLevelWrapper .playerInfoOptions .dropdownGroup {
+            width: auto;
+
+            flex-grow: 1;
+        }
+    }
 }
 
 // Medium devices (tablets, 768px and up)
 @media (min-width:768px) {
-    .editBox {
-        .editingContent {
-            .editingFlex li {
-                &.group {
-                    flex-direction: row;
+    .editBox .editingContent .editingFlex li {
+        &.group:not(.optionsLevelWrapper) {
+            flex-direction: row;
 
-                    .playerInfoGroup:not(:last-of-type) {
-                        margin-right: $gap;
-                    }
-                }
-            }
-
-            .wealthWrapper {
-                flex-direction: row;
-
-                .currencyInputsWrapper {
-                    padding-right: 0;
-
-                    flex-wrap: nowrap;
-                    flex-grow: 1;
-
-                    @include flex(center, space-between, row);
-
-                    .money {
-                        margin: 0 $gap 0 $halfGap;
-                    }
-                }
+            .playerInfoGroup:not(:last-of-type) {
+                margin-right: $gap;
             }
         }
     }
@@ -437,12 +491,35 @@ $halfGap: .25rem;
         }
 
         .editingContent {
-            .editingFlex li .input-group-text {
-                width: 130px;
-            }
+            .editingFlex {
+                li .input-group-text {
+                    width: 130px;
+                }
 
-            .condense {
-                display: initial;
+                .wealthWrapper {
+                    flex-direction: row;
+
+                    .currencyInputsWrapper {
+                        padding-right: 0;
+
+                        flex-wrap: nowrap;
+                        flex-grow: 1;
+
+                        @include flex(center, space-between, row);
+
+                        .money {
+                            margin: 0 $gap 0 $halfGap;
+
+                            .input-group-append {
+                                width: 2.5rem;
+                            }
+                        }
+                    }
+                }
+
+                .condense {
+                    display: initial;
+                }
             }
         }
     }

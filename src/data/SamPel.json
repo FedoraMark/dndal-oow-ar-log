@@ -17,6 +17,11 @@
       "cp": 1
     }
   },
+  "options": {
+    "autoLeveling": false,
+    "tierSetting": 0,
+    "useEp": true
+  },
   "games": [
     {
       "record": "game",

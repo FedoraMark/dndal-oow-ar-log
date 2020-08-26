@@ -1,9 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import classnames from 'classnames';
-import InputGroup from 'react-bootstrap/InputGroup';
+import React from "react";
+import PropTypes from "prop-types";
+import classnames from "classnames";
+import InputGroup from "react-bootstrap/InputGroup";
 
-import 'selectors/SelectOption.scss';
+import "selectors/SelectOption.scss";
 
 class Select extends React.Component {
     static propTypes = {
@@ -14,9 +14,8 @@ class Select extends React.Component {
         type: PropTypes.string.isRequired, // "checkbox", "switch" (TBD)
         isBold: PropTypes.bool,
         selectHandler: PropTypes.func,
-        title: PropTypes.string,
         isExpended: PropTypes.bool,
-    }
+    };
 
     static defaultProps = {
         arrKey: -1,
@@ -24,23 +23,28 @@ class Select extends React.Component {
         isDisabled: false,
         isBold: false,
         selectHandler: (e) => {},
-        title: "N-A",
         isExpended: false,
-    }
+    };
 
     state = {
         isSelected: this.props.isSelected,
         isDisabled: this.props.isDisabled,
-        isExpended: this.props.isExpended
-    }
-
+        isExpended: this.props.isExpended,
+    };
 
     componentWillReceiveProps(nextProps) {
-        this.setState({ isSelected: nextProps.isSelected, isDisabled: nextProps.isDisabled, isExpended: nextProps.isExpended }, () => {
-            if (nextProps.isDisabled && !nextProps.isExpended) {
-                this.setState({ isSelected: false });
+        this.setState(
+            {
+                isSelected: nextProps.isSelected,
+                isDisabled: nextProps.isDisabled,
+                isExpended: nextProps.isExpended,
+            },
+            () => {
+                if (nextProps.isDisabled && !nextProps.isExpended) {
+                    this.setState({ isSelected: false });
+                }
             }
-        });
+        );
     }
 
     //FUNCTIONS
@@ -48,13 +52,13 @@ class Select extends React.Component {
         if (!this.state.isDisabled) {
             this.setSelect(!this.state.isSelected);
         }
-    }
+    };
 
     setSelect = (set) => {
         this.setState({ isSelected: set },
-            this.props.selectHandler(this.props.arrKey, set, this.props.title)
+            this.props.selectHandler(this.props.arrKey, set)
         );
-    }
+    };
 
     //RENDERERS
     render() {
@@ -62,19 +66,28 @@ class Select extends React.Component {
 
         if (type === "checkbox") {
             return (
-                <div className={classnames("selectWrapper checkbox", this.state.isDisabled && "disabled")} onClick={this.toggleSelect.bind(this)}>
+                <div
+                    className={classnames("selectWrapper checkbox",this.state.isDisabled && "disabled")}
+                    onClick={this.toggleSelect.bind(this)}
+                >
                     <InputGroup className="checkArea">
                         <InputGroup.Prepend>
-                            <InputGroup.Checkbox checked={this.state.isSelected} disabled={this.state.isDisabled} onChange={this.toggleSelect.bind(this)} />
+                            <InputGroup.Checkbox
+                                checked={this.state.isSelected}
+                                disabled={this.state.isDisabled}
+                                onChange={this.toggleSelect.bind(this)} // DOUBLE SELECTS WITH THIS AND ONCLICK ABOVE
+                            />
                         </InputGroup.Prepend>
-                        <p className={classnames("label bookFont", isBold && "bold")} dangerouslySetInnerHTML={{ __html: label }} />
+                        <p
+                            className={classnames("label bookFont",isBold && "bold")}
+                            dangerouslySetInnerHTML={{ __html: label }}
+                        />
                     </InputGroup>
                 </div>
             );
         }
 
-        return (null);
-
+        return null;
     }
 }
 
