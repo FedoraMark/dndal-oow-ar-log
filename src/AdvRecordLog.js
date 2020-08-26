@@ -30,7 +30,6 @@ import games_oow from "./data/oowGames.json";
 
 class AdvRecordLog extends React.Component {
 	state = {
-		// charData: chara_SamPel.player,
 		charData: {
 	        "player": "",
 	        "dci": "",

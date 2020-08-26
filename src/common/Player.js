@@ -47,7 +47,7 @@ class Player extends Component {
 	state = {
 		playerObj: this.props.playerObj,
 		tempObj: JSON.parse(JSON.stringify(this.props.playerObj)),
-		isEditing: true,
+		isEditing: false,
 
 		// options
 		autoLeveling: this.props.optionsObj.autoLeveling,
