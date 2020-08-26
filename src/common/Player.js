@@ -461,13 +461,13 @@ class Player extends Component {
 							<div className="playerInfoOptions">
 								{/* set tier */}
 								<InputGroup className="playerInfoGroup dropdownGroup">
-									 <SplitButton variant="secondary" title={this.state.tierSetting > 0 ? "Tier " + this.state.tierSetting : "Auto tier"} alignRight>
+									 <SplitButton variant="secondary" title={this.state.tierSetting > 0 ? "Tier " + this.state.tierSetting : "Auto Tier"} alignRight>
 										<Dropdown.Item href="#" eventKey="0" active={this.state.tierSetting === 0} onSelect={(e) => {this.setState({tierSetting: 0})}}>Auto</Dropdown.Item>
 										<Dropdown.Divider />
 										<Dropdown.Item href="#" eventKey="1" active={this.state.tierSetting === 1} onSelect={(e) => {this.setState({tierSetting: 1})}}>Tier 1</Dropdown.Item>
 										<Dropdown.Item href="#" eventKey="2" active={this.state.tierSetting === 2} onSelect={(e) => {this.setState({tierSetting: 2})}}>Tier 2</Dropdown.Item>
 										<Dropdown.Item href="#" eventKey="3" active={this.state.tierSetting === 3} onSelect={(e) => {this.setState({tierSetting: 3})}}>Tier 3</Dropdown.Item>
-										<Dropdown.Item href="#" eventKey="4" active={this.state.tierSetting === 4} onSelect={(e) => {this.setState({tierSetting: 4})}}>tier 4</Dropdown.Item>
+										<Dropdown.Item href="#" eventKey="4" active={this.state.tierSetting === 4} onSelect={(e) => {this.setState({tierSetting: 4})}}>Tier 4</Dropdown.Item>
 									</SplitButton>
 								</InputGroup>
 
