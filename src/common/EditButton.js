@@ -11,7 +11,9 @@ class EditButton extends Component {
 		onClick: PropTypes.func.isRequired,
 		className: PropTypes.string,
 		active: PropTypes.bool,
-		save: PropTypes.bool
+		save: PropTypes.bool,
+		cancel: PropTypes.bool,
+		left: PropTypes.bool,
 	};
 
 	static defaultProps = {
@@ -28,20 +30,24 @@ class EditButton extends Component {
 	}
 
 	render() {
+		console.log(this.state.cancel);
+		const { onClick, className, active, save, cancel, left } = this.props;
+
 		return (
 			<span
 				className={classnames(
 					style.editButtonWrapper,
-					this.props.className,
-					this.state.active && style.active
+					className,
+					this.state.active && style.active,
+					(left ? style.left : style.right)
 				)}
 				onClick={(e) => {
-					this.props.onClick();
+					onClick();
 				}}
 			>
-				{!this.state.active && <FiEdit />}
-				{!this.props.save && this.state.active && <FiX />}
-				{this.props.save && this.state.active && <FaSave />}
+				{(!cancel && !active) && <FiEdit />}
+				{(cancel || (!save && this.state.active)) && <FiX />}
+				{save && this.state.active && <FaSave />}
 			</span>
 		);
 	}

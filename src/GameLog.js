@@ -99,9 +99,15 @@ class GameLog extends React.Component {
         return (
             <div className={classnames("titleWrapper",!this.props.preview && "sticky")}>
             	{!this.props.preview && 
-            		<Fade in={!this.state.isCollapsed} mountOnEnter unmountOnExit>
-            			<EditButton onClick={this.editInfo.bind()} active={this.state.isEditing} />
-            		</Fade>
+            		<>
+	            		<Fade in={!this.state.isCollapsed} mountOnEnter unmountOnExit>
+	            			<EditButton save onClick={this.editInfo.bind()} active={this.state.isEditing} />
+	            		</Fade>
+
+	            		<Fade in={this.state.isEditing}>
+							<EditButton left cancel onClick={this.editInfo.bind(this, true)} active={this.state.isEditing}/>
+						</Fade>
+					</>
             	}
 
 				<h1 className="title fauxdesto" onClick={this.toggleCollapsed.bind(this)}>

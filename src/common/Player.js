@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import Collapse from "react-bootstrap/Collapse";
+import Fade from "react-bootstrap/Fade";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import Dropdown from "react-bootstrap/Dropdown";
@@ -80,15 +81,16 @@ class Player extends Component {
 		return str;
 	};
 
-	editInfo = () => {
-		if (this.state.isEditing) {
+	editInfo = (close) => {
+		console.log(close);
+		if (this.state.isEditing && !close) {
 			this.setState({
 				isEditing: false,
 				playerObj: this.state.tempObj,
 			});
 		} else {
 			this.setState({
-				isEditing: true,
+				isEditing: !this.state.isEditing,
 				tempObj: JSON.parse(JSON.stringify(this.state.playerObj)),
 			});
 		}
@@ -567,23 +569,23 @@ class Player extends Component {
 	render() {
 		return (
 			<div className="editBox">
-				<div
-					className={classnames(
-						"playerBox",
-						this.state.isEditing && "editing"
-					)}
-				>
-					<div
-						className="playerInfoEditButton"
-						onMouseOver={this.blurAll.bind(this)}
-					>
+				<div className={classnames("playerBox",this.state.isEditing && "editing")}>
+					<Fade in={this.state.isEditing}>
 						<EditButton
-							save
-							onClick={this.editInfo.bind(this)}
+							left
+							cancel
+							onClick={this.editInfo.bind(this, true)}
 							active={this.state.isEditing}
 						/>
-						{this.render_displayInfo()}
-					</div>
+					</Fade>
+
+					{this.render_displayInfo()}
+
+					<EditButton
+						save
+						onClick={this.editInfo.bind(this, false)}
+						active={this.state.isEditing}
+						/>
 				</div>
 
 				{this.render_editInfo()}

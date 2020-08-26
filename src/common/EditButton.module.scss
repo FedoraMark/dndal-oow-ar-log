@@ -5,16 +5,15 @@ $offset: 1rem;
 .editButtonWrapper {
     position: absolute;
     top: -$offset;
-    right: -$offset;
 
     display: flex;
     width: $hw;
     height: $hw;
     padding: .5rem;
 
-    align-items: center;
     justify-content: center;
     box-sizing: content-box;
+    align-items: center;
 
     font-size: medium;
 
@@ -37,4 +36,12 @@ $offset: 1rem;
 .active {
     color: $color-active-text;
     background: $color-active-background;
+}
+
+.left {
+    left: -$offset;
+}
+
+.right {
+    right: -$offset;
 }

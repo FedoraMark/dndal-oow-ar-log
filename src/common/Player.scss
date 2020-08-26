@@ -1,6 +1,7 @@
 @import "utils/common.scss";
 $gap: .5rem;
 $halfGap: .25rem;
+$gapPlusHalf: .75rem;
 
 .editBox {
     margin-bottom: 1rem;
@@ -222,7 +223,7 @@ $halfGap: .25rem;
                 }
 
                 .calcButtonGroup {
-                    margin-left: $gap;
+                    margin-left: $gapPlusHalf;
 
                     flex-basis: 0;
 
@@ -438,8 +439,14 @@ $halfGap: .25rem;
 // Small devices (landscape phones, 576px and up)
 @media (min-width:576px) {
     .editBox .editingContent .editingFlex {
-        .wealthWrapper .currencyInputsWrapper .money .input-group-append {
-            width: auto;
+        .wealthWrapper {
+            .calcButtonGroup {
+                margin-left: $gap;
+            }
+
+            .currencyInputsWrapper .money .input-group-append {
+                width: auto;
+            }
         }
 
         .optionsLevelWrapper .playerInfoOptions .dropdownGroup {
