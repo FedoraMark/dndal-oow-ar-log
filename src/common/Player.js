@@ -7,7 +7,6 @@ import InputGroup from "react-bootstrap/InputGroup";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import SplitButton from "react-bootstrap/SplitButton";
-import Overlay from "react-bootstrap/Overlay";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import { useToasts } from "react-toast-notifications";
@@ -106,11 +105,8 @@ class Player extends Component {
 
 	calcWealth = () => {
 		let condensedObj = condenseWealth(this.state.tempObj.wealth, this.state.useEp);
-		// console.log(JSON.stringify(condensedObj));
-		// console.log(JSON.stringify(this.state.tempObj.wealth));
-
-		let toastMsg = JSON.stringify(condensedObj) == JSON.stringify(this.state.tempObj.wealth) ? "No change to coinage." : "Condensed coinage.";
-		let toastType = JSON.stringify(condensedObj) == JSON.stringify(this.state.tempObj.wealth) ? "info" : "success";
+		let toastMsg = JSON.stringify(condensedObj) === JSON.stringify(this.state.tempObj.wealth) ? "No change to coinage." : "Condensed coinage.";
+		let toastType = JSON.stringify(condensedObj) === JSON.stringify(this.state.tempObj.wealth) ? "info" : "success";
 		
 		this.props.addToast(toastMsg, { appearance: toastType });
 
