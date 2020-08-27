@@ -190,19 +190,17 @@ $gapPlusHalf: .75rem;
             .wealthWrapper {
                 .wealthGroup {
                     width: auto;
-                    margin-right: $halfGap;
+                    margin-right: $gap;
                 }
 
                 .currencyInputsWrapper {
-                    padding-right: $halfGap;
-
                     flex-wrap: wrap;
                     flex-grow: 1;
 
                     @include flex(center, space-between, column);
 
                     .money {
-                        margin: 0 $halfGap $halfGap;
+                        margin: 0 $halfGap $halfGap 0;
 
                         flex-wrap: nowrap;
 
@@ -229,7 +227,7 @@ $gapPlusHalf: .75rem;
                 }
 
                 .calcButtonGroup {
-                    margin-left: $gapPlusHalf;
+                    margin-left: $gap;
 
                     flex-basis: 0;
 
@@ -537,6 +535,10 @@ $gapPlusHalf: .75rem;
 
                         .money {
                             margin: 0 $gap 0 $halfGap;
+
+                            &:first-of-type {
+                                margin-left: 0;
+                            }
 
                             .input-group-append {
                                 width: 2.5rem;
