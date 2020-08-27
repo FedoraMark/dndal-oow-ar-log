@@ -4,8 +4,22 @@ export const fadeIn = "animate__animated animate__fadeIn";
 export const fadeInUp = "animate__animated animate__fadeInUp";
 export const fadeInRight = "animate__animated animate__bounceIn";
 
-export const classes5e = ["Artificer","Barbarian","Bard","Cleric","Druid","Fighter","Monk","Paladin","Ranger","Rogue","Sorcerer","Warlock","Wizard"];
-export const classesUA = ["Blood Hunter","Mystic"];
+export const classes5e = [
+    "Artificer",
+    "Barbarian",
+    "Bard",
+    "Cleric",
+    "Druid",
+    "Fighter",
+    "Monk",
+    "Paladin",
+    "Ranger",
+    "Rogue",
+    "Sorcerer",
+    "Warlock",
+    "Wizard",
+];
+export const classesUA = ["Blood Hunter", "Mystic"];
 // export const coins5e = ["cp","sp","ep","gp","pp"];
 
 // FUNCTIONS
@@ -18,16 +32,18 @@ export const getFirstKey = (obj) => {
 };
 
 export const getTotalCopper = (wealthObj) => {
-	return (!wealthObj.pp ? 0 : wealthObj.pp) * 1000 +
+    return (
+        (!wealthObj.pp ? 0 : wealthObj.pp) * 1000 +
         (!wealthObj.gp ? 0 : wealthObj.gp) * 100 +
         (!wealthObj.ep ? 0 : wealthObj.ep) * 50 +
         (!wealthObj.sp ? 0 : wealthObj.sp) * 10 +
-        (!wealthObj.cp ? 0 : wealthObj.cp);
-}
+        (!wealthObj.cp ? 0 : wealthObj.cp)
+    );
+};
 
 export const condenseWealth = (totalCopper, useEP) => {
     var totalInCopper = totalCopper;
-    var denomObj = {cp: 0, sp: 0, ep: 0, gp: 0, pp: 0};
+    var denomObj = { cp: 0, sp: 0, ep: 0, gp: 0, pp: 0 };
 
     //get copper
     denomObj.cp = totalInCopper % 10;

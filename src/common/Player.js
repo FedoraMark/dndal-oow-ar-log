@@ -101,10 +101,12 @@ class Player extends Component {
 
 	calcWealth = () => {
 		let condensedObj = condenseWealth(getTotalCopper(this.state.tempObj.wealth), this.state.useEp);
-		let toastMsg = JSON.stringify(condensedObj) === JSON.stringify(this.state.tempObj.wealth) ? "No change to coinage." : "Condensed coinage.";
-		let toastType = JSON.stringify(condensedObj) === JSON.stringify(this.state.tempObj.wealth) ? "info" : "success";
-		
-		this.props.addToast(toastMsg, { appearance: toastType });
+
+		if (JSON.stringify(condensedObj) === JSON.stringify(this.state.tempObj.wealth)) {
+			this.props.addToast("No change to coinage", { appearance: "info" });
+		} else {
+			this.props.addToast("Coinaged condensed", { appearance: "success" });
+		}
 
 		this.updateTempInfo("wealth", condensedObj);
 	};
