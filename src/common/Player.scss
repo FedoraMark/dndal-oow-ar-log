@@ -1,7 +1,6 @@
 @import "utils/common.scss";
 $gap: .5rem;
 $halfGap: .25rem;
-$gapPlusHalf: .75rem;
 
 .editBox {
     margin-bottom: 1rem;
@@ -200,19 +199,21 @@ $gapPlusHalf: .75rem;
                     @include flex(center, space-between, column);
 
                     .money {
-                        margin: 0 $halfGap $halfGap 0;
+                        margin: 0 0 $halfGap;
 
                         flex-wrap: nowrap;
 
                         @include flex(stretch, space-between);
 
                         .input-group-append {
-                            width: 2.5rem;
                             margin-right: 0 !important;
+
+                            .input-group-text {
+                                width: 2.5rem;
+                            }
                         }
 
                         &:last-of-type {
-                            margin-right: $halfGap;
                             margin-bottom: 0;
                         }
 
@@ -427,13 +428,15 @@ $gapPlusHalf: .75rem;
 // Small devices (landscape phones, 576px and up)
 @media (min-width:576px) {
     .editBox .editingContent .editingFlex {
-        .wealthWrapper {
-            .calcButtonGroup {
-                margin-left: $gap;
+        .wealthWrapper .currencyInputsWrapper .money {
+            margin: 0 $halfGap $halfGap 0;
+
+            &:last-of-type {
+                margin-right: $halfGap;
             }
 
-            .currencyInputsWrapper .money .input-group-append {
-                width: auto;
+            .input-group-append .input-group-text {
+                width: 5rem;
             }
         }
 
@@ -481,10 +484,6 @@ $gapPlusHalf: .75rem;
                     margin-left: 0;
                 }
             }
-        }
-
-        .editingFlex .filler1 {
-            display: block;
         }
     }
 }
@@ -540,7 +539,7 @@ $gapPlusHalf: .75rem;
                                 margin-left: 0;
                             }
 
-                            .input-group-append {
+                            .input-group-append .input-group-text {
                                 width: 2.5rem;
                             }
                         }
@@ -562,10 +561,6 @@ $gapPlusHalf: .75rem;
                 .condense {
                     display: initial;
                 }
-            }
-
-            .editingFlex .filler2 {
-                display: block;
             }
         }
     }
