@@ -196,7 +196,7 @@ $halfGap: .25rem;
                     flex-wrap: wrap;
                     flex-grow: 1;
 
-                    @include flex(center, space-between, column);
+                    @include flex(stretch, space-between, column);
 
                     .money {
                         margin: 0 0 $halfGap;
@@ -435,6 +435,7 @@ $halfGap: .25rem;
                 margin-right: $halfGap;
             }
 
+
             .input-group-append .input-group-text {
                 width: 5rem;
             }
@@ -533,10 +534,14 @@ $halfGap: .25rem;
                         @include flex(center, space-between, row);
 
                         .money {
-                            margin: 0 $gap 0 $halfGap;
+                            margin: 0 $halfGap;
 
                             &:first-of-type {
                                 margin-left: 0;
+                            }
+
+                            &:last-of-type {
+                                margin-right: 0;
                             }
 
                             .input-group-append .input-group-text {
