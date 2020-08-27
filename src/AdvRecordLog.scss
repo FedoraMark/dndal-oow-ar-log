@@ -15,6 +15,14 @@
         width: 100%;
     }
 
+    nav {
+        z-index: 980;
+    }
+
+    & > .jumbotron {
+        padding: 3rem 1rem;
+    }
+
     .titleBox {
         margin-top: 1rem;
 

@@ -405,7 +405,7 @@ class Player extends Component {
 								onClick={this.calcWealth.bind(this)}
 							>
 								<OverlayTrigger
-									placement="left"
+									placement="top"
 									overlay={<Tooltip>Condense Coinage</Tooltip>}
 								>
 									<InputGroup.Append>
@@ -450,7 +450,7 @@ class Player extends Component {
 								className="addClassGroup rightGroup"
 								onClick={this.addNewClass.bind(this)}
 							>
-								<OverlayTrigger placement="left" overlay={<Tooltip>Add Class</Tooltip>}>
+								<OverlayTrigger placement="bottom" overlay={<Tooltip>Add Class</Tooltip>}>
 									<InputGroup.Append>
 										<InputGroup.Text id="add-class">
 											<span className="plusIcon">
