@@ -152,7 +152,7 @@ class Player extends Component {
 
 	addNewClass = () => {
 		if (Object.keys(this.state.tempObj.classes).length > 20) {
-			this.props.addToast("Leeloo Dallas Multiclass", { appearance: "error" });
+			this.props.addToast("Leeloo Dallas multiclass", { appearance: "error" });
 			return;
 		}
 
@@ -485,7 +485,7 @@ class Player extends Component {
 								className="addClassGroup rightGroup"
 								onClick={this.addNewClass.bind(this)}
 							>
-								<OverlayTrigger placement="bottom" overlay={<Tooltip>Add Class</Tooltip>}>
+								{/* <OverlayTrigger placement="bottom" overlay={<Tooltip>Add Class</Tooltip>}> */}
 									<InputGroup.Append>
 										<InputGroup.Text id="add-class">
 											<span className="plusIcon">
@@ -493,7 +493,7 @@ class Player extends Component {
 											</span>
 										</InputGroup.Text>
 									</InputGroup.Append>
-								</OverlayTrigger>
+								{/* </OverlayTrigger> */}
 							</InputGroup>
 						</li>
 
@@ -528,9 +528,9 @@ class Player extends Component {
 
 								{/* set useEp */}
 								<InputGroup className="playerInfoGroup dropdownGroup">
-									 <DropdownButton variant="secondary" title={this.state.useEp ? "Using EP" : "Ignoring EP"} alignRight>
-										<Dropdown.Item href="#" eventKey="t" active={this.state.useEp === true} onSelect={this.setUseEp.bind(this,true)}>Use EP</Dropdown.Item>
-										<Dropdown.Item href="#" eventKey="f" active={this.state.useEp === false} onSelect={this.setUseEp.bind(this,false)}>Ignore EP</Dropdown.Item>
+									 <DropdownButton variant="secondary" title={this.state.useEp ? "Include EP" : "Exclude EP"} alignRight>
+										<Dropdown.Item href="#" eventKey="t" active={this.state.useEp === true} onSelect={this.setUseEp.bind(this,true)}>Include EP</Dropdown.Item>
+										<Dropdown.Item href="#" eventKey="f" active={this.state.useEp === false} onSelect={this.setUseEp.bind(this,false)}>Exclude EP</Dropdown.Item>
 									</DropdownButton>
 								</InputGroup>
 							</div>

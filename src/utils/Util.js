@@ -4,6 +4,12 @@ export const fadeIn = "animate__animated animate__fadeIn";
 export const fadeInUp = "animate__animated animate__fadeInUp";
 export const fadeInRight = "animate__animated animate__bounceIn";
 
+export const dmRewardNote =
+    "When you run an adventure, you earn the Adventure Record for that adventure, which you may apply to one of your Oracle of War characters. Apply the same rewards to the Adventure Record as your group earned, including legacy events. If a legacy event was awarded to a specific character, you may tick that event for your own character too.";
+
+export const playerRewardNote =
+    "(A character that dies during an adventure should still receive any legacy events that they earned, based on the discretion of the DM.)";
+
 export const classes5e = [
     "Artificer",
     "Barbarian",

@@ -77,9 +77,9 @@
             padding: 0;
             margin-left: .2rem;
 
-            align-items: center;
             justify-content: center;
             box-sizing: border-box;
+            align-items: center;
 
             border: 1px solid gray;
             border-radius: 50%;
@@ -121,9 +121,6 @@
     // }
 }
 
-.modalTitle {
-    font-style: italic !important;
-}
 
 // Extra small devices (portrait phones, less than 576px)
 // No media query for `xs` since this is the default in Bootstrap

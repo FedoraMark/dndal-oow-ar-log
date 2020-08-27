@@ -77,6 +77,12 @@
 
                 @include flex(center, center, row);
 
+                .diceIcon {
+                    margin-top: -.1rem;
+
+                    font-size: 1.25rem;
+                }
+
                 .code {
                     padding: 0 .5rem;
 
@@ -94,8 +100,6 @@
             }
         }
     }
-
-
 
     .content {
         padding: 0;
@@ -133,7 +137,7 @@
 
             list-style: none;
 
-            @include flex(center, center, column);
+            @include flex(center, center, row);
 
             li {
                 margin: 0 1rem;
@@ -379,6 +383,10 @@
     .gameBox {
         .titleWrapper .title {
             font-size: 2rem;
+
+            .name .diceIcon {
+                font-size: 1.5rem;
+            }
         }
 
         .content {
@@ -410,6 +418,10 @@
             font-size: 2.25rem;
 
             .name {
+                .diceIcon {
+                    font-size: 1.75rem;
+                }
+
                 .code {
                     width: auto;
                     padding-right: .5rem;
@@ -479,6 +491,10 @@
             font-size: 2.75rem;
 
             .name {
+                .diceIcon {
+                    font-size: 2rem;
+                }
+
                 .code {
                     width: auto;
                     padding-right: .75rem;

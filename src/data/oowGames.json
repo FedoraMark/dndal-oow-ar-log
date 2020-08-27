@@ -60,8 +60,7 @@
               "<b>19+:</b> You find vendors in town who don't like Irullan, and they sympathize with you and give you discounts. Add 10 gp to your gold total."
             ]
           }
-        ],
-        "footnote": "(A character that dies during an adventure should still receive any legacy events that they earned, based on the discretion of the DM.)"
+        ]
       }
     },
     {
@@ -117,8 +116,7 @@
               "Tick this if you identified the rose. At the end of the adventure, you can spend 5 gp to identify it as a rare Orioth rose from the distant jungle of Dajar Orioth in the elven nation of Aerenal."
             ]
           }
-        ],
-        "footnote": "(A character that dies during an adventure should still receive any legacy events that they earned, based on the discretion of the DM.)"
+        ]
       }
     },
     {
@@ -166,8 +164,7 @@
               "If you appeal to your ally by writing an in-character letter of 300 words or more, and hand it in to your DM for approval before playing DDAL-EB-04 <i>The Third Protocol</i>, your ally may have second thoughts . . ."
             ]
           }
-        ],
-        "footnote": "(A character that dies during an adventure should still receive any legacy events that they earned, based on the discretion of the DM.)"
+        ]
       }
     },
     {
@@ -222,8 +219,7 @@
               "Kalli remains in Salvation and tries to set herself up as a salvage broker."
             ]
           }
-        ],
-        "footnote": "(A character that dies during an adventure should still receive any legacy events that they earned, based on the discretion of the DM.)"
+        ]
       }
     },
     {
@@ -275,8 +271,7 @@
             "title": "Enmity of the Claw",
             "description": "You captured a battle standard carried by an undead minion of the Emerald Claw. Your actions have been noted by the Order and they've vowed to punish you in the future."
           }
-        ],
-        "footnote": "(A character that dies during an adventure should still receive any legacy events that they earned, based on the discretion of the DM.)"
+        ]
       }
     },
     {
@@ -340,8 +335,7 @@
             "title": "Flamewind's Favored",
             "description": "You impressed the sphinx Flamewind with your performance during a duel."
           }
-        ],
-        "footnote": "(A character that dies during an adventure should still receive any legacy events that they earned, based on the discretion of the DM.)"
+        ]
       }
     },
     {
@@ -392,8 +386,7 @@
               "Once only, during any adventure in the <i>Oracle of War</i> campaign, you can call on Orsino for assistance. You must have at least 8 hours free to contact him. Orsino's spy network can answer three questions for you, as per the <i>commune</i> spell. When you use this legacy event, all players in your group must remove it from their Adventure Records."
             ]
           }
-        ],
-        "footnote": "(A character that dies during an adventure should still receive any legacy events that they earned, based on the discretion of the DM.)"
+        ]
       }
     },
     {
@@ -463,8 +456,7 @@
             "title": "Flamewind's Favored",
             "description": "You impressed the sphinx Flamewind with your performance during a steeplechase."
           }
-        ],
-        "footnote": "(A character that dies during an adventure should still receive any legacy events that they earned, based on the discretion of the DM.)"
+        ]
       }
     },
     {
@@ -522,8 +514,7 @@
               "<b>Larten</b> gives you a map of Cyre which grants you advantage to all Wisdom (Survival) checks made to navigate the Mournland."
             ]
           }
-        ],
-        "footnote": "(A character that dies during an adventure should still receive any legacy events that they earned, based on the discretion of the DM.)"
+        ]
       }
     }
   ]

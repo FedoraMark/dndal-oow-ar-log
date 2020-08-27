@@ -83,7 +83,6 @@ $fontFamily-book-italic: BookinsanityItalic, serif;
 $fontFamily-book-boldItalic: BookinsanityBoldItalic, serif;
 
 
-
 // STYLES
 body {
     min-width: 375px;
@@ -132,6 +131,28 @@ body {
 
 .oswald {
     font-family: $fontFamily-oswald;
+}
+
+
+.modalDiceIcon {
+    margin-top: -.3rem;
+}
+
+.modalTitle {
+    font-style: italic !important;
+}
+
+.modal-footer {
+    button {
+        // padding-right: .6rem;
+        // padding-left: .6rem;
+    }
+    button:first-of-type {
+        margin-left: 0;
+    }
+    button:last-of-type {
+        margin-right: 0;
+    }
 }
 
 // Extra small devices (portrait phones, less than 576px)

@@ -6,6 +6,8 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+import { FaDiceD20 } from "react-icons/fa";
+
 
 import GameLog from 'GameLog.js';
 
@@ -38,9 +40,15 @@ class Summary extends Component {
 		}
 	}
 
-	handleAddRecord = () => {
+	handleAddRecord = (asDm) => {
 		this.setShowModal(false);
-		this.props.handleAdd(this.props.gameData);
+		var newData = this.props.gameData;
+		
+		if (asDm) {
+			newData.dungeonMaster = {isDm: true}
+		}
+
+		this.props.handleAdd(newData);
 	}
 
 	// RENDERERS
@@ -83,7 +91,8 @@ class Summary extends Component {
 					</Modal.Body>
 					<Modal.Footer>
 						<Button variant="secondary" onClick={this.setShowModal.bind(this,false)}>Cancel</Button>
-    					<Button variant="primary" onClick={this.handleAddRecord.bind(this)}>Add Record</Button>
+						<Button variant="primary" onClick={this.handleAddRecord.bind(this,true)}>Add as DM <FaDiceD20 className="modalDiceIcon" /></Button>
+    					<Button variant="primary" onClick={this.handleAddRecord.bind(this,false)}>Add Record</Button>
 					</Modal.Footer>
 				</Modal>
 			</Card>

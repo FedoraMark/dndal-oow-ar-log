@@ -6,8 +6,9 @@ import Fade from "react-bootstrap/Fade";
 import Container from "react-bootstrap/Container";
 import _map from "lodash/map";
 import _pull from "lodash/pull";
+import { FaDiceD20 } from "react-icons/fa";
 
-import { getFirstObject, getFirstKey } from "utils/Util";
+import { dmRewardNote, playerRewardNote, getFirstObject, getFirstKey } from "utils/Util";
 import Event from "selectors/Event";
 import Select from "selectors/Select";
 import Option from "selectors/Option";
@@ -66,8 +67,6 @@ class GameLog extends React.Component {
 	    	delete alObj[code][getFirstKey(eventStatus)];
 	    }
 
-	    // console.log(alObj);
-
 	    this.setState({ activeLegacyObj: alObj },
 			this.props.logUpdateHandler(alObj)
 		);
@@ -112,6 +111,7 @@ class GameLog extends React.Component {
 
 				<h1 className="title fauxdesto" onClick={this.toggleCollapsed.bind(this)}>
 					<span className="name">
+						{!this.props.preview && !!this.props.data.dungeonMaster && this.props.data.dungeonMaster.isDm && <FaDiceD20 className="diceIcon" />}
 						{code !== null && <span className="code" dangerouslySetInnerHTML={{ __html: code.split("-").join("<span class='hyphen'>-</span>") }}></span>}
 						<span className="fauxdesto italic">{title}</span>
 					</span>
@@ -140,7 +140,7 @@ class GameLog extends React.Component {
 					{date !== undefined && <li className="date"><h1>Date:</h1><p>{date}</p></li>}
 					{event !== undefined && <li className="event"><h1>Event:</h1><p>{event}</p></li>}
 					{tier !== undefined && <li className="tier"><h1>Tier:</h1><p>{tier}</p></li>}
-					{dmStr !== '' && <li className="dm"><h1>Dungeon Master:</h1><p>{dmStr}</p></li>}
+					{!this.props.preview && dmStr !== '' && <li className="dm"><h1>Dungeon Master:</h1><p>{dmStr}</p></li>}
 				</ul>
 			</Container>
         );
@@ -269,6 +269,7 @@ class GameLog extends React.Component {
 
     render_legacy = (legacyObj) => {
     	const { data, preview } = this.props;
+    	let footnote = (!!data.dungeonMaster && data.dungeonMaster.isDm) ? dmRewardNote : playerRewardNote;
 
         return (
             <Container className="legacyWrapper wrapper">
@@ -284,7 +285,7 @@ class GameLog extends React.Component {
 							return <Event eventObj={event} key={key} disable={preview} status={statusObj} updateHandler={this.updateEventHandler} />
 						})}
 					</div>
-					<div className="footnote bookFont" dangerouslySetInnerHTML={{ __html: legacyObj.footnote }} />
+					<div className="footnote bookFont" dangerouslySetInnerHTML={{ __html: footnote }} />
 				</Container>
 			</Container>
         );
@@ -336,7 +337,7 @@ class GameLog extends React.Component {
 								</div>
 
 								<div className="rightCol arCol">
-									WEALTH
+									{this.render_wealth(data.gameWealth)}
 								</div>
 							</div>
 
@@ -348,6 +349,30 @@ class GameLog extends React.Component {
             )
         } else if (data.record === "notes") {
         	// TO BE DONE
+        	return (
+	        	<Container fluid className={classnames(className,"gameBox","notesWealthBox",!this.state.isCollapsed && "expanded", preview && "preview")} style={style}>
+					{this.render_titleAndCode(data.type,null,"Notes / Wealth")}
+
+					<Collapse in={!this.state.isCollapsed}>
+						<div className="content">
+							{this.render_gameInfo(undefined,data.date,undefined,data.tier)}
+
+							<div className="twoCol">
+								<div className="leftCol arCol">
+									NOTES
+								</div>
+
+								<div className="rightCol arCol">
+									{this.render_wealth(data.gameWealth)}
+								</div>
+							</div>
+
+							{this.render_advNotes(data.notes, true)}
+						</div>
+					</Collapse>
+
+		    	</Container>
+	    	)
         }
 
         return < > < />
