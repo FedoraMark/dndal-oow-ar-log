@@ -431,11 +431,6 @@ $halfGap: .25rem;
         .wealthWrapper .currencyInputsWrapper .money {
             margin: 0 $halfGap $halfGap 0;
 
-            &:last-of-type {
-                margin-right: $halfGap;
-            }
-
-
             .input-group-append .input-group-text {
                 width: 5rem;
             }
