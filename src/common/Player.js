@@ -19,7 +19,7 @@ import { IoIosCalculator } from "react-icons/io";
 
 import Wealth from "common/Wealth";
 import EditButton from "common/EditButton";
-import { getTotalCopper, condenseWealth } from "utils/Util";
+import { getTotalCopper, condenseWealth, classes5e, classesUA } from "utils/Util";
 
 import "./Player.scss";
 
@@ -55,14 +55,9 @@ class Player extends Component {
 		useEp: this.props.optionsObj.useEp,
 	};
 
-	componentWillRecieveProps(newProps) {
+	componentWillReceiveProps(newProps) {
 		this.setState({
 			playerObj: newProps.playerObj,
-			tempObj: JSON.parse(JSON.stringify(this.props.playerObj)),
-			isEditing: newProps.isEditing,
-			autoLeveling: newProps.optionsObj.autoLeveling,
-			tierSetting: newProps.optionsObj.tierSetting,
-			useEp: newProps.optionsObj.useEp,
 		});
 	}
 
@@ -85,7 +80,7 @@ class Player extends Component {
 		if (this.state.isEditing && !close) {
 			this.setState({
 				isEditing: false,
-				playerObj: this.state.tempObj,
+				playerObj: JSON.parse(JSON.stringify(this.state.tempObj)),
 			});
 		} else {
 			this.setState({
@@ -164,6 +159,27 @@ class Player extends Component {
 		newClassObj[newClassName] = 1
 
 		this.updateTempInfo("classes",newClassObj);
+	}
+
+	setClassLevel = (oldClass, newClass, newLevel) => {
+		var newClassLevelObj = {}
+
+		_map(this.state.tempObj.classes, (lv, cl) => {
+			if (cl === oldClass) {
+				newClassLevelObj[newClass] = newLevel;
+			} else {
+				newClassLevelObj[cl] = lv;
+			}
+		})
+
+		this.updateTempInfo("classes",newClassLevelObj);
+	}
+
+	removeClass = (cl) => {
+		var newClObj = JSON.parse(JSON.stringify(this.state.tempObj.classes));
+		delete newClObj[cl];
+
+		this.updateTempInfo("classes",newClObj);
 	}
 
 	//RENDERERS
@@ -435,8 +451,7 @@ class Player extends Component {
 									this.state.tempObj.classes, (level, clss) => {
 										return (
 											<InputGroup className="playerInfoGroup classDropdownGroup" key={clss}>
-												{this.render_classDropDown(clss)}
-												{this.render_levelDropDown(level)}
+												{this.render_classLevelDropDown(clss, level)}
 											</InputGroup>
 										);
 									}
@@ -506,69 +521,49 @@ class Player extends Component {
 		);
 	};
 
-	render_classDropDown = (selected) => {
+	render_classLevelDropDown = (selClass, selLevel) => {
 		return (
-			<DropdownButton
-				as={InputGroup.Prepend}
-				variant="secondary"
-				title={selected}
-			>
-				{!Object.keys(this.state.tempObj.classes).includes("Artificier") && <Dropdown.Item href="#">Artificer</Dropdown.Item>}
-				{!Object.keys(this.state.tempObj.classes).includes("Barbarian") && <Dropdown.Item href="#">Barbarian</Dropdown.Item>}
-				{!Object.keys(this.state.tempObj.classes).includes("Bard") && <Dropdown.Item href="#">Bard</Dropdown.Item>}
-				{!Object.keys(this.state.tempObj.classes).includes("Cleric") && <Dropdown.Item href="#">Cleric</Dropdown.Item>}
-				{!Object.keys(this.state.tempObj.classes).includes("Druid") && <Dropdown.Item href="#">Druid</Dropdown.Item>}
-				{!Object.keys(this.state.tempObj.classes).includes("Fighter") && <Dropdown.Item href="#">Fighter</Dropdown.Item>}
-				{!Object.keys(this.state.tempObj.classes).includes("Monk") && <Dropdown.Item href="#">Monk</Dropdown.Item>}
-				{!Object.keys(this.state.tempObj.classes).includes("Paladin") && <Dropdown.Item href="#">Paladin</Dropdown.Item>}
-				{!Object.keys(this.state.tempObj.classes).includes("Ranger") && <Dropdown.Item href="#">Ranger</Dropdown.Item>}
-				{!Object.keys(this.state.tempObj.classes).includes("Rogue") && <Dropdown.Item href="#">Rogue</Dropdown.Item>}
-				{!Object.keys(this.state.tempObj.classes).includes("Sorcerer") && <Dropdown.Item href="#">Sorcerer</Dropdown.Item>}
-				{!Object.keys(this.state.tempObj.classes).includes("Wizard") && <Dropdown.Item href="#">Wizard</Dropdown.Item>}
-				{!Object.keys(this.state.tempObj.classes).includes("Warlock") && <Dropdown.Item href="#">Warlock</Dropdown.Item>}
-				<Dropdown.Divider />
-				{!Object.keys(this.state.tempObj.classes).includes("Blood Hunter") && <Dropdown.Item href="#">Blood Hunter</Dropdown.Item>}
-				{!Object.keys(this.state.tempObj.classes).includes("Mystic") && <Dropdown.Item href="#">Mystic</Dropdown.Item>}
-				{!Object.keys(this.state.tempObj.classes).includes("Others") && <Dropdown.Item href="#">Others</Dropdown.Item>}
-				<Dropdown.Divider />
-				<Dropdown.Item className="remove oswald" href="#">
-					<span>Remove</span>
-					<AiTwotoneDelete />
-				</Dropdown.Item>
-			</DropdownButton>
-		);
-	};
-
-	render_levelDropDown = (selected) => {
-		return (
-			<DropdownButton
-				as={InputGroup.Append}
-				variant="outline-secondary"
-				title={selected}
-				alignRight
-				className="levelDropdown"
-			>
-				<Dropdown.Item href="#">1</Dropdown.Item>
-				<Dropdown.Item href="#">2</Dropdown.Item>
-				<Dropdown.Item href="#">3</Dropdown.Item>
-				<Dropdown.Item href="#">4</Dropdown.Item>
-				<Dropdown.Item href="#">5</Dropdown.Item>
-				<Dropdown.Item href="#">6</Dropdown.Item>
-				<Dropdown.Item href="#">7</Dropdown.Item>
-				<Dropdown.Item href="#">8</Dropdown.Item>
-				<Dropdown.Item href="#">9</Dropdown.Item>
-				<Dropdown.Item href="#">10</Dropdown.Item>
-				<Dropdown.Item href="#">11</Dropdown.Item>
-				<Dropdown.Item href="#">12</Dropdown.Item>
-				<Dropdown.Item href="#">13</Dropdown.Item>
-				<Dropdown.Item href="#">14</Dropdown.Item>
-				<Dropdown.Item href="#">15</Dropdown.Item>
-				<Dropdown.Item href="#">16</Dropdown.Item>
-				<Dropdown.Item href="#">17</Dropdown.Item>
-				<Dropdown.Item href="#">18</Dropdown.Item>
-				<Dropdown.Item href="#">19</Dropdown.Item>
-				<Dropdown.Item href="#">20</Dropdown.Item>
-			</DropdownButton>
+			<>
+				<DropdownButton
+					as={InputGroup.Prepend}
+					variant="secondary"
+					title={selClass}
+				>
+					{_map(classes5e, (c, i) => {
+						if (selClass === c) {
+							return <Dropdown.Item key={i} href="#" active onSelect={this.setClassLevel.bind(this,selClass,c,selLevel)}>{c}</Dropdown.Item>
+						}
+						if (!Object.keys(this.state.tempObj.classes).includes(c)) {
+							return <Dropdown.Item key={i} href="#" onSelect={this.setClassLevel.bind(this,selClass,c,selLevel)}>{c}</Dropdown.Item>
+						}
+					})}
+					<Dropdown.Divider />
+					{_map(classesUA.concat(["Others"]), (k, j) => {
+						if (selClass === k) {
+							return <Dropdown.Item key={j} href="#" active onSelect={this.setClassLevel.bind(this,selClass,k,selLevel)}>{k}</Dropdown.Item>
+						}
+						if (k !== selClass && !Object.keys(this.state.tempObj.classes).includes(k)) {
+							return <Dropdown.Item key={j} href="#" onSelect={this.setClassLevel.bind(this,selClass,k,selLevel)}>{k}</Dropdown.Item>
+						}
+					})}
+					<Dropdown.Divider />
+					<Dropdown.Item className="remove oswald" href="#" onSelect={this.removeClass.bind(this,selClass)}>
+						<span>Remove</span>
+						<AiTwotoneDelete />
+					</Dropdown.Item>
+				</DropdownButton>
+				<DropdownButton
+					as={InputGroup.Append}
+					variant="outline-secondary"
+					title={selLevel}
+					alignRight
+					className="levelDropdown"
+				>
+					{_map(Array.from(Array(20), (_, i) => {return i + 1}), (l) => {
+						return <Dropdown.Item key={l} href="#" active={selLevel === l} onSelect={this.setClassLevel.bind(this,selClass,selClass,l)}>{l}</Dropdown.Item>
+					})}
+				</DropdownButton>
+			</>
 		);
 	};
 

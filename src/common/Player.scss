@@ -287,6 +287,10 @@ $halfGap: .25rem;
                             button {
                                 width: 100%;
                             }
+
+                            .dropdown-menu {
+                                width: 100%;
+                            }
                         }
 
                         &.fillerGroup {
@@ -300,6 +304,8 @@ $halfGap: .25rem;
                     }
 
                     button {
+                        width: 3.25rem;
+
                         font-size: .8rem;
 
                         color: $color-inactive-text;
