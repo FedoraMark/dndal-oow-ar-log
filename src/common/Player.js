@@ -55,12 +55,6 @@ class Player extends Component {
 		useEp: this.props.optionsObj.useEp,
 	};
 
-	componentWillReceiveProps(newProps) {
-		this.setState({
-			playerObj: newProps.playerObj,
-		});
-	}
-
 	//FUNCTIONS
 	getPlayerDciStr = () => {
 		var str = "";
@@ -447,15 +441,13 @@ class Player extends Component {
 							</InputGroup>
 
 							<div className="dropdownsWrapper middleGroup">
-								{_map(
-									this.state.tempObj.classes, (level, clss) => {
-										return (
-											<InputGroup className="playerInfoGroup classDropdownGroup" key={clss}>
-												{this.render_classLevelDropDown(clss, level)}
-											</InputGroup>
-										);
-									}
-								)}
+								{_map(this.state.tempObj.classes, (level, clss) => {
+									return (
+										<InputGroup className="playerInfoGroup classDropdownGroup" key={clss}>
+											{this.render_classLevelDropDown(clss, level)}
+										</InputGroup>
+									);
+								})}
 
 								<InputGroup className="fillerGroup filler1" />
 								<InputGroup className="fillerGroup filler2" />
