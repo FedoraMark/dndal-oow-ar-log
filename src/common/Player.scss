@@ -173,7 +173,7 @@ $halfGap: .25rem;
                 }
 
                 .input-group-text {
-                    width: 90px;
+                    width: 5rem;
 
                     justify-content: center;
 
@@ -275,11 +275,15 @@ $halfGap: .25rem;
 
                     @include flex(stretch, flex-start, column);
 
+
+
                     .input-group {
                         margin: 0 0 $halfGap 0 !important;
 
                         flex-wrap: nowrap;
                         flex-grow: 1;
+
+
 
                         .input-group-prepend {
                             flex-grow: 1;
@@ -299,8 +303,18 @@ $halfGap: .25rem;
                         }
                     }
 
+                    .firstLast {
+                        margin-bottom: -.375rem !important;
+                    }
+
                     .dropdown-menu {
                         min-width: initial;
+
+                        font-size: .8rem;
+
+                        a {
+                            text-align: center;
+                        }
                     }
 
                     button {
@@ -445,8 +459,16 @@ $halfGap: .25rem;
         .classLevelWrapper .dropdownsWrapper {
             flex-direction: column;
 
+            .dropdown-menu {
+                font-size: 1rem;
+            }
+
             button {
                 font-size: 1rem;
+            }
+
+            .firstLast {
+                margin-bottom: .25rem !important;
             }
         }
 
@@ -469,6 +491,10 @@ $halfGap: .25rem;
                     .playerInfoGroup:not(:last-of-type) {
                         margin-right: $gap;
                     }
+                }
+
+                .input-group-text {
+                    width: 7rem;
                 }
             }
 

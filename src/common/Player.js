@@ -149,8 +149,16 @@ class Player extends Component {
 
 	addNewClass = () => {
 		var newClassObj = JSON.parse(JSON.stringify(this.state.tempObj.classes));
-		let newClassName = "Multiclass " + (Object.keys(newClassObj).length + 1);
-		newClassObj[newClassName] = 1
+		var newClassName = "";
+
+		// prevent duplicate names
+		let i = Object.keys(newClassObj).length + 1;
+		do {
+			newClassName = "Multiclass " + i;
+			i++;
+		} while (Object.keys(newClassObj).includes(newClassName));
+
+		newClassObj[newClassName] = 1 // set to level 1
 
 		this.updateTempInfo("classes",newClassObj);
 	}
@@ -252,6 +260,8 @@ class Player extends Component {
 	};
 
 	render_editInfo = () => {
+		let classLen = Object.keys(this.state.tempObj.classes).length;
+
 		return (
 			<Collapse in={this.state.isEditing} mountOnEnter unmountOnExit>
 				<div className="editingContent">
@@ -443,7 +453,7 @@ class Player extends Component {
 							<div className="dropdownsWrapper middleGroup">
 								{_map(this.state.tempObj.classes, (level, clss) => {
 									return (
-										<InputGroup className="playerInfoGroup classDropdownGroup" key={clss}>
+										<InputGroup className={classnames("playerInfoGroup classDropdownGroup", classLen === 1 && "firstLast")} key={clss}>
 											{this.render_classLevelDropDown(clss, level)}
 										</InputGroup>
 									);
