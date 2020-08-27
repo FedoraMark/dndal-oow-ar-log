@@ -100,7 +100,7 @@ class Event extends Component {
                 <span onClick={this.toggleSelect.bind(this)}>
                     <Statebox
                         className="custom-control-input"
-                        disabled={this.props.disable /*|| this.state.status.expended*/ }
+                        disabled={this.props.disable || this.state.status.expended }
                         indeterminate={this.state.isSelected && this.state.status.expended}
                         checked={this.state.isSelected}
                         onChange={this.toggleSelect.bind(this)}

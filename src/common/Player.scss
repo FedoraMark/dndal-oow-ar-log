@@ -161,10 +161,6 @@ $halfGap: .25rem;
 
             @include flex(center, stretch, column);
 
-            .playerInfoGroup {
-                margin-bottom: $gap;
-            }
-
             li {
                 width: 100%;
 
@@ -180,6 +176,10 @@ $halfGap: .25rem;
                     font-family: $fontFamily-oswald;
                     font-weight: 500;
                 }
+            }
+
+            .playerInfoGroup {
+                margin-bottom: $gap;
             }
 
             .splitGroupWrapper {
@@ -275,14 +275,21 @@ $halfGap: .25rem;
 
                     @include flex(stretch, flex-start, column);
 
+                    .classDropdownGroup {
+                        &.zFix {
+                            z-index: 900;
+                        }
 
+                        button {
+                            color: $color-group-text !important;
+                        }
+                    }
 
                     .input-group {
                         margin: 0 0 $halfGap 0 !important;
 
                         flex-wrap: nowrap;
                         flex-grow: 1;
-
 
 
                         .input-group-prepend {
@@ -308,6 +315,8 @@ $halfGap: .25rem;
                     }
 
                     .dropdown-menu {
+                        z-index: 1000;
+
                         min-width: initial;
 
                         font-size: .8rem;
@@ -351,6 +360,8 @@ $halfGap: .25rem;
                         width: 50px;
 
                         #add-class {
+                            z-index: 15;
+
                             @include transition();
 
                             .plusIcon {
@@ -496,7 +507,12 @@ $halfGap: .25rem;
                 .input-group-text {
                     width: 7rem;
                 }
+
+                &.playerInfoWrapper {
+                    display: flex;
+                }
             }
+
 
             .classLevelWrapper {
                 .dropdownsWrapper {

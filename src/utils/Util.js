@@ -1,6 +1,8 @@
 // CONSTS
-export const fadeInUp = "animate__animated animate__fadeInUp";
+export const animFaster = "animate__faster";
 export const fadeIn = "animate__animated animate__fadeIn";
+export const fadeInUp = "animate__animated animate__fadeInUp";
+export const fadeInRight = "animate__animated animate__bounceIn";
 
 export const classes5e = ["Artificer","Barbarian","Bard","Cleric","Druid","Fighter","Monk","Paladin","Ranger","Rogue","Sorcerer","Warlock","Wizard"];
 export const classesUA = ["Blood Hunter","Mystic"];

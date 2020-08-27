@@ -19,7 +19,7 @@ import { IoIosCalculator } from "react-icons/io";
 
 import Wealth from "common/Wealth";
 import EditButton from "common/EditButton";
-import { getTotalCopper, condenseWealth, classes5e, classesUA } from "utils/Util";
+import { animFaster, fadeInRight, getTotalCopper, condenseWealth, classes5e, classesUA } from "utils/Util";
 
 import "./Player.scss";
 
@@ -48,6 +48,7 @@ class Player extends Component {
 		playerObj: this.props.playerObj,
 		tempObj: JSON.parse(JSON.stringify(this.props.playerObj)),
 		isEditing: false, // TRUE FOR TESTING
+		topClass: "",
 
 		// options
 		autoLeveling: this.props.optionsObj.autoLeveling,
@@ -148,8 +149,15 @@ class Player extends Component {
 	}
 
 	addNewClass = () => {
+		if (Object.keys(this.state.tempObj.classes).length > 20) {
+			this.props.addToast("Leeloo Dallas Multiclass", { appearance: "error" });
+			return;
+		}
+
 		var newClassObj = JSON.parse(JSON.stringify(this.state.tempObj.classes));
 		var newClassName = "";
+
+		// *** "classes" should really be an array instead of an object ***
 
 		// prevent duplicate names
 		let i = Object.keys(newClassObj).length + 1;
@@ -182,6 +190,10 @@ class Player extends Component {
 		delete newClObj[cl];
 
 		this.updateTempInfo("classes",newClObj);
+	}
+
+	setTopClass = (clss) => {
+		this.setState({topClass: clss});
 	}
 
 	//RENDERERS
@@ -453,7 +465,11 @@ class Player extends Component {
 							<div className="dropdownsWrapper middleGroup">
 								{_map(this.state.tempObj.classes, (level, clss) => {
 									return (
-										<InputGroup className={classnames("playerInfoGroup classDropdownGroup", classLen === 1 && "firstLast")} key={clss}>
+										<InputGroup
+											key={clss}
+											className={classnames("playerInfoGroup classDropdownGroup", animFaster, fadeInRight, this.state.topClass === clss && "zFix", classLen === 1 && "firstLast")}
+											onClick={this.setTopClass.bind(this,clss)}
+										>
 											{this.render_classLevelDropDown(clss, level)}
 										</InputGroup>
 									);
