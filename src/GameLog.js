@@ -11,10 +11,10 @@ import _pull from "lodash/pull";
 import { FaDiceD20 } from "react-icons/fa";
 
 import {
-    dmRewardNote,
-    playerRewardNote,
-    getFirstObject,
-    getFirstKey,
+	dmRewardNote,
+	playerRewardNote,
+	getFirstObject,
+	getFirstKey,
 } from "utils/Util";
 import Event from "selectors/Event";
 import Select from "selectors/Select";
@@ -26,157 +26,183 @@ import "animate.css";
 import "GameLog.scss";
 
 class GameLog extends React.Component {
-    static propTypes = {
-        data: PropTypes.object.isRequired,
-        statuses: PropTypes.object,
-        collapse: PropTypes.bool,
-        className: PropTypes.string,
-        preview: PropTypes.bool,
-        logUpdateHandler: PropTypes.func,
-    };
+	static propTypes = {
+		data: PropTypes.object.isRequired,
+		statuses: PropTypes.object,
+		collapse: PropTypes.bool,
+		className: PropTypes.string,
+		preview: PropTypes.bool,
+		logUpdateHandler: PropTypes.func,
+	};
 
-    static defaultProps = {
-        statuses: {},
-        collapse: false,
-        className: "",
-        style: {},
-        preview: false,
-        isEditing: false,
-    };
+	static defaultProps = {
+		statuses: {},
+		collapse: false,
+		className: "",
+		style: {},
+		preview: false,
+		isEditing: false,
+	};
 
-    state = {
-        data: this.props.data,
-        statusData: this.props.statuses,
-        isCollapsed: this.props.collapse,
-        isCollapsing: false,
-        willBeEditing: false,
-        isEditing: this.props.isEditing,
-        rewardGroup0: [],
-        // rewardGroup1: [], // currently unneeded
+	state = {
+		data: this.props.data,
+		statusData: this.props.statuses,
+		isCollapsed: this.props.collapse,
+		isCollapsing: false,
+		willBeEditing: false,
+		isEditing: this.props.isEditing,
+		rewardGroup0: [],
+		// rewardGroup1: [], // currently unneeded
 
-        tempNotes: this.props.data.notes.player !== undefined ?
-            this.props.data.notes.player : "",
-        tempDmName: this.props.data.dungeonMaster !== undefined &&
-            this.props.data.dungeonMaster.name !== undefined ?
-            this.props.data.dungeonMaster.name : "",
-        tempDmNumber: this.props.data.dungeonMaster !== undefined &&
-            this.props.data.dungeonMaster.dci !== undefined ?
-            this.props.data.dungeonMaster.dci : "",
-        tempIsDm: this.props.data.dungeonMaster !== undefined &&
-            this.props.data.dungeonMaster.isDm !== undefined ?
-            this.props.data.dungeonMaster.isDm : "",
-        tempEvent: this.props.data.event !== undefined ? this.props.data.event : "",
-        tempDate: this.props.data.date !== undefined ? this.props.data.date : "",
-    };
+		tempEvent: "",
+		tempDate: "",
+		tempNotes: "",
+		tempDmName: "",
+		tempDmNumber: "",
+		tempIsDm: "",
+	};
 
-    componentWillReceiveProps(newProps) {
-        this.setState({
-            data: newProps.data,
-            statusData: newProps.statuses,
-        });
-    }
+	componentDidMount() {
+		!this.props.preview && this.setTempData(this.props.statuses);
+	}
 
-    //FUNCTIONS
-    toggleCollapsed = () => {
-        if (!this.state.isEditing) {
-            this.setState({ isCollapsed: !this.state.isCollapsed });
-        }
-    };
+	componentWillReceiveProps(newProps) {
+		this.setState({
+			data: newProps.data,
+			statusData: newProps.statuses,
+		});
+	}
 
-    updateEventHandler = (eventStatus, skipActive) => {
-        let code = this.state.data.code;
-        var stats = this.state.statusData;
+	//FUNCTIONS
+	toggleCollapsed = () => {
+		if (!this.state.isEditing) {
+			this.setState({ isCollapsed: !this.state.isCollapsed });
+		}
+	};
 
-        if (skipActive || getFirstObject(eventStatus).active) {
-            // IF ACTIVE
-            stats = {
-                [code]: { ...this.state.statusData[code], ...eventStatus },
-            };
-        } else {
-            //IF DISABLED
-            delete stats[code][getFirstKey(eventStatus)];
-        }
+	updateEventHandler = (eventStatus, doActive) => {
+		let code = this.state.data.code;
+		var stats = this.state.statusData;
 
-        this.setState({ statusData: stats },
-            this.props.logUpdateHandler(stats)
-        );
-    };
+		if (doActive || getFirstObject(eventStatus).active) {
+			// IF ACTIVE
+			stats = {[code]: { ...this.state.statusData[code], ...eventStatus }};
+		} else {
+			//IF DISABLED
+			delete stats[code][getFirstKey(eventStatus)];
+		}
 
-    advancementHandler = (key, val) => {
-        this.updateEventHandler({
-            advancement: { legacy: false, active: val },
-        });
-    };
+		this.setState({ statusData: stats }, (e) => {
+			this.props.logUpdateHandler(stats);
+			this.setTempData(this.state.statusData[code]);
+		});
+	};
 
-    selectRewardHandler = (key, val, title) => {
-        var newArray = this.state[title];
-        if (!val) {
-            _pull(newArray, key);
-        } else {
-            newArray.push(key);
-        }
+	advancementHandler = (key, val) => {
+		this.updateEventHandler({
+			advancement: { legacy: false, active: val },
+		});
+	};
 
-        this.setState({
-                [title]: newArray,
-            },
-            this.updateEventHandler({
-                [title]: { legacy: false, active: true, selections: newArray },
-            })
-        );
-    };
+	selectRewardHandler = (key, val, title) => {
+		var newArray = this.state[title];
+		if (!val) {
+			_pull(newArray, key);
+		} else {
+			newArray.push(key);
+		}
 
-    optionRewardHandler = (key, title) => {
-        this.updateEventHandler({
-            [title]: { legacy: false, active: true, option: key },
-        });
-    };
+		this.setState({ [title]: newArray },
+			this.updateEventHandler({
+				[title]: { legacy: false, active: true, selections: newArray },
+			})
+		);
+	};
 
-    setIsEditing = (willEdit) => {
-        if (!willEdit) {
-            this.saveTempData();
-        }
+	optionRewardHandler = (key, title) => {
+		this.updateEventHandler({
+			[title]: { legacy: false, active: true, option: key },
+		});
+	};
 
-        this.setState({ willBeEditing: willEdit, isCollapsing: true });
-    };
+	setIsEditing = (willEdit, save) => {
+		this.setState({ willBeEditing: willEdit, isCollapsing: true });
+		
+		if (willEdit) {
+			// open
+			this.setTempData(this.state.statusData[this.props.data.code]);
+		} else if (save) {
+			// close - save
+			this.saveTempData();
+		} else {
+			// close - cancel
+			this.setTempData(this.state.statusData[this.props.data.code]);
+		}
+	};
 
-    expandToEdit = () => {
-        this.setState({
-            isEditing: this.state.willBeEditing,
-            isCollapsing: false,
-        });
-    };
+	expandToEdit = () => {
+		this.setState({
+			isEditing: this.state.willBeEditing,
+			isCollapsing: false,
+		});
+	};
 
-    saveTempData = () => {
-        let tempStatusData = {
-            notes: {
-                ...this.state.statusData.notes,
-                player: this.state.tempNotes.trim(),
-            },
-            event: this.state.tempEvent.trim(),
-            date: this.state.tempDate.trim(),
-            dungeonMaster: {
-                name: this.state.tempDmName.trim(),
-                dci: this.state.tempDmNumber.trim(),
-                isDm: this.state.tempIsDm,
-            },
-        };
+	saveTempData = () => {
+		let tempStatusData = {
+			notes: {
+				...this.state.statusData.notes,
+				player: this.state.tempNotes.trim(),
+			},
+			event: this.state.tempEvent.trim(),
+			date: this.state.tempDate.trim(),
+			dungeonMaster: {
+				name: this.state.tempDmName.trim(),
+				dci: this.state.tempDmNumber.trim(),
+				isDm: this.state.tempIsDm,
+			},
+		};
 
-        this.setState({
-                tempNotes: this.state.tempNotes.trim(),
-                tempDmName: this.state.tempDmName.trim(),
-                tempDmNumber: this.state.tempDmNumber.trim(),
-                tempIsDm: this.state.tempIsDm,
-                tempEvent: this.state.tempEvent.trim(),
-                tempDate: this.state.tempDate.trim(),
-            },
-            this.updateEventHandler(tempStatusData, true)
-        );
-    };
+		this.setState(
+			{
+				tempNotes: this.state.tempNotes.trim(),
+				tempDmName: this.state.tempDmName.trim(),
+				tempDmNumber: this.state.tempDmNumber.trim(),
+				tempIsDm: this.state.tempIsDm,
+				tempEvent: this.state.tempEvent.trim(),
+				tempDate: this.state.tempDate.trim(),
+			},
+			this.updateEventHandler(tempStatusData, true)
+		);
+	};
 
-    //RENDERERS
-    render_titleAndCode = (type, code, title) => {
-        return (
-            <div
+	getPropOrEmpty = (obj, prop, child) => {	
+		if (obj[prop] === undefined) {
+			return "";
+		}
+
+		if (child === null) {
+			return obj[prop];
+		}
+
+		return obj[prop][child] !== undefined ? obj[prop][child] : "";
+	};
+
+	setTempData = (statusObj) => {
+		!!statusObj &&
+			this.setState({
+				tempEvent: this.getPropOrEmpty(statusObj,"event",null),
+				tempDate: this.getPropOrEmpty(statusObj,"date",null),
+				tempNotes: this.getPropOrEmpty(statusObj,"notes","player"),
+				tempDmName: this.getPropOrEmpty(statusObj,"dungeonMaster","name"),
+				tempDmNumber: this.getPropOrEmpty(statusObj,"dungeonMaster","dci"),
+				tempIsDm: this.getPropOrEmpty(statusObj,"dungeonMaster","isDm"),
+			});
+	};
+
+	//RENDERERS
+	render_titleAndCode = (type, code, title) => {
+		return (
+			<div
 				className={classnames(
 					"titleWrapper",
 					!this.props.preview && "sticky"
@@ -193,7 +219,8 @@ class GameLog extends React.Component {
 								save
 								onClick={this.setIsEditing.bind(
 									this,
-									!this.state.isEditing
+									!this.state.isEditing,
+									true
 								)}
 								active={this.state.willBeEditing}
 							/>
@@ -207,7 +234,11 @@ class GameLog extends React.Component {
 							<EditButton
 								left
 								cancel
-								onClick={this.setIsEditing.bind(this, false)}
+								onClick={this.setIsEditing.bind(
+									this,
+									false,
+									false
+								)}
 								active
 							/>
 						</Fade>
@@ -238,39 +269,48 @@ class GameLog extends React.Component {
 					</span>
 				</h1>
 			</div>
-        );
-    };
+		);
+	};
 
-    render_gameInfo = () => {
-        let code = this.state.data.code
+	render_gameInfo = () => {
+		let code = this.state.data.code;
 
-        var date = this.state.statusData[code] !== undefined ? this.state.statusData[code].date : '';
-        var event = this.state.statusData[code] !== undefined ? this.state.statusData[code].event : '';
-        var dmObj = this.state.statusData[code] !== undefined ? this.state.statusData[code].dungeonMaster : {};
+		var date =
+			this.state.statusData[code] !== undefined
+				? this.state.statusData[code].date
+				: "";
+		var event =
+			this.state.statusData[code] !== undefined
+				? this.state.statusData[code].event
+				: "";
+		var dmObj =
+			this.state.statusData[code] !== undefined
+				? this.state.statusData[code].dungeonMaster
+				: {};
 
-        var dmStr = dmObj.isDm ? "(me)" : "";
+		var dmStr = dmObj.isDm ? "(me)" : "";
 
-        if (!dmObj.isDm) {
-            if ("name" in dmObj && dmObj.name.length > 0) {
-                dmStr = dmObj.name;
-                if ("dci" in dmObj && dmObj.dci.length > 0) {
-                    dmStr = dmStr + " (" + dmObj.dci + ")";
-                }
-            } else if ("dci" in dmObj) {
-                dmStr = dmObj.dci;
-            }
-        }
+		if (!dmObj.isDm) {
+			if ("name" in dmObj && dmObj.name.length > 0) {
+				dmStr = dmObj.name;
+				if ("dci" in dmObj && dmObj.dci.length > 0) {
+					dmStr = dmStr + " (" + dmObj.dci + ")";
+				}
+			} else if ("dci" in dmObj) {
+				dmStr = dmObj.dci;
+			}
+		}
 
-        return (
-            <Container>
+		return (
+			<Container>
 				<ul className="infoWrapper">
-					{date !== '' && (
+					{date !== "" && (
 						<li className="date">
 							<h1>Date:</h1>
 							<p>{date}</p>
 						</li>
 					)}
-					{event !== '' && (
+					{event !== "" && (
 						<li className="event">
 							<h1>Event:</h1>
 							<p>{event}</p>
@@ -290,17 +330,18 @@ class GameLog extends React.Component {
 					)}
 				</ul>
 			</Container>
-        );
-    };
+		);
+	};
 
-    render_advNotes = (suppressTitle) => {
-        var statusNotes =
-            this.state.statusData[this.state.data.code] !== undefined ?
-            this.state.statusData[this.state.data.code].notes : {};
-        let allNotes = { ...this.state.data.notes, ...statusNotes };
+	render_advNotes = (suppressTitle) => {
+		var statusNotes =
+			this.state.statusData[this.state.data.code] !== undefined
+				? this.state.statusData[this.state.data.code].notes
+				: {};
+		let allNotes = { ...this.state.data.notes, ...statusNotes };
 
-        return (
-            <Container className="notesWrapper wrapper">
+		return (
+			<Container className="notesWrapper wrapper">
 				{!suppressTitle && (
 					<h1 className="sectionTitle">Adventure Notes</h1>
 				)}
@@ -321,19 +362,21 @@ class GameLog extends React.Component {
 					)}
 				</div>
 			</Container>
-        );
-    };
+		);
+	};
 
-    render_advancement = () => {
-        const { preview } = this.props;
+	render_advancement = () => {
+		const { preview } = this.props;
 
-        let isSelected =
-            this.state.statusData[this.state.data.code] !== undefined &&
-            this.state.statusData[this.state.data.code].advancement !== undefined ?
-            this.state.statusData[this.state.data.code].advancement.active : false;
+		let isSelected =
+			this.state.statusData[this.state.data.code] !== undefined &&
+			this.state.statusData[this.state.data.code].advancement !==
+				undefined
+				? this.state.statusData[this.state.data.code].advancement.active
+				: false;
 
-        return (
-            <Container className="advWrapper wrapper">
+		return (
+			<Container className="advWrapper wrapper">
 				<h1 className="sectionTitle">Advancement</h1>
 				<div className="box">
 					<Select
@@ -352,14 +395,14 @@ class GameLog extends React.Component {
 					/>
 				</div>
 			</Container>
-        );
-    };
+		);
+	};
 
-    render_rewards = () => {
-        const { preview } = this.props;
+	render_rewards = () => {
+		const { preview } = this.props;
 
-        return (
-            <Container className="rewardsWrapper wrapper">
+		return (
+			<Container className="rewardsWrapper wrapper">
 				<h1 className="sectionTitle">Rewards</h1>
 				<div className="box rewardsContent">
 					{_map(this.state.data.rewards, (rewardGroup, groupKey) => {
@@ -438,12 +481,12 @@ class GameLog extends React.Component {
 					})}
 				</div>
 			</Container>
-        );
-    };
+		);
+	};
 
-    render_wealth = (wealthObj) => {
-        return (
-            <Container className="wealthWrapper wrapper">
+	render_wealth = (wealthObj) => {
+		return (
+			<Container className="wealthWrapper wrapper">
 				<h1 className="sectionTitle">Character Wealth</h1>
 
 				<Container className="wealthContent box">
@@ -508,18 +551,19 @@ class GameLog extends React.Component {
 					</div>
 				</Container>
 			</Container>
-        );
-    };
+		);
+	};
 
-    render_legacy = () => {
-        const { preview } = this.props;
-        let footnote = !!this.state.data.dungeonMaster &&
-            this.state.data.dungeonMaster.isDm ?
-            dmRewardNote :
-            playerRewardNote;
+	render_legacy = () => {
+		const { preview } = this.props;
+		let footnote =
+			!!this.state.data.dungeonMaster &&
+			this.state.data.dungeonMaster.isDm
+				? dmRewardNote
+				: playerRewardNote;
 
-        return (
-            <Container className="legacyWrapper wrapper">
+		return (
+			<Container className="legacyWrapper wrapper">
 				<h1 className="sectionTitle">Legacy Events</h1>
 				<Container className="box">
 					<div className="legacyContent">
@@ -554,14 +598,15 @@ class GameLog extends React.Component {
 					/>
 				</Container>
 			</Container>
-        );
-    };
+		);
+	};
 
-    render_logData = () => {
-        return ( <
-            > { this.render_gameInfo() } { this.render_advNotes(false) }
-
-            <div className="twoCol">
+	render_logData = () => {
+		return (
+			<>
+				{" "}
+				{this.render_gameInfo()} {this.render_advNotes(false)}
+				<div className="twoCol">
 					<div className="leftCol arCol">
 						{this.render_advancement()}
 						{this.render_rewards()}
@@ -569,14 +614,14 @@ class GameLog extends React.Component {
 					</div>
 
 					<div className="rightCol arCol">{this.render_legacy()}</div>
-				</div> <
-            />
-        );
-    };
+				</div>{" "}
+			</>
+		);
+	};
 
-    render_editData = () => {
-        return (
-            <ul className="editWrapper">
+	render_editData = () => {
+		return (
+			<ul className="editWrapper">
 				<InputGroup as="li" className="editRow">
 					<InputGroup.Prepend>
 						<InputGroup.Text className="oswald">
@@ -589,7 +634,12 @@ class GameLog extends React.Component {
 						className="handwritten"
 						value={this.state.tempNotes}
 						onChange={(e) => {
-							this.setState({ tempNotes: e.target.value.replace( /\r?\n/gi, '' ) });
+							this.setState({
+								tempNotes: e.target.value.replace(
+									/\r?\n/gi,
+									""
+								),
+							});
 						}}
 					/>
 				</InputGroup>
@@ -658,17 +708,20 @@ class GameLog extends React.Component {
 					</InputGroup>
 				</li>
 
-				<li>TO BE DONE: WEALTH (x4), EXPEND EVENTS (selected), DELETE, MOVE</li>
+				<li>
+					TO BE DONE: isDM, Wealth (x4), Expend selected events,
+					DELETE, MOVE
+				</li>
 			</ul>
-        );
-    };
+		);
+	};
 
-    render() {
-        const { style, className, preview } = this.props;
+	render() {
+		const { style, className, preview } = this.props;
 
-        if (["game", "epic"].includes(this.state.data.record)) {
-            return (
-                <Container
+		if (["game", "epic"].includes(this.state.data.record)) {
+			return (
+				<Container
 					fluid
 					className={classnames(
 						className,
@@ -700,11 +753,11 @@ class GameLog extends React.Component {
 						</div>
 					</Collapse>
 				</Container>
-            );
-        } else if (this.state.data.record === "salvage") {
-            // TO BE DONE
-            return (
-                <Container
+			);
+		} else if (this.state.data.record === "salvage") {
+			// TO BE DONE
+			return (
+				<Container
 					fluid
 					className={classnames(
 						className,
@@ -743,11 +796,11 @@ class GameLog extends React.Component {
 						</div>
 					</Collapse>
 				</Container>
-            );
-        } else if (this.state.data.record === "notes") {
-            // TO BE DONE
-            return (
-                <Container
+			);
+		} else if (this.state.data.record === "notes") {
+			// TO BE DONE
+			return (
+				<Container
 					fluid
 					className={classnames(
 						className,
@@ -782,11 +835,11 @@ class GameLog extends React.Component {
 						</div>
 					</Collapse>
 				</Container>
-            );
-        }
+			);
+		}
 
-        return < > < />;
-    }
+		return <> </>;
+	}
 }
 
 export default GameLog;
