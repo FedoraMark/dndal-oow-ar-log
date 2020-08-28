@@ -15,6 +15,7 @@ class Select extends React.Component {
         isBold: PropTypes.bool,
         selectHandler: PropTypes.func,
         isExpended: PropTypes.bool,
+        title: PropTypes.string,
     };
 
     static defaultProps = {
@@ -24,6 +25,7 @@ class Select extends React.Component {
         isBold: false,
         selectHandler: (e) => {},
         isExpended: false,
+        title: "N-A",
     };
 
     state = {
@@ -56,7 +58,7 @@ class Select extends React.Component {
 
     setSelect = (set) => {
         this.setState({ isSelected: set },
-            this.props.selectHandler(this.props.arrKey, set)
+            this.props.selectHandler(this.props.arrKey, set, this.props.title)
         );
     };
 

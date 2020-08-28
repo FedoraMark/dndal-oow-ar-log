@@ -81,7 +81,7 @@ class GameLog extends React.Component {
 	    this.updateEventHandler({"advancement": {legacy: false, active: val}}) ;
     }
 
-    selectRewardHandler = (key, val, title) => {
+    selectRewardHandler = (key, val, title) => {    	
     	var newArray = this.state[title];
     	if (!val) {
     		_pull(newArray, key);
