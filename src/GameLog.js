@@ -264,34 +264,29 @@ class GameLog extends React.Component {
 		let code = this.state.data.code;
 
 		var date =
-			this.state.statusData[code] !== undefined
+			this.state.statusData[code] !== undefined && this.state.statusData[code].date !== undefined
 				? this.state.statusData[code].date
 				: "";
 		var event =
-			this.state.statusData[code] !== undefined
+			this.state.statusData[code] !== undefined && this.state.statusData[code].event !== undefined
 				? this.state.statusData[code].event
 				: "";
 		var dmObj =
-			this.state.statusData[code] !== undefined
+			this.state.statusData[code] !== undefined && this.state.statusData[code].dungeonMaster !== undefined
 				? this.state.statusData[code].dungeonMaster
 				: {isDm: false};
 
 
-		var dmStr = "";
+		var dmStr = dmObj.isDm ? "(me)" : "";
 
-		if (dmObj !== undefined) {
-
-			dmStr = dmObj.isDm ? "(me)" : "";
-
-			if (!dmObj.isDm) {
-				if ("name" in dmObj && dmObj.name.length > 0) {
-					dmStr = dmObj.name;
-					if ("dci" in dmObj && dmObj.dci.length > 0) {
-						dmStr = dmStr + " (" + dmObj.dci + ")";
-					}
-				} else if ("dci" in dmObj) {
-					dmStr = dmObj.dci;
+		if (!dmObj.isDm) {
+			if ("name" in dmObj && dmObj.name.length > 0) {
+				dmStr = dmObj.name;
+				if ("dci" in dmObj && dmObj.dci.length > 0) {
+					dmStr = dmStr + " (" + dmObj.dci + ")";
 				}
+			} else if ("dci" in dmObj) {
+				dmStr = dmObj.dci;
 			}
 		}
 
