@@ -33,7 +33,7 @@ class EditButton extends Component {
 		const { onClick, className, active, save, cancel, left } = this.props;
 
 		return (
-			<span
+			<button
 				className={classnames(
 					style.editButtonWrapper,
 					className,
@@ -47,7 +47,7 @@ class EditButton extends Component {
 				{(!cancel && !active) && <FiEdit />}
 				{(cancel || (!save && this.state.active)) && <FiX />}
 				{save && this.state.active && <FaSave />}
-			</span>
+			</button>
 		);
 	}
 }

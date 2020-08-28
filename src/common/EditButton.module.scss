@@ -20,6 +20,7 @@ $offset: 1rem;
     color: $color-inactive-text;
     border: 5px solid white;
     border-radius: 100%;
+    outline: none !important;
     background: $color-inactive-background;
 
     @include transition();
