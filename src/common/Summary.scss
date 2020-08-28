@@ -39,8 +39,8 @@
     box-sizing: border-box;
 
     border-width: 2px !important;
-    border-color: lightgray !important;
-    background: $color-background-white !important;
+    border-color: $color-edit-border !important;
+    background-color: $color-background-white !important;
 
     @include transition();
 
@@ -48,7 +48,9 @@
     &:focus {
         cursor: pointer;
 
-        border-color: black !important;
+        color: $color-active-text;
+        border-color: $color-active-background !important;
+        background-color: $color-active-background !important;
     }
 
     &.disabled {
@@ -82,6 +84,7 @@
             box-sizing: border-box;
             align-items: center;
 
+            color: black;
             border: 1px solid gray;
             border-radius: 50%;
             background: $color-background-darker;
@@ -92,7 +95,6 @@
             }
         }
     }
-
 
     .title {
         font-style: italic;

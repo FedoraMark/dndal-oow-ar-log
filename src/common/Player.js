@@ -205,10 +205,12 @@ class Player extends Component {
     render_displayInfo = () => {
         return (
             <span className="playerBoxContent">
-				<div className="infoItem">
-					<h1>Character:</h1>
-					<p>{this.state.playerObj.character}</p>
-				</div>
+				{!!this.state.playerObj.character && (
+					<div className="infoItem">
+						<h1>Character:</h1>
+						<p>{this.state.playerObj.character}</p>
+					</div>
+				)}
 
 				{this.state.playerObj.tier !== -1 && (
 					<div className="infoItem tierItem">
@@ -311,7 +313,6 @@ class Player extends Component {
 										e.target.value
 									);
 								}}
-								placeholder="(required)"
 							/>
 						</InputGroup>
 

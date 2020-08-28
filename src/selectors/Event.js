@@ -28,6 +28,7 @@ class Event extends Component {
 
     state = {
         eventObj: this.props.eventObj,
+        isDisabled: this.props.disable,
         selectionObj: {[this.props.eventObj.title]: {active: this.props.isSelected, selections: [], option: -1}},
         status: this.props.status,
         isSelected: this.props.isSelected || this.props.status.active,
@@ -35,7 +36,7 @@ class Event extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({ status: nextProps.status });
+        this.setState({ status: nextProps.status, isDisabled: nextProps.disable, });
     }
 
     //FUNCTIONS
@@ -44,7 +45,7 @@ class Event extends Component {
     }
 
     setSelect = (val, skip) => {
-        if (this.state.status.expended || skip) {
+        if (this.state.isDisabled || this.state.status.expended || skip) {
             return;
         }
 
@@ -92,14 +93,14 @@ class Event extends Component {
 
     //RENDERERS
     render() {
-        let disableSubOptions = this.props.disable || !this.state.isSelected || this.state.status.expended;
+        let disableSubOptions = this.state.isDisabled || !this.state.isSelected || this.state.status.expended;
 
         return (
             <Container className={classnames("eventWrapper","custom-control","custom-checkbox", this.state.status.expended && "expended")}>
                 <span onClick={this.toggleSelect.bind(this)}>
                     <Statebox
                         className="custom-control-input"
-                        disabled={this.props.disable || this.state.status.expended }
+                        disabled={this.state.isDisabled || this.state.status.expended }
                         indeterminate={this.state.isSelected && this.state.status.expended}
                         checked={this.state.isSelected}
                         onChange={this.toggleSelect.bind(this)}

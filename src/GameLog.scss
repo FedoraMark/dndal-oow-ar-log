@@ -40,6 +40,10 @@ $halfGap: .25rem;
         }
     }
 
+    .playerNotes {
+        overflow-x: scroll;
+    }
+
     .titleWrapper {
         border: 1px solid $color-inactive-background;
         border-radius: .1rem;
@@ -339,10 +343,9 @@ $halfGap: .25rem;
             list-style: none;
 
             border-bottom: 1px solid $color-active-background;
-            background: #eee;
-            -webkit-box-shadow: inset 0 0 15px -5px rgba(0, 0, 0, .5);
-               -moz-box-shadow: inset 0 0 15px -5px rgba(0, 0, 0, .5);
-                    box-shadow: inset 0 0 15px -5px rgba(0, 0, 0, .5);
+            border-radius: 0 !important;
+
+            @include container();
 
             .input-group * {
                 border-color: $color-edit-border;
@@ -372,7 +375,7 @@ $halfGap: .25rem;
             }
 
             textarea {
-                min-height: 4rem;
+                min-height: 7rem;
 
                 box-sizing: border-box;
             }
@@ -393,6 +396,14 @@ $halfGap: .25rem;
 
     &.editing {
         border-color: $color-active-background;
+
+        .editCollapse > div:not(.editContent) {
+            pointer-events: none !important;
+
+            opacity: .65;
+
+            @include transition(opacity);
+        }
 
         .titleWrapper {
             color: $color-active-text;

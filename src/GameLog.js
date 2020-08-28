@@ -336,9 +336,10 @@ class GameLog extends React.Component {
 						"player" in allNotes &&
 						allNotes.player.length > 0 && <hr />}
 					{"player" in allNotes && allNotes.player.length > 0 && (
-						<p className="playerNotes handwritten">
-							{allNotes.player}
-						</p>
+						<p
+							className="playerNotes handwritten"
+							dangerouslySetInnerHTML={{ __html: allNotes.player.replace(/\n\r?/g, '<br />') }}
+						/>
 					)}
 				</div>
 			</Container>
@@ -363,7 +364,7 @@ class GameLog extends React.Component {
 						label={this.state.data.advancement.label}
 						type="checkbox"
 						isBold
-						isDisabled={preview}
+						isDisabled={preview || this.state.isEditing}
 						isSelected={isSelected}
 						selectHandler={this.advancementHandler}
 					/>
@@ -423,7 +424,7 @@ class GameLog extends React.Component {
 									<Option
 										options={rewardGroup.options}
 										canBlank
-										isDisabled={preview}
+										isDisabled={preview || this.state.isEditing}
 										selection={option}
 										title={groupName}
 										optionHandler={this.optionRewardHandler}
@@ -440,7 +441,7 @@ class GameLog extends React.Component {
 														key={selectKey}
 														label={selection}
 														type="checkbox"
-														isDisabled={preview}
+														isDisabled={preview || this.state.isEditing}
 														isSelected={selectArray.includes(
 															selectKey
 														)}
@@ -565,7 +566,7 @@ class GameLog extends React.Component {
 								<Event
 									eventObj={event}
 									key={key}
-									disable={preview}
+									disable={preview || this.state.isEditing}
 									status={statusObj}
 									updateHandler={this.updateEventHandler}
 								/>
@@ -614,14 +615,7 @@ class GameLog extends React.Component {
 						as="textarea"
 						className="handwritten"
 						value={this.state.tempNotes}
-						onChange={(e) => {
-							this.setState({
-								tempNotes: e.target.value.replace(
-									/\r?\n/gi,
-									""
-								),
-							});
-						}}
+						onChange={(e) => {this.setState({tempNotes: e.target.value});}}
 					/>
 				</InputGroup>
 
@@ -733,7 +727,7 @@ class GameLog extends React.Component {
 									unmountOnExit
 									mountOnEnter
 								>
-									<div className="content">
+									<div className="editContent">
 										{this.render_editData()}
 									</div>
 								</Collapse>

@@ -162,11 +162,12 @@
     .activeBarWrapper {
         position: fixed;
 
+        width: 0;
         overflow-y: scroll;
 
-        background: none;
+        background: rgba(0,0,0,0);
 
-        @include transition();
+        @include transition();;
 
         &:not(.openBar) {
             pointer-events: none;
@@ -174,6 +175,17 @@
             .toggle {
                 border-radius: 0 0 50% 0;
                 background: rgba(255,255,255,.85);
+
+                &:hover,
+                &:focus {
+                    background: rgba(0,0,0,.85);
+
+                    @include transition();
+
+                    span {
+                        color: white !important;
+                    }
+                }
             }
         }
 

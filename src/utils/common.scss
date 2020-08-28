@@ -19,7 +19,8 @@
 
 @mixin container() {
     border-radius: 0 0 5px 5px;
-    background: $color-background-darker;
+    // background: $color-background-darker;
+    background: #eee;
     -webkit-box-shadow: inset 0 0 15px -10px rgba(0, 0, 0, .75);
        -moz-box-shadow: inset 0 0 15px -10px rgba(0, 0, 0, .75);
             box-shadow: inset 0 0 15px -10px rgba(0, 0, 0, .75);
@@ -162,6 +163,17 @@ body {
     }
     button:last-of-type {
         margin-right: 0;
+    }
+}
+
+.dotTooltip {
+    .arrow:before {
+        border-bottom-color: $color-active-text !important;
+    }
+
+    .tooltip-inner {
+        color: black;
+        background: $color-active-text;
     }
 }
 
