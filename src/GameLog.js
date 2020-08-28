@@ -274,18 +274,24 @@ class GameLog extends React.Component {
 		var dmObj =
 			this.state.statusData[code] !== undefined
 				? this.state.statusData[code].dungeonMaster
-				: {};
+				: {isDm: false};
 
-		var dmStr = dmObj.isDm ? "(me)" : "";
 
-		if (!dmObj.isDm) {
-			if ("name" in dmObj && dmObj.name.length > 0) {
-				dmStr = dmObj.name;
-				if ("dci" in dmObj && dmObj.dci.length > 0) {
-					dmStr = dmStr + " (" + dmObj.dci + ")";
+		var dmStr = "";
+
+		if (dmObj !== undefined) {
+
+			dmStr = dmObj.isDm ? "(me)" : "";
+
+			if (!dmObj.isDm) {
+				if ("name" in dmObj && dmObj.name.length > 0) {
+					dmStr = dmObj.name;
+					if ("dci" in dmObj && dmObj.dci.length > 0) {
+						dmStr = dmStr + " (" + dmObj.dci + ")";
+					}
+				} else if ("dci" in dmObj) {
+					dmStr = dmObj.dci;
 				}
-			} else if ("dci" in dmObj) {
-				dmStr = dmObj.dci;
 			}
 		}
 
@@ -592,8 +598,9 @@ class GameLog extends React.Component {
 	render_logData = () => {
 		return (
 			<>
-				{" "}
-				{this.render_gameInfo()} {this.render_advNotes(false)}
+				{this.render_gameInfo()}
+				{this.render_advNotes(false)}
+
 				<div className="twoCol">
 					<div className="leftCol arCol">
 						{this.render_advancement()}
@@ -744,86 +751,86 @@ class GameLog extends React.Component {
 			);
 		} else if (this.state.data.record === "salvage") {
 			// TO BE DONE
-			return (
-				<Container
-					fluid
-					className={classnames(
-						className,
-						"gameBox",
-						"salvageBox",
-						!this.state.isCollapsed && "expanded",
-						preview && "preview"
-					)}
-					style={style}
-				>
-					{this.render_titleAndCode(
-						this.state.data.type,
-						null,
-						this.state.data.title
-					)}
-
-					<Collapse in={!this.state.isCollapsed}>
-						<div className="content">
-							{this.render_gameInfo()}
-
-							<div className="twoCol">
-								<div className="leftCol arCol">
-									SALVAGE
-									<br />
-									LEVEL UP?
-								</div>
-
-								<div className="rightCol arCol">
-									{this.render_wealth(
-										this.state.data.gameWealth
-									)}
-								</div>
-							</div>
-
-							{this.render_advNotes(true)}
-						</div>
-					</Collapse>
-				</Container>
-			);
+// 			return (
+// 				<Container
+// 					fluid
+// 					className={classnames(
+// 						className,
+// 						"gameBox",
+// 						"salvageBox",
+// 						!this.state.isCollapsed && "expanded",
+// 						preview && "preview"
+// 					)}
+// 					style={style}
+// 				>
+// 					{this.render_titleAndCode(
+// 						this.state.data.type,
+// 						null,
+// 						this.state.data.title
+// 					)}
+// 
+// 					<Collapse in={!this.state.isCollapsed}>
+// 						<div className="content">
+// 							{this.render_gameInfo()}
+// 
+// 							<div className="twoCol">
+// 								<div className="leftCol arCol">
+// 									SALVAGE
+// 									<br />
+// 									LEVEL UP?
+// 								</div>
+// 
+// 								<div className="rightCol arCol">
+// 									{this.render_wealth(
+// 										this.state.data.gameWealth
+// 									)}
+// 								</div>
+// 							</div>
+// 
+// 							{this.render_advNotes(true)}
+// 						</div>
+// 					</Collapse>
+// 				</Container>
+// 			);
 		} else if (this.state.data.record === "notes") {
 			// TO BE DONE
-			return (
-				<Container
-					fluid
-					className={classnames(
-						className,
-						"gameBox",
-						"notesWealthBox",
-						!this.state.isCollapsed && "expanded",
-						preview && "preview"
-					)}
-					style={style}
-				>
-					{this.render_titleAndCode(
-						this.state.data.type,
-						null,
-						"Notes / Wealth"
-					)}
-
-					<Collapse in={!this.state.isCollapsed}>
-						<div className="content">
-							{this.render_gameInfo()}
-
-							<div className="twoCol">
-								<div className="leftCol arCol">NOTES</div>
-
-								<div className="rightCol arCol">
-									{this.render_wealth(
-										this.state.data.gameWealth
-									)}
-								</div>
-							</div>
-
-							{this.render_advNotes(true)}
-						</div>
-					</Collapse>
-				</Container>
-			);
+// 			return (
+// 				<Container
+// 					fluid
+// 					className={classnames(
+// 						className,
+// 						"gameBox",
+// 						"notesWealthBox",
+// 						!this.state.isCollapsed && "expanded",
+// 						preview && "preview"
+// 					)}
+// 					style={style}
+// 				>
+// 					{this.render_titleAndCode(
+// 						this.state.data.type,
+// 						null,
+// 						"Notes / Wealth"
+// 					)}
+// 
+// 					<Collapse in={!this.state.isCollapsed}>
+// 						<div className="content">
+// 							{this.render_gameInfo()}
+// 
+// 							<div className="twoCol">
+// 								<div className="leftCol arCol">NOTES</div>
+// 
+// 								<div className="rightCol arCol">
+// 									{this.render_wealth(
+// 										this.state.data.gameWealth
+// 									)}
+// 								</div>
+// 							</div>
+// 
+// 							{this.render_advNotes(true)}
+// 						</div>
+// 					</Collapse>
+// 				</Container>
+// 			);
 		}
 
 		return <> </>;
