@@ -127,7 +127,7 @@ class GameLog extends React.Component {
 
 	setIsEditing = (willEdit, save) => {
 		this.setState({ willBeEditing: willEdit, isCollapsing: true });
-		
+
 		if (willEdit) {
 			// open
 			this.setTempData(this.state.statusData[this.props.data.code]);
@@ -211,22 +211,6 @@ class GameLog extends React.Component {
 				{!this.props.preview && (
 					<>
 						<Fade
-							in={!this.state.isCollapsed}
-							mountOnEnter
-							unmountOnExit
-						>
-							<EditButton
-								save
-								onClick={this.setIsEditing.bind(
-									this,
-									!this.state.isEditing,
-									true
-								)}
-								active={this.state.willBeEditing}
-							/>
-						</Fade>
-
-						<Fade
 							in={this.state.willBeEditing}
 							mountOnEnter
 							unmountOnExit
@@ -234,12 +218,20 @@ class GameLog extends React.Component {
 							<EditButton
 								left
 								cancel
-								onClick={this.setIsEditing.bind(
-									this,
-									false,
-									false
-								)}
+								onClick={this.setIsEditing.bind(this,false,false)}
 								active
+							/>
+						</Fade>
+
+						<Fade
+							in={!this.state.isCollapsed}
+							mountOnEnter
+							unmountOnExit
+						>
+							<EditButton
+								save
+								onClick={this.setIsEditing.bind(this,!this.state.isEditing,true)}
+								active={this.state.willBeEditing}
 							/>
 						</Fade>
 					</>
@@ -258,12 +250,8 @@ class GameLog extends React.Component {
 						{code !== null && (
 							<span
 								className="code"
-								dangerouslySetInnerHTML={{
-									__html: code
-										.split("-")
-										.join("<span class='hyphen'>-</span>"),
-								}}
-							></span>
+								dangerouslySetInnerHTML={{__html: code.split("-").join("<span class='hyphen'>-</span>")}}
+							/>
 						)}
 						<span className="fauxdesto italic">{title}</span>
 					</span>

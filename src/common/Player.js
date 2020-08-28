@@ -152,6 +152,8 @@ class Player extends Component {
     }
 
     addNewClass = () => {
+		this.setState({ mountAnimSpeed: {animationDuration: "inerit"}});
+        
         if (Object.keys(this.state.tempObj.classes).length > 20) {
             this.props.addToast("Leeloo Dallas multiclass", { appearance: "error" });
             return;
@@ -564,6 +566,9 @@ class Player extends Component {
 					as={InputGroup.Prepend}
 					variant="secondary"
 					title={selClass}
+					onSelect={(e) => {
+	        			this.setState({ mountAnimSpeed: {animationDuration: "0s"}});
+	        		}}
 				>
 					{_map(classes5e, (c, i) => {
 						if (selClass === c) {
@@ -617,7 +622,7 @@ class Player extends Component {
 						save
 						onClick={this.editInfo.bind(this, false)}
 						active={this.state.isEditing}
-						/>
+					/>
 				</div>
 
 				{this.render_editInfo()}
