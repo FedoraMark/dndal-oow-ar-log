@@ -1,27 +1,27 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "a740be5a00556da545f6617567191dff",
+    "revision": "e245e762cbbf8ce359ee80e27befa7fc",
     "url": "/dndal-oow-ar-log/index.html"
   },
   {
-    "revision": "6216cca3a4f67009aee3",
+    "revision": "165f379e3df5e1779eb8",
     "url": "/dndal-oow-ar-log/static/css/2.14d98803.chunk.css"
   },
   {
-    "revision": "a6d04cd2a9fc92db2c05",
-    "url": "/dndal-oow-ar-log/static/css/main.b85f026f.chunk.css"
+    "revision": "e0d98b72bf5638be75eb",
+    "url": "/dndal-oow-ar-log/static/css/main.49ea0676.chunk.css"
   },
   {
-    "revision": "6216cca3a4f67009aee3",
-    "url": "/dndal-oow-ar-log/static/js/2.a19a4043.chunk.js"
+    "revision": "165f379e3df5e1779eb8",
+    "url": "/dndal-oow-ar-log/static/js/2.5c4dcc1e.chunk.js"
   },
   {
     "revision": "188e06792000271e180e5a60b38850ec",
-    "url": "/dndal-oow-ar-log/static/js/2.a19a4043.chunk.js.LICENSE.txt"
+    "url": "/dndal-oow-ar-log/static/js/2.5c4dcc1e.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "a6d04cd2a9fc92db2c05",
-    "url": "/dndal-oow-ar-log/static/js/main.5e1386d5.chunk.js"
+    "revision": "e0d98b72bf5638be75eb",
+    "url": "/dndal-oow-ar-log/static/js/main.7c7a0a2e.chunk.js"
   },
   {
     "revision": "b7c752d98d2cb2c3f50a",
