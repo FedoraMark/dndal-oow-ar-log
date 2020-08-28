@@ -356,6 +356,12 @@ $halfGap: .25rem;
                     }
                 }
             }
+
+            textarea {
+                min-height: 4rem;
+
+                box-sizing: border-box;
+            }
         }
     }
 
