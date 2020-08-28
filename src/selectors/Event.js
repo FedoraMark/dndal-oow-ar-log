@@ -14,14 +14,12 @@ import "selectors/Event.scss";
 class Event extends Component {
     static propTypes = {
         eventObj: PropTypes.object.isRequired,
-        isSelected: PropTypes.bool,
         disable: PropTypes.bool,
         updateHandler: PropTypes.func,
         status: PropTypes.object,
     }
 
     static defaultProps = {
-        isSelected: false,
         disable: false,
         updateHandler: (e) => {},
         status: {}
@@ -30,9 +28,10 @@ class Event extends Component {
 
     state = {
         eventObj: this.props.eventObj,
-        isSelected: this.props.isSelected === "true",
         selectionObj: {[this.props.eventObj.title]: {active: this.props.isSelected, selections: [], option: -1}},
-        status: this.props.status
+        status: this.props.status,
+        isSelected: this.props.isSelected || this.props.status.active,
+
     }
 
     componentWillReceiveProps(nextProps) {

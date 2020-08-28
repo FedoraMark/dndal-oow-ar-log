@@ -22,14 +22,16 @@ class GameLog extends React.Component {
 
     static propTypes = {
         data: PropTypes.object.isRequired,
-        isCollapsed: PropTypes.bool,
+        statuses: PropTypes.object,
+        collapse: PropTypes.bool,
         className: PropTypes.string,
         preview: PropTypes.bool,
         logUpdateHandler: PropTypes.func
     }
 
     static defaultProps = {
-        isCollapsed: false,
+    	statuses: {},
+        collapse: false,
         className: '',
         style: {},
         preview: false,
@@ -37,10 +39,18 @@ class GameLog extends React.Component {
     }
 
     state = {
-        isCollapsed: this.props.isCollapsed,
-        activeLegacyObj: {},
+    	data: this.props.data,
+    	statusData: this.props.statuses,
+        isCollapsed: this.props.collapse,
+        isCollapsing: false,
+        willBeEditing: false,
+        isEditing: this.props.isEditing,
         rewardGroup0: [],
         // rewardGroup1: [], // currently unneeded
+    }
+
+    componentWillReceiveProps(newProps) {
+    	this.setState({data: newProps.data, statusData: newProps.statuses});
     }
 
     //FUNCTIONS
@@ -50,25 +60,20 @@ class GameLog extends React.Component {
         }
     }
 
-    editInfo = () => {
-		this.setState({ isEditing: !this.state.isEditing });
-	};
-
     updateEventHandler = (eventStatus) => {
-        let code = this.props.data.code;
-        var alObj = this.state.activeLegacyObj;
-
+        let code = this.state.data.code;
+        var stats = this.state.statusData;
 
         if (getFirstObject(eventStatus).active) {
         	// IF ACTIVE
-	        alObj = {[code]: { ...this.state.activeLegacyObj[code], ...eventStatus } };
+	        stats = {[code]: { ...this.state.statusData[code], ...eventStatus } };
 	    } else {
 	    	//IF DISABLED
-	    	delete alObj[code][getFirstKey(eventStatus)];
+	    	delete stats[code][getFirstKey(eventStatus)];
 	    }
 
-	    this.setState({ activeLegacyObj: alObj },
-			this.props.logUpdateHandler(alObj)
+	    this.setState({ statusData: stats },
+			this.props.logUpdateHandler(stats)
 		);
     }
 
@@ -93,6 +98,14 @@ class GameLog extends React.Component {
     	this.updateEventHandler({[title]: {legacy: false, active: true, option: key}})
     }
 
+    setIsEditing = (editing) => {
+		this.setState({willBeEditing: editing, isCollapsing: true });
+	};
+
+    expandToEdit = () => {
+    	this.setState({isEditing: this.state.willBeEditing, isCollapsing: false});
+    }
+
     //RENDERERS
     render_titleAndCode = (type, code, title) => {
         return (
@@ -100,18 +113,18 @@ class GameLog extends React.Component {
             	{!this.props.preview && 
             		<>
 	            		<Fade in={!this.state.isCollapsed} mountOnEnter unmountOnExit>
-	            			<EditButton save onClick={this.editInfo.bind()} active={this.state.isEditing} />
+	            			<EditButton save onClick={this.setIsEditing.bind(this, !this.state.isEditing)} active={this.state.willBeEditing} />
 	            		</Fade>
 
-	            		<Fade in={this.state.isEditing}>
-							<EditButton left cancel onClick={this.editInfo.bind(this, true)} active={this.state.isEditing}/>
+	            		<Fade in={this.state.willBeEditing} mountOnEnter unmountOnExit>
+							<EditButton left cancel onClick={this.setIsEditing.bind(this, false)} active />
 						</Fade>
 					</>
             	}
 
 				<h1 className="title fauxdesto" onClick={this.toggleCollapsed.bind(this)}>
 					<span className="name">
-						{!this.props.preview && !!this.props.data.dungeonMaster && this.props.data.dungeonMaster.isDm && <FaDiceD20 className="diceIcon" />}
+						{!this.props.preview && !!this.state.data.dungeonMaster && this.state.data.dungeonMaster.isDm && <FaDiceD20 className="diceIcon" />}
 						{code !== null && <span className="code" dangerouslySetInnerHTML={{ __html: code.split("-").join("<span class='hyphen'>-</span>") }}></span>}
 						<span className="fauxdesto italic">{title}</span>
 					</span>
@@ -160,12 +173,12 @@ class GameLog extends React.Component {
     }
 
     render_advancement = (advObj) => {
-    	const {data, preview} = this.props;
+    	const { preview } = this.props;
 
 		let isSelected =
-			this.state.activeLegacyObj[data.code] !== undefined &&
-			this.state.activeLegacyObj[data.code].advancement !== undefined
-				? this.state.activeLegacyObj[data.code].advancement.active
+			this.state.statusData[this.state.data.code] !== undefined &&
+			this.state.statusData[this.state.data.code].advancement !== undefined
+				? this.state.statusData[this.state.data.code].advancement.active
 				: false;
 
         return (
@@ -187,7 +200,7 @@ class GameLog extends React.Component {
     }
 
     render_rewards = (rewardObj) => {
-    	const {data, preview} = this.props;
+    	const { preview } = this.props;
 
         return (
             <Container className="rewardsWrapper wrapper">
@@ -200,9 +213,9 @@ class GameLog extends React.Component {
 							var option = -1;
 							var selectArray = [];
 								
-							if (this.state.activeLegacyObj[data.code] !== undefined && this.state.activeLegacyObj[data.code][groupName] !== undefined) {
-								option = this.state.activeLegacyObj[data.code][groupName].option;
-								selectArray = this.state.activeLegacyObj[data.code][groupName].selections;
+							if (this.state.statusData[this.state.data.code] !== undefined && this.state.statusData[this.state.data.code][groupName] !== undefined) {
+								option = this.state.statusData[this.state.data.code][groupName].option;
+								selectArray = this.state.statusData[this.state.data.code][groupName].selections;
 							}
 
 							return  (
@@ -268,8 +281,8 @@ class GameLog extends React.Component {
     }
 
     render_legacy = (legacyObj) => {
-    	const { data, preview } = this.props;
-    	let footnote = (!!data.dungeonMaster && data.dungeonMaster.isDm) ? dmRewardNote : playerRewardNote;
+    	const { preview } = this.props;
+    	let footnote = (!!this.state.data.dungeonMaster && this.state.data.dungeonMaster.isDm) ? dmRewardNote : playerRewardNote;
 
         return (
             <Container className="legacyWrapper wrapper">
@@ -278,8 +291,8 @@ class GameLog extends React.Component {
 					<div className="legacyContent">
 						{_map(legacyObj.events, (event, key) => {
 							var statusObj = {};
-							if (this.state.activeLegacyObj[data.code] !== undefined && this.state.activeLegacyObj[data.code][event.title] !== undefined) {
-						    	statusObj = this.state.activeLegacyObj[data.code][event.title];
+							if (this.state.statusData[this.state.data.code] !== undefined && this.state.statusData[this.state.data.code][event.title] !== undefined) {
+						    	statusObj = this.state.statusData[this.state.data.code][event.title];
 						    }
 
 							return <Event eventObj={event} key={key} disable={preview} status={statusObj} updateHandler={this.updateEventHandler} />
@@ -291,44 +304,66 @@ class GameLog extends React.Component {
         );
     }
 
+    render_logData = () => {
+    	return (
+			<>
+				{this.render_gameInfo(this.state.data.event,this.state.data.date,this.state.data.dungeonMaster,this.state.data.tier)}
+				{this.render_advNotes(this.state.data.notes)}
+
+				<div className="twoCol">
+					<div className="leftCol arCol">
+						{this.render_advancement(this.state.data.advancement)}
+						{this.render_rewards(this.state.data.rewards)}
+						{this.render_wealth(this.state.data.gameWealth)}
+					</div>
+
+					<div className="rightCol arCol">
+						{this.render_legacy(this.state.data.legacy)}
+					</div>
+				</div>
+			</>
+    	);
+    }
+
+    render_editData = () => {
+    	return (
+    		<div className="editWrapper">
+				DELETE<br/>
+				NOTES<br/>
+				WEALTH (x4)<br/>
+				EXPEND EVENTS (selected)<br/>
+				INFO EDIT<br/>
+				MOVE<br/>
+			</div>
+    	);
+    }
+
     render() {
-        const { data, style, className, preview } = this.props;
+        const { style, className, preview } = this.props;
 
-        if (["game", "epic"].includes(data.record)) {
+        if (["game", "epic"].includes(this.state.data.record)) {
             return (
-                <Container fluid className={classnames(className,"gameBox",(!this.state.isCollapsed && !this.state.isEditing) && "expanded", preview && "preview", this.state.isEditing && "editing")} style={style}>
-					{this.render_titleAndCode(data.type,data.code,data.title)}
+                <Container fluid className={classnames(className,"gameBox",(!this.state.isCollapsed && !this.state.isEditing) && "expanded", preview && "preview", this.state.willBeEditing && "editing")} style={style}>
+					{this.render_titleAndCode(this.state.data.type,this.state.data.code,this.state.data.title)}
 
-					<Collapse in={!this.state.isCollapsed && !this.state.isEditing}>
+					<Collapse in={!this.state.isCollapsed && !this.state.isCollapsing} onExited={this.expandToEdit.bind(this)} timeout="1" unmountOnExit mountOnEnter>
 						<div className="content">
-							{this.render_gameInfo(data.event,data.date,data.dungeonMaster,data.tier)}
-							{this.render_advNotes(data.notes)}
-
-							<div className="twoCol">
-								<div className="leftCol arCol">
-									{this.render_advancement(data.advancement)}
-									{this.render_rewards(data.rewards)}
-									{this.render_wealth(data.gameWealth)}
-								</div>
-
-								<div className="rightCol arCol">
-									{this.render_legacy(data.legacy)}
-								</div>
-							</div>
+							{!this.state.isEditing && this.render_logData() }
+							{ this.state.isEditing && this.render_editData() }
 						</div>
 					</Collapse>
 
 		    	</Container>
             )
-        } else if (data.record === "salvage") {
+        } else if (this.state.data.record === "salvage") {
         	// TO BE DONE
             return (
                 <Container fluid className={classnames(className,"gameBox","salvageBox",!this.state.isCollapsed && "expanded", preview && "preview")} style={style}>
-					{this.render_titleAndCode(data.type,null,data.title)}
+					{this.render_titleAndCode(this.state.data.type,null,this.state.data.title)}
 
 					<Collapse in={!this.state.isCollapsed}>
 						<div className="content">
-							{this.render_gameInfo(undefined,data.date,data.dungeonMaster,data.tier)}
+							{this.render_gameInfo(undefined,this.state.data.date,this.state.data.dungeonMaster,this.state.data.tier)}
 
 							<div className="twoCol">
 								<div className="leftCol arCol">
@@ -337,25 +372,25 @@ class GameLog extends React.Component {
 								</div>
 
 								<div className="rightCol arCol">
-									{this.render_wealth(data.gameWealth)}
+									{this.render_wealth(this.state.data.gameWealth)}
 								</div>
 							</div>
 
-							{this.render_advNotes(data.notes, true)}
+							{this.render_advNotes(this.state.data.notes, true)}
 						</div>
 					</Collapse>
 
 		    	</Container>
             )
-        } else if (data.record === "notes") {
+        } else if (this.state.data.record === "notes") {
         	// TO BE DONE
         	return (
 	        	<Container fluid className={classnames(className,"gameBox","notesWealthBox",!this.state.isCollapsed && "expanded", preview && "preview")} style={style}>
-					{this.render_titleAndCode(data.type,null,"Notes / Wealth")}
+					{this.render_titleAndCode(this.state.data.type,null,"Notes / Wealth")}
 
 					<Collapse in={!this.state.isCollapsed}>
 						<div className="content">
-							{this.render_gameInfo(undefined,data.date,undefined,data.tier)}
+							{this.render_gameInfo(undefined,this.state.data.date,undefined,this.state.data.tier)}
 
 							<div className="twoCol">
 								<div className="leftCol arCol">
@@ -363,11 +398,11 @@ class GameLog extends React.Component {
 								</div>
 
 								<div className="rightCol arCol">
-									{this.render_wealth(data.gameWealth)}
+									{this.render_wealth(this.state.data.gameWealth)}
 								</div>
 							</div>
 
-							{this.render_advNotes(data.notes, true)}
+							{this.render_advNotes(this.state.data.notes, true)}
 						</div>
 					</Collapse>
 

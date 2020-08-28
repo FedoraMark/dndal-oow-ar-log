@@ -2,10 +2,6 @@
 @import "./utils/common.scss";
 
 // STYLES
-.block {
-    display: block;
-}
-
 .log {
     min-height: 100vh;
 
@@ -21,6 +17,19 @@
 
     & > .jumbotron {
         padding: 3rem 1rem;
+        margin: 0;
+    }
+
+    & > .contentWrapper {
+        display: block;
+        width: 100%;
+        padding: 3rem 0;
+
+        flex-grow: 1;
+
+        background: $color-background-white;
+
+        @include flex(center, flex-start, column);
     }
 
     .titleBox {
@@ -147,7 +156,7 @@
     }
 
     .footer {
-        margin: 3rem 0 0 !important;
+        margin: 0 !important;
     }
 
     .activeBarWrapper {

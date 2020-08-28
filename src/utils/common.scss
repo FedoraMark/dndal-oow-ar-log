@@ -59,6 +59,7 @@
 }
 
 // VARS
+$color-footer-bg: #e9ecef;
 $color-background-white: white;
 $color-background-darker: #f9f9f9;
 $color-background-card-alpha: rgba(255,255,255,.75);
@@ -87,7 +88,11 @@ $fontFamily-book-boldItalic: BookinsanityBoldItalic, serif;
 body {
     min-width: 375px;
 
-    background-color: $color-background-white !important;
+    background-color: $color-footer-bg !important;
+}
+
+.block {
+    display: block;
 }
 
 .bookFont {

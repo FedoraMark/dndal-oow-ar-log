@@ -190,7 +190,8 @@ class AdvRecordLog extends React.Component {
 							style={{ animationDelay: delayTime * key + "ms" }}
 							key={key}
 							data={logData}
-							isCollapsed={!this.state.loaded}
+							statuses={this.state.statusData[key]}
+							collapse={!this.state.loaded}
 							logUpdateHandler={this.updateLogStatus}
 						/>
 					);
@@ -363,14 +364,16 @@ class AdvRecordLog extends React.Component {
 						</Container>
 					</Jumbotron>
 
-					<Container>
-						<Player playerObj={this.state.charData} optionsData={this.state.optionsData} />
-					</Container>
+					<span className="contentWrapper">
+						<Container>
+							<Player playerObj={this.state.charData} optionsData={this.state.optionsData} />
+						</Container>
 
-					{this.render_newRecordArea()}
+						{this.render_newRecordArea()}
 
-					{this.render_gameLogs(this.state.gameData)}
-					{/* {this.render_gameLogs(games_oow.records)} */}
+						{this.render_gameLogs(this.state.gameData)}
+						{/* {this.render_gameLogs(games_oow.records)} */}
+					</span>
 
 					<Jumbotron className="footer" />
 				</div>
