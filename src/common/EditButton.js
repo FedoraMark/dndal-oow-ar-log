@@ -1,12 +1,18 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
+import Fade from "react-bootstrap/Fade";
 import { FiEdit, FiX } from "react-icons/fi";
 import { FaSave } from "react-icons/fa";
 
 import style from "./EditButton.module.scss";
 
 class EditButton extends Component {
+	constructor(props) {
+		super(props);
+		this.editButton = React.createRef();
+	}
+
 	static propTypes = {
 		onClick: PropTypes.func.isRequired,
 		className: PropTypes.string,
@@ -40,13 +46,16 @@ class EditButton extends Component {
 					this.state.active && style.active,
 					(left ? style.left : style.right)
 				)}
+				ref={this.editButton}
 				onClick={(e) => {
 					onClick();
 				}}
+				onMouseEnter={(e) => {this.editButton.current.focus()}}
+				onMouseLeave={(e) => {this.editButton.current.blur()}}
 			>
-				{(!cancel && !active) && <FiEdit />}
-				{(cancel || (!save && this.state.active)) && <FiX />}
-				{save && this.state.active && <FaSave />}
+				<Fade className={style.icon} in={!cancel && !active}><FiEdit /></Fade>
+				<Fade className={style.icon} in={cancel || (!save && this.state.active)}><FiX /></Fade>
+				<Fade className={style.icon} in={save && this.state.active}><FaSave /></Fade>
 			</button>
 		);
 	}

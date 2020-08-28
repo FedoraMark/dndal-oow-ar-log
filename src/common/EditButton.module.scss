@@ -25,6 +25,10 @@ $offset: 1rem;
 
     @include transition();
 
+    .icon {
+        position: absolute;
+    }
+
     &:hover,
     &:focus {
         cursor: pointer;

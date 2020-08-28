@@ -19,7 +19,7 @@ import { IoIosCalculator } from "react-icons/io";
 
 import Wealth from "common/Wealth";
 import EditButton from "common/EditButton";
-import { animFaster, fadeInRight, getTotalCopper, trimStringsInObjectFlatly, condenseWealth, classes5e, classesUA } from "utils/Util";
+import { animFaster, bounceIn, getTotalCopper, trimStringsInObjectFlatly, condenseWealth, classes5e, classesUA } from "utils/Util";
 
 import "./Player.scss";
 
@@ -49,6 +49,7 @@ class Player extends Component {
         tempObj: { ...this.props.playerObj },
         isEditing: false, // TRUE FOR TESTING
         topClass: "",
+        mountAnimSpeed: {},
 
         // options
         autoLeveling: this.props.optionsObj.autoLeveling,
@@ -277,7 +278,17 @@ class Player extends Component {
         let classLen = Object.keys(this.state.tempObj.classes).length;
 
         return (
-            <Collapse in={this.state.isEditing} mountOnEnter unmountOnExit>
+            <Collapse 
+        		in={this.state.isEditing} 
+        		onExited={(e) => {
+        			this.setState({ mountAnimSpeed: {animationDuration: "0s"}});
+        		}}
+        		onEntered={(e) => {
+        			this.setState({ mountAnimSpeed: {animationDuration: "inerit"}});
+        		}}
+        		mountOnEnter
+        		unmountOnExit
+        	>
 				<div className="editingContent">
 					<ul className="editingFlex">
 						{/* CHARACTER NAME */}
@@ -469,8 +480,13 @@ class Player extends Component {
 									return (
 										<InputGroup
 											key={clss}
-											className={classnames("playerInfoGroup classDropdownGroup", animFaster, fadeInRight, this.state.topClass === clss && "zFix", classLen === 1 && "firstLast")}
+											className={classnames(
+												"playerInfoGroup classDropdownGroup", 
+												animFaster,
+												bounceIn,
+												this.state.topClass === clss && "zFix", classLen === 1 && "firstLast")}
 											onClick={this.setTopClass.bind(this,clss)}
+											style={this.state.mountAnimSpeed}
 										>
 											{this.render_classLevelDropDown(clss, level)}
 										</InputGroup>
@@ -542,9 +558,9 @@ class Player extends Component {
     };
 
     render_classLevelDropDown = (selClass, selLevel) => {
-        return ( <
-            >
-            <DropdownButton
+        return (
+        	<>
+            	<DropdownButton
 					as={InputGroup.Prepend}
 					variant="secondary"
 					title={selClass}
@@ -571,16 +587,14 @@ class Player extends Component {
 						<span>Remove</span>
 						<AiTwotoneDelete />
 					</Dropdown.Item>
-				</DropdownButton> <
-            DropdownButton as = { InputGroup.Append } variant = "outline-secondary"
-            title = { selLevel } alignRight className = "levelDropdown" >
-            {
-                _map(Array.from(Array(20), (_, i) => { return i + 1 }), (l) => {
-                    return <Dropdown.Item key={l} href="#" active={selLevel === l} onSelect={this.setClassLevel.bind(this,selClass,selClass,l)}>{l}</Dropdown.Item>
-                })
-            } <
-            /DropdownButton> <
-            />
+				</DropdownButton>
+				<DropdownButton as = { InputGroup.Append } variant = "outline-secondary" title = { selLevel } alignRight className = "levelDropdown" >
+	            {_map(Array.from(Array(20), (_, i) => { return i + 1 }), (l) => {
+	                return <Dropdown.Item key={l} href="#" active={selLevel === l} onSelect={this.setClassLevel.bind(this,selClass,selClass,l)}>{l}</Dropdown.Item>
+	                })
+	            }
+	            </DropdownButton>
+	        </>
         );
     };
 
