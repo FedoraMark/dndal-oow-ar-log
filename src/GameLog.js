@@ -356,6 +356,8 @@ class GameLog extends React.Component {
 				? this.state.statusData[this.state.data.code].advancement.active
 				: false;
 
+				console.log(isSelected);
+
 		return (
 			<Container className="advWrapper wrapper">
 				<h1 className="sectionTitle">Advancement</h1>
@@ -363,9 +365,10 @@ class GameLog extends React.Component {
 					<Select
 						label={this.state.data.advancement.label}
 						type="checkbox"
+						suppressReset
 						isBold
-						isDisabled={preview || this.state.isEditing}
 						isSelected={isSelected}
+						isDisabled={preview || this.state.isEditing}
 						selectHandler={this.advancementHandler}
 					/>
 					<p
@@ -424,6 +427,7 @@ class GameLog extends React.Component {
 									<Option
 										options={rewardGroup.options}
 										canBlank
+										suppressReset
 										isDisabled={preview || this.state.isEditing}
 										selection={option}
 										title={groupName}
@@ -441,16 +445,12 @@ class GameLog extends React.Component {
 														key={selectKey}
 														label={selection}
 														type="checkbox"
+														suppressReset
 														isDisabled={preview || this.state.isEditing}
-														isSelected={selectArray.includes(
-															selectKey
-														)}
+														isSelected={selectArray.includes(selectKey)}
 														title={groupName}
 														arrKey={selectKey}
-														selectHandler={
-															this
-																.selectRewardHandler
-														}
+														selectHandler={this.selectRewardHandler}
 													/>
 												);
 											}
