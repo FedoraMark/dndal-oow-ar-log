@@ -1,6 +1,10 @@
 // IMPORTS
 @import "./utils/common.scss";
 
+// VARS
+$gap: .5rem;
+$halfGap: .25rem;
+
 // STYLES
 .gameBox {
     padding: 0 !important;
@@ -329,7 +333,29 @@
 
         .editWrapper {
             width: 100%;
-            padding: .5rem;
+            padding: 1rem;
+
+            list-style: none;
+
+            .editRow {
+                margin-bottom: $gap;
+
+                &.flexRow {
+                    @include flex(stretch, flex-start, column);
+                }
+
+                .input-group:not(:last-of-type) {
+                    margin-bottom: $gap;
+                }
+
+                .input-group-prepend {
+                    .input-group-text {
+                        width: 130px;
+
+                        justify-content: center;
+                    }
+                }
+            }
         }
     }
 
@@ -482,6 +508,21 @@
                         .val {
                             top: .175rem;
                         }
+                    }
+                }
+            }
+
+            .editWrapper .editRow.flexRow {
+                flex-direction: row;
+
+                .input-group {
+                    margin: 0 $halfGap;
+
+                    &:first-of-type {
+                        margin-left: 0;
+                    }
+                    &:last-of-type {
+                        margin-right: 0;
                     }
                 }
             }

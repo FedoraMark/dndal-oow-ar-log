@@ -95,6 +95,10 @@ body {
     display: block;
 }
 
+.condense {
+    display: none;
+}
+
 .bookFont {
     font-family: $fontFamily-book-normal;
     line-height: 1.25;
@@ -174,6 +178,9 @@ body {
 
 // Large devices (desktops, 992px and up)
 @media (min-width: 992px) {
+    .condense {
+        display: initial;
+    }
 }
 
 // Extra large devices (large desktops, 1200px and up)

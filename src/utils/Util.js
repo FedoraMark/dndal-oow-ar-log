@@ -1,3 +1,5 @@
+import _each from "lodash/each";
+
 // CONSTS
 export const animFaster = "animate__faster";
 export const fadeIn = "animate__animated animate__fadeIn";
@@ -36,6 +38,17 @@ export const getFirstObject = (obj) => {
 export const getFirstKey = (obj) => {
     return Object.keys(obj)[0];
 };
+
+export const trimStringsInObjectFlatly = (obj) => {
+    var trimmedData = obj;
+    _each(obj, (e, k) => {
+        if (typeof e === "string") {
+            trimmedData[k] = e.trim();
+        }
+    });
+
+    return trimmedData;
+}
 
 export const getTotalCopper = (wealthObj) => {
     return (

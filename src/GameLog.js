@@ -4,11 +4,18 @@ import classnames from "classnames";
 import Collapse from "react-bootstrap/Collapse";
 import Fade from "react-bootstrap/Fade";
 import Container from "react-bootstrap/Container";
+import Form from "react-bootstrap/Form";
+import InputGroup from "react-bootstrap/InputGroup";
 import _map from "lodash/map";
 import _pull from "lodash/pull";
 import { FaDiceD20 } from "react-icons/fa";
 
-import { dmRewardNote, playerRewardNote, getFirstObject, getFirstKey } from "utils/Util";
+import {
+    dmRewardNote,
+    playerRewardNote,
+    getFirstObject,
+    getFirstKey,
+} from "utils/Util";
 import Event from "selectors/Event";
 import Select from "selectors/Select";
 import Option from "selectors/Option";
@@ -19,127 +26,234 @@ import "animate.css";
 import "GameLog.scss";
 
 class GameLog extends React.Component {
-
     static propTypes = {
         data: PropTypes.object.isRequired,
         statuses: PropTypes.object,
         collapse: PropTypes.bool,
         className: PropTypes.string,
         preview: PropTypes.bool,
-        logUpdateHandler: PropTypes.func
-    }
+        logUpdateHandler: PropTypes.func,
+    };
 
     static defaultProps = {
-    	statuses: {},
+        statuses: {},
         collapse: false,
-        className: '',
+        className: "",
         style: {},
         preview: false,
         isEditing: false,
-    }
+    };
 
     state = {
-    	data: this.props.data,
-    	statusData: this.props.statuses,
+        data: this.props.data,
+        statusData: this.props.statuses,
         isCollapsed: this.props.collapse,
         isCollapsing: false,
         willBeEditing: false,
         isEditing: this.props.isEditing,
         rewardGroup0: [],
         // rewardGroup1: [], // currently unneeded
-    }
+
+        tempNotes: this.props.data.notes.player !== undefined ?
+            this.props.data.notes.player : "",
+        tempDmName: this.props.data.dungeonMaster !== undefined &&
+            this.props.data.dungeonMaster.name !== undefined ?
+            this.props.data.dungeonMaster.name : "",
+        tempDmNumber: this.props.data.dungeonMaster !== undefined &&
+            this.props.data.dungeonMaster.dci !== undefined ?
+            this.props.data.dungeonMaster.dci : "",
+        tempIsDm: this.props.data.dungeonMaster !== undefined &&
+            this.props.data.dungeonMaster.isDm !== undefined ?
+            this.props.data.dungeonMaster.isDm : "",
+        tempEvent: this.props.data.event !== undefined ? this.props.data.event : "",
+        tempDate: this.props.data.date !== undefined ? this.props.data.date : "",
+    };
 
     componentWillReceiveProps(newProps) {
-    	this.setState({data: newProps.data, statusData: newProps.statuses});
+        this.setState({
+            data: newProps.data,
+            statusData: newProps.statuses,
+        });
     }
 
     //FUNCTIONS
     toggleCollapsed = () => {
-    	if (!this.state.isEditing) {
-        	this.setState({ isCollapsed: !this.state.isCollapsed });
+        if (!this.state.isEditing) {
+            this.setState({ isCollapsed: !this.state.isCollapsed });
         }
-    }
+    };
 
-    updateEventHandler = (eventStatus) => {
+    updateEventHandler = (eventStatus, skipActive) => {
         let code = this.state.data.code;
         var stats = this.state.statusData;
 
-        if (getFirstObject(eventStatus).active) {
-        	// IF ACTIVE
-	        stats = {[code]: { ...this.state.statusData[code], ...eventStatus } };
-	    } else {
-	    	//IF DISABLED
-	    	delete stats[code][getFirstKey(eventStatus)];
-	    }
+        if (skipActive || getFirstObject(eventStatus).active) {
+            // IF ACTIVE
+            stats = {
+                [code]: { ...this.state.statusData[code], ...eventStatus },
+            };
+        } else {
+            //IF DISABLED
+            delete stats[code][getFirstKey(eventStatus)];
+        }
 
-	    this.setState({ statusData: stats },
-			this.props.logUpdateHandler(stats)
-		);
-    }
+        this.setState({ statusData: stats },
+            this.props.logUpdateHandler(stats)
+        );
+    };
 
     advancementHandler = (key, val) => {
-	    this.updateEventHandler({"advancement": {legacy: false, active: val}}) ;
-    }
+        this.updateEventHandler({
+            advancement: { legacy: false, active: val },
+        });
+    };
 
-    selectRewardHandler = (key, val, title) => {    	
-    	var newArray = this.state[title];
-    	if (!val) {
-    		_pull(newArray, key);
-    	} else {
-    		newArray.push(key);
-    	}
+    selectRewardHandler = (key, val, title) => {
+        var newArray = this.state[title];
+        if (!val) {
+            _pull(newArray, key);
+        } else {
+            newArray.push(key);
+        }
 
-    	this.setState({[title]: newArray},
-    		this.updateEventHandler({[title]: {legacy: false, active: true, selections: newArray}})
-    	);
-    }
+        this.setState({
+                [title]: newArray,
+            },
+            this.updateEventHandler({
+                [title]: { legacy: false, active: true, selections: newArray },
+            })
+        );
+    };
 
     optionRewardHandler = (key, title) => {
-    	this.updateEventHandler({[title]: {legacy: false, active: true, option: key}})
-    }
+        this.updateEventHandler({
+            [title]: { legacy: false, active: true, option: key },
+        });
+    };
 
-    setIsEditing = (editing) => {
-		this.setState({willBeEditing: editing, isCollapsing: true });
-	};
+    setIsEditing = (willEdit) => {
+        if (!willEdit) {
+            this.saveTempData();
+        }
+
+        this.setState({ willBeEditing: willEdit, isCollapsing: true });
+    };
 
     expandToEdit = () => {
-    	this.setState({isEditing: this.state.willBeEditing, isCollapsing: false});
-    }
+        this.setState({
+            isEditing: this.state.willBeEditing,
+            isCollapsing: false,
+        });
+    };
+
+    saveTempData = () => {
+        let tempStatusData = {
+            notes: {
+                ...this.state.statusData.notes,
+                player: this.state.tempNotes.trim(),
+            },
+            event: this.state.tempEvent.trim(),
+            date: this.state.tempDate.trim(),
+            dungeonMaster: {
+                name: this.state.tempDmName.trim(),
+                dci: this.state.tempDmNumber.trim(),
+                isDm: this.state.tempIsDm,
+            },
+        };
+
+        this.setState({
+                tempNotes: this.state.tempNotes.trim(),
+                tempDmName: this.state.tempDmName.trim(),
+                tempDmNumber: this.state.tempDmNumber.trim(),
+                tempIsDm: this.state.tempIsDm,
+                tempEvent: this.state.tempEvent.trim(),
+                tempDate: this.state.tempDate.trim(),
+            },
+            this.updateEventHandler(tempStatusData, true)
+        );
+    };
 
     //RENDERERS
     render_titleAndCode = (type, code, title) => {
         return (
-            <div className={classnames("titleWrapper",!this.props.preview && "sticky")}>
-            	{!this.props.preview && 
-            		<>
-	            		<Fade in={!this.state.isCollapsed} mountOnEnter unmountOnExit>
-	            			<EditButton save onClick={this.setIsEditing.bind(this, !this.state.isEditing)} active={this.state.willBeEditing} />
-	            		</Fade>
+            <div
+				className={classnames(
+					"titleWrapper",
+					!this.props.preview && "sticky"
+				)}
+			>
+				{!this.props.preview && (
+					<>
+						<Fade
+							in={!this.state.isCollapsed}
+							mountOnEnter
+							unmountOnExit
+						>
+							<EditButton
+								save
+								onClick={this.setIsEditing.bind(
+									this,
+									!this.state.isEditing
+								)}
+								active={this.state.willBeEditing}
+							/>
+						</Fade>
 
-	            		<Fade in={this.state.willBeEditing} mountOnEnter unmountOnExit>
-							<EditButton left cancel onClick={this.setIsEditing.bind(this, false)} active />
+						<Fade
+							in={this.state.willBeEditing}
+							mountOnEnter
+							unmountOnExit
+						>
+							<EditButton
+								left
+								cancel
+								onClick={this.setIsEditing.bind(this, false)}
+								active
+							/>
 						</Fade>
 					</>
-            	}
+				)}
 
-				<h1 className="title fauxdesto" onClick={this.toggleCollapsed.bind(this)}>
+				<h1
+					className="title fauxdesto"
+					onClick={this.toggleCollapsed.bind(this)}
+				>
 					<span className="name">
-						{!this.props.preview && !!this.state.data.dungeonMaster && this.state.data.dungeonMaster.isDm && <FaDiceD20 className="diceIcon" />}
-						{code !== null && <span className="code" dangerouslySetInnerHTML={{ __html: code.split("-").join("<span class='hyphen'>-</span>") }}></span>}
+						{!this.props.preview &&
+							!!this.state.data.dungeonMaster &&
+							this.state.data.dungeonMaster.isDm && (
+								<FaDiceD20 className="diceIcon" />
+							)}
+						{code !== null && (
+							<span
+								className="code"
+								dangerouslySetInnerHTML={{
+									__html: code
+										.split("-")
+										.join("<span class='hyphen'>-</span>"),
+								}}
+							></span>
+						)}
 						<span className="fauxdesto italic">{title}</span>
 					</span>
 				</h1>
 			</div>
         );
-    }
+    };
 
-    render_gameInfo = (event, date, dmObj, tier) => {
-        var dmStr = dmObj !== undefined && dmObj.isDm ? "(me)" : '';
+    render_gameInfo = () => {
+        let code = this.state.data.code
 
-        if (dmObj !== undefined && !dmObj.isDm) {
-            if ("name" in dmObj) {
+        var date = this.state.statusData[code] !== undefined ? this.state.statusData[code].date : '';
+        var event = this.state.statusData[code] !== undefined ? this.state.statusData[code].event : '';
+        var dmObj = this.state.statusData[code] !== undefined ? this.state.statusData[code].dungeonMaster : {};
+
+        var dmStr = dmObj.isDm ? "(me)" : "";
+
+        if (!dmObj.isDm) {
+            if ("name" in dmObj && dmObj.name.length > 0) {
                 dmStr = dmObj.name;
-                if ("dci" in dmObj) {
+                if ("dci" in dmObj && dmObj.dci.length > 0) {
                     dmStr = dmStr + " (" + dmObj.dci + ")";
                 }
             } else if ("dci" in dmObj) {
@@ -150,267 +264,528 @@ class GameLog extends React.Component {
         return (
             <Container>
 				<ul className="infoWrapper">
-					{date !== undefined && <li className="date"><h1>Date:</h1><p>{date}</p></li>}
-					{event !== undefined && <li className="event"><h1>Event:</h1><p>{event}</p></li>}
-					{tier !== undefined && <li className="tier"><h1>Tier:</h1><p>{tier}</p></li>}
-					{!this.props.preview && dmStr !== '' && <li className="dm"><h1>Dungeon Master:</h1><p>{dmStr}</p></li>}
+					{date !== '' && (
+						<li className="date">
+							<h1>Date:</h1>
+							<p>{date}</p>
+						</li>
+					)}
+					{event !== '' && (
+						<li className="event">
+							<h1>Event:</h1>
+							<p>{event}</p>
+						</li>
+					)}
+					{this.state.data.tier !== undefined && (
+						<li className="tier">
+							<h1>Tier:</h1>
+							<p>{this.state.data.tier}</p>
+						</li>
+					)}
+					{!this.props.preview && dmStr !== "" && (
+						<li className="dm">
+							<h1>Dungeon Master:</h1>
+							<p>{dmStr}</p>
+						</li>
+					)}
 				</ul>
 			</Container>
         );
-    }
+    };
 
-    render_advNotes = (notesObj, suppressTitle) => {
+    render_advNotes = (suppressTitle) => {
+        var statusNotes =
+            this.state.statusData[this.state.data.code] !== undefined ?
+            this.state.statusData[this.state.data.code].notes : {};
+        let allNotes = { ...this.state.data.notes, ...statusNotes };
+
         return (
             <Container className="notesWrapper wrapper">
-					{!suppressTitle && <h1 className="sectionTitle">Adventure Notes</h1>}
-					<div className="box">
-						{"game" in notesObj &&<p className="gameNotes bookFont" dangerouslySetInnerHTML={{ __html: notesObj.game }} />}
-						{("game" in notesObj && "player" in notesObj) && <hr />}
-						{"player" in notesObj && <p className="playerNotes handwritten">{notesObj.player}</p>}
-					</div>
+				{!suppressTitle && (
+					<h1 className="sectionTitle">Adventure Notes</h1>
+				)}
+				<div className="box">
+					{"game" in allNotes && (
+						<p
+							className="gameNotes bookFont"
+							dangerouslySetInnerHTML={{ __html: allNotes.game }}
+						/>
+					)}
+					{"game" in allNotes &&
+						"player" in allNotes &&
+						allNotes.player.length > 0 && <hr />}
+					{"player" in allNotes && allNotes.player.length > 0 && (
+						<p className="playerNotes handwritten">
+							{allNotes.player}
+						</p>
+					)}
+				</div>
 			</Container>
-        )
-    }
+        );
+    };
 
-    render_advancement = (advObj) => {
-    	const { preview } = this.props;
+    render_advancement = () => {
+        const { preview } = this.props;
 
-		let isSelected =
-			this.state.statusData[this.state.data.code] !== undefined &&
-			this.state.statusData[this.state.data.code].advancement !== undefined
-				? this.state.statusData[this.state.data.code].advancement.active
-				: false;
+        let isSelected =
+            this.state.statusData[this.state.data.code] !== undefined &&
+            this.state.statusData[this.state.data.code].advancement !== undefined ?
+            this.state.statusData[this.state.data.code].advancement.active : false;
 
         return (
             <Container className="advWrapper wrapper">
-					<h1 className="sectionTitle">Advancement</h1>
-					<div className="box">
-						<Select
-							label={advObj.label}
-							type="checkbox"
-							isBold
-							isDisabled={preview}
-							isSelected={isSelected}
-							selectHandler={this.advancementHandler}
-						/>
-						<p className="bookFont footnote" dangerouslySetInnerHTML={{ __html:  advObj.footnote }} />
-					</div>
+				<h1 className="sectionTitle">Advancement</h1>
+				<div className="box">
+					<Select
+						label={this.state.data.advancement.label}
+						type="checkbox"
+						isBold
+						isDisabled={preview}
+						isSelected={isSelected}
+						selectHandler={this.advancementHandler}
+					/>
+					<p
+						className="bookFont footnote"
+						dangerouslySetInnerHTML={{
+							__html: this.state.data.advancement.footnote,
+						}}
+					/>
+				</div>
 			</Container>
         );
-    }
+    };
 
-    render_rewards = (rewardObj) => {
-    	const { preview } = this.props;
+    render_rewards = () => {
+        const { preview } = this.props;
 
         return (
             <Container className="rewardsWrapper wrapper">
-					<h1 className="sectionTitle">Rewards</h1>
-					<div className="box rewardsContent">
-						{_map(rewardObj, (rewardGroup, groupKey) => {
-							
-							//CLEANUP - should be type of <Event /> component
-							let groupName = "rewardGroup" + groupKey;
-							var option = -1;
-							var selectArray = [];
-								
-							if (this.state.statusData[this.state.data.code] !== undefined && this.state.statusData[this.state.data.code][groupName] !== undefined) {
-								option = this.state.statusData[this.state.data.code][groupName].option;
-								selectArray = this.state.statusData[this.state.data.code][groupName].selections;
-							}
+				<h1 className="sectionTitle">Rewards</h1>
+				<div className="box rewardsContent">
+					{_map(this.state.data.rewards, (rewardGroup, groupKey) => {
+						//CLEANUP - should be type of <Event /> component
+						let groupName = "rewardGroup" + groupKey;
+						var option = -1;
+						var selectArray = [];
 
-							return  (
-								<div key={groupKey} className="rewardGroup">
-									<h1 className="bookFont bold">
-										<span className={classnames("instructions")}>{rewardGroup.instructions}</span>
-										{"options" in rewardGroup && <div className="buttonArea" />}
-									</h1>
+						if (
+							this.state.statusData[this.state.data.code] !==
+								undefined &&
+							this.state.statusData[this.state.data.code][
+								groupName
+							] !== undefined
+						) {
+							option = this.state.statusData[
+								this.state.data.code
+							][groupName].option;
+							selectArray = this.state.statusData[
+								this.state.data.code
+							][groupName].selections;
+						}
 
-									{"options" in rewardGroup && <Option options={rewardGroup.options} canBlank isDisabled={preview} selection={option} title={groupName} optionHandler={this.optionRewardHandler} />}
+						return (
+							<div key={groupKey} className="rewardGroup">
+								<h1 className="bookFont bold">
+									<span
+										className={classnames("instructions")}
+									>
+										{rewardGroup.instructions}
+									</span>
+									{"options" in rewardGroup && (
+										<div className="buttonArea" />
+									)}
+								</h1>
 
-									{"selections" in rewardGroup &&
-										<>
-											{_map(rewardGroup.selections, (selection, selectKey) => {
-												return <Select key={selectKey} label={selection} type="checkbox" isDisabled={preview} isSelected={selectArray.includes(selectKey)} title={groupName} arrKey={selectKey} selectHandler={this.selectRewardHandler} />
-											})}
-										</>
-									}
-								</div>
-							)
-						})}
-					</div>
+								{"options" in rewardGroup && (
+									<Option
+										options={rewardGroup.options}
+										canBlank
+										isDisabled={preview}
+										selection={option}
+										title={groupName}
+										optionHandler={this.optionRewardHandler}
+									/>
+								)}
+
+								{"selections" in rewardGroup && (
+									<>
+										{_map(
+											rewardGroup.selections,
+											(selection, selectKey) => {
+												return (
+													<Select
+														key={selectKey}
+														label={selection}
+														type="checkbox"
+														isDisabled={preview}
+														isSelected={selectArray.includes(
+															selectKey
+														)}
+														title={groupName}
+														arrKey={selectKey}
+														selectHandler={
+															this
+																.selectRewardHandler
+														}
+													/>
+												);
+											}
+										)}
+									</>
+								)}
+							</div>
+						);
+					})}
+				</div>
 			</Container>
         );
-    }
+    };
 
     render_wealth = (wealthObj) => {
         return (
             <Container className="wealthWrapper wrapper">
 				<h1 className="sectionTitle">Character Wealth</h1>
-					
+
 				<Container className="wealthContent box">
-					<div className="header cell">
-						Starting Gold
-					</div>
+					<div className="header cell">Starting Gold</div>
 					<div className="amount cell">
-						<span className="val"><Wealth isEmpty={wealthObj === undefined} wealthObj={wealthObj === undefined ? undefined : wealthObj.starting} /></span>
+						<span className="val">
+							<Wealth
+								isEmpty={wealthObj === undefined}
+								wealthObj={
+									wealthObj === undefined
+										? undefined
+										: wealthObj.starting
+								}
+							/>
+						</span>
 					</div>
 
 					<div className="header cell">
 						Gold Spent (<span>-</span>)
 					</div>
 					<div className="amount cell">
-						<span className="val"><Wealth colorless /*loss*/ isEmpty={wealthObj === undefined} wealthObj={wealthObj === undefined ? undefined : wealthObj.spent} /></span>
+						<span className="val">
+							<Wealth
+								colorless
+								/*loss*/ isEmpty={wealthObj === undefined}
+								wealthObj={
+									wealthObj === undefined
+										? undefined
+										: wealthObj.spent
+								}
+							/>
+						</span>
 					</div>
 
-					<div className="header cell">
-						Gold Earned (+)
-					</div>
+					<div className="header cell">Gold Earned (+)</div>
 					<div className="amount cell">
-						<span className="val"><Wealth colorless /*gain*/ isEmpty={wealthObj === undefined} wealthObj={wealthObj === undefined ? undefined : wealthObj.earned} /></span>
+						<span className="val">
+							<Wealth
+								colorless
+								/*gain*/ isEmpty={wealthObj === undefined}
+								wealthObj={
+									wealthObj === undefined
+										? undefined
+										: wealthObj.earned
+								}
+							/>
+						</span>
 					</div>
 
-					<div className="header cell bottom">
-						Ending Gold
-					</div>
+					<div className="header cell bottom">Ending Gold</div>
 					<div className="amount cell bottom">
-						<span className="val"><Wealth isEmpty={wealthObj === undefined} wealthObj={wealthObj === undefined ? undefined : wealthObj.ending} /></span>
+						<span className="val">
+							<Wealth
+								isEmpty={wealthObj === undefined}
+								wealthObj={
+									wealthObj === undefined
+										? undefined
+										: wealthObj.ending
+								}
+							/>
+						</span>
 					</div>
 				</Container>
 			</Container>
         );
-    }
+    };
 
-    render_legacy = (legacyObj) => {
-    	const { preview } = this.props;
-    	let footnote = (!!this.state.data.dungeonMaster && this.state.data.dungeonMaster.isDm) ? dmRewardNote : playerRewardNote;
+    render_legacy = () => {
+        const { preview } = this.props;
+        let footnote = !!this.state.data.dungeonMaster &&
+            this.state.data.dungeonMaster.isDm ?
+            dmRewardNote :
+            playerRewardNote;
 
         return (
             <Container className="legacyWrapper wrapper">
 				<h1 className="sectionTitle">Legacy Events</h1>
 				<Container className="box">
 					<div className="legacyContent">
-						{_map(legacyObj.events, (event, key) => {
+						{_map(this.state.data.legacy.events, (event, key) => {
 							var statusObj = {};
-							if (this.state.statusData[this.state.data.code] !== undefined && this.state.statusData[this.state.data.code][event.title] !== undefined) {
-						    	statusObj = this.state.statusData[this.state.data.code][event.title];
-						    }
+							if (
+								this.state.statusData[this.state.data.code] !==
+									undefined &&
+								this.state.statusData[this.state.data.code][
+									event.title
+								] !== undefined
+							) {
+								statusObj = this.state.statusData[
+									this.state.data.code
+								][event.title];
+							}
 
-							return <Event eventObj={event} key={key} disable={preview} status={statusObj} updateHandler={this.updateEventHandler} />
+							return (
+								<Event
+									eventObj={event}
+									key={key}
+									disable={preview}
+									status={statusObj}
+									updateHandler={this.updateEventHandler}
+								/>
+							);
 						})}
 					</div>
-					<div className="footnote bookFont" dangerouslySetInnerHTML={{ __html: footnote }} />
+					<div
+						className="footnote bookFont"
+						dangerouslySetInnerHTML={{ __html: footnote }}
+					/>
 				</Container>
 			</Container>
         );
-    }
+    };
 
     render_logData = () => {
-    	return (
-			<>
-				{this.render_gameInfo(this.state.data.event,this.state.data.date,this.state.data.dungeonMaster,this.state.data.tier)}
-				{this.render_advNotes(this.state.data.notes)}
+        return ( <
+            > { this.render_gameInfo() } { this.render_advNotes(false) }
 
-				<div className="twoCol">
+            <div className="twoCol">
 					<div className="leftCol arCol">
-						{this.render_advancement(this.state.data.advancement)}
-						{this.render_rewards(this.state.data.rewards)}
+						{this.render_advancement()}
+						{this.render_rewards()}
 						{this.render_wealth(this.state.data.gameWealth)}
 					</div>
 
-					<div className="rightCol arCol">
-						{this.render_legacy(this.state.data.legacy)}
-					</div>
-				</div>
-			</>
-    	);
-    }
+					<div className="rightCol arCol">{this.render_legacy()}</div>
+				</div> <
+            />
+        );
+    };
 
     render_editData = () => {
-    	return (
-    		<div className="editWrapper">
-				DELETE<br/>
-				NOTES<br/>
-				WEALTH (x4)<br/>
-				EXPEND EVENTS (selected)<br/>
-				INFO EDIT<br/>
-				MOVE<br/>
-			</div>
-    	);
-    }
+        return (
+            <ul className="editWrapper">
+				<InputGroup as="li" className="editRow">
+					<InputGroup.Prepend>
+						<InputGroup.Text className="oswald">
+							<span className="condense">Player&nbsp;</span>
+							Notes
+						</InputGroup.Text>
+					</InputGroup.Prepend>
+					<Form.Control
+						as="textarea"
+						className="handwritten"
+						value={this.state.tempNotes}
+						onChange={(e) => {
+							this.setState({ tempNotes: e.target.value.replace( /\r?\n/gi, '' ) });
+						}}
+					/>
+				</InputGroup>
+
+				<li className="editRow flexRow">
+					<InputGroup>
+						<InputGroup.Prepend>
+							<InputGroup.Text className="oswald">
+								DM Name
+							</InputGroup.Text>
+						</InputGroup.Prepend>
+						<Form.Control
+							className="handwritten"
+							value={this.state.tempDmName}
+							onChange={(e) => {
+								this.setState({ tempDmName: e.target.value });
+							}}
+						/>
+					</InputGroup>
+
+					<InputGroup>
+						<InputGroup.Prepend>
+							<InputGroup.Text className="oswald">
+								DM DCI #
+							</InputGroup.Text>
+						</InputGroup.Prepend>
+						<Form.Control
+							className="handwritten"
+							value={this.state.tempDmNumber}
+							onChange={(e) => {
+								this.setState({ tempDmNumber: e.target.value });
+							}}
+						/>
+					</InputGroup>
+				</li>
+
+				<li className="editRow flexRow">
+					<InputGroup>
+						<InputGroup.Prepend>
+							<InputGroup.Text className="oswald">
+								Event
+							</InputGroup.Text>
+						</InputGroup.Prepend>
+						<Form.Control
+							className="handwritten"
+							value={this.state.tempEvent}
+							onChange={(e) => {
+								this.setState({ tempEvent: e.target.value });
+							}}
+						/>
+					</InputGroup>
+
+					<InputGroup>
+						<InputGroup.Prepend>
+							<InputGroup.Text className="oswald">
+								Date
+							</InputGroup.Text>
+						</InputGroup.Prepend>
+						<Form.Control
+							className="handwritten"
+							value={this.state.tempDate}
+							onChange={(e) => {
+								this.setState({ tempDate: e.target.value });
+							}}
+						/>
+					</InputGroup>
+				</li>
+
+				<li>TO BE DONE: WEALTH (x4), EXPEND EVENTS (selected), DELETE, MOVE</li>
+			</ul>
+        );
+    };
 
     render() {
         const { style, className, preview } = this.props;
 
         if (["game", "epic"].includes(this.state.data.record)) {
             return (
-                <Container fluid className={classnames(className,"gameBox",(!this.state.isCollapsed && !this.state.isEditing) && "expanded", preview && "preview", this.state.willBeEditing && "editing")} style={style}>
-					{this.render_titleAndCode(this.state.data.type,this.state.data.code,this.state.data.title)}
+                <Container
+					fluid
+					className={classnames(
+						className,
+						"gameBox",
+						!this.state.isCollapsed &&
+							!this.state.isEditing &&
+							"expanded",
+						preview && "preview",
+						this.state.willBeEditing && "editing"
+					)}
+					style={style}
+				>
+					{this.render_titleAndCode(
+						this.state.data.type,
+						this.state.data.code,
+						this.state.data.title
+					)}
 
-					<Collapse in={!this.state.isCollapsed && !this.state.isCollapsing} onExited={this.expandToEdit.bind(this)} timeout="1" unmountOnExit mountOnEnter>
+					<Collapse
+						in={!this.state.isCollapsed && !this.state.isCollapsing}
+						onExited={this.expandToEdit.bind(this)}
+						timeout="1"
+						unmountOnExit
+						mountOnEnter
+					>
 						<div className="content">
-							{!this.state.isEditing && this.render_logData() }
-							{ this.state.isEditing && this.render_editData() }
+							{!this.state.isEditing && this.render_logData()}
+							{this.state.isEditing && this.render_editData()}
 						</div>
 					</Collapse>
-
-		    	</Container>
-            )
+				</Container>
+            );
         } else if (this.state.data.record === "salvage") {
-        	// TO BE DONE
+            // TO BE DONE
             return (
-                <Container fluid className={classnames(className,"gameBox","salvageBox",!this.state.isCollapsed && "expanded", preview && "preview")} style={style}>
-					{this.render_titleAndCode(this.state.data.type,null,this.state.data.title)}
+                <Container
+					fluid
+					className={classnames(
+						className,
+						"gameBox",
+						"salvageBox",
+						!this.state.isCollapsed && "expanded",
+						preview && "preview"
+					)}
+					style={style}
+				>
+					{this.render_titleAndCode(
+						this.state.data.type,
+						null,
+						this.state.data.title
+					)}
 
 					<Collapse in={!this.state.isCollapsed}>
 						<div className="content">
-							{this.render_gameInfo(undefined,this.state.data.date,this.state.data.dungeonMaster,this.state.data.tier)}
+							{this.render_gameInfo()}
 
 							<div className="twoCol">
 								<div className="leftCol arCol">
-									SALVAGE<br />
+									SALVAGE
+									<br />
 									LEVEL UP?
 								</div>
 
 								<div className="rightCol arCol">
-									{this.render_wealth(this.state.data.gameWealth)}
+									{this.render_wealth(
+										this.state.data.gameWealth
+									)}
 								</div>
 							</div>
 
-							{this.render_advNotes(this.state.data.notes, true)}
+							{this.render_advNotes(true)}
 						</div>
 					</Collapse>
-
-		    	</Container>
-            )
+				</Container>
+            );
         } else if (this.state.data.record === "notes") {
-        	// TO BE DONE
-        	return (
-	        	<Container fluid className={classnames(className,"gameBox","notesWealthBox",!this.state.isCollapsed && "expanded", preview && "preview")} style={style}>
-					{this.render_titleAndCode(this.state.data.type,null,"Notes / Wealth")}
+            // TO BE DONE
+            return (
+                <Container
+					fluid
+					className={classnames(
+						className,
+						"gameBox",
+						"notesWealthBox",
+						!this.state.isCollapsed && "expanded",
+						preview && "preview"
+					)}
+					style={style}
+				>
+					{this.render_titleAndCode(
+						this.state.data.type,
+						null,
+						"Notes / Wealth"
+					)}
 
 					<Collapse in={!this.state.isCollapsed}>
 						<div className="content">
-							{this.render_gameInfo(undefined,this.state.data.date,undefined,this.state.data.tier)}
+							{this.render_gameInfo()}
 
 							<div className="twoCol">
-								<div className="leftCol arCol">
-									NOTES
-								</div>
+								<div className="leftCol arCol">NOTES</div>
 
 								<div className="rightCol arCol">
-									{this.render_wealth(this.state.data.gameWealth)}
+									{this.render_wealth(
+										this.state.data.gameWealth
+									)}
 								</div>
 							</div>
 
-							{this.render_advNotes(this.state.data.notes, true)}
+							{this.render_advNotes(true)}
 						</div>
 					</Collapse>
-
-		    	</Container>
-	    	)
+				</Container>
+            );
         }
 
-        return < > < />
+        return < > < />;
     }
 }
 

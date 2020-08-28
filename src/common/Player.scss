@@ -445,10 +445,6 @@ $halfGap: .25rem;
                     }
                 }
             }
-
-            .condense {
-                display: none;
-            }
         }
     }
 }
@@ -512,7 +508,6 @@ $halfGap: .25rem;
                     display: flex;
                 }
             }
-
 
             .classLevelWrapper {
                 .dropdownsWrapper {
@@ -604,10 +599,6 @@ $halfGap: .25rem;
                     .rightGroup {
                         margin-left: 0;
                     }
-                }
-
-                .condense {
-                    display: initial;
                 }
             }
         }
