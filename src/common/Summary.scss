@@ -2,31 +2,31 @@
 @import "utils/common.scss";
 
 // MIXIN
-@mixin multiLineEllipsis($lineHeight: 1.2rem, $lineCount: 1, $bgColor: white) {
-    position: relative;
+// @mixin multiLineEllipsis($lineHeight: 1.2rem, $lineCount: 1, $bgColor: white) {
+//     position: relative;
 
-    max-height: $lineHeight * $lineCount;
-    padding-right: 1rem;
-    margin-right: -1rem;
-    overflow: hidden;
+//     max-height: $lineHeight * $lineCount;
+//     padding-right: 1rem;
+//     margin-right: -1rem;
+//     overflow: hidden;
 
-    line-height: $lineHeight;
+//     line-height: $lineHeight;
 
-    &:before {
-        position: absolute;
-        bottom: 0;
-        left: 0;
+//     &:before {
+//         position: absolute;
+//         bottom: 0;
+//         left: 0;
 
-        width: 100%;
-        height: 100%;
+//         width: 100%;
+//         height: 100%;
 
-        content: "";
+//         content: "";
 
-        -webkit-box-shadow: inset 0 -90px 20px -50px $color-background-card-alpha;
-           -moz-box-shadow: inset 0 -90px 20px -50px $color-background-card-alpha;
-                box-shadow: inset 0 -90px 20px -50px $color-background-card-alpha;
-    }
-}
+//         -webkit-box-shadow: inset 0 -90px 20px -50px $color-background-card-alpha;
+//            -moz-box-shadow: inset 0 -90px 20px -50px $color-background-card-alpha;
+//                 box-shadow: inset 0 -90px 20px -50px $color-background-card-alpha;
+//     }
+// }
 
 
 // STYLES
@@ -39,6 +39,7 @@
     box-sizing: border-box;
 
     border-width: 2px !important;
+    border-color: lightgray !important;
     background: $color-background-white !important;
 
     @include transition();
@@ -47,7 +48,7 @@
     &:focus {
         cursor: pointer;
 
-        border-color: black;
+        border-color: black !important;
     }
 
     &.disabled {

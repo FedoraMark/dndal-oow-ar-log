@@ -48,8 +48,6 @@ class GameLog extends React.Component {
 		data: this.props.data,
 		statusData: this.props.statuses,
 		isCollapsed: this.props.collapse,
-		isCollapsing: false,
-		willBeEditing: false,
 		isEditing: this.props.isEditing,
 		rewardGroup0: [],
 		// rewardGroup1: [], // currently unneeded
@@ -125,10 +123,10 @@ class GameLog extends React.Component {
 		});
 	};
 
-	setIsEditing = (willEdit, save) => {
-		this.setState({ willBeEditing: willEdit, isCollapsing: true });
+	setIsEditing = (editing, save) => {
+		this.setState({ isEditing: editing });
 
-		if (willEdit) {
+		if (editing) {
 			// open
 			this.setTempData(this.state.statusData[this.props.data.code]);
 		} else if (save) {
@@ -138,13 +136,6 @@ class GameLog extends React.Component {
 			// close - cancel
 			this.setTempData(this.state.statusData[this.props.data.code]);
 		}
-	};
-
-	expandToEdit = () => {
-		this.setState({
-			isEditing: this.state.willBeEditing,
-			isCollapsing: false,
-		});
 	};
 
 	saveTempData = () => {
@@ -211,7 +202,7 @@ class GameLog extends React.Component {
 				{!this.props.preview && (
 					<>
 						<Fade
-							in={this.state.willBeEditing}
+							in={this.state.isEditing}
 							mountOnEnter
 							unmountOnExit
 						>
@@ -231,7 +222,7 @@ class GameLog extends React.Component {
 							<EditButton
 								save
 								onClick={this.setIsEditing.bind(this,!this.state.isEditing,true)}
-								active={this.state.willBeEditing}
+								active={this.state.isEditing}
 							/>
 						</Fade>
 					</>
@@ -716,11 +707,9 @@ class GameLog extends React.Component {
 					className={classnames(
 						className,
 						"gameBox",
-						!this.state.isCollapsed &&
-							!this.state.isEditing &&
-							"expanded",
 						preview && "preview",
-						this.state.willBeEditing && "editing"
+						!this.state.isCollapsed && "expanded",
+						this.state.isEditing && "editing"
 					)}
 					style={style}
 				>
@@ -731,15 +720,26 @@ class GameLog extends React.Component {
 					)}
 
 					<Collapse
-						in={!this.state.isCollapsed && !this.state.isCollapsing}
-						onExited={this.expandToEdit.bind(this)}
+						in={!this.state.isCollapsed}
+						className="editCollapse"
 						timeout="1"
 						unmountOnExit
 						mountOnEnter
 					>
 						<div className="content">
-							{!this.state.isEditing && this.render_logData()}
-							{this.state.isEditing && this.render_editData()}
+							{!preview &&
+								<Collapse
+									in={this.state.isEditing}
+									unmountOnExit
+									mountOnEnter
+								>
+									<div className="content">
+										{this.render_editData()}
+									</div>
+								</Collapse>
+							}
+
+							{this.render_logData()}
 						</div>
 					</Collapse>
 				</Container>

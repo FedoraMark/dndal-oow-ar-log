@@ -150,6 +150,10 @@ $halfGap: .25rem;
 
         @include container();
 
+        .input-group * {
+            border-color: $color-edit-border;
+        }
+
         .editingFlex {
             width: 100%;
             padding: 1rem;

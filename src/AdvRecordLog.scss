@@ -126,9 +126,8 @@
             box-sizing: border-box;
 
             border-width: 2px !important;
+            border-color: lightgray;
             background: $color-background-white !important;
-
-            @include transition();
 
             &:hover,
             &:focus {
@@ -142,6 +141,7 @@
 
                 opacity: .4;
             }
+
 
             .card-body {
                 @include flex(flex-start, flex-start, column);

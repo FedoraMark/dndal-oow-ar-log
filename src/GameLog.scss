@@ -334,8 +334,20 @@ $halfGap: .25rem;
         .editWrapper {
             width: 100%;
             padding: 1rem;
+            margin: 0;
 
             list-style: none;
+
+            border-bottom: 1px solid $color-active-background;
+            background: #eee;
+            -webkit-box-shadow: inset 0 0 15px -5px rgba(0, 0, 0, .5);
+               -moz-box-shadow: inset 0 0 15px -5px rgba(0, 0, 0, .5);
+                    box-shadow: inset 0 0 15px -5px rgba(0, 0, 0, .5);
+
+            .input-group * {
+                border-color: $color-edit-border;
+            }
+
 
             .editRow {
                 margin-bottom: $gap;
@@ -343,6 +355,8 @@ $halfGap: .25rem;
                 &.flexRow {
                     @include flex(stretch, flex-start, column);
                 }
+
+
 
                 .input-group:not(:last-of-type) {
                     margin-bottom: $gap;
@@ -378,6 +392,8 @@ $halfGap: .25rem;
     }
 
     &.editing {
+        border-color: $color-active-background;
+
         .titleWrapper {
             color: $color-active-text;
             border-color: $color-active-background;
