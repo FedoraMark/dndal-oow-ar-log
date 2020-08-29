@@ -1,0 +1,66 @@
+@import "utils/common.scss";
+
+.coinInputsWrapper {
+    flex-grow: 1;
+
+    @include flex(stretch, space-between, column);
+
+    .money {
+        padding: 0 .25rem;
+        margin: 0 !important;
+
+        font-size: 1rem !important;
+
+        &:not(:last-of-type) {
+            margin-bottom: .25rem !important;
+        }
+
+        .denomBox {
+            width: auto;
+
+            span {
+                width: 100%;
+            }
+        }
+    }
+}
+
+// Small devices (landscape phones, 576px and up)
+@media (min-width: 576px) {
+    .coinInputsWrapper {
+        .money {
+            .denomBox {
+                width: 5rem;
+            }
+        }
+    }
+}
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) {
+}
+
+// Large devices (desktops, 992px and up)
+@media (min-width: 992px) {
+    .coinInputsWrapper {
+        flex-direction: row;
+
+        .money {
+            padding: 0;
+            margin: 0 .25rem !important;
+
+            &:not(:last-of-type) {
+                margin-bottom: 0 !important;
+                margin-left: .25rem !important;
+            }
+
+            .denomBox {
+                width: auto;
+            }
+        }
+    }
+}
+
+// Extra large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) {
+}

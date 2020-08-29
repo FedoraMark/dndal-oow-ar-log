@@ -6,9 +6,12 @@ import Fade from "react-bootstrap/Fade";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
 import _map from "lodash/map";
 import _pull from "lodash/pull";
 import { FaDiceD20 } from "react-icons/fa";
+import { IoIosCalculator } from "react-icons/io";
 
 import {
 	dmRewardNote,
@@ -16,10 +19,12 @@ import {
 	getFirstObject,
 	getFirstKey,
 } from "utils/Util";
+
 import Event from "selectors/Event";
 import Select from "selectors/Select";
 import Option from "selectors/Option";
 import Wealth from "common/Wealth";
+import WealthEdit from "common/WealthEdit";
 import EditButton from "common/EditButton";
 
 import "animate.css";
@@ -57,7 +62,7 @@ class GameLog extends React.Component {
 		tempNotes: "",
 		tempDmName: "",
 		tempDmNumber: "",
-		tempIsDm: "",
+		tempIsDm: this.props.data.dungeonMaster !== undefined ? this.props.data.dungeonMaster.isDm : "",
 	};
 
 	componentDidMount() {
@@ -186,7 +191,7 @@ class GameLog extends React.Component {
 				tempNotes: this.getPropOrEmpty(statusObj,"notes","player"),
 				tempDmName: this.getPropOrEmpty(statusObj,"dungeonMaster","name"),
 				tempDmNumber: this.getPropOrEmpty(statusObj,"dungeonMaster","dci"),
-				tempIsDm: this.getPropOrEmpty(statusObj,"dungeonMaster","isDm"),
+				tempIsDm: this.state.data.dungeonMaster !== undefined ? this.state.data.dungeonMaster.isDm : this.getPropOrEmpty(statusObj,"dungeonMaster","isDm"),
 			});
 	};
 
@@ -264,11 +269,11 @@ class GameLog extends React.Component {
 				: "";
 		var dmObj =
 			this.state.statusData[code] !== undefined && this.state.statusData[code].dungeonMaster !== undefined
-				? this.state.statusData[code].dungeonMaster
-				: {isDm: false};
+				? {...this.state.statusData[code].dungeonMaster}
+				: {...this.state.data.dungeonMaster};
 
 
-		var dmStr = dmObj.isDm ? "(me)" : "";
+		var dmStr = "";
 
 		if (!dmObj.isDm) {
 			if ("name" in dmObj && dmObj.name.length > 0) {
@@ -284,6 +289,13 @@ class GameLog extends React.Component {
 		return (
 			<Container>
 				<ul className="infoWrapper">
+					{this.state.data.tier !== undefined && (
+						<li className="tier">
+							<h1>Tier:</h1>
+							<p>{this.state.data.tier}</p>
+							{this.state.data.record === "epic" && <p>E</p>}
+						</li>
+					)}
 					{date !== "" && (
 						<li className="date">
 							<h1>Date:</h1>
@@ -296,16 +308,10 @@ class GameLog extends React.Component {
 							<p>{event}</p>
 						</li>
 					)}
-					{this.state.data.tier !== undefined && (
-						<li className="tier">
-							<h1>Tier:</h1>
-							<p>{this.state.data.tier}</p>
-						</li>
-					)}
-					{!this.props.preview && dmStr !== "" && (
+					{!this.props.preview && (dmStr !== "" || dmObj.isDm) && (
 						<li className="dm">
 							<h1>Dungeon Master:</h1>
-							<p>{dmStr}</p>
+							<p>{dmObj.isDm ? <span><FaDiceD20 /></span> : dmStr}</p>
 						</li>
 					)}
 				</ul>
@@ -351,12 +357,9 @@ class GameLog extends React.Component {
 
 		let isSelected =
 			this.state.statusData[this.state.data.code] !== undefined &&
-			this.state.statusData[this.state.data.code].advancement !==
-				undefined
+			this.state.statusData[this.state.data.code].advancement !== undefined
 				? this.state.statusData[this.state.data.code].advancement.active
 				: false;
-
-				console.log(isSelected);
 
 		return (
 			<Container className="advWrapper wrapper">
@@ -584,7 +587,7 @@ class GameLog extends React.Component {
 
 	render_logData = () => {
 		return (
-			<>
+			<div className="logDataWrapper">
 				{this.render_gameInfo()}
 				{this.render_advNotes(false)}
 
@@ -597,7 +600,7 @@ class GameLog extends React.Component {
 
 					<div className="rightCol arCol">{this.render_legacy()}</div>
 				</div>{" "}
-			</>
+			</div>
 		);
 	};
 
@@ -619,7 +622,7 @@ class GameLog extends React.Component {
 					/>
 				</InputGroup>
 
-				<li className="editRow flexRow">
+				<li className={classnames("editRow flexRow", this.state.tempIsDm && "disable")}>
 					<InputGroup>
 						<InputGroup.Prepend>
 							<InputGroup.Text className="oswald">
@@ -628,7 +631,8 @@ class GameLog extends React.Component {
 						</InputGroup.Prepend>
 						<Form.Control
 							className="handwritten"
-							value={this.state.tempDmName}
+							disabled={this.state.tempIsDm}
+							value={this.state.tempIsDm ? "You are the DM" : this.state.tempDmName}
 							onChange={(e) => {
 								this.setState({ tempDmName: e.target.value });
 							}}
@@ -643,7 +647,8 @@ class GameLog extends React.Component {
 						</InputGroup.Prepend>
 						<Form.Control
 							className="handwritten"
-							value={this.state.tempDmNumber}
+							disabled={this.state.tempIsDm}
+							value={this.state.tempIsDm ? "You are the DM" : this.state.tempDmNumber}
 							onChange={(e) => {
 								this.setState({ tempDmNumber: e.target.value });
 							}}
@@ -683,8 +688,40 @@ class GameLog extends React.Component {
 					</InputGroup>
 				</li>
 
+				<li className="editRow wealthRow">
+					{_map({"Starting": {}, "Spent (-)": {}, "Earned (+)": {}, "Ending": {}}, (wealth,label) => {
+						return (
+							<InputGroup className="editRow flexRow">
+								<InputGroup.Prepend className="leftGroup">
+									<InputGroup.Text className="oswald">
+										{label}
+									</InputGroup.Text>
+								</InputGroup.Prepend>
+
+								<WealthEdit wealth={wealth} />
+
+								<InputGroup
+									className="calcButtonGroup rightGroup"
+									onClick={(e) => {console.log("calc " + label);}}
+								>
+									<OverlayTrigger
+										placement="top"
+										overlay={<Tooltip>Condense Coinage</Tooltip>}
+									>
+										<InputGroup.Append>
+											<InputGroup.Text id="wealth-calc">
+												<span className="calcMoneyIcon"><IoIosCalculator /></span>
+											</InputGroup.Text>
+										</InputGroup.Append>
+									</OverlayTrigger>
+								</InputGroup>
+							</InputGroup>
+						)
+					})}
+				</li>
+
 				<li>
-					TO BE DONE: isDM, Wealth (x4), Expend selected events,
+					TO BE DONE: isDM, Wealth saving, Expend selected events, auto-calc ending money
 					DELETE, MOVE
 				</li>
 			</ul>
@@ -707,16 +744,13 @@ class GameLog extends React.Component {
 					)}
 					style={style}
 				>
-					{this.render_titleAndCode(
-						this.state.data.type,
-						this.state.data.code,
-						this.state.data.title
+					{this.render_titleAndCode(this.state.data.type,this.state.data.code,this.state.data.title
 					)}
 
 					<Collapse
 						in={!this.state.isCollapsed}
 						className="editCollapse"
-						timeout="1"
+						// timeout="1"
 						unmountOnExit
 						mountOnEnter
 					>
@@ -736,6 +770,7 @@ class GameLog extends React.Component {
 							{this.render_logData()}
 						</div>
 					</Collapse>
+				
 				</Container>
 			);
 		} else if (this.state.data.record === "salvage") {

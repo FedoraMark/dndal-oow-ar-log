@@ -398,7 +398,7 @@ class Player extends Component {
 
 							{/* Should really do this as a grid */}
 							<div className="currencyInputsWrapper middleGroup">
-								{_map(["cp","sp","ep","gp","pp"].reverse(), (denom, key) => {
+								{_map(["pp","gp","ep","sp","cp"], (denom, key) => {
 										let conversion = [
 											"platinum (1000cp)",
 											"gold (100cp)",
