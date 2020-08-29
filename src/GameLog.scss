@@ -372,10 +372,6 @@ $halfGap: .25rem;
 
 
         .editContent {
-            position: sticky;
-            top: 77px; // TITLE HEIGHT + BORDER-TPW WIDTH
-            z-index: 10;
-
             .editWrapper {
                 width: 100%;
                 padding: 1rem;
@@ -749,60 +745,66 @@ $halfGap: .25rem;
             }
         }
 
-        .editContent .editWrapper {
-            .editRow {
-                .input-group-prepend .input-group-text {
-                    width: 7rem;
-                }
+        .editContent {
+            position: sticky;
+            top: 77px; // TITLE HEIGHT + BORDER-TPW WIDTH
+            z-index: 10;
 
-                &.flexRow {
-                    flex-direction: row;
-
-                    .input-group {
-                        margin: 0 $halfGap;
-
-                        &:first-of-type {
-                            margin-left: 0;
-                        }
-                        &:last-of-type {
-                            margin-right: 0;
-                        }
-                    }
-                }
-            }
-
-            .wealthRow {
-                .flexRow .calcButtonGroup {
-                    margin-left: $gap;
-                }
-
+            .editWrapper {
                 .editRow {
-                    position: relative;
-
-                    &:before {
-                        content: "";
-                        position: absolute;
-                        bottom: 50%;
-                        bottom: calc(50% - 1px);
-                        left: 1%;
-
-                        width: 98%;
-                        height: 2px;
-
-                        border-bottom: 2px solid $color-edit-border;
+                    .input-group-prepend .input-group-text {
+                        width: 7rem;
                     }
 
-                    &:not(:last-of-type) {
-                        margin-bottom: .5rem;
+                    &.flexRow {
+                        flex-direction: row;
+
+                        .input-group {
+                            margin: 0 $halfGap;
+
+                            &:first-of-type {
+                                margin-left: 0;
+                            }
+                            &:last-of-type {
+                                margin-right: 0;
+                            }
+                        }
+                    }
+                }
+
+                .wealthRow {
+                    .flexRow .calcButtonGroup {
+                        margin-left: $gap;
                     }
 
-                    .input-group-append {
-                        width: 35px !important;
-                    }
+                    .editRow {
+                        position: relative;
 
-                    .input-group-text {
-                        width: 35px !important;
-                        padding: .25rem;
+                        &:before {
+                            content: "";
+                            position: absolute;
+                            bottom: 50%;
+                            bottom: calc(50% - 1px);
+                            left: 1%;
+
+                            width: 98%;
+                            height: 2px;
+
+                            border-bottom: 2px solid $color-edit-border;
+                        }
+
+                        &:not(:last-of-type) {
+                            margin-bottom: .5rem;
+                        }
+
+                        .input-group-append {
+                            width: 35px !important;
+                        }
+
+                        .input-group-text {
+                            width: 35px !important;
+                            padding: .25rem;
+                        }
                     }
                 }
             }
