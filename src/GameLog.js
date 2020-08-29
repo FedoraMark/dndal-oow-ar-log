@@ -8,12 +8,16 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
+import Button from 'react-bootstrap/Button'
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import _map from "lodash/map";
 import _pull from "lodash/pull";
 import { FaDiceD20 } from "react-icons/fa";
 import { IoIosCalculator } from "react-icons/io";
+import { AiTwotoneDelete, AiFillCloseCircle } from "react-icons/ai";
+import { ImMenu2 } from "react-icons/im";
+import { FaSave } from "react-icons/fa";
 
 import {
 	dmRewardNote,
@@ -33,6 +37,14 @@ import "animate.css";
 import "GameLog.scss";
 
 class GameLog extends React.Component {
+	constructor(props) {
+		super(props);
+		this.deleteButton = React.createRef();
+		this.moveButton = React.createRef();
+		this.cancelButton = React.createRef();
+		this.saveButton = React.createRef();
+	}
+
 	static propTypes = {
 		data: PropTypes.object.isRequired,
 		statuses: PropTypes.object,
@@ -611,6 +623,21 @@ class GameLog extends React.Component {
 	render_editData = () => {
 		return (
 			<ul className="editWrapper">
+
+				<li className="editRow optionsRow">
+					<InputGroup className="eventLabel">
+						<InputGroup.Prepend className="oswald">
+							<InputGroup.Text><span className="condense">Log&nbsp;</span>Options</InputGroup.Text>
+						</InputGroup.Prepend>
+					</InputGroup>
+
+					<div className="flexRow">
+
+					</div>
+				</li>
+
+				<hr />
+
 				<InputGroup as="li" className="editRow">
 					<InputGroup.Prepend>
 						<InputGroup.Text className="oswald">
@@ -789,7 +816,68 @@ class GameLog extends React.Component {
 					})}
 				</li>
 
-			
+				<hr />
+
+				<li className="editRow actionsRow">
+					<InputGroup className="actionLabel">
+						<InputGroup.Prepend className="oswald">
+							<InputGroup.Text><span className="condense">Log&nbsp;</span>Actions</InputGroup.Text>
+						</InputGroup.Prepend>
+					</InputGroup>
+
+					<div className="flexRow">
+						<Button 
+							href="#"
+							variant="danger"
+							ref={this.deleteButton}
+							disabled={!this.state.isEditing}
+							onClick={(e) => {console.log("DELETE BUTTON");}}
+							onMouseEnter={(e) => {this.deleteButton.current.focus()}}
+							onMouseUp={(e) => {this.deleteButton.current.blur()}}
+						>
+							Delete<span className="buttonIcon"><AiTwotoneDelete /></span>
+						</Button>
+
+						<Button
+							href="#"
+							variant="info"
+							ref={this.moveButton}
+							disabled={!this.state.isEditing}
+							onClick={(e) => {console.log("MOVE BUTTON");}}
+							onMouseEnter={(e) => {this.moveButton.current.focus()}}
+							onMouseUp={(e) => {this.moveButton.current.blur()}}
+						>
+							Move<span className="buttonIcon"><ImMenu2 /></span>
+						</Button>
+						
+						<div className="flexSpace" />
+
+						<Button
+							href="#"
+							variant="secondary"
+							ref={this.cancelButton}
+							disabled={!this.state.isEditing}
+							onClick={this.setIsEditing.bind(this, false, false)}
+							onMouseEnter={(e) => {this.cancelButton.current.focus()}}
+							onMouseUp={(e) => {this.cancelButton.current.blur()}}
+						>
+							Cancel<span className="buttonIcon"><AiFillCloseCircle /></span>
+						</Button>
+
+						<Button
+							href="#"
+							variant="primary"
+							ref={this.saveButton}
+							disabled={!this.state.isEditing}
+							onClick={this.setIsEditing.bind(this, false, true)}
+							onMouseEnter={(e) => {this.saveButton.current.focus()}}
+							onMouseUp={(e) => {this.saveButton.current.blur()}}
+						>
+							Save<span className="buttonIcon"><FaSave /></span>
+						</Button>
+					</div>
+				</li>
+
 				{/* TO BE DONE: Save Legacy and Wealth changes, hook up calcs, auto-calc ending wealth, 0ptions: isDM, useEP?, Delete, Move */}
 				
 			</ul>
@@ -812,8 +900,7 @@ class GameLog extends React.Component {
 					)}
 					style={style}
 				>
-					{this.render_titleAndCode(this.state.data.type,this.state.data.code,this.state.data.title
-					)}
+					{this.render_titleAndCode(this.state.data.type,this.state.data.code,this.state.data.title)}
 
 					<Collapse
 						in={!this.state.isCollapsed}

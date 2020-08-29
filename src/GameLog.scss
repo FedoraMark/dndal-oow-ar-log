@@ -378,7 +378,8 @@ $halfGap: .25rem;
                 margin: 0;
 
                 list-style: none;
-                // border-radius: 0 !important;
+
+                border-radius: 0 !important;
 
                 @include container();
 
@@ -545,6 +546,46 @@ $halfGap: .25rem;
 
                         .Expended {
                             text-decoration: line-through rgba(255,255,255,.6);
+                        }
+                    }
+                }
+
+                .actionsRow {
+                    flex-wrap: nowrap;
+
+                    @include flex(stretch);
+
+                    .actionLabel {
+                        margin: 0 .5rem 0 0 !important;
+
+                        flex-basis: 0;
+                    }
+
+                    .flexRow {
+                        flex-grow: 1;
+
+                        @include flex(stretch, space-between);
+
+                        a.btn {
+                            flex-grow: 1;
+
+                            font-family: $fontFamily-oswald;
+
+                            &:not(:last-of-type) {
+                                margin-right: .5rem;
+                            }
+
+                            &:active {
+                                transition: none;
+                            }
+
+                            .buttonIcon {
+                                margin-left: .25rem;
+
+                                svg {
+                                    margin-top: -.2rem;
+                                }
+                            }
                         }
                     }
                 }

@@ -101,6 +101,10 @@ body {
     display: none;
 }
 
+.flexSpace {
+    flex-grow: 1;
+}
+
 .bookFont {
     font-family: $fontFamily-book-normal;
     line-height: 1.25;
@@ -167,6 +171,7 @@ body {
 }
 
 .dotTooltip {
+    pointer-events: none;
     .arrow:before {
         border-bottom-color: $color-active-text !important;
     }
