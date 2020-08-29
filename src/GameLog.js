@@ -8,6 +8,8 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
+import Dropdown from "react-bootstrap/Dropdown";
+import DropdownButton from "react-bootstrap/DropdownButton";
 import _map from "lodash/map";
 import _pull from "lodash/pull";
 import { FaDiceD20 } from "react-icons/fa";
@@ -54,6 +56,8 @@ class GameLog extends React.Component {
 		statusData: this.props.statuses,
 		isCollapsed: this.props.collapse,
 		isEditing: this.props.isEditing,
+		// showWealthEdit: false,
+
 		rewardGroup0: [],
 		// rewardGroup1: [], // currently unneeded
 
@@ -688,17 +692,82 @@ class GameLog extends React.Component {
 					</InputGroup>
 				</li>
 
+				<hr />
+
+				<li className="editRow eventsRow">
+					<InputGroup className="eventLabel">
+						<InputGroup.Prepend className="oswald">
+							<InputGroup.Text><span className="condense">Legacy&nbsp;</span>Events</InputGroup.Text>
+						</InputGroup.Prepend>
+					</InputGroup>
+
+					<div className="flexRow">
+
+						{_map(this.state.data.legacy.events, (event,i) => {
+							var selection = "Unselected";
+							var variant = "outline-secondary"
+							if (!!this.state.statusData[this.state.data.code] && !!this.state.statusData[this.state.data.code][event.title]) {
+								if (!!this.state.statusData[this.state.data.code][event.title].active) {
+									selection = "Selected";
+									variant = "primary";
+								}
+
+								if (!!this.state.statusData[this.state.data.code][event.title].expended) {
+									selection = "Expended";
+									variant = "secondary";
+								}
+							}
+
+							return (
+								<InputGroup key={i}>
+									<InputGroup.Prepend className="eventTitle">
+										<InputGroup.Text className="bookFont bold">
+											{event.title}
+										</InputGroup.Text>
+									</InputGroup.Prepend>
+
+									<DropdownButton as={InputGroup.Append} alignRight variant={variant} title={selection} className={selection}>
+										<Dropdown.Item eventKey="0" active={selection === "Unselected"}>Unselected</Dropdown.Item>
+										<Dropdown.Item eventKey="1" active={selection === "Selected"}>Selected</Dropdown.Item>
+										<Dropdown.Item eventKey="-1" active={selection === "Expended"}>Expended</Dropdown.Item>
+									</DropdownButton>
+								</InputGroup>
+							);
+							
+						})}
+
+					</div>
+				</li>
+
+				<hr />
+
 				<li className="editRow wealthRow">
-					{_map({"Starting": {}, "Spent (-)": {}, "Earned (+)": {}, "Ending": {}}, (wealth,label) => {
+					{_map({"Starting": {}, "Spent (–)": {}, "Earned (+)": {}, "Ending": {}}, (wealth,label) => {
+						var condenseLabel;
+					    switch (label) {
+					        case "Starting":
+					            condenseLabel = <>S<span className="partCondense">tarting</span></>; break;
+					        case "Spent (–)":
+					            condenseLabel = <><span className="partCondense">Spent&nbsp;(</span>-<span className="partCondense">)</span></>; break;
+					        case "Earned (+)":
+					            condenseLabel = <><span className="partCondense">Earned&nbsp;(</span>+<span className="partCondense">)</span></>; break;
+					        case "Ending":
+					            condenseLabel = <>E<span className="partCondense">nding</span></>; break;
+					        default: condenseLabel = "";
+					    }
+						
+
 						return (
-							<InputGroup className="editRow flexRow">
+							<InputGroup key={label} className="editRow flexRow">
 								<InputGroup.Prepend className="leftGroup">
 									<InputGroup.Text className="oswald">
-										{label}
+										{condenseLabel}
 									</InputGroup.Text>
 								</InputGroup.Prepend>
 
-								<WealthEdit wealth={wealth} />
+								<div className="wealthEditArea">
+									<WealthEdit wealth={wealth} useEp={this.state.useEp} />
+								</div>
 
 								<InputGroup
 									className="calcButtonGroup rightGroup"
@@ -709,7 +778,7 @@ class GameLog extends React.Component {
 										overlay={<Tooltip>Condense Coinage</Tooltip>}
 									>
 										<InputGroup.Append>
-											<InputGroup.Text id="wealth-calc">
+											<InputGroup.Text>
 												<span className="calcMoneyIcon"><IoIosCalculator /></span>
 											</InputGroup.Text>
 										</InputGroup.Append>
@@ -720,10 +789,9 @@ class GameLog extends React.Component {
 					})}
 				</li>
 
-				<li>
-					TO BE DONE: isDM, Wealth saving, Expend selected events, auto-calc ending money
-					DELETE, MOVE
-				</li>
+			
+				{/* TO BE DONE: Save Legacy and Wealth changes, hook up calcs, auto-calc ending wealth, 0ptions: isDM, useEP?, Delete, Move */}
+				
 			</ul>
 		);
 	};

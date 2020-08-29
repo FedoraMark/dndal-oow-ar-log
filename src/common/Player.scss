@@ -191,6 +191,8 @@ $halfGap: .25rem;
             }
 
             .wealthWrapper {
+                position: relative;
+
                 .wealthGroup {
                     width: auto;
                     margin-right: $gap;
@@ -566,6 +568,19 @@ $halfGap: .25rem;
 
                 .wealthWrapper {
                     flex-direction: row;
+
+                    &:before {
+                        content: "";
+                        position: absolute;
+                        bottom: 50%;
+                        bottom: calc(50% - 1px);
+                        left: 1%;
+
+                        width: 98%;
+                        height: 2px;
+
+                        border-bottom: 2px solid $color-edit-border;
+                    }
 
                     .currencyInputsWrapper {
                         padding-right: 0;

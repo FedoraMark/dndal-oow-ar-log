@@ -419,20 +419,28 @@ $halfGap: .25rem;
                 }
 
                 .wealthRow {
-                    margin-top: 2rem;
-
                     .flexRow {
                         flex-wrap: nowrap;
 
                         @include flex(stretch,space-between);
 
+                        &:not(:last-of-type) {
+                            margin-bottom: 1rem;
+                        }
+
+                        .wealthEditArea {
+                            width: 100%;
+                        }
+
                         .input-group-prepend {
+                            z-index: 5;
+
                             margin-right: .25rem;
                         }
                     }
 
                     .calcButtonGroup {
-                        margin-left: $gap;
+                        margin-left: $halfGap;
 
                         flex-basis: 0;
 
@@ -440,7 +448,7 @@ $halfGap: .25rem;
 
                         &:hover,
                         &:focus {
-                            #wealth-calc {
+                            .input-group-text {
                                 color: white;
                                 background-color: $color-active-background;
                             }
@@ -449,8 +457,16 @@ $halfGap: .25rem;
                         .input-group-append {
                             width: 50px;
 
-                            #wealth-calc {
-                                @include transition();
+                            .input-group-text {
+                                width: 100%;
+
+                                -webkit-transition: color, background .25s ease;
+                                   -moz-transition: color, background .25s ease;
+                                    -ms-transition: color, background .25s ease;
+                                     -o-transition: color, background .25s ease;
+                                        transition: color, background .25s ease;
+
+                                @include flex();
 
                                 .calcMoneyIcon {
                                     margin-top: -.3rem;
@@ -458,6 +474,78 @@ $halfGap: .25rem;
                                     font-size: 1.21rem;
                                 }
                             }
+                        }
+                    }
+                }
+
+                .eventsRow {
+                    @include flex(stretch, flex-start);
+
+                    .eventLabel {
+                        width: auto;
+                        margin-bottom: 0 !important;
+                    }
+
+                    .flexRow {
+                        width: 100%;
+
+                        flex-wrap: wrap;
+                        flex-grow: 1;
+
+                        @include flex(stretch, flex-start, column);
+
+                        .input-group {
+                            width: auto;
+                            margin-bottom: .25rem;
+                            margin-left: .5rem;
+
+                            flex-grow: 1;
+
+                            &:last-of-type {
+                                margin-bottom: 0;
+                            }
+
+                            .eventTitle {
+                                flex-grow: 1;
+
+                                span {
+                                    color: $color-active-background;
+                                    background: $color-active-text;
+                                }
+                            }
+
+                            .input-group-text {
+                                width: 100%;
+
+                                flex-grow: 1;
+
+                                font-size: .75rem;
+                            }
+
+                            button {
+                                width: 100px;
+
+                                font-size: .75rem;
+                            }
+
+                            .dropdown-menu {
+                                width: auto;
+
+                                font-size: .75rem;
+                            }
+                        }
+
+                        .Unselected button {
+                            &:hover,
+                            &:focus,
+                            &:active {
+                                color: $color-active-background;
+                                background: lightgray;
+                            }
+                        }
+
+                        .Expended {
+                            text-decoration: line-through rgba(255,255,255,.6);
                         }
                     }
                 }
@@ -542,22 +630,48 @@ $halfGap: .25rem;
             }
         }
 
-        .content > *:not(.editContent) {
-            .bookFont {
-                font-size: .9rem;
+        .content {
+            & > *:not(.editContent) {
+                .bookFont {
+                    font-size: .9rem;
+                }
+
+                .instructions {
+                    font-size: .9rem;
+                }
+
+                .footnote {
+                    font-size: .95rem;
+                }
+
+                .twoCol .wealthWrapper .header {
+                    span {
+                        bottom: .3rem;
+                    }
+                }
             }
 
-            .instructions {
-                font-size: .9rem;
-            }
+            .editContent .editWrapper .eventsRow {
+                .flexRow {
+                    width: auto;
 
-            .footnote {
-                font-size: .95rem;
-            }
+                    .input-group {
+                        margin-bottom: .25rem;
 
-            .twoCol .wealthWrapper .header {
-                span {
-                    bottom: .3rem;
+                        .input-group-text {
+                            font-size: 1rem;
+                        }
+
+                        button {
+                            width: 130px;
+
+                            font-size: 1rem;
+                        }
+
+                        .dropdown-menu {
+                            font-size: 1rem;
+                        }
+                    }
                 }
             }
         }
@@ -635,22 +749,60 @@ $halfGap: .25rem;
             }
         }
 
-        .editContent .editWrapper .editRow {
-            .input-group-prepend .input-group-text {
-                width: 7rem;
+        .editContent .editWrapper {
+            .editRow {
+                .input-group-prepend .input-group-text {
+                    width: 7rem;
+                }
+
+                &.flexRow {
+                    flex-direction: row;
+
+                    .input-group {
+                        margin: 0 $halfGap;
+
+                        &:first-of-type {
+                            margin-left: 0;
+                        }
+                        &:last-of-type {
+                            margin-right: 0;
+                        }
+                    }
+                }
             }
 
-            &.flexRow {
-                flex-direction: row;
+            .wealthRow {
+                .flexRow .calcButtonGroup {
+                    margin-left: $gap;
+                }
 
-                .input-group {
-                    margin: 0 $halfGap;
+                .editRow {
+                    position: relative;
 
-                    &:first-of-type {
-                        margin-left: 0;
+                    &:before {
+                        content: "";
+                        position: absolute;
+                        bottom: 50%;
+                        bottom: calc(50% - 1px);
+                        left: 1%;
+
+                        width: 98%;
+                        height: 2px;
+
+                        border-bottom: 2px solid $color-edit-border;
                     }
-                    &:last-of-type {
-                        margin-right: 0;
+
+                    &:not(:last-of-type) {
+                        margin-bottom: .5rem;
+                    }
+
+                    .input-group-append {
+                        width: 35px !important;
+                    }
+
+                    .input-group-text {
+                        width: 35px !important;
+                        padding: .25rem;
                     }
                 }
             }
@@ -680,63 +832,106 @@ $halfGap: .25rem;
             }
         }
 
-        .content > *:not(.editContent) {
-            .infoWrapper {
-                li {
-                    h1 {
-                        font-size: 1.5rem;
-                    }
+        .content {
+            & > *:not(.editContent) {
+                .infoWrapper {
+                    li {
+                        h1 {
+                            font-size: 1.5rem;
+                        }
 
-                    p {
-                        font-size: 1.25rem;
-                    }
-                }
-            }
-
-            .sectionTitle {
-                font-size: 2.5rem;
-            }
-
-            .bookFont {
-                font-size: 1rem;
-
-                &.gameNotes {
-                    font-size: 1rem;
-                }
-            }
-
-            .instructions {
-                font-size: 1rem;
-            }
-
-            .footnote {
-                font-size: .95rem;
-            }
-
-            .twoCol {
-                .wealthWrapper {
-                    .header {
-                        font-size: 1.5rem;
-
-                        span {
-                            bottom: .45rem;
+                        p {
+                            font-size: 1.25rem;
                         }
                     }
+                }
 
-                    .amount {
-                        font-size: 1.3rem;
+                .sectionTitle {
+                    font-size: 2.5rem;
+                }
 
-                        .val {
-                            top: .25rem;
+                .bookFont {
+                    font-size: 1rem;
+
+                    &.gameNotes {
+                        font-size: 1rem;
+                    }
+                }
+
+                .instructions {
+                    font-size: 1rem;
+                }
+
+                .footnote {
+                    font-size: .95rem;
+                }
+
+                .twoCol {
+                    .wealthWrapper {
+                        .header {
+                            font-size: 1.5rem;
+
+                            span {
+                                bottom: .45rem;
+                            }
+                        }
+
+                        .amount {
+                            font-size: 1.3rem;
+
+                            .val {
+                                top: .25rem;
+                            }
                         }
                     }
                 }
             }
         }
 
-        .editContent .editWrapper .editRow {
-            .input-group-prepend .input-group-text {
-                width: 130px;
+        .editContent .editWrapper {
+            .eventsRow {
+                margin-bottom: -.25rem;
+
+                .eventLabel {
+                    margin-bottom: .25rem !important;
+                }
+
+                .flexRow {
+                    flex-wrap: wrap;
+
+                    @include flex(stretch, flex-start, row);
+
+                    .input-group {
+                        margin-bottom: .25rem !important;
+
+                        flex-grow: 0;
+
+                        .eventTitle {
+                            flex-grow: 0;
+                        }
+                    }
+                }
+            }
+
+            .wealthRow {
+                .editRow {
+                    &:not(:last-of-type) {
+                        margin-bottom: .5rem;
+                    }
+
+                    .input-group-text {
+                        width: 7rem !important;
+                        padding: .375rem .75rem;
+                    }
+
+                    .input-group-prepend {
+                        width: 130px !important;
+                    }
+
+                    .input-group-append {
+                        width: 50px !important;
+                    }
+                }
             }
         }
     }

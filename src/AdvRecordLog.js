@@ -176,6 +176,10 @@ class AdvRecordLog extends React.Component {
 		this.setState({eventArr: eventArr});
 	}
 
+	handleOptionsUpdate = (options) => {
+		this.setState({optionsData: options});
+	}
+
 	//RENDERERS
 	render_gameLogs = (gamesObj) => {
 		return (
