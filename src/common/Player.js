@@ -34,7 +34,7 @@ import "./Player.scss";
 function withToast(Component) {
     return function WrappedComponent(props) {
         const toastFuncs = useToasts();
-        return <Component {...props} {...toastFuncs} />; //BUG - "Warning: Each child in a list should have a unique "key" prop.""
+        return <Component {...props} {...toastFuncs} />; //BUG - Exclude EP - "Warning: Each child in a list should have a unique "key" prop.""
     };
 }
 
@@ -190,7 +190,7 @@ class Player extends Component {
             newWealthObj.ep = 0;
             this.updateTempInfo("wealth", newWealthObj);
             this.props.addToast(
-                newSp / 5 + " ep converted into " + newSp + " sp", { appearance: "warning" }
+                (newSp / 5 + " ep converted into " + newSp + " sp"), { appearance: "warning" }
             );
         }
 
@@ -200,7 +200,7 @@ class Player extends Component {
     addNewClass = () => {
         this.setState({ mountAnimSpeed: { animationDuration: "inerit" } });
 
-        if (Object.keys(this.state.tempObj.classes).length > 20) {
+        if (Object.keys(this.state.tempObj.classes).length > 14) {
             this.props.addToast("Leeloo Dallas multiclass", {
                 appearance: "error",
             });
