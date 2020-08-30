@@ -115,7 +115,8 @@ class GameLog extends React.Component {
         if (doActive || getFirstObject(eventStatus).active) {
             // IF ACTIVE
             stats = {
-                [code]: { ...this.state.statusData[code], ...eventStatus } };
+                [code]: { ...this.state.statusData[code], ...eventStatus }
+            };
         } else {
             //IF DISABLED
             delete stats[code][getFirstKey(eventStatus)];
@@ -142,7 +143,8 @@ class GameLog extends React.Component {
         }
 
         this.setState({
-                [title]: newArray },
+                [title]: newArray
+            },
             this.updateEventHandler({
                 [title]: { legacy: false, active: true, selections: newArray },
             })
@@ -212,7 +214,7 @@ class GameLog extends React.Component {
     };
 
     getProperTempIsDm = () => {
-    	var dmObj = { ...this.state.data.dungeonMaster };
+        var dmObj = { ...this.state.data.dungeonMaster };
         if (this.state.statusData[this.state.data.code] !== undefined) {
             dmObj = { ...this.state.statusData[this.state.data.code].dungeonMaster };
         }
@@ -221,17 +223,15 @@ class GameLog extends React.Component {
     }
 
     setTempData = (statusObj) => {
-        
-
         !!statusObj &&
             this.setState({
                 tempEvent: this.getPropOrEmpty(statusObj, "event", null),
                 tempDate: this.getPropOrEmpty(statusObj, "date", null),
-                tempIsEpic: this.getPropOrEmpty(statusObj, "isForEpic", null),
                 tempNotes: this.getPropOrEmpty(statusObj, "notes", "player"),
                 tempDmName: this.getPropOrEmpty(statusObj, "dungeonMaster", "name"),
                 tempDmNumber: this.getPropOrEmpty(statusObj, "dungeonMaster", "dci"),
                 tempIsDm: this.getProperTempIsDm(),
+                tempIsEpic: this.state.statusData[this.state.data.code] === undefined ? this.state.data.isForEpic : this.getPropOrEmpty(statusObj, "isForEpic", null),
             });
     };
 
@@ -297,7 +297,7 @@ class GameLog extends React.Component {
     render_gameInfo = () => {
         let code = this.state.data.code;
 
-        var epic = undefined;
+        var epic = this.state.data.isForEpic;
         var date = undefined;
         var event = undefined;
         var dmObj = { ...this.state.data.dungeonMaster };
@@ -329,7 +329,7 @@ class GameLog extends React.Component {
 						<li className="tier">
 							<h1>Tier:</h1>
 							<p>{this.state.data.tier}</p>
-							{epic === true && <p>E</p>}
+							{(epic === true) && <p>E</p>}
 						</li>
 					)}
 					{date !== undefined && date !== "" && (
@@ -358,8 +358,7 @@ class GameLog extends React.Component {
     render_advNotes = (suppressTitle) => {
         var statusNotes =
             this.state.statusData[this.state.data.code] !== undefined ?
-            this.state.statusData[this.state.data.code].notes :
-            {};
+            this.state.statusData[this.state.data.code].notes : {};
         let allNotes = { ...this.state.data.notes, ...statusNotes };
 
         return (
@@ -639,13 +638,13 @@ class GameLog extends React.Component {
         );
     };
 
-//     render_tierOverride = (tier, dflt) => {
-//         if (tier !== dflt) {
-//             return <span>Tier {tier}</span>
-//         }
-// 
-//         return <span><BiCaretRight />Tier {tier}<BiCaretLeft /></span>
-//     }
+    //     render_tierOverride = (tier, dflt) => {
+    //         if (tier !== dflt) {
+    //             return <span>Tier {tier}</span>
+    //         }
+    // 
+    //         return <span><BiCaretRight />Tier {tier}<BiCaretLeft /></span>
+    //     }
 
     render_editData = () => {
         return (
@@ -668,19 +667,19 @@ class GameLog extends React.Component {
 							>
 								<Dropdown.Item
 									href="#"
-									eventKey="epic"
-									active={this.state.tempIsEpic}
-									onSelect={(e) => {this.setState({tempIsEpic: true});}}
-								>
-									This game was for an EPIC event
-								</Dropdown.Item>
-								<Dropdown.Item
-									href="#"
 									eventKey="game"
 									active={!this.state.tempIsEpic}
 									onSelect={(e) => {this.setState({tempIsEpic: false});}}
 								>
 									This was a normal AL game
+								</Dropdown.Item>
+								<Dropdown.Item
+									href="#"
+									eventKey="epic"
+									active={this.state.tempIsEpic}
+									onSelect={(e) => {this.setState({tempIsEpic: true});}}
+								>
+									This game was for an EPIC event
 								</Dropdown.Item>
 							</DropdownButton>
 						</InputGroup>
@@ -1011,7 +1010,7 @@ class GameLog extends React.Component {
         return (
             <Modal
 				className="deleteModal"
-				size={"lg"}
+				size={"md"}
 				centered
 				show={this.state.showDeleteModal}
 				onHide={(e) => {this.setState({showDeleteModal: false});}}
@@ -1019,8 +1018,8 @@ class GameLog extends React.Component {
 				<Modal.Header closeButton>
 					<Modal.Title>Permanently delete?</Modal.Title>
 				</Modal.Header>
-				<Modal.Body closeButton>
-					<div className="modalBody"><span className="bookFont bold">{this.state.data.code.toUpperCase()}</span> <span className="bookFont bold italic">{this.state.data.title}</span></div>
+				<Modal.Body>
+					<div className="modalBody"><span className="fauxdesto" dangerouslySetInnerHTML={{__html: this.state.data.code.toUpperCase().split("-").join("<span class='hyphen'>-</span>")}}></span> <span className="fauxdesto italic">{this.state.data.title}</span></div>
 				</Modal.Body>
 				<Modal.Footer className="flexBetwixt">
 					<Button
