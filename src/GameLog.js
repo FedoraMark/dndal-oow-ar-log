@@ -960,7 +960,7 @@ class GameLog extends React.Component {
 					</div>
 				</li>
 
-				{/* TO BE DONE: Save Legacy and Wealth changes, hook up calcs, auto-calc ending wealth, hook up options, Move */}
+				{/* TO BE DONE: Save Legacy and Wealth changes, hook up calcs, auto-calc ending wealth, USE EP (local), Move */}
 				
 			</ul>
 		);
@@ -970,7 +970,7 @@ class GameLog extends React.Component {
 		return (
 			<Modal
 				className="deleteModal"
-				size={"lg"}
+				size={"md"}
 				centered
 				show={this.state.showDeleteModal}
 				onHide={(e) => {this.setState({showDeleteModal: false});}}
