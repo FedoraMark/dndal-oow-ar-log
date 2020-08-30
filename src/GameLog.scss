@@ -513,10 +513,8 @@ $halfGap: .25rem;
                             .eventTitle {
                                 flex-grow: 1;
 
-
-
                                 span {
-                                    white-space: break-spaces;
+                                    white-space: normal;
 
                                     color: $color-active-background;
                                     background: $color-inactive-background;
@@ -539,8 +537,16 @@ $halfGap: .25rem;
 
                             .dropdown-menu {
                                 width: auto;
+                                min-width: 100%;
 
                                 font-size: .75rem;
+
+                                text-align: center;
+
+                                a {
+                                    padding-right: 1rem;
+                                    padding-left: 1rem;
+                                }
                             }
                         }
 
@@ -761,7 +767,7 @@ $halfGap: .25rem;
                         }
 
                         button {
-                            width: 125px;
+                            width: 130px;
 
                             font-size: 1rem;
                         }
