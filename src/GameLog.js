@@ -11,6 +11,7 @@ import Tooltip from "react-bootstrap/Tooltip";
 import Button from 'react-bootstrap/Button'
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
+import Modal from "react-bootstrap/Modal";
 import _map from "lodash/map";
 import _pull from "lodash/pull";
 import { FaDiceD20 } from "react-icons/fa";
@@ -52,6 +53,7 @@ class GameLog extends React.Component {
 		className: PropTypes.string,
 		preview: PropTypes.bool,
 		logUpdateHandler: PropTypes.func,
+		deleteHandler: PropTypes.func,
 	};
 
 	static defaultProps = {
@@ -61,6 +63,8 @@ class GameLog extends React.Component {
 		style: {},
 		preview: false,
 		isEditing: false,
+
+		deleteHandler: (e) => {},
 	};
 
 	state = {
@@ -68,7 +72,9 @@ class GameLog extends React.Component {
 		statusData: this.props.statuses,
 		isCollapsed: this.props.collapse,
 		isEditing: this.props.isEditing,
-		// showWealthEdit: false,
+		showDeleteModal: false,
+
+		// currentWealthTab: 0,
 
 		rewardGroup0: [],
 		// rewardGroup1: [], // currently unneeded
@@ -79,6 +85,7 @@ class GameLog extends React.Component {
 		tempDmName: "",
 		tempDmNumber: "",
 		tempIsDm: this.props.data.dungeonMaster !== undefined ? this.props.data.dungeonMaster.isDm : "",
+		tempIsEpic: "",
 	};
 
 	componentDidMount() {
@@ -161,6 +168,7 @@ class GameLog extends React.Component {
 
 	saveTempData = () => {
 		let tempStatusData = {
+			isForEpic: this.state.tempIsEpic,
 			notes: {
 				...this.state.statusData.notes,
 				player: this.state.tempNotes.trim(),
@@ -168,8 +176,8 @@ class GameLog extends React.Component {
 			event: this.state.tempEvent.trim(),
 			date: this.state.tempDate.trim(),
 			dungeonMaster: {
-				name: this.state.tempDmName.trim(),
-				dci: this.state.tempDmNumber.trim(),
+				name: this.state.tempIsDm ? "" : this.state.tempDmName.trim(),
+				dci: this.state.tempIsDm ? "" : this.state.tempDmNumber.trim(),
 				isDm: this.state.tempIsDm,
 			},
 		};
@@ -177,11 +185,12 @@ class GameLog extends React.Component {
 		this.setState(
 			{
 				tempNotes: this.state.tempNotes.trim(),
-				tempDmName: this.state.tempDmName.trim(),
-				tempDmNumber: this.state.tempDmNumber.trim(),
+				tempDmName: this.state.tempIsDm ? "" : this.state.tempDmName.trim(),
+				tempDmNumber: this.state.tempIsDm ? "" : this.state.tempDmNumber.trim(),
 				tempIsDm: this.state.tempIsDm,
 				tempEvent: this.state.tempEvent.trim(),
 				tempDate: this.state.tempDate.trim(),
+				tempIsEpic: this.state.tempIsEpic
 			},
 			this.updateEventHandler(tempStatusData, true)
 		);
@@ -204,10 +213,11 @@ class GameLog extends React.Component {
 			this.setState({
 				tempEvent: this.getPropOrEmpty(statusObj,"event",null),
 				tempDate: this.getPropOrEmpty(statusObj,"date",null),
+				tempIsEpic: this.getPropOrEmpty(statusObj,"isForEpic",null),
 				tempNotes: this.getPropOrEmpty(statusObj,"notes","player"),
 				tempDmName: this.getPropOrEmpty(statusObj,"dungeonMaster","name"),
 				tempDmNumber: this.getPropOrEmpty(statusObj,"dungeonMaster","dci"),
-				tempIsDm: this.state.data.dungeonMaster !== undefined ? this.state.data.dungeonMaster.isDm : this.getPropOrEmpty(statusObj,"dungeonMaster","isDm"),
+				tempIsDm: this.state.data.dungeonMaster !== undefined && this.tempIsDm === "" ? this.state.data.dungeonMaster.isDm : this.getPropOrEmpty(statusObj,"dungeonMaster","isDm"),
 			});
 	};
 
@@ -275,19 +285,17 @@ class GameLog extends React.Component {
 	render_gameInfo = () => {
 		let code = this.state.data.code;
 
-		var date =
-			this.state.statusData[code] !== undefined && this.state.statusData[code].date !== undefined
-				? this.state.statusData[code].date
-				: "";
-		var event =
-			this.state.statusData[code] !== undefined && this.state.statusData[code].event !== undefined
-				? this.state.statusData[code].event
-				: "";
-		var dmObj =
-			this.state.statusData[code] !== undefined && this.state.statusData[code].dungeonMaster !== undefined
-				? {...this.state.statusData[code].dungeonMaster}
-				: {...this.state.data.dungeonMaster};
+		var epic = undefined;
+		var date = undefined;
+		var event = undefined;
+		var dmObj = {...this.state.data.dungeonMaster};
 
+		if (this.state.statusData[code] !== undefined) {
+			epic = this.state.statusData[code].isForEpic;
+			date = this.state.statusData[code].date;
+			event = this.state.statusData[code].event;
+			dmObj = {...this.state.statusData[code].dungeonMaster};
+		}
 
 		var dmStr = "";
 
@@ -309,16 +317,16 @@ class GameLog extends React.Component {
 						<li className="tier">
 							<h1>Tier:</h1>
 							<p>{this.state.data.tier}</p>
-							{this.state.data.record === "epic" && <p>E</p>}
+							{epic === true && <p>E</p>}
 						</li>
 					)}
-					{date !== "" && (
+					{date !== undefined && date !== "" && (
 						<li className="date">
 							<h1>Date:</h1>
 							<p>{date}</p>
 						</li>
 					)}
-					{event !== "" && (
+					{event !== undefined && event !== "" && (
 						<li className="event">
 							<h1>Event:</h1>
 							<p>{event}</p>
@@ -625,14 +633,90 @@ class GameLog extends React.Component {
 			<ul className="editWrapper">
 
 				<li className="editRow optionsRow">
-					<InputGroup className="eventLabel">
+					<InputGroup className="optionsLabel">
 						<InputGroup.Prepend className="oswald">
 							<InputGroup.Text><span className="condense">Log&nbsp;</span>Options</InputGroup.Text>
 						</InputGroup.Prepend>
 					</InputGroup>
 
 					<div className="flexRow">
+						{/* set isEpic */}
+						<InputGroup className="dropdownGroup">
+							<DropdownButton
+								variant="light"
+								title={this.state.tempIsEpic ? "Epic Event" : "AL Game"}
+								alignRight
+							>
+								<Dropdown.Item
+									href="#"
+									eventKey="epic"
+									active={this.state.tempIsEpic}
+									onSelect={(e) => {this.setState({tempIsEpic: true});}}
+								>
+									This game was for an EPIC event
+								</Dropdown.Item>
+								<Dropdown.Item
+									href="#"
+									eventKey="game"
+									active={!this.state.tempIsEpic}
+									onSelect={(e) => {this.setState({tempIsEpic: false});}}
+								>
+									This was a normal AL game
+								</Dropdown.Item>
+							</DropdownButton>
+						</InputGroup>
 
+						{/* set isDm */}
+						<InputGroup className="dropdownGroup">
+							<DropdownButton
+								variant="light"
+								title={this.state.tempIsDm ? <>Dungeon Master <FaDiceD20 /></> : "Player"}
+								alignRight
+							>
+								<Dropdown.Item
+									href="#"
+									eventKey="player"
+									active={!this.state.tempIsDm}
+									onSelect={(e) => {this.setState({tempIsDm: false});}}
+								>
+									I was a PLAYER for this game
+								</Dropdown.Item>
+								<Dropdown.Item
+									href="#"
+									eventKey="dm"
+									active={this.state.tempIsDm}
+									onSelect={(e) => {this.setState({tempIsDm: true});}}
+								>
+									I was the DM for this game
+								</Dropdown.Item>
+							</DropdownButton>
+						</InputGroup>
+
+						{/* set useEp */}
+						<InputGroup className="dropdownGroup">
+							<DropdownButton
+								variant="light"
+								title={"useEP"}
+								alignRight
+							>
+								<Dropdown.Item
+									href="#"
+									eventKey="t"
+									active={false}
+									onSelect={(e) => {}}
+								>
+									Include EP
+								</Dropdown.Item>
+								<Dropdown.Item
+									href="#"
+									eventKey="f"
+									active={false}
+									onSelect={(e) => {}}
+								>
+									Exclude EP
+								</Dropdown.Item>
+							</DropdownButton>
+						</InputGroup>
 					</div>
 				</li>
 
@@ -732,7 +816,7 @@ class GameLog extends React.Component {
 
 						{_map(this.state.data.legacy.events, (event,i) => {
 							var selection = "Unselected";
-							var variant = "outline-secondary"
+							var variant = "light"
 							if (!!this.state.statusData[this.state.data.code] && !!this.state.statusData[this.state.data.code][event.title]) {
 								if (!!this.state.statusData[this.state.data.code][event.title].active) {
 									selection = "Selected";
@@ -831,7 +915,7 @@ class GameLog extends React.Component {
 							variant="danger"
 							ref={this.deleteButton}
 							disabled={!this.state.isEditing}
-							onClick={(e) => {console.log("DELETE BUTTON");}}
+							onClick={(e) => {this.setState({showDeleteModal: true});}}
 							onMouseEnter={(e) => {this.deleteButton.current.focus()}}
 							onMouseUp={(e) => {this.deleteButton.current.blur()}}
 						>
@@ -850,8 +934,6 @@ class GameLog extends React.Component {
 							Move<span className="buttonIcon"><ImMenu2 /></span>
 						</Button>
 						
-						<div className="flexSpace" />
-
 						<Button
 							href="#"
 							variant="secondary"
@@ -878,11 +960,41 @@ class GameLog extends React.Component {
 					</div>
 				</li>
 
-				{/* TO BE DONE: Save Legacy and Wealth changes, hook up calcs, auto-calc ending wealth, 0ptions: isDM, useEP?, Delete, Move */}
+				{/* TO BE DONE: Save Legacy and Wealth changes, hook up calcs, auto-calc ending wealth, hook up options, Move */}
 				
 			</ul>
 		);
 	};
+
+	render_deleteModal = () => {
+		return (
+			<Modal
+				className="deleteModal"
+				size={"lg"}
+				centered
+				show={this.state.showDeleteModal}
+				onHide={(e) => {this.setState({showDeleteModal: false});}}
+			>
+				<Modal.Header closeButton>
+					<Modal.Title>Permanently delete <span className="bookFont bold">{this.state.data.code.toUpperCase()}</span> <span className="bookFont bold italic">{this.state.data.title}</span> ?</Modal.Title>
+				</Modal.Header>
+				<Modal.Footer className="flexBetwixt">
+					<Button
+						variant="secondary"
+						onClick={(e) => {this.setState({showDeleteModal: false});}}
+					>
+						Cancel
+					</Button>
+					<Button
+						variant="danger"
+						onClick={(e) => {this.setState({showDeleteModal: false}, this.props.deleteHandler(this.state.data.code));}}
+					>
+						Delete
+					</Button>
+				</Modal.Footer>
+			</Modal>
+		);
+	}
 
 	render() {
 		const { style, className, preview } = this.props;
@@ -925,6 +1037,8 @@ class GameLog extends React.Component {
 							{this.render_logData()}
 						</div>
 					</Collapse>
+
+					{this.render_deleteModal()}
 				
 				</Container>
 			);

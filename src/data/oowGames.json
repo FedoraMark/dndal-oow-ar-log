@@ -2,6 +2,7 @@
   "records": [
     {
       "record": "game",
+      "isForEpic": false,
       "code": "ddal-eb-01",
       "title": "The Night Land",
       "type": "Adventure Record",
@@ -65,6 +66,7 @@
     },
     {
       "record": "game",
+      "isForEpic": false,
       "code": "ddal-eb-02",
       "title": "Voice in the Machine",
       "type": "Adventure Record",
@@ -121,6 +123,7 @@
     },
     {
       "record": "game",
+      "isForEpic": false,
       "code": "ddal-eb-03",
       "title": "Where the Dead Wait",
       "type": "Adventure Record",
@@ -169,6 +172,7 @@
     },
     {
       "record": "game",
+      "isForEpic": false,
       "code": "ddal-eb-04",
       "title": "The Third Protocol",
       "type": "Adventure Record",
@@ -224,6 +228,7 @@
     },
     {
       "record": "epic",
+      "isForEpic": true,
       "code": "ddal-ebep-01",
       "title": "The Iron Titan",
       "type": "Adventure Record",
@@ -275,6 +280,7 @@
     },
     {
       "record": "game",
+      "isForEpic": false,
       "code": "ddal-eb-05",
       "title": "A Century of Ashes",
       "type": "Adventure Record",
@@ -339,6 +345,7 @@
     },
     {
       "record": "game",
+      "isForEpic": false,
       "code": "ddal-eb-06",
       "title": "The Last Word",
       "type": "Adventure Record",
@@ -390,6 +397,7 @@
     },
     {
       "record": "game",
+      "isForEpic": false,
       "code": "ddal-eb-07",
       "title": "Song of the Sky",
       "type": "Adventure Record",
@@ -460,6 +468,7 @@
     },
     {
       "record": "game",
+      "isForEpic": false,
       "code": "ddal-eb-08",
       "title": "Parliament of Gears",
       "type": "Adventure Record",

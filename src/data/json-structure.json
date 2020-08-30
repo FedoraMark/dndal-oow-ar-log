@@ -31,6 +31,7 @@
       "date": "",
       "tier": 0,
       "ordinal": 0,
+      "isForEpic": false,
       "notes": {
         "game": ""
       },

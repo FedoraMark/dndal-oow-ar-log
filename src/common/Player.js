@@ -20,214 +20,202 @@ import { IoIosCalculator } from "react-icons/io";
 import Wealth from "common/Wealth";
 import EditButton from "common/EditButton";
 import {
-	animFaster,
-	bounceIn,
-	getTotalCopper,
-	trimStringsInObjectFlatly,
-	condenseWealth,
-	classes5e,
-	classesUA,
+    animFaster,
+    bounceIn,
+    getTotalCopper,
+    trimStringsInObjectFlatly,
+    condenseWealth,
+    classes5e,
+    classesUA,
 } from "utils/Util";
 
 import "./Player.scss";
 
 function withToast(Component) {
-	return function WrappedComponent(props) {
-		const toastFuncs = useToasts();
-		return <Component {...props} {...toastFuncs} />; //BUG - "Warning: Each child in a list should have a unique "key" prop.""
-	};
+    return function WrappedComponent(props) {
+        const toastFuncs = useToasts();
+        return <Component {...props} {...toastFuncs} />; //BUG - "Warning: Each child in a list should have a unique "key" prop.""
+    };
 }
 
 class Player extends Component {
-	static propTypes = {
-		playerObj: PropTypes.object.isRequired,
-		optionsObj: PropTypes.object,
-	};
+    static propTypes = {
+        playerObj: PropTypes.object.isRequired,
+        optionsObj: PropTypes.object,
+    };
 
-	static defaultProps = {
-		optionsObj: {
-			autoLeveling: false,
-			tierSetting: 0,
-			useEp: true,
-		},
-	};
+    static defaultProps = {
+        optionsObj: {
+            autoLeveling: false,
+            tierSetting: 0,
+            useEp: true,
+        },
+    };
 
-	state = {
-		playerObj: this.props.playerObj,
-		tempObj: { ...this.props.playerObj },
-		isEditing: false, // TRUE FOR TESTING
-		topClass: "",
-		mountAnimSpeed: {},
+    state = {
+        playerObj: this.props.playerObj,
+        tempObj: { ...this.props.playerObj },
+        isEditing: false, // TRUE FOR TESTING
+        topClass: "",
+        mountAnimSpeed: {},
 
-		// options
-		autoLeveling: this.props.optionsObj.autoLeveling,
-		tierSetting: this.props.optionsObj.tierSetting,
-		useEp: this.props.optionsObj.useEp,
-	};
+        // options
+        autoLeveling: this.props.optionsObj.autoLeveling,
+        tierSetting: this.props.optionsObj.tierSetting,
+        useEp: this.props.optionsObj.useEp,
+    };
 
-	//FUNCTIONS
-	getPlayerDciStr = () => {
-		var str = "";
-		if (!!this.state.playerObj.player) {
-			str = this.state.playerObj.player;
-			if (!!this.state.playerObj.dci) {
-				str = str + " (" + this.state.playerObj.dci + ")";
-			}
-		} else if (!!this.state.playerObj.dci) {
-			str = this.state.playerObj.dci;
-		}
+    //FUNCTIONS
+    getPlayerDciStr = () => {
+        var str = "";
+        if (!!this.state.playerObj.player) {
+            str = this.state.playerObj.player;
+            if (!!this.state.playerObj.dci) {
+                str = str + " (" + this.state.playerObj.dci + ")";
+            }
+        } else if (!!this.state.playerObj.dci) {
+            str = this.state.playerObj.dci;
+        }
 
-		return str;
-	};
+        return str;
+    };
 
-	editInfo = (closeWithoutSaving) => {
-		if (this.state.isEditing && !closeWithoutSaving) {
-			this.setState({
-				isEditing: false,
-				playerObj: trimStringsInObjectFlatly({
-					...this.state.tempObj,
-				}),
-			});
-		} else {
-			this.setState({
-				isEditing: !this.state.isEditing,
-				tempObj: { ...this.state.playerObj },
-			});
-		}
-	};
+    editInfo = (closeWithoutSaving) => {
+        if (this.state.isEditing && !closeWithoutSaving) {
+            this.setState({
+                isEditing: false,
+                playerObj: trimStringsInObjectFlatly({
+                    ...this.state.tempObj,
+                }),
+            });
+        } else {
+            this.setState({
+                isEditing: !this.state.isEditing,
+                tempObj: { ...this.state.playerObj },
+            });
+        }
+    };
 
-	updateTempInfo = (attr, val) => {
-		var newObj = this.state.tempObj;
-		newObj[attr] = val;
-		this.setState({ tempObj: newObj });
-	};
+    updateTempInfo = (attr, val) => {
+        var newObj = this.state.tempObj;
+        newObj[attr] = val;
+        this.setState({ tempObj: newObj });
+    };
 
-	setTempWealth = (money, denom) => {
-		let tempWealthObj = {
-			...this.state.tempObj.wealth,
-			[denom]: money === "" ? 0 : Math.abs(parseInt(money)),
-		};
-		this.updateTempInfo("wealth", tempWealthObj);
-	};
+    setTempWealth = (money, denom) => {
+        let tempWealthObj = {
+            ...this.state.tempObj.wealth,
+            [denom]: money === "" ? 0 : Math.abs(parseInt(money)),
+        };
+        this.updateTempInfo("wealth", tempWealthObj);
+    };
 
-	calcWealth = () => {
-		let condensedObj = condenseWealth(
-			getTotalCopper(this.state.tempObj.wealth),
-			this.state.useEp
-		);
+    calcWealth = () => {
+        let condensedObj = condenseWealth(
+            getTotalCopper(this.state.tempObj.wealth),
+            this.state.useEp
+        );
 
-		if (
-			JSON.stringify(condensedObj) ===
-			JSON.stringify(this.state.tempObj.wealth)
-		) {
-			this.props.addToast("No change to coinage", { appearance: "info" });
-		} else {
-			this.props.addToast("Coinaged condensed", {
-				appearance: "success",
-			});
-		}
+        if (
+            JSON.stringify(condensedObj) === JSON.stringify(this.state.tempObj.wealth)
+        ) {
+            this.props.addToast("No change to coinage", { appearance: "info" });
+        } else {
+            this.props.addToast("Coinaged condensed", { appearance: "success" });
+        }
 
-		this.updateTempInfo("wealth", condensedObj);
-	};
+        this.updateTempInfo("wealth", condensedObj);
+    };
 
-	getTier = () => {
-		if (this.state.tierSetting > 0) {
-			return this.state.tierSetting;
-		}
+    getTier = () => {
+        if (this.state.tierSetting > 0) {
+            return this.state.tierSetting;
+        }
 
-		var totalLevel = 0;
-		_each(this.state.playerObj.classes, (lv) => {
-			totalLevel += lv;
-		});
+        var totalLevel = 0;
+        _each(this.state.playerObj.classes, (lv) => {
+            totalLevel += lv;
+        });
 
-		if (totalLevel < 1) {
-			return 0;
-		}
-		if (totalLevel < 5) {
-			return 1;
-		}
-		if (totalLevel < 11) {
-			return 2;
-		}
-		if (totalLevel < 17) {
-			return 3;
-		}
-		return 4;
-	};
+        if (totalLevel < 1) { return 0; }
+        if (totalLevel < 5) { return 1; }
+        if (totalLevel < 11) { return 2; }
+        if (totalLevel < 17) { return 3; }
+        return 4;
+    };
 
-	setUseEp = (val) => {
-		// convert EP to SP and add to SP
-		if (!val && this.state.tempObj.wealth.ep !== 0) {
-			var newWealthObj = { ...this.state.tempObj.wealth };
-			let newSp = newWealthObj.ep * 5;
-			newWealthObj.sp = newWealthObj.sp + newSp;
-			newWealthObj.ep = 0;
-			this.updateTempInfo("wealth", newWealthObj);
-			this.props.addToast(
-				newSp / 5 + " ep converted into " + newSp + " sp",
-				{ appearance: "warning" }
-			);
-		}
+    setUseEp = (val) => {
+        // convert EP to SP and add to SP
+        if (!val && this.state.tempObj.wealth.ep !== 0) {
+            var newWealthObj = { ...this.state.tempObj.wealth };
+            let newSp = newWealthObj.ep * 5;
+            newWealthObj.sp = newWealthObj.sp + newSp;
+            newWealthObj.ep = 0;
+            this.updateTempInfo("wealth", newWealthObj);
+            this.props.addToast(
+                newSp / 5 + " ep converted into " + newSp + " sp", { appearance: "warning" }
+            );
+        }
 
-		this.setState({ useEp: val });
-	};
+        this.setState({ useEp: val });
+    };
 
-	addNewClass = () => {
-		this.setState({ mountAnimSpeed: { animationDuration: "inerit" } });
+    addNewClass = () => {
+        this.setState({ mountAnimSpeed: { animationDuration: "inerit" } });
 
-		if (Object.keys(this.state.tempObj.classes).length > 20) {
-			this.props.addToast("Leeloo Dallas multiclass", {
-				appearance: "error",
-			});
-			return;
-		}
+        if (Object.keys(this.state.tempObj.classes).length > 20) {
+            this.props.addToast("Leeloo Dallas multiclass", {
+                appearance: "error",
+            });
+            return;
+        }
 
-		var newClassObj = { ...this.state.tempObj.classes };
-		var newClassName = "";
+        var newClassObj = { ...this.state.tempObj.classes };
+        var newClassName = "";
 
-		// *** "classes" should really be an array instead of an object ***
+        // *** "classes" should really be an array instead of an object ***
 
-		// prevent duplicate names
-		let i = Object.keys(newClassObj).length + 1;
-		do {
-			newClassName = "Multiclass " + i;
-			i++;
-		} while (Object.keys(newClassObj).includes(newClassName));
+        // prevent duplicate names
+        let i = Object.keys(newClassObj).length + 1;
+        do {
+            newClassName = "Multiclass " + i;
+            i++;
+        } while (Object.keys(newClassObj).includes(newClassName));
 
-		newClassObj[newClassName] = 1; // set to level 1
+        newClassObj[newClassName] = 1; // set to level 1
 
-		this.updateTempInfo("classes", newClassObj);
-	};
+        this.updateTempInfo("classes", newClassObj);
+    };
 
-	setClassLevel = (oldClass, newClass, newLevel) => {
-		var newClassLevelObj = {};
+    setClassLevel = (oldClass, newClass, newLevel) => {
+        var newClassLevelObj = {};
 
-		_map(this.state.tempObj.classes, (lv, cl) => {
-			if (cl === oldClass) {
-				newClassLevelObj[newClass] = newLevel;
-			} else {
-				newClassLevelObj[cl] = lv;
-			}
-		});
+        _map(this.state.tempObj.classes, (lv, cl) => {
+            if (cl === oldClass) {
+                newClassLevelObj[newClass] = newLevel;
+            } else {
+                newClassLevelObj[cl] = lv;
+            }
+        });
 
-		this.updateTempInfo("classes", newClassLevelObj);
-	};
+        this.updateTempInfo("classes", newClassLevelObj);
+    };
 
-	removeClass = (cl) => {
-		var newClObj = { ...this.state.tempObj.classes };
-		delete newClObj[cl];
+    removeClass = (cl) => {
+        var newClObj = { ...this.state.tempObj.classes };
+        delete newClObj[cl];
 
-		this.updateTempInfo("classes", newClObj);
-	};
+        this.updateTempInfo("classes", newClObj);
+    };
 
-	setTopClass = (clss) => {
-		this.setState({ topClass: clss });
-	};
+    setTopClass = (clss) => {
+        this.setState({ topClass: clss });
+    };
 
-	//RENDERERS
-	render_displayInfo = () => {
-		return (
-			<span className="playerBoxContent">
+    //RENDERERS
+    render_displayInfo = () => {
+        return (
+            <span className="playerBoxContent">
 				{!!this.state.playerObj.character && (
 					<div className="infoItem">
 						<h1>Character:</h1>
@@ -307,14 +295,14 @@ class Player extends Component {
 					</div>
 				)}
 			</span>
-		);
-	};
+        );
+    };
 
-	render_editInfo = () => {
-		let classLen = Object.keys(this.state.tempObj.classes).length;
+    render_editInfo = () => {
+        let classLen = Object.keys(this.state.tempObj.classes).length;
 
-		return (
-			<Collapse
+        return (
+            <Collapse
 				in={this.state.isEditing}
 				onExited={(e) => {
 					this.setState({
@@ -546,22 +534,14 @@ class Player extends Component {
 													"playerInfoGroup classDropdownGroup",
 													animFaster,
 													bounceIn,
-													this.state.topClass ===
-														clss && "zFix",
+													this.state.topClass === clss && "zFix",
 													classLen === 1 &&
 														"firstLast"
 												)}
-												onClick={this.setTopClass.bind(
-													this,
-													clss
-												)}
-												style={
-													this.state.mountAnimSpeed
-												}
+												onClick={this.setTopClass.bind(this,clss)}
+												style={this.state.mountAnimSpeed}
 											>
-												{this.render_classLevelDropDown(
-													clss,
-													level
+												{this.render_classLevelDropDown(clss,level
 												)}
 											</InputGroup>
 										);
@@ -602,40 +582,23 @@ class Player extends Component {
 								{/* set leveling */}
 								<InputGroup className="playerInfoGroup dropdownGroup">
 									<DropdownButton
-										variant="secondary"
-										title={
-											this.state.autoLeveling
-												? "Auto Levels"
-												: "Manual Levels"
-										}
+										variant="light"
+										title={this.state.autoLeveling? "Auto Levels": "Manual Levels"}
 										alignRight
 									>
 										<Dropdown.Item
 											href="#"
 											eventKey="f"
-											active={
-												this.state.autoLeveling ===
-												false
-											}
-											onSelect={(e) => {
-												this.setState({
-													autoLeveling: false,
-												});
-											}}
+											active={this.state.autoLeveling ===false}
+											onSelect={(e) => {this.setState({autoLeveling: false});}}
 										>
 											Manual
 										</Dropdown.Item>
 										<Dropdown.Item
 											href="#"
 											eventKey="t"
-											active={
-												this.state.autoLeveling === true
-											}
-											onSelect={(e) => {
-												this.setState({
-													autoLeveling: true,
-												});
-											}}
+											active={this.state.autoLeveling === true}
+											onSelect={(e) => {this.setState({autoLeveling: true});}}
 										>
 											Auto
 										</Dropdown.Item>
@@ -645,26 +608,15 @@ class Player extends Component {
 								{/* set tier */}
 								<InputGroup className="playerInfoGroup dropdownGroup">
 									<DropdownButton
-										variant="secondary"
-										title={
-											this.state.tierSetting > 0
-												? "Tier " +
-												  this.state.tierSetting
-												: "Auto Tier"
-										}
+										variant="light"
+										title={this.state.tierSetting > 0? "Tier " +this.state.tierSetting: "Auto Tier"}
 										alignRight
 									>
 										<Dropdown.Item
 											href="#"
 											eventKey="0"
-											active={
-												this.state.tierSetting === 0
-											}
-											onSelect={(e) => {
-												this.setState({
-													tierSetting: 0,
-												});
-											}}
+											active={this.state.tierSetting === 0}
+											onSelect={(e) => {this.setState({tierSetting: 0});}}
 										>
 											Auto
 										</Dropdown.Item>
@@ -672,56 +624,32 @@ class Player extends Component {
 										<Dropdown.Item
 											href="#"
 											eventKey="1"
-											active={
-												this.state.tierSetting === 1
-											}
-											onSelect={(e) => {
-												this.setState({
-													tierSetting: 1,
-												});
-											}}
+											active={this.state.tierSetting === 1}
+											onSelect={(e) => {this.setState({tierSetting: 1});}}
 										>
 											Tier 1
 										</Dropdown.Item>
 										<Dropdown.Item
 											href="#"
 											eventKey="2"
-											active={
-												this.state.tierSetting === 2
-											}
-											onSelect={(e) => {
-												this.setState({
-													tierSetting: 2,
-												});
-											}}
+											active={this.state.tierSetting === 2}
+											onSelect={(e) => {this.setState({tierSetting: 2});}}
 										>
 											Tier 2
 										</Dropdown.Item>
 										<Dropdown.Item
 											href="#"
 											eventKey="3"
-											active={
-												this.state.tierSetting === 3
-											}
-											onSelect={(e) => {
-												this.setState({
-													tierSetting: 3,
-												});
-											}}
+											active={this.state.tierSetting === 3}
+											onSelect={(e) => {this.setState({tierSetting: 3});}}
 										>
 											Tier 3
 										</Dropdown.Item>
 										<Dropdown.Item
 											href="#"
 											eventKey="4"
-											active={
-												this.state.tierSetting === 4
-											}
-											onSelect={(e) => {
-												this.setState({
-													tierSetting: 4,
-												});
-											}}
+											active={this.state.tierSetting === 4}
+											onSelect={(e) => {this.setState({tierSetting: 4});}}
 										>
 											Tier 4
 										</Dropdown.Item>
@@ -731,22 +659,15 @@ class Player extends Component {
 								{/* set useEp */}
 								<InputGroup className="playerInfoGroup dropdownGroup">
 									<DropdownButton
-										variant="secondary"
-										title={
-											this.state.useEp
-												? "Include EP"
-												: "Exclude EP"
-										}
+										variant="light"
+										title={this.state.useEp ? "Include EP" : "Exclude EP"}
 										alignRight
 									>
 										<Dropdown.Item
 											href="#"
 											eventKey="t"
 											active={this.state.useEp === true}
-											onSelect={this.setUseEp.bind(
-												this,
-												true
-											)}
+											onSelect={this.setUseEp.bind(this,true)}
 										>
 											Include EP
 										</Dropdown.Item>
@@ -754,10 +675,7 @@ class Player extends Component {
 											href="#"
 											eventKey="f"
 											active={this.state.useEp === false}
-											onSelect={this.setUseEp.bind(
-												this,
-												false
-											)}
+											onSelect={this.setUseEp.bind(this,false)}
 										>
 											Exclude EP
 										</Dropdown.Item>
@@ -768,12 +686,12 @@ class Player extends Component {
 					</ul>
 				</div>
 			</Collapse>
-		);
-	};
+        );
+    };
 
-	render_classLevelDropDown = (selClass, selLevel) => {
-		return (
-			<>
+    render_classLevelDropDown = (selClass, selLevel) => {
+        return ( 
+        	<>
 				<DropdownButton
 					as={InputGroup.Prepend}
 					variant="secondary"
@@ -791,30 +709,18 @@ class Player extends Component {
 									key={i}
 									href="#"
 									active
-									onSelect={this.setClassLevel.bind(
-										this,
-										selClass,
-										c,
-										selLevel
-									)}
+									onSelect={this.setClassLevel.bind(this,selClass,c,selLevel)}
 								>
 									{c}
 								</Dropdown.Item>
 							);
 						}
-						if (
-							!Object.keys(this.state.tempObj.classes).includes(c)
-						) {
+						if (!Object.keys(this.state.tempObj.classes).includes(c)) {
 							return (
 								<Dropdown.Item
 									key={i}
 									href="#"
-									onSelect={this.setClassLevel.bind(
-										this,
-										selClass,
-										c,
-										selLevel
-									)}
+									onSelect={this.setClassLevel.bind(this,selClass,c,selLevel)}
 								>
 									{c}
 								</Dropdown.Item>
@@ -829,12 +735,7 @@ class Player extends Component {
 									key={j}
 									href="#"
 									active
-									onSelect={this.setClassLevel.bind(
-										this,
-										selClass,
-										k,
-										selLevel
-									)}
+									onSelect={this.setClassLevel.bind(this,selClass,k,selLevel)}
 								>
 									{k}
 								</Dropdown.Item>
@@ -848,12 +749,7 @@ class Player extends Component {
 								<Dropdown.Item
 									key={j}
 									href="#"
-									onSelect={this.setClassLevel.bind(
-										this,
-										selClass,
-										k,
-										selLevel
-									)}
+									onSelect={this.setClassLevel.bind(this,selClass,k,selLevel)}
 								>
 									{k}
 								</Dropdown.Item>
@@ -869,7 +765,8 @@ class Player extends Component {
 						<span>Remove</span>
 						<AiTwotoneDelete />
 					</Dropdown.Item>
-				</DropdownButton>{" "}
+				</DropdownButton>
+				
 				<DropdownButton
 					as={InputGroup.Append}
 					variant="outline-secondary"
@@ -877,36 +774,28 @@ class Player extends Component {
 					alignRight
 					className="levelDropdown"
 				>
-					{_map(
-						Array.from(Array(20), (_, i) => {
-							return i + 1;
-						}),
+					{_map(Array.from(Array(20), (_, i) => {return i + 1;}),
 						(l) => {
 							return (
 								<Dropdown.Item
 									key={l}
 									href="#"
 									active={selLevel === l}
-									onSelect={this.setClassLevel.bind(
-										this,
-										selClass,
-										selClass,
-										l
-									)}
+									onSelect={this.setClassLevel.bind(this,selClass,selClass,l)}
 								>
 									{l}
 								</Dropdown.Item>
 							);
 						}
-					)}{" "}
-				</DropdownButton>{" "}
+					)}
+				</DropdownButton>
 			</>
-		);
-	};
+        );
+    };
 
-	render() {
-		return (
-			<div className="editBox">
+    render() {
+        return (
+            <div className="editBox">
 				<div
 					className={classnames(
 						"playerBox",
@@ -933,8 +822,8 @@ class Player extends Component {
 
 				{this.render_editInfo()}
 			</div>
-		);
-	}
+        );
+    }
 }
 
 export default withToast(Player);

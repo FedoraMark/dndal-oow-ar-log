@@ -1,25 +1,25 @@
 import React from "react";
 import classnames from "classnames";
-import _map from "lodash/map";
+import _filter from "lodash/filter";
 import _find from 'lodash/find';
 import _findIndex from "lodash/findIndex";
+import _map from "lodash/map";
 import _sortBy from "lodash/sortBy";
-import _filter from "lodash/filter";
-import Jumbotron from "react-bootstrap/Jumbotron";
-import Container from "react-bootstrap/Container";
+import Badge from 'react-bootstrap/Badge';
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
-import Badge from 'react-bootstrap/Badge';
-import Form from 'react-bootstrap/Form'
 import Collapse from "react-bootstrap/Collapse";
+import Container from "react-bootstrap/Container";
+import Form from 'react-bootstrap/Form'
+import Jumbotron from "react-bootstrap/Jumbotron";
 import SideNav, { NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
 import ClickOutside from 'react-click-outside';
 import { ToastProvider } from "react-toast-notifications";
 
 import { fadeInUp, fadeIn, getFirstObject, getFirstKey } from "utils/Util";
 import Player from "common/Player";
-import GameLog from "GameLog";
 import Summary from "common/Summary";
+import GameLog from "GameLog";
 
 import "AdvRecordLog.scss";
 import "animate.css";
@@ -49,7 +49,8 @@ class AdvRecordLog extends React.Component {
 	    showAddRecordArea: false,
 	    loaded: false,
 	    isSidebarOpen: false,
-	    eventArr: []
+	    eventArr: [],
+	    deleteCode: -1
 	};
 
 	componentDidMount() {
@@ -180,6 +181,25 @@ class AdvRecordLog extends React.Component {
 		this.setState({optionsData: options});
 	}
 
+	handleDelete = (code) => {
+		this.setState({deleteCode: code});
+	}
+
+	removeLog = (code) => {
+		let index = this.state.gameData.findIndex((c) => {
+			return c.code = code
+		});
+
+		if (index < 0) {
+			return console.error("WARNING: Code " + code + " not found in game list!");
+		}
+
+		var newGameData = [...this.state.gameData];
+		let title = newGameData.splice(index, 1).title;
+
+		this.setState({deleteCode: -1, gameData: newGameData});
+	}
+
 	//RENDERERS
 	render_gameLogs = (gamesObj) => {
 		return (
@@ -189,15 +209,23 @@ class AdvRecordLog extends React.Component {
 					let animClass = this.state.loaded ? fadeIn : fadeInUp;
 
 					return (
-						<GameLog
-							className={animClass}
-							style={{ animationDelay: delayTime * key + "ms" }}
+						<Collapse
 							key={key}
-							data={logData}
-							statuses={this.state.statusData[key]}
-							collapse={!this.state.loaded}
-							logUpdateHandler={this.updateLogStatus}
-						/>
+							in={logData.code !== this.state.deleteCode}
+							mountOnEnter
+							dismountOnExit
+							onExited={this.removeLog.bind(this,logData.code)}
+						>
+							<GameLog
+								className={animClass}
+								style={{ animationDelay: delayTime * key + "ms" }}
+								data={logData}
+								statuses={this.state.statusData[key]}
+								collapse={!this.state.loaded}
+								logUpdateHandler={this.updateLogStatus}
+								deleteHandler={this.handleDelete}
+							/>
+						</Collapse>
 					);
 				})}
 			</Container>
@@ -238,16 +266,7 @@ class AdvRecordLog extends React.Component {
 										<Summary
 											gameData={game}
 											handleAdd={this.addRecord}
-											disabled={
-												_findIndex(
-													this.state.gameData,
-													(o) => {
-														return (
-															o.code === game.code
-														);
-													}
-												) > -1
-											}
+											disabled={_findIndex(this.state.gameData,(o) => {return ( o.code === game.code);}) > -1}
 										/>
 									</li>
 								);
@@ -287,11 +306,7 @@ class AdvRecordLog extends React.Component {
 		let messageText = eventLength === 0 ? "No active legacy events" :  eventLength + " active legacy " + messagePlural;
 
 		return (
-			<ClickOutside
-				onClickOutside={() => {
-			        this.setState({ isSidebarOpen: false });
-			    }}
-		    >
+			<ClickOutside onClickOutside={() => {this.setState({ isSidebarOpen: false });}}>
 				<SideNav
 					expanded={this.state.isSidebarOpen}
 					onToggle={(e) => { this.setSidebarInfo(false); this.setState({isSidebarOpen: e});} }
@@ -346,7 +361,6 @@ class AdvRecordLog extends React.Component {
 							</SideNav.Nav>
 						);
 					})}
-						
 				</SideNav>
 			</ClickOutside>
 		);

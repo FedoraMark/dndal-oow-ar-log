@@ -1,11 +1,16 @@
 // IMPORTS
 @import "./utils/common.scss";
-
 // VARS
 $gap: .5rem;
 $halfGap: .25rem;
 
 // STYLES
+.deleteModal {
+    .flexBetwixt button {
+        width: 130px;
+    }
+}
+
 .gameBox {
     padding: 0 !important;
     margin: 1rem auto;
@@ -49,7 +54,6 @@ $halfGap: .25rem;
         border-radius: .1rem;
 
         @include transition(border-color);
-
 
         &.sticky {
             position: sticky;
@@ -199,7 +203,6 @@ $halfGap: .25rem;
                     background: $color-background-white;
 
                     @include flex();
-
 
                     &:not(:last-of-type) {
                         margin-right: .25rem;
@@ -370,7 +373,6 @@ $halfGap: .25rem;
             }
         }
 
-
         .editContent {
             .editWrapper {
                 width: 100%;
@@ -419,7 +421,7 @@ $halfGap: .25rem;
                     .flexRow {
                         flex-wrap: nowrap;
 
-                        @include flex(stretch,space-between);
+                        @include flex(stretch, space-between);
 
                         &:not(:last-of-type) {
                             margin-bottom: 1rem;
@@ -478,11 +480,6 @@ $halfGap: .25rem;
                 .eventsRow {
                     @include flex(stretch, flex-start);
 
-                    .eventLabel {
-                        width: auto;
-                        margin-bottom: 0 !important;
-                    }
-
                     .flexRow {
                         width: 100%;
 
@@ -506,11 +503,13 @@ $halfGap: .25rem;
                             .eventTitle {
                                 flex-grow: 1;
 
+
+
                                 span {
                                     white-space: break-spaces;
 
                                     color: $color-active-background;
-                                    background: $color-active-text;
+                                    background: $color-inactive-background;
                                 }
                             }
 
@@ -545,7 +544,7 @@ $halfGap: .25rem;
                         }
 
                         .Expended {
-                            text-decoration: line-through rgba(255,255,255,.6);
+                            text-decoration: line-through rgba(255, 255, 255, .6);
                         }
                     }
                 }
@@ -564,7 +563,7 @@ $halfGap: .25rem;
                     .flexRow {
                         flex-grow: 1;
 
-                        @include flex(stretch, space-between);
+                        @include flex(stretch, space-between, column);
 
                         a.btn {
                             flex-grow: 1;
@@ -572,7 +571,7 @@ $halfGap: .25rem;
                             font-family: $fontFamily-oswald;
 
                             &:not(:last-of-type) {
-                                margin-right: .5rem;
+                                margin-bottom: .5rem;
                             }
 
                             &:active {
@@ -588,6 +587,55 @@ $halfGap: .25rem;
                             }
                         }
                     }
+                }
+
+                .optionsRow {
+                    flex-wrap: nowrap;
+
+                    @include flex(stretch);
+
+                    .optionsLabel {
+                        margin: 0 .5rem 0 0 !important;
+
+                        flex-basis: 0;
+                    }
+
+                    .flexRow {
+                        flex-grow: 1;
+
+                        .dropdownGroup {
+                            flex-grow: 1;
+
+                            &:not(:last-of-type) {
+                                margin-bottom: .25rem;
+                            }
+
+                            .dropdown {
+                                width: 100%;
+
+                                font-family: $fontFamily-oswald;
+
+                                button {
+                                    width: 100%;
+
+                                    svg {
+                                        margin-top: -.25rem;
+                                    }
+                                }
+
+                                .dropdown-menu {
+                                    min-width: 100%;
+
+                                    text-align: center;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .eventLabel {
+                    width: auto;
+                    margin-bottom: 0 !important;
                 }
             }
 
@@ -805,6 +853,7 @@ $halfGap: .25rem;
                             &:first-of-type {
                                 margin-left: 0;
                             }
+
                             &:last-of-type {
                                 margin-right: 0;
                             }
@@ -844,6 +893,23 @@ $halfGap: .25rem;
                         .input-group-text {
                             width: 35px !important;
                             padding: .25rem;
+                        }
+                    }
+                }
+
+                .actionsRow,
+                .optionsRow {
+                    .flexRow {
+                        flex-grow: 1;
+
+                        @include flex(stretch, space-between);
+
+                        a.btn,
+                        .dropdownGroup {
+                            &:not(:last-of-type) {
+                                margin-right: .5rem;
+                                margin-bottom: 0;
+                            }
                         }
                     }
                 }
