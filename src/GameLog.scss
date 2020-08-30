@@ -624,6 +624,19 @@ $halfGap: .25rem;
                     .flexRow {
                         flex-grow: 1;
 
+                        .dotE {
+                            display: inline-flex;
+                            width: 1.5rem;
+                            height: 1.5rem;
+
+                            justify-content: center;
+                            align-items: center;
+
+                            border: 1px solid gray;
+                            border-radius: 50%;
+                            background: white;
+                        }
+
                         .dropdownGroup {
                             flex-grow: 1;
 

@@ -318,8 +318,22 @@ class GameLog extends React.Component {
 					{!!this.state.data.tier && (
 						<li className="tier">
 							<h1>Tier:</h1>
-							<p>{this.state.data.tier}</p>
-							{(epic || (this.props.preview && this.state.data.record === "epic")) && <p>E</p>}
+
+							<OverlayTrigger
+								placement="top"
+								overlay={<Tooltip>Tier {this.state.data.tier}</Tooltip>}
+							>
+								<p>{this.state.data.tier}</p>
+							</OverlayTrigger>
+
+							{(epic || (this.props.preview && this.state.data.record === "epic")) && 
+								<OverlayTrigger
+									placement="top"
+									overlay={<Tooltip>Epic</Tooltip>}
+								>
+									<p>E</p>
+								</OverlayTrigger>
+							}
 						</li>
 					)}
 					{!!date && date !== "" && (
@@ -635,8 +649,6 @@ class GameLog extends React.Component {
     //     }
 
     render_editData = () => {
-    	console.log({tempIsEpic: this.state.tempIsEpic, wasEpic: this.state.wasEpic});
-
         return (
             <ul className="editWrapper">
 
@@ -652,7 +664,7 @@ class GameLog extends React.Component {
 						<InputGroup className="dropdownGroup">
 							<DropdownButton
 								variant="light"
-								title={this.state.tempIsEpic ? "Epic Event" : "AL Game"}
+								title={this.state.tempIsEpic ? <>Epic Event <span className="dotE">E</span></> : "AL Game"}
 								alignRight
 							>
 								<Dropdown.Item
