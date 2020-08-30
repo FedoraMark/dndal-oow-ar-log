@@ -9,6 +9,12 @@ $halfGap: .25rem;
     .flexBetwixt button {
         width: 130px;
     }
+
+    .modalBody {
+        font-size: 2rem;
+
+        text-align: center;
+    }
 }
 
 .gameBox {
@@ -398,6 +404,10 @@ $halfGap: .25rem;
 
                     &.flexRow {
                         @include flex(stretch, flex-start, column);
+                    }
+
+                    &.dmRow {
+                        @include transition(all, .125s);
                     }
 
                     &.disable {
