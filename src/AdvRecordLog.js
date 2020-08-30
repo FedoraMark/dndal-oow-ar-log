@@ -82,7 +82,7 @@ class AdvRecordLog extends React.Component {
 	}
 
 	updateLogStatus = (logStatusObj) => {
-		let statusArr = this.state.statusData;
+		let statusArr = [...this.state.statusData];
 
 		let changeIndex = _findIndex(statusArr, (o) => {
 			return getFirstKey(o) === getFirstKey(logStatusObj);
@@ -198,7 +198,10 @@ class AdvRecordLog extends React.Component {
 		newGameData.splice(index, 1);
 		// let title = newGameData.splice(index, 1).title; // ADD TOAST
 
-		this.setState({deleteCode: -1, gameData: newGameData});
+		var newStatusData = [...this.state.statusData];
+		newStatusData.splice(index,1);
+
+		this.setState({deleteCode: -1, gameData: newGameData, statusData: newStatusData});
 	}
 
 	//RENDERERS
@@ -208,6 +211,14 @@ class AdvRecordLog extends React.Component {
 				{_map(gamesObj, (logData, key) => {
 					let delayTime = this.state.loaded ? 0 : 200;
 					let animClass = this.state.loaded ? fadeIn : fadeInUp;
+
+					let wasEpic = !!this.state.statusData[key] && !!this.state.statusData[key][logData.code] && this.state.statusData[key][logData.code].isForEpic !== undefined
+						? this.state.statusData[key][logData.code].isForEpic === true
+						: logData.isForEpic;
+
+					let wasDm   = !!this.state.statusData[key] && !!this.state.statusData[key][logData.code] && !!this.state.statusData[key][logData.code].dungeonMaster
+						? this.state.statusData[key][logData.code].dungeonMaster.isDm
+						: {...logData.dungeonMaster}.isDm;
 
 					return (
 						<Collapse
@@ -225,6 +236,8 @@ class AdvRecordLog extends React.Component {
 								collapse={!this.state.loaded}
 								logUpdateHandler={this.updateLogStatus}
 								deleteHandler={this.handleDelete}
+								wasDm={wasDm}
+								wasEpic={wasEpic}
 							/>
 						</Collapse>
 					);

@@ -56,6 +56,8 @@ class GameLog extends React.Component {
         preview: PropTypes.bool,
         logUpdateHandler: PropTypes.func,
         deleteHandler: PropTypes.func,
+        wasDm: PropTypes.bool,
+        wasEpic: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -65,7 +67,8 @@ class GameLog extends React.Component {
         style: {},
         preview: false,
         isEditing: false,
-
+        wasDm: false,
+        wasEpic: false,
         deleteHandler: (e) => {},
     };
 
@@ -75,6 +78,8 @@ class GameLog extends React.Component {
         isCollapsed: this.props.collapse,
         isEditing: this.props.isEditing,
         showDeleteModal: false,
+        wasDm: this.props.wasDm,
+        wasEpic: this.props.wasEpic,
 
         // currentWealthTab: 0,
 
@@ -86,8 +91,8 @@ class GameLog extends React.Component {
         tempNotes: "",
         tempDmName: "",
         tempDmNumber: "",
-        tempIsDm: "",
-        tempIsEpic: "",
+        tempIsDm: this.props.wasDm,
+        tempIsEpic: this.props.wasEpic,
     };
 
     componentDidMount() {
@@ -98,6 +103,8 @@ class GameLog extends React.Component {
         this.setState({
             data: newProps.data,
             statusData: newProps.statuses,
+            wasDm: newProps.wasDm,
+            wasEpic: newProps.wasEpic
         });
     }
 
@@ -192,10 +199,10 @@ class GameLog extends React.Component {
                 tempNotes: this.state.tempNotes.trim(),
                 tempDmName: this.state.tempIsDm ? "" : this.state.tempDmName.trim(),
                 tempDmNumber: this.state.tempIsDm ? "" : this.state.tempDmNumber.trim(),
-                tempIsDm: this.state.tempIsDm,
                 tempEvent: this.state.tempEvent.trim(),
                 tempDate: this.state.tempDate.trim(),
-                tempIsEpic: this.state.tempIsEpic
+                wasDm: this.state.tempIsDm,
+                wasEpic: this.state.tempIsEpic
             },
             this.updateEventHandler(tempStatusData, true)
         );
@@ -213,15 +220,6 @@ class GameLog extends React.Component {
         return obj[prop][child] !== undefined ? obj[prop][child] : "";
     };
 
-    getProperTempIsDm = () => {
-        var dmObj = { ...this.state.data.dungeonMaster };
-        if (this.state.statusData[this.state.data.code] !== undefined) {
-            dmObj = { ...this.state.statusData[this.state.data.code].dungeonMaster };
-        }
-
-        return !!dmObj ? dmObj.isDm : "";
-    }
-
     setTempData = (statusObj) => {
         !!statusObj &&
             this.setState({
@@ -230,8 +228,8 @@ class GameLog extends React.Component {
                 tempNotes: this.getPropOrEmpty(statusObj, "notes", "player"),
                 tempDmName: this.getPropOrEmpty(statusObj, "dungeonMaster", "name"),
                 tempDmNumber: this.getPropOrEmpty(statusObj, "dungeonMaster", "dci"),
-                tempIsDm: this.getProperTempIsDm(),
-                tempIsEpic: this.state.statusData[this.state.data.code] === undefined ? this.state.data.isForEpic : this.getPropOrEmpty(statusObj, "isForEpic", null),
+                tempIsDm: this.state.wasDm,
+                tempIsEpic: this.state.wasEpic
             });
     };
 
@@ -278,7 +276,7 @@ class GameLog extends React.Component {
 					onClick={this.toggleCollapsed.bind(this)}
 				>
 					<span className="name">
-						{!this.props.preview && this.getProperTempIsDm() && (
+						{!this.props.preview && this.state.wasDm && (
 								<FaDiceD20 className="diceIcon" />
 							)}
 						{code !== null && (
@@ -297,21 +295,13 @@ class GameLog extends React.Component {
     render_gameInfo = () => {
         let code = this.state.data.code;
 
-        var epic = this.state.data.isForEpic;
-        var date = undefined;
-        var event = undefined;
-        var dmObj = { ...this.state.data.dungeonMaster };
-
-        if (this.state.statusData[code] !== undefined) {
-            epic = this.state.statusData[code].isForEpic;
-            date = this.state.statusData[code].date;
-            event = this.state.statusData[code].event;
-            dmObj = { ...this.state.statusData[code].dungeonMaster };
-        }
+        let epic = !!this.state.statusData[code] && this.state.statusData[code].isForEpic !== undefined ? this.state.statusData[code].isForEpic : this.state.data.record === "epic";
+        let date = !!this.state.statusData[code] ? this.state.statusData[code].date : '';
+        let event = !!this.state.statusData[code] ? this.state.statusData[code].event : '';
+        let dmObj = !!this.state.statusData[code] ? {...this.state.statusData[code].dungeonMaster} : {};
 
         var dmStr = "";
-
-        if (!dmObj.isDm) {
+        if (!this.state.wasDm) {
             if ("name" in dmObj && dmObj.name.length > 0) {
                 dmStr = dmObj.name;
                 if ("dci" in dmObj && dmObj.dci.length > 0) {
@@ -325,29 +315,29 @@ class GameLog extends React.Component {
         return (
             <Container>
 				<ul className="infoWrapper">
-					{this.state.data.tier !== undefined && (
+					{!!this.state.data.tier && (
 						<li className="tier">
 							<h1>Tier:</h1>
 							<p>{this.state.data.tier}</p>
-							{(epic === true) && <p>E</p>}
+							{(epic || (this.props.preview && this.state.data.record === "epic")) && <p>E</p>}
 						</li>
 					)}
-					{date !== undefined && date !== "" && (
+					{!!date && date !== "" && (
 						<li className="date">
 							<h1>Date:</h1>
 							<p>{date}</p>
 						</li>
 					)}
-					{event !== undefined && event !== "" && (
+					{!!event && event !== "" && (
 						<li className="event">
 							<h1>Event:</h1>
 							<p>{event}</p>
 						</li>
 					)}
-					{!this.props.preview && (dmStr !== "" || dmObj.isDm) && (
+					{!this.props.preview && (dmStr !== "" || this.state.wasDm) && (
 						<li className="dm">
 							<h1>Dungeon Master:</h1>
-							<p>{dmObj.isDm ? <span><FaDiceD20 /></span> : dmStr}</p>
+							<p>{this.state.wasDm ? <span><FaDiceD20 /></span> : dmStr}</p>
 						</li>
 					)}
 				</ul>
@@ -356,9 +346,9 @@ class GameLog extends React.Component {
     };
 
     render_advNotes = (suppressTitle) => {
-        var statusNotes =
-            this.state.statusData[this.state.data.code] !== undefined ?
-            this.state.statusData[this.state.data.code].notes : {};
+        var statusNotes = this.state.statusData[this.state.data.code] !== undefined
+        	? this.state.statusData[this.state.data.code].notes 
+        	: {};
         let allNotes = { ...this.state.data.notes, ...statusNotes };
 
         return (
@@ -391,10 +381,9 @@ class GameLog extends React.Component {
         const { preview } = this.props;
 
         let isSelected =
-            this.state.statusData[this.state.data.code] !== undefined &&
-            this.state.statusData[this.state.data.code].advancement !== undefined ?
-            this.state.statusData[this.state.data.code].advancement.active :
-            false;
+            this.state.statusData[this.state.data.code] !== undefined && this.state.statusData[this.state.data.code].advancement !== undefined
+            ? this.state.statusData[this.state.data.code].advancement.active 
+            : false;
 
         return (
             <Container className="advWrapper wrapper">
@@ -575,10 +564,9 @@ class GameLog extends React.Component {
 
     render_legacy = () => {
         const { preview } = this.props;
-        let footnote = !!this.state.data.dungeonMaster &&
-            this.state.data.dungeonMaster.isDm ?
-            dmRewardNote :
-            playerRewardNote;
+        let footnote = !!this.state.data.dungeonMaster && this.state.data.dungeonMaster.isDm
+        	? dmRewardNote 
+        	: playerRewardNote;
 
         return (
             <Container className="legacyWrapper wrapper">
@@ -647,6 +635,8 @@ class GameLog extends React.Component {
     //     }
 
     render_editData = () => {
+    	console.log({tempIsEpic: this.state.tempIsEpic, wasEpic: this.state.wasEpic});
+
         return (
             <ul className="editWrapper">
 
@@ -1019,7 +1009,18 @@ class GameLog extends React.Component {
 					<Modal.Title>Permanently delete?</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					<div className="modalBody"><span className="fauxdesto" dangerouslySetInnerHTML={{__html: this.state.data.code.toUpperCase().split("-").join("<span class='hyphen'>-</span>")}}></span> <span className="fauxdesto italic">{this.state.data.title}</span></div>
+					<div className="modalBody">
+						<span
+							className="fauxdesto"
+							dangerouslySetInnerHTML={{
+								__html: this.state.data.code
+									.toUpperCase()
+									.split("-")
+									.join("<span class='hyphen'>-</span>"),
+							}}
+						/>{" "}
+						<span className="fauxdesto italic">{this.state.data.title}</span>
+					</div>
 				</Modal.Body>
 				<Modal.Footer className="flexBetwixt">
 					<Button
