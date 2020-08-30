@@ -761,7 +761,7 @@ $halfGap: .25rem;
                         }
 
                         button {
-                            width: 130px;
+                            width: 125px;
 
                             font-size: 1rem;
                         }
@@ -923,6 +923,27 @@ $halfGap: .25rem;
                         }
                     }
                 }
+
+                .eventsRow {
+                    .eventLabel {
+                        margin-right: .5rem;
+                    }
+
+                    .flexRow {
+                        display: grid !important;
+
+                        grid-template-columns: repeat(2, 1fr);
+                        grid-gap: .5rem;
+                        grid-auto-rows: 1fr;
+
+                        @include flex(stretch, flex-start, row);
+
+                        .input-group {
+                            width: 100%;
+                            margin: 0 !important;
+                        }
+                    }
+                }
             }
         }
     }
@@ -1008,26 +1029,8 @@ $halfGap: .25rem;
 
         .editContent .editWrapper {
             .eventsRow {
-                margin-bottom: -.25rem;
-
-                .eventLabel {
-                    margin-bottom: .25rem !important;
-                }
-
                 .flexRow {
-                    flex-wrap: wrap;
-
-                    @include flex(stretch, flex-start, row);
-
-                    .input-group {
-                        margin-bottom: .25rem !important;
-
-                        flex-grow: 0;
-
-                        .eventTitle {
-                            flex-grow: 0;
-                        }
-                    }
+                    grid-template-columns: repeat(3, 1fr);
                 }
             }
 
