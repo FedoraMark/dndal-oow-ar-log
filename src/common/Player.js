@@ -1,21 +1,21 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
+import _each from "lodash/each";
+import _map from "lodash/map";
 import Collapse from "react-bootstrap/Collapse";
+import Dropdown from "react-bootstrap/Dropdown";
+import DropdownButton from "react-bootstrap/DropdownButton";
 import Fade from "react-bootstrap/Fade";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
-import Dropdown from "react-bootstrap/Dropdown";
-import DropdownButton from "react-bootstrap/DropdownButton";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import { useToasts } from "react-toast-notifications";
-import _map from "lodash/map";
-import _each from "lodash/each";
 
 import { HiPlusCircle } from "react-icons/hi";
 import { AiTwotoneDelete } from "react-icons/ai";
-import { IoIosCalculator } from "react-icons/io";
+import { IoIosCalculator, IoMdHelpCircle } from "react-icons/io";
 
 import Wealth from "common/Wealth";
 import EditButton from "common/EditButton";
@@ -42,20 +42,25 @@ class Player extends Component {
     static propTypes = {
         playerObj: PropTypes.object.isRequired,
         optionsObj: PropTypes.object,
+        saveHandler: PropTypes.func,
+        totalLevels: PropTypes.number.isRequired,
     };
 
     static defaultProps = {
         optionsObj: {
-            autoLeveling: false,
+            autoLeveling: "",
             tierSetting: 0,
             useEp: true,
         },
+        saveHandler: (e) => {},
     };
 
     state = {
         playerObj: this.props.playerObj,
         tempObj: { ...this.props.playerObj },
-        isEditing: false, // TRUE FOR TESTING
+
+        totalLevels: this.props.totalLevels,
+        isEditing: false,
         topClass: "",
         mountAnimSpeed: {},
 
@@ -63,7 +68,24 @@ class Player extends Component {
         autoLeveling: this.props.optionsObj.autoLeveling,
         tierSetting: this.props.optionsObj.tierSetting,
         useEp: this.props.optionsObj.useEp,
+
+        // temp
+    	tempAutoLeveling: this.props.optionsObj.autoLeveling,
+        tempTierSetting: this.props.optionsObj.tierSetting,
+        tempUseEp: this.props.optionsObj.useEp,
+        
     };
+
+    componentWillReceiveProps(newProps) {
+        this.setState({
+            playerObj: newProps.playerObj,
+            totalLevels: newProps.totalLevels,
+
+            autoLeveling: newProps.optionsObj.autoLeveling,
+            tierSetting: newProps.optionsObj.tierSetting,
+            useEp: newProps.optionsObj.useEp,
+        });
+    }
 
     //FUNCTIONS
     getPlayerDciStr = () => {
@@ -82,16 +104,31 @@ class Player extends Component {
 
     editInfo = (closeWithoutSaving) => {
         if (this.state.isEditing && !closeWithoutSaving) {
-            this.setState({
-                isEditing: false,
-                playerObj: trimStringsInObjectFlatly({
-                    ...this.state.tempObj,
-                }),
+            // SAVE
+            this.saveAutoLevel().then((p) => {
+	            this.setState({
+	                isEditing: false,
+	                playerObj: trimStringsInObjectFlatly({...this.state.tempObj}),
+	                autoLeveling: this.state.tempAutoLeveling,
+	            	tierSetting: this.state.tempTierSetting,
+	            	useEp: this.state.tempUseEp
+	            }, this.props.saveHandler(
+	            	trimStringsInObjectFlatly({...this.state.tempObj}), 
+	            	{
+	                	autoLeveling: this.state.tempAutoLeveling,
+	                	tierSetting: this.state.tempTierSetting,
+	                	useEp: this.state.tempUseEp
+	            	}
+	            ))
             });
         } else {
+            // CANCEL
             this.setState({
                 isEditing: !this.state.isEditing,
                 tempObj: { ...this.state.playerObj },
+                tempAutoLeveling: this.props.optionsObj.autoLeveling,
+                tempTierSetting: this.props.optionsObj.tierSetting,
+                tempUseEp: this.props.optionsObj.useEp
             });
         }
     };
@@ -113,7 +150,7 @@ class Player extends Component {
     calcWealth = () => {
         let condensedObj = condenseWealth(
             getTotalCopper(this.state.tempObj.wealth),
-            this.state.useEp
+            this.state.tempUseEp
         );
 
         if (
@@ -128,8 +165,8 @@ class Player extends Component {
     };
 
     getTier = () => {
-        if (this.state.tierSetting > 0) {
-            return this.state.tierSetting;
+        if (this.state.tempTierSetting > 0) {
+            return this.state.tempTierSetting;
         }
 
         var totalLevel = 0;
@@ -144,7 +181,7 @@ class Player extends Component {
         return 4;
     };
 
-    setUseEp = (val) => {
+    settempUseEp = (val) => {
         // convert EP to SP and add to SP
         if (!val && this.state.tempObj.wealth.ep !== 0) {
             var newWealthObj = { ...this.state.tempObj.wealth };
@@ -157,7 +194,7 @@ class Player extends Component {
             );
         }
 
-        this.setState({ useEp: val });
+        this.setState({ tempUseEp: val });
     };
 
     addNewClass = () => {
@@ -172,8 +209,6 @@ class Player extends Component {
 
         var newClassObj = { ...this.state.tempObj.classes };
         var newClassName = "";
-
-        // *** "classes" should really be an array instead of an object ***
 
         // prevent duplicate names
         let i = Object.keys(newClassObj).length + 1;
@@ -211,6 +246,33 @@ class Player extends Component {
     setTopClass = (clss) => {
         this.setState({ topClass: clss });
     };
+
+    getAutoLevel = () => {
+    	var otherLevelCount = 0;
+
+    	_map(this.state.tempObj.classes, (lv,clss) => {
+    		if (clss !== this.state.tempAutoLeveling) {
+    			otherLevelCount += lv;
+    		}
+    	})
+
+    	if (otherLevelCount >= this.state.totalLevels) {
+    		// console.error("WARNING: Manual levels ");
+    		return 0;
+    	}
+
+    	return this.state.totalLevels - otherLevelCount;
+    	
+    }
+
+    saveAutoLevel = async (clss) => {
+    	_map(this.state.tempObj.classes, (lv,clss) => {
+    		if (clss === this.state.tempAutoLeveling) {
+    			this.setClassLevel(clss,clss,this.getAutoLevel())
+    			return;
+    		}
+    	});
+    }
 
     //RENDERERS
     render_displayInfo = () => {
@@ -280,17 +342,15 @@ class Player extends Component {
 									: ":")}
 						</h1>
 						<p className="classList">
-							{_map(
-								this.state.playerObj.classes,
-								(level, clss) => {
-									return (
-										<span className="class" key={clss}>
-											{clss + " (" + level + ")"}
-											<span className="comma">, </span>
-										</span>
-									);
-								}
-							)}
+							{_map(this.state.playerObj.classes,(level, clss) => {
+								var autoLevelNum = this.state.autoLeveling === clss ? this.getAutoLevel() : level
+								return (
+									<span className="class" key={clss}>
+										{clss + " (" + autoLevelNum + ")"}
+										<span className="comma">, </span>
+									</span>
+								);
+							})}
 						</p>
 					</div>
 				)}
@@ -434,7 +494,7 @@ class Player extends Component {
 										];
 
 										if (
-											!this.state.useEp &&
+											!this.state.tempUseEp &&
 											denom === "ep"
 										) {
 											return <></>;
@@ -524,29 +584,28 @@ class Player extends Component {
 							</InputGroup>
 
 							<div className="dropdownsWrapper middleGroup">
-								{_map(
-									this.state.tempObj.classes,
-									(level, clss) => {
-										return (
-											<InputGroup
-												key={clss}
-												className={classnames(
-													"playerInfoGroup classDropdownGroup",
-													animFaster,
-													bounceIn,
-													this.state.topClass === clss && "zFix",
-													classLen === 1 &&
-														"firstLast"
-												)}
-												onClick={this.setTopClass.bind(this,clss)}
-												style={this.state.mountAnimSpeed}
-											>
-												{this.render_classLevelDropDown(clss,level
-												)}
-											</InputGroup>
-										);
-									}
-								)}
+								{_map(this.state.tempObj.classes, (level, clss) => {
+									var levelForClass = clss === this.state.tempAutoLeveling ? this.getAutoLevel() : level;
+
+									return (
+										<InputGroup
+											key={clss}
+											className={classnames(
+												"playerInfoGroup classDropdownGroup",
+												animFaster,
+												bounceIn,
+												this.state.topClass === clss && "zFix",
+												classLen === 1 && "firstLast",
+												this.state.tempAutoLeveling !== "" && "disabled",
+												this.state.tempAutoLeveling === clss && "disabledClass"
+											)}
+											onClick={this.setTopClass.bind(this,clss)}
+											style={this.state.mountAnimSpeed}
+										>
+											{this.render_classLevelDropDown(clss,levelForClass)}
+										</InputGroup>
+									);
+								})}
 
 								<InputGroup className="fillerGroup filler1" />
 								<InputGroup className="fillerGroup filler2" />
@@ -556,7 +615,6 @@ class Player extends Component {
 								className="addClassGroup rightGroup"
 								onClick={this.addNewClass.bind(this)}
 							>
-								{/* <OverlayTrigger placement="bottom" overlay={<Tooltip>Add Class</Tooltip>}> */}
 								<InputGroup.Append>
 									<InputGroup.Text id="add-class">
 										<span className="plusIcon">
@@ -564,7 +622,6 @@ class Player extends Component {
 										</span>
 									</InputGroup.Text>
 								</InputGroup.Append>
-								{/* </OverlayTrigger> */}
 							</InputGroup>
 						</li>
 
@@ -578,30 +635,47 @@ class Player extends Component {
 								</InputGroup.Prepend>
 							</InputGroup>
 
-							<div className="playerInfoOptions">
+							<div className="playerInfoOptions middleGroup">
 								{/* set leveling */}
 								<InputGroup className="playerInfoGroup dropdownGroup">
 									<DropdownButton
 										variant="light"
-										title={this.state.autoLeveling? "Auto Levels": "Manual Levels"}
+										title={this.state.tempAutoLeveling ? ("Auto-leveling " + this.state.tempAutoLeveling.toUpperCase()) : "Manual Levels"}
 										alignRight
 									>
 										<Dropdown.Item
 											href="#"
 											eventKey="f"
-											active={this.state.autoLeveling ===false}
-											onSelect={(e) => {this.setState({autoLeveling: false});}}
+											active={this.state.tempAutoLeveling === ""}
+											onSelect={(e) => {this.setState({tempAutoLeveling: ""});}}
 										>
-											Manual
+											Manually Assign Levels
 										</Dropdown.Item>
-										<Dropdown.Item
-											href="#"
-											eventKey="t"
-											active={this.state.autoLeveling === true}
-											onSelect={(e) => {this.setState({autoLeveling: true});}}
-										>
-											Auto
-										</Dropdown.Item>
+
+										<Dropdown.Divider />
+
+										{Object.keys(this.state.tempObj.classes).length === 0 && 
+											<Dropdown.Item
+												href="#"
+												disabled
+											>
+												(create a class to auto-level)
+											</Dropdown.Item>
+										}
+
+										{_map(this.state.tempObj.classes, (level, clss) => {
+											return (
+												<Dropdown.Item
+													href="#"
+													key={clss}
+													eventKey={clss}
+													active={this.state.tempAutoLeveling === clss}
+													onSelect={(e) => {this.setState({tempAutoLeveling: clss})}}
+												>
+													Auto-level {clss.toUpperCase()}
+												</Dropdown.Item>
+											);
+										})}
 									</DropdownButton>
 								</InputGroup>
 
@@ -609,79 +683,73 @@ class Player extends Component {
 								<InputGroup className="playerInfoGroup dropdownGroup">
 									<DropdownButton
 										variant="light"
-										title={this.state.tierSetting > 0? "Tier " +this.state.tierSetting: "Auto Tier"}
+										title={this.state.tempTierSetting > 0 ? "Tier " + this.state.tempTierSetting : "Auto Tier"}
 										alignRight
 									>
 										<Dropdown.Item
 											href="#"
 											eventKey="0"
-											active={this.state.tierSetting === 0}
-											onSelect={(e) => {this.setState({tierSetting: 0});}}
+											active={this.state.tempTierSetting === 0}
+											onSelect={(e) => {this.setState({tempTierSetting: 0});}}
 										>
 											Auto
 										</Dropdown.Item>
 										<Dropdown.Divider />
-										<Dropdown.Item
-											href="#"
-											eventKey="1"
-											active={this.state.tierSetting === 1}
-											onSelect={(e) => {this.setState({tierSetting: 1});}}
-										>
-											Tier 1
-										</Dropdown.Item>
-										<Dropdown.Item
-											href="#"
-											eventKey="2"
-											active={this.state.tierSetting === 2}
-											onSelect={(e) => {this.setState({tierSetting: 2});}}
-										>
-											Tier 2
-										</Dropdown.Item>
-										<Dropdown.Item
-											href="#"
-											eventKey="3"
-											active={this.state.tierSetting === 3}
-											onSelect={(e) => {this.setState({tierSetting: 3});}}
-										>
-											Tier 3
-										</Dropdown.Item>
-										<Dropdown.Item
-											href="#"
-											eventKey="4"
-											active={this.state.tierSetting === 4}
-											onSelect={(e) => {this.setState({tierSetting: 4});}}
-										>
-											Tier 4
-										</Dropdown.Item>
+										{_map([1,2,3,4], (t) => {
+											return (
+												<Dropdown.Item
+													href="#"
+													key={t}
+													eventKey={t}
+													active={this.state.tempTierSetting === t}
+													onSelect={(e) => {this.setState({tempTierSetting: t});}}
+												>
+													Tier {t}
+												</Dropdown.Item>
+											);
+										})}
 									</DropdownButton>
 								</InputGroup>
 
-								{/* set useEp */}
+								{/* set tempUseEp */}
 								<InputGroup className="playerInfoGroup dropdownGroup">
 									<DropdownButton
 										variant="light"
-										title={this.state.useEp ? "Include EP" : "Exclude EP"}
+										title={this.state.tempUseEp ? "Include EP" : "Exclude EP"}
 										alignRight
 									>
 										<Dropdown.Item
 											href="#"
 											eventKey="t"
-											active={this.state.useEp === true}
-											onSelect={this.setUseEp.bind(this,true)}
+											active={this.state.tempUseEp === true}
+											onSelect={this.settempUseEp.bind(this,true)}
 										>
 											Include EP
 										</Dropdown.Item>
 										<Dropdown.Item
 											href="#"
 											eventKey="f"
-											active={this.state.useEp === false}
-											onSelect={this.setUseEp.bind(this,false)}
+											active={this.state.tempUseEp === false}
+											onSelect={this.settempUseEp.bind(this,false)}
 										>
 											Exclude EP
 										</Dropdown.Item>
 									</DropdownButton>
 								</InputGroup>
 							</div>
+
+							<InputGroup
+								className="addClassGroup rightGroup"
+								onClick={(e)=>{console.log("INSTRUCTIONS");}}
+							>
+								<InputGroup.Append>
+									<InputGroup.Text id="add-class">
+										<span className="helpIcon">
+											<IoMdHelpCircle />
+										</span>
+									</InputGroup.Text>
+								</InputGroup.Append>
+							</InputGroup>
 						</li>
 					</ul>
 				</div>
@@ -690,17 +758,13 @@ class Player extends Component {
     };
 
     render_classLevelDropDown = (selClass, selLevel) => {
-        return ( 
-        	<>
-				<DropdownButton
+        return ( <>
+            <DropdownButton
 					as={InputGroup.Prepend}
 					variant="secondary"
 					title={selClass}
-					onSelect={(e) => {
-						this.setState({
-							mountAnimSpeed: { animationDuration: "0s" },
-						});
-					}}
+					disabled={selClass === this.state.tempAutoLeveling}
+					onSelect={(e) => {this.setState({mountAnimSpeed: { animationDuration: "0s" }});}}
 				>
 					{_map(classes5e, (c, i) => {
 						if (selClass === c) {
@@ -741,10 +805,7 @@ class Player extends Component {
 								</Dropdown.Item>
 							);
 						}
-						if (
-							k !== selClass &&
-							!Object.keys(this.state.tempObj.classes).includes(k)
-						) {
+						if (k !== selClass && !Object.keys(this.state.tempObj.classes).includes(k)) {
 							return (
 								<Dropdown.Item
 									key={j}
@@ -766,15 +827,22 @@ class Player extends Component {
 						<AiTwotoneDelete />
 					</Dropdown.Item>
 				</DropdownButton>
-				
+
 				<DropdownButton
 					as={InputGroup.Append}
 					variant="outline-secondary"
 					title={selLevel}
+					disabled={this.state.tempAutoLeveling !== ""}
 					alignRight
-					className="levelDropdown"
+					className={classnames(
+						"levelDropdown",
+						this.state.tempAutoLeveling !== "" && "disabled"
+					)}
 				>
-					{_map(Array.from(Array(20), (_, i) => {return i + 1;}),
+					{_map(
+						Array.from(Array(20), (_, i) => {
+							return i + 1;
+						}),
 						(l) => {
 							return (
 								<Dropdown.Item
@@ -789,7 +857,7 @@ class Player extends Component {
 						}
 					)}
 				</DropdownButton>
-			</>
+            </>
         );
     };
 

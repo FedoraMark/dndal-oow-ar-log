@@ -281,6 +281,19 @@ $halfGap: .25rem;
 
                     @include flex(stretch, flex-start, column);
 
+                    .disabled {
+                        .levelDropdown,
+                        &.disabledClass .dropdown {
+                            button:after {
+                                display: none;
+                            }
+                        }
+
+                        &.disabledClass div:not(.levelDropdown) button {
+                            text-decoration: underline;
+                        }
+                    }
+
                     .classDropdownGroup {
                         &.zFix {
                             z-index: 900;
@@ -386,30 +399,65 @@ $halfGap: .25rem;
                     &:not(:last-of-type) {
                         margin-right: $gap;
                     }
+                }
 
-                    .remove {
-                        font-weight: 400;
+                .remove {
+                    font-weight: 400;
 
-                        @include flex(center, space-between);
+                    color: $color-bs-danger;
+
+                    @include flex();
+
+                    span {
+                        margin-right: .5rem;
                     }
                 }
             }
 
             .optionsLevelWrapper {
                 margin: 0 $gap;
-                margin-bottom: -$halfGap !important;
 
                 .leftGroup {
-                    margin: 0 $halfGap $halfGap 0;
+                    margin: 0 $halfGap 0 0;
 
                     flex-basis: 0;
+                }
+
+                .rightGroup {
+                    margin-bottom: 0;
+                    margin-left: $gap;
+
+                    flex-basis: 0;
+
+                    &:hover,
+                    &:focus {
+                        .input-group-text {
+                            color: white;
+                            background-color: $color-active-background;
+                        }
+                    }
+                    .input-group-append {
+                        width: 50px;
+
+                        .input-group-text {
+                            cursor: pointer;
+
+                            @include transition();
+                        }
+
+                        .helpIcon {
+                            margin-top: -.3rem;
+
+                            font-size: 1.21rem;
+                        }
+                    }
                 }
 
                 .playerInfoOptions {
                     flex-wrap: wrap;
                     flex-grow: 1;
 
-                    @include flex(center, flex-start, row);
+                    @include flex(stretch, stretch, row);
 
                     .dropdownGroup {
                         width: 100%;
@@ -419,12 +467,16 @@ $halfGap: .25rem;
 
                         white-space: nowrap;
 
+                        &:last-of-type {
+                            margin-bottom: 0;
+                        }
 
                         .dropdown {
                             width: 100%;
 
                             button {
                                 width: 100%;
+                                height: 100%;
                                 padding-right: 2rem;
                                 padding-left: 1rem;
 
@@ -484,12 +536,6 @@ $halfGap: .25rem;
                 margin-bottom: .25rem !important;
             }
         }
-
-        .optionsLevelWrapper .playerInfoOptions .dropdownGroup {
-            width: auto;
-
-            flex-grow: 1;
-        }
     }
 }
 
@@ -527,6 +573,18 @@ $halfGap: .25rem;
 
                 .rightGroup {
                     margin-left: 0;
+                }
+            }
+
+            .optionsLevelWrapper .playerInfoOptions .dropdownGroup {
+                width: auto;
+                margin-bottom: 0;
+
+                flex-basis: 0;
+                flex-grow: 1;
+
+                &:not(:first-of-type) {
+                    margin-left: $gap;
                 }
             }
         }

@@ -40,7 +40,7 @@ class AdvRecordLog extends React.Component {
 	        "wealth": {cp: 0, sp: 0, ep: 0, gp: 0, pp: 0}
 	    },
 	    optionsData: {
-	    	autoLeveling: false,
+	    	autoLeveling: "",
 			tierSetting: 0,
 			useEp: true
 	    },
@@ -58,6 +58,10 @@ class AdvRecordLog extends React.Component {
 	}
 
 	//FUNCTIONS
+	savePlayerDataHandler = (playerObj, optionsObj) => {
+		this.setState({charData: playerObj, optionsData: optionsObj});
+	}
+
 	toggleAddRecordArea = () => {
 		this.setState({ showAddRecordArea: !this.state.showAddRecordArea });
 	};
@@ -177,10 +181,6 @@ class AdvRecordLog extends React.Component {
 		this.setState({eventArr: eventArr});
 	}
 
-	handleOptionsUpdate = (options) => {
-		this.setState({optionsData: options});
-	}
-
 	handleDelete = (code) => {
 		this.setState({deleteCode: code});
 	}
@@ -202,6 +202,18 @@ class AdvRecordLog extends React.Component {
 		newStatusData.splice(index,1);
 
 		this.setState({deleteCode: -1, gameData: newGameData, statusData: newStatusData});
+	}
+
+	getTotalLoggedLevels = () => {
+		var levelCount = 0;
+
+		_map(this.state.statusData, (status,index) => {
+			if (!!getFirstObject(status).advancement && getFirstObject(status).advancement.active) {
+				levelCount++;
+			}
+		});
+
+		return levelCount;
 	}
 
 	//RENDERERS
@@ -398,7 +410,13 @@ class AdvRecordLog extends React.Component {
 
 					<span className="contentWrapper">
 						<Container>
-							<Player playerObj={this.state.charData} optionsData={this.state.optionsData} />
+							<Player 
+								playerObj={this.state.charData}
+								optionsObj={this.state.optionsData}
+								saveHandler={this.savePlayerDataHandler}
+								totalLevels={this.getTotalLoggedLevels()}
+							/>
+
 						</Container>
 
 						{this.render_newRecordArea()}
