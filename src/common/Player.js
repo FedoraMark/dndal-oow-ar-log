@@ -170,9 +170,14 @@ class Player extends Component {
         }
 
         var totalLevel = 0;
-        _each(this.state.playerObj.classes, (lv) => {
-            totalLevel += lv;
-        });
+
+        if (this.state.autoLeveling !== "") {
+        	totalLevel = this.state.totalLevels;
+        } else {
+	        _each(this.state.playerObj.classes, (lv) => {
+	            totalLevel += lv;
+	        });
+	    }
 
         if (totalLevel < 1) { return 0; }
         if (totalLevel < 5) { return 1; }
