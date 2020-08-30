@@ -195,7 +195,8 @@ class AdvRecordLog extends React.Component {
 		}
 
 		var newGameData = [...this.state.gameData];
-		let title = newGameData.splice(index, 1).title;
+		newGameData.splice(index, 1);
+		// let title = newGameData.splice(index, 1).title; // ADD TOAST
 
 		this.setState({deleteCode: -1, gameData: newGameData});
 	}
