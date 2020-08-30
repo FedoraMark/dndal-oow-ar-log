@@ -170,6 +170,8 @@
         @include transition();;
 
         &:not(.openBar) {
+            overflow: hidden;
+
             pointer-events: none;
 
             .toggle {
