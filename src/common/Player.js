@@ -13,12 +13,13 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import { useToasts } from "react-toast-notifications";
 
-import { HiPlusCircle } from "react-icons/hi";
 import { AiTwotoneDelete } from "react-icons/ai";
+import { HiPlusCircle } from "react-icons/hi";
 import { IoIosCalculator, IoMdHelpCircle } from "react-icons/io";
 
 import Wealth from "common/Wealth";
 import EditButton from "common/EditButton";
+
 import {
     animFaster,
     bounceIn,

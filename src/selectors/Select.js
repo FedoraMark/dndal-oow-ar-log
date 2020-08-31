@@ -16,7 +16,6 @@ class Select extends React.Component {
         selectHandler: PropTypes.func,
         isExpended: PropTypes.bool,
         title: PropTypes.string,
-        suppressReset: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -27,14 +26,12 @@ class Select extends React.Component {
         selectHandler: (e) => {},
         isExpended: false,
         title: "N-A",
-        suppressReset: false,
     };
 
     state = {
         isSelected: this.props.isSelected,
         isDisabled: this.props.isDisabled,
         isExpended: this.props.isExpended,
-        suppressReset: this.props.suppressReset,
     };
 
     componentWillReceiveProps(nextProps) {
@@ -43,13 +40,7 @@ class Select extends React.Component {
                 isSelected: nextProps.isSelected,
                 isDisabled: nextProps.isDisabled,
                 isExpended: nextProps.isExpended,
-                suppressReset: nextProps.suppressReset
             },
-            () => {
-                if (!nextProps.suppressReset && nextProps.isDisabled && !nextProps.isExpended) {
-                    this.setState({ isSelected: false });
-                }
-            }
         );
     }
 

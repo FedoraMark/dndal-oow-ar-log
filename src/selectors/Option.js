@@ -16,7 +16,6 @@ class Option extends React.Component {
         optionHandler: PropTypes.func,
         title: PropTypes.string,
         isExpended: PropTypes.bool,
-        suppressReset: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -26,14 +25,12 @@ class Option extends React.Component {
         optionHandler: (e) => {},
         title: "N-A",
         isExpended: false,
-        suppressReset: false,
     };
 
     state = {
         selection: this.props.selection,
         isDisabled: this.props.isDisabled,
         isExpended: this.props.isExpended,
-        suppressReset: this.props.suppressReset,
     };
 
     componentWillReceiveProps(nextProps) {
@@ -42,13 +39,7 @@ class Option extends React.Component {
                 isDisabled: nextProps.isDisabled,
                 selection: nextProps.selection,
                 isExpended: nextProps.isExpended,
-                suppressReset: nextProps.suppressReset,
             },
-            () => {
-                if (!nextProps.suppressReset && nextProps.isDisabled && !nextProps.isExpended) {
-                    this.setState({ selection: -1 });
-                }
-            }
         );
     }
 

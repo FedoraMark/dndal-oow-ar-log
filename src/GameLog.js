@@ -14,9 +14,9 @@ import InputGroup from "react-bootstrap/InputGroup";
 import Modal from "react-bootstrap/Modal";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
+import { useToasts } from "react-toast-notifications";
 
 import { AiTwotoneDelete, AiFillCloseCircle } from "react-icons/ai";
-// import { BiCaretLeft, BiCaretRight } from "react-icons/bi";
 import { FaDiceD20 } from "react-icons/fa";
 import { FaSave } from "react-icons/fa";
 import { ImMenu2 } from "react-icons/im";
@@ -29,15 +29,26 @@ import {
     getFirstKey,
 } from "utils/Util";
 
-import Event from "selectors/Event";
-import Select from "selectors/Select";
-import Option from "selectors/Option";
+import EditButton from "common/EditButton";
 import Wealth from "common/Wealth";
 import WealthEdit from "common/WealthEdit";
-import EditButton from "common/EditButton";
+import Event from "selectors/Event";
+import Option from "selectors/Option";
+import Select from "selectors/Select";
 
 import "animate.css";
 import "GameLog.scss";
+
+const EXPENDED = -1;
+const UNSELECTED = 0;
+const ACTIVE = 1;
+
+function withToast(Component) {
+    return function WrappedComponent(props) {
+        const toastFuncs = useToasts();
+        return <Component {...props} {...toastFuncs} />; //BUG - Exclude EP - "Warning: Each child in a list should have a unique "key" prop.""
+    };
+}
 
 class GameLog extends React.Component {
     constructor(props) {
@@ -121,9 +132,7 @@ class GameLog extends React.Component {
 
         if (doActive || getFirstObject(eventStatus).active) {
             // IF ACTIVE
-            stats = {
-                [code]: { ...this.state.statusData[code], ...eventStatus }
-            };
+            stats = {[code]: { ...this.state.statusData[code], ...eventStatus }};
         } else {
             //IF DISABLED
             delete stats[code][getFirstKey(eventStatus)];
@@ -232,6 +241,47 @@ class GameLog extends React.Component {
                 tempIsEpic: this.state.wasEpic
             });
     };
+
+    setEvent = (eTitle, eState) => {
+	    var existingData = !!this.state.statusData[this.props.data.code] && !!this.state.statusData[this.props.data.code][eTitle]
+	    	? { ...this.state.statusData[this.props.data.code][eTitle] }
+	    	: {};
+
+	    switch (eState) {
+	        case UNSELECTED:
+	            existingData[eTitle] = {
+	                ...existingData,
+	                legacy: false,
+	                active: false,
+	                expended: false,
+	                selections: [],
+	                option: -1,
+	            };
+	            break;
+	        case ACTIVE:
+	            existingData[eTitle] = {
+	                ...existingData,
+	                legacy: true,
+	                active: true,
+	                expended: false,
+	            };
+	            break;
+	        case EXPENDED:
+	            existingData[eTitle] = {
+	                ...existingData,
+	                legacy: true,
+	                active: true,
+	                expended: true,
+	            };
+	            break;
+	        default:
+	            console.warn( "WARNING: Invalid state (" + eState + ") for event " + eTitle + " in " + this.props.data.code );
+	            return;
+	    }
+
+	    this.props.addToast(("Updated " + eTitle.toUpperCase()), { appearance: "info" });
+	    this.updateEventHandler(existingData, true);
+	};
 
     //RENDERERS
     render_titleAndCode = (type, code, title) => {
@@ -406,7 +456,6 @@ class GameLog extends React.Component {
 					<Select
 						label={this.state.data.advancement.label}
 						type="checkbox"
-						suppressReset
 						isBold
 						isSelected={isSelected}
 						isDisabled={preview || this.state.isEditing}
@@ -431,7 +480,6 @@ class GameLog extends React.Component {
 				<h1 className="sectionTitle">Rewards</h1>
 				<div className="box rewardsContent">
 					{_map(this.state.data.rewards, (rewardGroup, groupKey) => {
-						//CLEANUP - should be type of <Event /> component
 						let groupName = "rewardGroup" + groupKey;
 						var option = -1;
 						var selectArray = [];
@@ -468,7 +516,6 @@ class GameLog extends React.Component {
 									<Option
 										options={rewardGroup.options}
 										canBlank
-										suppressReset
 										isDisabled={preview || this.state.isEditing}
 										selection={option}
 										title={groupName}
@@ -486,7 +533,6 @@ class GameLog extends React.Component {
 														key={selectKey}
 														label={selection}
 														type="checkbox"
-														suppressReset
 														isDisabled={preview || this.state.isEditing}
 														isSelected={selectArray.includes(selectKey)}
 														title={groupName}
@@ -640,18 +686,11 @@ class GameLog extends React.Component {
         );
     };
 
-    //     render_tierOverride = (tier, dflt) => {
-    //         if (tier !== dflt) {
-    //             return <span>Tier {tier}</span>
-    //         }
-    // 
-    //         return <span><BiCaretRight />Tier {tier}<BiCaretLeft /></span>
-    //     }
-
     render_editData = () => {
         return (
             <ul className="editWrapper">
 
+            	{/* OPTIONS */}
 				<li className="editRow optionsRow">
 					<InputGroup className="optionsLabel">
 						<InputGroup.Prepend className="oswald">
@@ -727,7 +766,7 @@ class GameLog extends React.Component {
 						{/* 					active={false} */}
 						{/* 					onSelect={(e) => {}} */}
 						{/* 				> */}
-						{/* 					{this.render_tierOverride(t, this.state.data.tier)} */}
+						{/* 					Tier {t} */}{/* NOTE DEFAULT  */}
 						{/* 				</Dropdown.Item> */}
 						{/* 			); */}
 						{/* 		})} */}
@@ -764,6 +803,7 @@ class GameLog extends React.Component {
 
 				<hr />
 
+				{/* PLAYER NOTES */}
 				<InputGroup as="li" className="editRow">
 					<InputGroup.Prepend>
 						<InputGroup.Text className="oswald">
@@ -779,6 +819,7 @@ class GameLog extends React.Component {
 					/>
 				</InputGroup>
 
+				{/* DUNGEON MASTER GROUP */}
 				<li className={classnames("editRow flexRow", this.state.tempIsDm && "disable")}>
 					<InputGroup>
 						<InputGroup.Prepend>
@@ -813,6 +854,7 @@ class GameLog extends React.Component {
 					</InputGroup>
 				</li>
 
+				{/* EVENT AND DATE GROUP */}
 				<li className="editRow flexRow">
 					<InputGroup>
 						<InputGroup.Prepend>
@@ -847,6 +889,7 @@ class GameLog extends React.Component {
 
 				<hr />
 
+				{/* LEGACY EVENTS */}
 				<li className="editRow eventsRow">
 					<InputGroup className="eventLabel">
 						<InputGroup.Prepend className="oswald">
@@ -861,7 +904,7 @@ class GameLog extends React.Component {
 							var variant = "light"
 							if (!!this.state.statusData[this.state.data.code] && !!this.state.statusData[this.state.data.code][event.title]) {
 								if (!!this.state.statusData[this.state.data.code][event.title].active) {
-									selection = "Selected";
+									selection = "Active";
 									variant = "primary";
 								}
 
@@ -880,9 +923,27 @@ class GameLog extends React.Component {
 									</InputGroup.Prepend>
 
 									<DropdownButton as={InputGroup.Append} alignRight variant={variant} title={selection} className={selection}>
-										<Dropdown.Item eventKey="0" active={selection === "Unselected"}>Unselected</Dropdown.Item>
-										<Dropdown.Item eventKey="1" active={selection === "Selected"}>Selected</Dropdown.Item>
-										<Dropdown.Item eventKey="-1" active={selection === "Expended"}>Expended</Dropdown.Item>
+										<Dropdown.Item 
+											eventKey={UNSELECTED} 
+											active={selection === "Unselected"} 
+											onSelect={this.setEvent.bind(this,event.title,UNSELECTED)}
+										>
+											Unselected
+										</Dropdown.Item>
+										<Dropdown.Item 
+											eventKey={ACTIVE} 
+											active={selection === "Active"} 
+											onSelect={this.setEvent.bind(this,event.title,ACTIVE)}
+										>
+											Active
+										</Dropdown.Item>
+										<Dropdown.Item 
+											eventKey={EXPENDED} 
+											active={selection === "Expended"} 
+											onSelect={this.setEvent.bind(this,event.title,EXPENDED)}
+										>
+											Expended
+										</Dropdown.Item>
 									</DropdownButton>
 								</InputGroup>
 							);
@@ -894,6 +955,7 @@ class GameLog extends React.Component {
 
 				<hr />
 
+				{/* WEALTH */}
 				<li className="editRow wealthRow">
 					{_map({"Starting": {}, "Spent (–)": {}, "Earned (+)": {}, "Ending": {}}, (wealth,label) => {
 						var condenseLabel;
@@ -944,6 +1006,7 @@ class GameLog extends React.Component {
 
 				<hr />
 
+				{/* ACTIONS */}
 				<li className="editRow actionsRow">
 					<InputGroup className="actionLabel">
 						<InputGroup.Prepend className="oswald">
@@ -1001,8 +1064,6 @@ class GameLog extends React.Component {
 						</Button>
 					</div>
 				</li>
-
-				{/* TO BE DONE: Save Legacy and Wealth changes, hook up calcs, auto-calc ending wealth, USE EP (local), Move */}
 				
 			</ul>
         );
@@ -1182,8 +1243,8 @@ class GameLog extends React.Component {
             // 			);
         }
 
-        return < > < />;
+        return <></>;
     }
 }
 
-export default GameLog;
+export default withToast(GameLog);

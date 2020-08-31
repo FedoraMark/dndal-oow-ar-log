@@ -1,0 +1,13 @@
+diff --git a/node_modules/react-toast-notifications/dist/ToastElement.js b/node_modules/react-toast-notifications/dist/ToastElement.js
+index c32a527..2de9eb3 100644
+--- a/node_modules/react-toast-notifications/dist/ToastElement.js
++++ b/node_modules/react-toast-notifications/dist/ToastElement.js
+@@ -203,7 +203,7 @@ function getTranslate(placement) {
+ 
+ var toastStates = function toastStates(placement) {
+   return {
+-    entering: { transform: getTranslate(placement) },
++    entering: { transitionProperty: 'none', transform: getTranslate(placement) },
+     entered: { transform: 'translate3d(0,0,0)' },
+     exiting: { transform: 'scale(0.66)', opacity: 0 },
+     exited: { transform: 'scale(0.66)', opacity: 0 }

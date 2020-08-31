@@ -103,22 +103,18 @@ class AdvRecordLog extends React.Component {
 
 	// get detailed status info for given code and event title
 	getStatusInfo = (code, title) => {
-		// console.log(code + " - " + title);
 
 		let statusInfo = _find(this.state.statusData, (o) => {
 			return getFirstKey(o) === code;
 		})[code][title];
-		// console.log(statusInfo);
 
 		let recordData = _find(games_oow.records, (r) => {
 			return r.code === code;
 		});
-		// console.log(recordData.legacy.events);
 
 		let eventData = _find(recordData.legacy.events, (e) => {
 			return e.title === title;
 		});
-		// console.log(eventData); 
 
 		//description, title, checkboxes, radios, table
 		var eventDetails = {};
@@ -126,8 +122,6 @@ class AdvRecordLog extends React.Component {
 			let expendedBool = statusInfo.expended !== undefined ? statusInfo.expended : false; // TEMPORARY
 
 			eventDetails = {title: title, code: code, description: eventData.description, option: null, selections: [], expended: expendedBool}
-
-			// console.log(statusInfo);
 
 			if (statusInfo.option !== undefined && statusInfo.option !== -1) {
 				if (eventData.radios) {
@@ -145,8 +139,6 @@ class AdvRecordLog extends React.Component {
 				eventDetails.selections.sort();
 			}
 		}
-
-		// console.log(eventDetails);
 
 		return eventDetails; 
 	};
