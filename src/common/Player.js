@@ -9,6 +9,7 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 import Fade from "react-bootstrap/Fade";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
+import Modal from "react-bootstrap/Modal";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import { useToasts } from "react-toast-notifications";
@@ -64,6 +65,7 @@ class Player extends Component {
         isEditing: false,
         topClass: "",
         mountAnimSpeed: {},
+        showHelpModal: false,
 
         // options
         autoLeveling: this.props.optionsObj.autoLeveling,
@@ -743,7 +745,7 @@ class Player extends Component {
 
 							<InputGroup
 								className="addClassGroup rightGroup"
-								onClick={(e)=>{console.log("INSTRUCTIONS");}}
+								onClick={(e) => {this.setState({showHelpModal: true});}}
 							>
 								<InputGroup.Append>
 									<InputGroup.Text id="add-class">
@@ -864,9 +866,61 @@ class Player extends Component {
         );
     };
 
+    render_helpModal = () => {
+    	return (
+    		<Modal
+				className="helpModal"
+				size={"lg"}
+				show={this.state.showHelpModal}
+				onHide={(e) => {this.setState({showHelpModal: false});}}
+			>
+				<Modal.Header closeButton>
+					<Modal.Title>Player Options Help</Modal.Title>
+				</Modal.Header>
+				<Modal.Body>
+					<ul className="helpList">
+						<li>
+							<h1>Manual and Auto Leveling</h1>
+							<ul>
+								<li>After adding a class you can choose one of your classes to automatically add levels.</li>
+								<li>Levels added are the total number of checked Advancements in game logs (minus any multiclassing levels) starting at level 1.</li>
+								<li>If there are more levels set from multiclassing than total levels, then the selected class' level will be 0.</li>
+								<li>You cannot manually change any class levels or the selected class.</li>
+							</ul>
+						</li>
+						<li>
+							<h1>Manual and Auto Tier</h1>
+							<ul>
+								<li>Auto Tier will set the character's current tier based on class levels.</li>
+								<li>This is based on the total levels set to classes and not to checked Advancements in game logs.</li>
+								<li>This will work in conjunction with auto-leveling.</li>
+							</ul>
+						</li>
+						<li>
+							<h1>Including and Excluding EP</h1>
+							<ul>
+								<li>You may include or exclude ethereum pieces (ep) from your Current Wealth inputs.</li>
+								<li>Setting this to 'Exclude EP' will convert any ep into sp and add it to your current sp.</li>
+								<li>This is (currently) only set for player options only; each log will have its own individual setting.</li>
+							</ul>
+						</li>
+						<li>
+							<h1>Condensing Coinage <IoIosCalculator /></h1>
+							<ul>
+								<li>This will convert your wealth into using the least amount of coins possible.</li>
+							</ul>
+						</li>
+					</ul>
+				</Modal.Body>
+			</Modal>
+    	);
+    }
+
     render() {
         return (
             <div className="editBox">
+            	{this.render_helpModal()}
+
 				<div
 					className={classnames(
 						"playerBox",

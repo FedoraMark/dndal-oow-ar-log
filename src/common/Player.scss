@@ -2,6 +2,34 @@
 $gap: .5rem;
 $halfGap: .25rem;
 
+.helpModal {
+    .helpList {
+        padding: 0;
+
+        list-style: none;
+
+        & > li {
+            &:not(:last-of-type) {
+                margin-bottom: 1rem;
+            }
+
+            h1 {
+                font-family: $fontFamily-oswald;
+                font-size: 1.25rem;
+
+                svg {
+                    margin-top: -.3rem;
+                }
+            }
+
+            ul {
+                font-family: $fontFamily-book-normal;
+                list-style: initial;
+            }
+        }
+    }
+}
+
 .editBox {
     margin-bottom: 1rem;
 
