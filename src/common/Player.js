@@ -589,6 +589,11 @@ class Player extends Component {
 							</InputGroup>
 
 							<div className="dropdownsWrapper middleGroup">
+								{Object.keys(this.state.tempObj.classes).length === 0 && 
+									<div className="placeholderNote">(no classes added)</div>
+								}
+
+
 								{_map(this.state.tempObj.classes, (level, clss) => {
 									var levelForClass = clss === this.state.tempAutoLeveling ? this.getAutoLevel() : level;
 
@@ -612,6 +617,7 @@ class Player extends Component {
 									);
 								})}
 
+								{/* this should really be a grid */}
 								<InputGroup className="fillerGroup filler1" />
 								<InputGroup className="fillerGroup filler2" />
 							</div>

@@ -271,6 +271,18 @@ $halfGap: .25rem;
 
                 font-family: $fontFamily-handwritten;
 
+                .placeholderNote {
+                    width: 100%;
+                    height: 100%;
+                    margin: 0 .5rem 0 0;
+
+                    font-size: 1.1rem;
+
+                    opacity: .5;
+
+                    @include flex();
+                }
+
                 .leftGroup {
                     margin-bottom: .25rem !important;
                 }
