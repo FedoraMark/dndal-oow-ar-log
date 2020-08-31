@@ -1,26 +1,26 @@
 {
   "files": {
-    "main.css": "/dndal-oow-ar-log/static/css/main.2d8942c6.chunk.css",
-    "main.js": "/dndal-oow-ar-log/static/js/main.2ceef1a3.chunk.js",
-    "main.js.map": "/dndal-oow-ar-log/static/js/main.2ceef1a3.chunk.js.map",
+    "main.css": "/dndal-oow-ar-log/static/css/main.7dea4ac4.chunk.css",
+    "main.js": "/dndal-oow-ar-log/static/js/main.dc431fb9.chunk.js",
+    "main.js.map": "/dndal-oow-ar-log/static/js/main.dc431fb9.chunk.js.map",
     "runtime-main.js": "/dndal-oow-ar-log/static/js/runtime-main.bac7c5d5.js",
     "runtime-main.js.map": "/dndal-oow-ar-log/static/js/runtime-main.bac7c5d5.js.map",
-    "static/css/2.14d98803.chunk.css": "/dndal-oow-ar-log/static/css/2.14d98803.chunk.css",
-    "static/js/2.bfba4414.chunk.js": "/dndal-oow-ar-log/static/js/2.bfba4414.chunk.js",
-    "static/js/2.bfba4414.chunk.js.map": "/dndal-oow-ar-log/static/js/2.bfba4414.chunk.js.map",
+    "static/css/2.75c127f1.chunk.css": "/dndal-oow-ar-log/static/css/2.75c127f1.chunk.css",
+    "static/js/2.95f317bf.chunk.js": "/dndal-oow-ar-log/static/js/2.95f317bf.chunk.js",
+    "static/js/2.95f317bf.chunk.js.map": "/dndal-oow-ar-log/static/js/2.95f317bf.chunk.js.map",
     "index.html": "/dndal-oow-ar-log/index.html",
-    "precache-manifest.84a40fcd59fadbfaba01441f29cac320.js": "/dndal-oow-ar-log/precache-manifest.84a40fcd59fadbfaba01441f29cac320.js",
+    "precache-manifest.b6a19b1cfffad05fc212e350cd868d28.js": "/dndal-oow-ar-log/precache-manifest.b6a19b1cfffad05fc212e350cd868d28.js",
     "service-worker.js": "/dndal-oow-ar-log/service-worker.js",
-    "static/css/2.14d98803.chunk.css.map": "/dndal-oow-ar-log/static/css/2.14d98803.chunk.css.map",
-    "static/css/main.2d8942c6.chunk.css.map": "/dndal-oow-ar-log/static/css/main.2d8942c6.chunk.css.map",
-    "static/js/2.bfba4414.chunk.js.LICENSE.txt": "/dndal-oow-ar-log/static/js/2.bfba4414.chunk.js.LICENSE.txt",
+    "static/css/2.75c127f1.chunk.css.map": "/dndal-oow-ar-log/static/css/2.75c127f1.chunk.css.map",
+    "static/css/main.7dea4ac4.chunk.css.map": "/dndal-oow-ar-log/static/css/main.7dea4ac4.chunk.css.map",
+    "static/js/2.95f317bf.chunk.js.LICENSE.txt": "/dndal-oow-ar-log/static/js/2.95f317bf.chunk.js.LICENSE.txt",
     "static/media/AdvRecordLog.scss": "/dndal-oow-ar-log/static/media/Nodesto-Caps-Condensed.e3f3c695.otf"
   },
   "entrypoints": [
     "static/js/runtime-main.bac7c5d5.js",
-    "static/css/2.14d98803.chunk.css",
-    "static/js/2.bfba4414.chunk.js",
-    "static/css/main.2d8942c6.chunk.css",
-    "static/js/main.2ceef1a3.chunk.js"
+    "static/css/2.75c127f1.chunk.css",
+    "static/js/2.95f317bf.chunk.js",
+    "static/css/main.7dea4ac4.chunk.css",
+    "static/js/main.dc431fb9.chunk.js"
   ]
 }
