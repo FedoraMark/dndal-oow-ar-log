@@ -200,7 +200,7 @@
             "50 gp for helping the guest in the Salvation Hotel (area 7).",
             "Any three items from the following list for looting the blacksmith (area 6): longsword, shield, light hammer, mace, greatsword, warhammer, chain (50 feet), caltrops (box of 100), flask of alchemist's fire.",
             "A <i>potion of healing</i> and an <i>oil of slipperiness</i> for visiting the apothecary (area 14).",
-            "A vial of acid and a vial of basic poison for visitng the apothecary (area 14).",
+            "A vial of acid and a vial of basic poison for visiting the apothecary (area 14).",
             "A <i>circlet of blasting</i> for visiting Erix Thorn the provisioner (area 10)."
           ]
         }
@@ -368,7 +368,7 @@
         {
           "instructions": "Choose ONE bonus reward:",
           "options": [
-            "100 gp and a <i>potion of healing</i> for defeatig Decius and Daykar.",
+            "100 gp and a <i>potion of healing</i> for defeating Decius and Daykar.",
             "A <i>+1 weapon</i> from Flamewind for identifying the spy (regardless of the success or failure of the spy's mission).",
             "A <i>ring of evasion</i> from Orsino for helping him.",
             "A <i>wand of fear</i> for defeating Idiga Mol Doras."
