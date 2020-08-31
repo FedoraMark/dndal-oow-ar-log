@@ -492,6 +492,10 @@ $halfGap: .25rem;
                                 padding-right: 2rem;
                                 padding-left: 1rem;
 
+                                font-size: .9rem !important;
+
+                                white-space: normal;
+
                                 &:after {
                                     position: absolute;
                                     top: 1rem;
@@ -509,7 +513,10 @@ $halfGap: .25rem;
                             font-family: $fontFamily-oswald;
 
                             .dropdown-item {
+                                padding: .5rem;
+
                                 text-align: center;
+                                white-space: normal;
                             }
                         }
                     }
@@ -547,6 +554,10 @@ $halfGap: .25rem;
             .firstLast {
                 margin-bottom: .25rem !important;
             }
+        }
+
+        .optionsLevelWrapper .playerInfoOptions .dropdownGroup .dropdown button {
+            font-size: 1rem !important;
         }
     }
 }

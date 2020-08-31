@@ -262,12 +262,12 @@ class Player extends Component {
     		}
     	})
 
-    	if (otherLevelCount >= this.state.totalLevels) {
+    	if (otherLevelCount > this.state.totalLevels) {
     		// console.error("WARNING: Manual levels ");
     		return 0;
     	}
 
-    	return this.state.totalLevels - otherLevelCount;
+    	return this.state.totalLevels - otherLevelCount + 1;
     	
     }
 
@@ -516,17 +516,8 @@ class Player extends Component {
 													id={denom}
 													type="number"
 													min="0"
-													value={this.state.tempObj.wealth[
-														denom
-													]
-														.toString()
-														.replace(/^0+/, "")}
-													onChange={(e) => {
-														this.setTempWealth(
-															e.target.value,
-															denom
-														);
-													}}
+													value={this.state.tempObj.wealth[denom].toString().replace(/^0+/, "")}
+													onChange={(e) => {this.setTempWealth(e.target.value,denom);}}
 													placeholder="0"
 												></Form.Control>
 												<InputGroup.Append>
@@ -652,7 +643,7 @@ class Player extends Component {
 								<InputGroup className="playerInfoGroup dropdownGroup">
 									<DropdownButton
 										variant="light"
-										title={this.state.tempAutoLeveling ? ("Auto-leveling " + this.state.tempAutoLeveling.toUpperCase()) : "Manual Levels"}
+										title={this.state.tempAutoLeveling ? ("Auto-leveling " + this.state.tempAutoLeveling.toUpperCase().replace(/ /g, "\u00a0")) : "Manual Levels"}
 										alignRight
 									>
 										<Dropdown.Item
@@ -661,7 +652,7 @@ class Player extends Component {
 											active={this.state.tempAutoLeveling === ""}
 											onSelect={(e) => {this.setState({tempAutoLeveling: ""});}}
 										>
-											Manually Assign Levels
+											Manual<span className="condense">ly&nbsp;Assign</span>&nbsp;Levels
 										</Dropdown.Item>
 
 										<Dropdown.Divider />
@@ -671,7 +662,7 @@ class Player extends Component {
 												href="#"
 												disabled
 											>
-												(create a class to auto-level)
+												(create a class<span className="condense"> to auto-level</span>)
 											</Dropdown.Item>
 										}
 
@@ -684,7 +675,7 @@ class Player extends Component {
 													active={this.state.tempAutoLeveling === clss}
 													onSelect={(e) => {this.setState({tempAutoLeveling: clss})}}
 												>
-													Auto-level {clss.toUpperCase()}
+													Auto-level {clss.toUpperCase().replace(/ /g, "\u00a0")}
 												</Dropdown.Item>
 											);
 										})}

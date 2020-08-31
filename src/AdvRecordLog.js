@@ -70,7 +70,7 @@ class AdvRecordLog extends React.Component {
 		let newGameData = this.state.gameData;
 		newGameData.push(recordObj);
 
-		this.setState({ gameData: newGameData });
+		this.setState({ gameData: newGameData, statusData: [...this.state.statusData, {[recordObj.code]: {} }] });
 		this.toggleAddRecordArea();
 	};
 
