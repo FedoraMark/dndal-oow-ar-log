@@ -289,6 +289,10 @@
 
                 @include flex(center,space-between);
 
+                span {
+                    white-space: nowrap;
+                }
+
                 .custom-switch {
                     margin-bottom: -.2rem;
                     margin-left: .5rem;
