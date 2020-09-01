@@ -574,7 +574,7 @@ class Player extends Component {
 									overlay={<Tooltip>Condense Coinage</Tooltip>}
 									trigger={this.state.tempAutoWealth ? [] : ['hover','focus']}
 								>
-									<InputGroup.Append as="button">
+									<InputGroup.Append className="toBeButton">
 										<InputGroup.Text id="wealth-calc">
 											<span className="calcMoneyIcon">
 												<IoIosCalculator />
@@ -636,7 +636,7 @@ class Player extends Component {
 								className="addClassGroup rightGroup"
 								onClick={this.addNewClass.bind(this)}
 							>
-								<InputGroup.Append as="button">
+								<InputGroup.Append className="toBeButton">
 									<InputGroup.Text id="add-class">
 										<span className="plusIcon">
 											<HiPlusCircle />
@@ -797,7 +797,7 @@ class Player extends Component {
 								className="addClassGroup rightGroup"
 								onClick={(e) => {this.setState({showHelpModal: true});}}
 							>
-								<InputGroup.Append as="button">
+								<InputGroup.Append className="toBeButton">
 									<InputGroup.Text id="add-class">
 										<span className="helpIcon">
 											<IoMdHelpCircle />

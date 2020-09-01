@@ -1051,7 +1051,7 @@ class GameLog extends React.Component {
 										placement="top-end"
 										overlay={<Tooltip>Condense {displayLabel.charAt(0).toUpperCase() + displayLabel.slice(1)} Coinage</Tooltip>}
 									>
-										<InputGroup.Append as="button">
+										<InputGroup.Append className="toBeButton">
 											<InputGroup.Text>
 												<span className="calcMoneyIcon"><IoIosCalculator /></span>
 											</InputGroup.Text>
