@@ -8,6 +8,7 @@ export const bounceIn = "animate__animated animate__bounceIn";
 
 export const excludeInWealth = ["e", "+", "-", "."];
 export const emptyWealth = { cp: 0, sp: 0, ep: 0, gp: 0, pp: 0 };
+export const emptyLogWealth = {starting: emptyWealth, spent: emptyWealth, earned: emptyWealth, ending: emptyWealth};
 export const currency = ["cp", "sp", "ep", "gp", "pp"]
 
 export const dmRewardNote =

@@ -39,6 +39,7 @@ import {
     getTotalCopper,
     currency,
     emptyWealth,
+    emptyLogWealth,
 } from "utils/Util";
 
 import "animate.css";
@@ -117,11 +118,11 @@ class GameLog extends React.Component {
         tempIsDm: this.props.wasDm,
         tempIsEpic: this.props.wasEpic,
         tempAutoCalc: this.props.autoCalc,
-        tempWealth: !!this.props.statusData ? {...this.props.statusData.wealth} : {starting: {}, spent: {}, earned: {}, ending: {}},
+        tempWealth: !!this.props.statuses && !!this.props.statuses.wealth ? {...this.props.statuses.wealth} : {...emptyLogWealth},
     };
 
     componentDidMount() {
-        !this.props.preview && this.setTempData(this.props.statuses);
+        !this.props.preview && this.setTempData(this.props.statuses[this.props.data.code]);
     }
 
     componentWillReceiveProps(newProps) {
@@ -130,7 +131,7 @@ class GameLog extends React.Component {
             statusData: newProps.statuses,
             wasDm: newProps.wasDm,
             wasEpic: newProps.wasEpic,
-            autoCalc: newProps.autoCalc
+            autoCalc: newProps.autoCalc,
             // do not update startWithEdit
         });
     }
@@ -256,9 +257,9 @@ class GameLog extends React.Component {
             	tempIsDm: this.state.wasDm,
                 tempIsEpic: this.state.wasEpic,
                 tempAutoCalc: this.state.autoCalc,
+                tempWealth: wealthCheck === "" ? {...emptyLogWealth} : wealthCheck,
                 tempEvent: this.getPropOrEmpty(statusObj, "event", null),
                 tempDate: this.getPropOrEmpty(statusObj, "date", null),
-                tempWealth: wealthCheck === "" ? {starting: {}, spent: {}, earned: {}, ending: {}} : wealthCheck,
                 tempNotes: this.getPropOrEmpty(statusObj, "notes", "player"),
                 tempDmName: this.getPropOrEmpty(statusObj, "dungeonMaster", "name"),
                 tempDmNumber: this.getPropOrEmpty(statusObj, "dungeonMaster", "dci"),
@@ -312,7 +313,7 @@ class GameLog extends React.Component {
 
 		if (this.state.tempAutoCalc) {
 			newTempWealth = {...newTempWealth, ending: this.calcEndingWealth(newTempWealth)};
-		} 
+		}
 
 		this.setState({tempWealth: newTempWealth});
 	}

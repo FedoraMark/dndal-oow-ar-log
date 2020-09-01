@@ -16,7 +16,7 @@ import SideNav, { NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
 import ClickOutside from 'react-click-outside';
 import { ToastProvider } from "react-toast-notifications";
 
-import { fadeInUp, fadeIn, getFirstObject, getFirstKey, emptyWealth } from "utils/Util";
+import { fadeInUp, fadeIn, getFirstObject, getFirstKey, emptyWealth, emptyLogWealth } from "utils/Util";
 import Player from "common/Player";
 import Summary from "common/Summary";
 import GameLog from "GameLog";
@@ -70,17 +70,34 @@ class AdvRecordLog extends React.Component {
 	};
 
 	addRecord = (recordObj, openEditor) => {
-		let newGameData = this.state.gameData;
+		var startingWealth = {...emptyLogWealth};
+
+		// get previous log's ending wealth object
+		if (this.state.gameData.length > 0) {
+			let prevLogObj = getFirstObject(_find(this.state.statusData, (s,c) => {
+				return getFirstKey(s) === this.state.gameData[this.state.gameData.length-1].code;
+			}));
+
+			if (!!prevLogObj.wealth && !!prevLogObj.wealth.ending && !!Object.keys(prevLogObj.wealth.ending).length > 0) {
+				startingWealth.starting = prevLogObj.wealth.ending;
+				startingWealth.ending = prevLogObj.wealth.ending; // auto calc ending
+			}
+		}
+
+		let newGameData = [...this.state.gameData];
 		newGameData.push(recordObj);
 
 		let newEditorCode = openEditor ? recordObj.code : -1;
 
-		this.setState({ openEditorCode: newEditorCode, gameData: newGameData, statusData: [...this.state.statusData, {[recordObj.code]: {} }] });
+		var newStatusData = [...this.state.statusData];
+		newStatusData.push({[recordObj.code]: {wealth: startingWealth}});
+
+		this.setState({ openEditorCode: newEditorCode, gameData: newGameData, statusData: newStatusData});
 		this.toggleAddRecordArea();
 	};
 
 	toggleExpendedEvent = (code, title) => {		
-		var newStatusData = this.state.statusData;
+		var newStatusData = {...this.state.statusData};
 		let index = _findIndex(newStatusData, (e) => {
 			return getFirstKey(e) === code;
 		});

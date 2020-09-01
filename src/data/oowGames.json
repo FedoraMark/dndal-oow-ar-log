@@ -524,6 +524,53 @@
           }
         ]
       }
+    },
+    {
+      "record": "game",
+      "isForEpic": false,
+      "code": "ddal-eb-09",
+      "title": "Lord Bucket",
+      "type": "Adventure Record",
+      "tier": 2,
+      "ordinal": 10,
+      "notes": {
+        "game": "In Salvation, you were introduced to the Captain of Argonth, Alain ir'Ranek and his compatriot, Big Bara, leader of Argonth's scouts. Unfortunately, the pleasant meeting was interrupted by General Karol Tyresh, also known as \"Lord Bucket\". After intercepting scouts acting on behalf of the Lord of Blades, you learned of a plot to assault the outpost. After preparing the outpost's defenses, you routed the Lord of Blades' forces and defeated one of his generals, Bastian."
+      },
+      "advancement": {
+        "label": "You gain one level for completing this adventure.",
+        "footnote": "(If you decline this level, you still record legacy events but cannot claim any rewards or legacy event benefits for this adventure.)"
+      },
+      "rewards": [
+        {
+          "instructions": "You gain the following reward:",
+          "selections": [
+            "200 gp for defeating Bastian and repelling the remaining warforged loyal to the Lord of Blades."
+          ]
+        },
+        {
+          "instructions": "Choose ONE bonus reward:",
+          "options": [
+            "a <i>+2 shield</i> for defeating Bastian. The shield bears the faded and defaced heraldry of Karnath.",
+            "200 gp for returning at least one of the warforged spies back to Argonth alive."
+          ]
+        }
+      ],
+      "legacy": {
+        "events": [
+          {
+            "title": "Captured!",
+            "description": "You've been captured by the Lord of Blades and taken into the Mournland! You begin the next adventure confined in one of the Lord of Blades' enclaves."
+          },
+          {
+            "title": "Sky Fall",
+            "description": "The young thief Sky Blue has been captured by the Lord of Blades! Will you seek her out and free her?"
+          },
+          {
+            "title": "Not This Time, Death",
+            "description": "You managed to save General Tyresh from what appears to have been an attempt to assassinate him, perpetrated from someone loyal to Breland. While he's unlikely to publickly acknowledge your bravery, he repays you for it (in private, of course). General Tyresh provides you with 100 gp."
+          }
+        ]
+      }
     }
   ]
 }
