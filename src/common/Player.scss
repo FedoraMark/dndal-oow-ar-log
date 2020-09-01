@@ -268,24 +268,48 @@ $halfGap: .25rem;
 
                     cursor: pointer;
 
-                    &:hover,
-                    &:focus {
-                        #wealth-calc {
-                            color: white;
-                            background-color: $color-active-background;
-                        }
-                    }
-
-                    .input-group-append {
+                    button {
                         width: 50px;
+                        padding: 0;
+
+                        border: 0;
+                        outline: 0;
+
+                        &:hover,
+                        &:focus {
+                            #wealth-calc {
+                                color: white;
+                                background-color: $color-active-background;
+                            }
+                        }
 
                         #wealth-calc {
+                            height: 100%;
+
                             @include transition();
 
                             .calcMoneyIcon {
                                 margin-top: -.3rem;
 
                                 font-size: 1.21rem;
+                            }
+                        }
+                    }
+
+                    &.disabled {
+                        pointer-events: none;
+
+                        .input-group-append {
+                            #wealth-calc {
+                                opacity: .5;
+                            }
+
+                            &:hover,
+                            &:focus {
+                                #wealth-calc {
+                                    color: initial;
+                                    background-color: initial;
+                                }
                             }
                         }
                     }
@@ -407,19 +431,25 @@ $halfGap: .25rem;
 
                     cursor: pointer;
 
-                    &:hover,
-                    &:focus {
-                        #add-class {
-                            color: white;
-                            background-color: $color-active-background;
-                        }
-                    }
-
-                    .input-group-append {
+                    button {
                         width: 50px;
+                        padding: 0;
+
+                        border: 0;
+                        outline: 0;
+
+                        &:hover,
+                        &:focus {
+                            #add-class {
+                                color: white;
+                                background-color: $color-active-background;
+                            }
+                        }
 
                         #add-class {
                             z-index: 15;
+
+                            height: 100%;
 
                             @include transition();
 
@@ -469,26 +499,33 @@ $halfGap: .25rem;
 
                     flex-basis: 0;
 
-                    &:hover,
-                    &:focus {
-                        .input-group-text {
-                            color: white;
-                            background-color: $color-active-background;
-                        }
-                    }
-                    .input-group-append {
+                    button {
                         width: 50px;
+                        padding: 0;
+
+                        border: 0;
+                        outline: 0;
+
+                        &:hover,
+                        &:focus {
+                            .input-group-text {
+                                color: white;
+                                background-color: $color-active-background;
+                            }
+                        }
 
                         .input-group-text {
+                            height: 100%;
+
                             cursor: pointer;
 
                             @include transition();
-                        }
 
-                        .helpIcon {
-                            margin-top: -.3rem;
+                            .helpIcon {
+                                margin-top: -.3rem;
 
-                            font-size: 1.21rem;
+                                font-size: 1.21rem;
+                            }
                         }
                     }
                 }
@@ -627,15 +664,28 @@ $halfGap: .25rem;
                 }
             }
 
-            .optionsLevelWrapper .playerInfoOptions .dropdownGroup {
-                width: auto;
-                margin-bottom: 0;
+            .optionsLevelWrapper .playerInfoOptions {
+                margin-bottom: -$halfGap;
 
-                flex-basis: 0;
-                flex-grow: 1;
+                .dropdownGroup {
+                    width: auto;
+                    margin: 0 0 $halfGap $halfGap !important;
+                    // flex-basis: 33.33%;
 
-                &:not(:first-of-type) {
-                    margin-left: $gap;
+                    flex-basis: 0;
+                    flex-grow: 1;
+
+                    // &:not(:first-of-type) {
+                    //     margin-left: $gap;
+                    // }
+
+                    // &:nth-of-type(odd) {
+                    //     margin-right: $halfGap !important;
+                    // }
+
+                    &:not(:last-of-type) {
+                        margin-right: $halfGap !important;
+                    }
                 }
             }
         }

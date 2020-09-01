@@ -66,9 +66,11 @@ class GameLog extends React.Component {
         className: PropTypes.string,
         preview: PropTypes.bool,
         logUpdateHandler: PropTypes.func,
-        deleteHandler: PropTypes.func,
         wasDm: PropTypes.bool,
         wasEpic: PropTypes.bool,
+        startWithEdit: PropTypes.bool,
+        deleteHandler: PropTypes.func,
+        saveHandler: PropTypes.func,
     };
 
     static defaultProps = {
@@ -77,17 +79,18 @@ class GameLog extends React.Component {
         className: "",
         style: {},
         preview: false,
-        isEditing: false,
+        startWithEdit: false,
         wasDm: false,
         wasEpic: false,
-        deleteHandler: (e) => {},
+        deleteHandler: () => {},
+        saveHandler: () => {},
     };
 
     state = {
         data: this.props.data,
         statusData: this.props.statuses,
         isCollapsed: this.props.collapse,
-        isEditing: this.props.isEditing,
+        isEditing: this.props.startWithEdit,
         showDeleteModal: false,
         wasDm: this.props.wasDm,
         wasEpic: this.props.wasEpic,
@@ -104,6 +107,7 @@ class GameLog extends React.Component {
         tempDmNumber: "",
         tempIsDm: this.props.wasDm,
         tempIsEpic: this.props.wasEpic,
+        tempWealth: !!this.props.statusData ? {...this.props.statusData.wealth} : {starting: {}, spent: {}, earned: {}, ending: {}},
     };
 
     componentDidMount() {
@@ -115,7 +119,8 @@ class GameLog extends React.Component {
             data: newProps.data,
             statusData: newProps.statuses,
             wasDm: newProps.wasDm,
-            wasEpic: newProps.wasEpic
+            wasEpic: newProps.wasEpic,
+            // do not update startWithEdit
         });
     }
 
@@ -202,6 +207,7 @@ class GameLog extends React.Component {
                 dci: this.state.tempIsDm ? "" : this.state.tempDmNumber.trim(),
                 isDm: this.state.tempIsDm,
             },
+            wealth: this.state.tempWealth,
         };
 
         this.setState({
@@ -210,8 +216,9 @@ class GameLog extends React.Component {
                 tempDmNumber: this.state.tempIsDm ? "" : this.state.tempDmNumber.trim(),
                 tempEvent: this.state.tempEvent.trim(),
                 tempDate: this.state.tempDate.trim(),
-                wasDm: this.state.tempIsDm,
-                wasEpic: this.state.tempIsEpic
+                wasDm: this.state.tempIsDm, // redundant?
+                wasEpic: this.state.tempIsEpic, // redundant?
+                tempWealth: this.state.tempWealth, // redundant?
             },
             this.updateEventHandler(tempStatusData, true)
         );
@@ -230,15 +237,18 @@ class GameLog extends React.Component {
     };
 
     setTempData = (statusObj) => {
+    	let wealthCheck = this.getPropOrEmpty(statusObj, "wealth", null);
+
         !!statusObj &&
             this.setState({
+            	tempIsDm: this.state.wasDm,
+                tempIsEpic: this.state.wasEpic,
                 tempEvent: this.getPropOrEmpty(statusObj, "event", null),
                 tempDate: this.getPropOrEmpty(statusObj, "date", null),
+                tempWealth: wealthCheck === "" ? {starting: {}, spent: {}, earned: {}, ending: {}} : wealthCheck,
                 tempNotes: this.getPropOrEmpty(statusObj, "notes", "player"),
                 tempDmName: this.getPropOrEmpty(statusObj, "dungeonMaster", "name"),
                 tempDmNumber: this.getPropOrEmpty(statusObj, "dungeonMaster", "dci"),
-                tempIsDm: this.state.wasDm,
-                tempIsEpic: this.state.wasEpic
             });
     };
 
@@ -282,6 +292,13 @@ class GameLog extends React.Component {
 	    this.props.addToast(("Updated " + eTitle.toUpperCase()), { appearance: "info" });
 	    this.updateEventHandler(existingData, true);
 	};
+
+	updateWealthHandler = (wealthTypeObj, type) => {
+		var newTempWealth = {...this.state.tempWealth};
+		newTempWealth[type] = wealthTypeObj;
+
+		this.setState({tempWealth: newTempWealth});
+	}
 
     //RENDERERS
     render_titleAndCode = (type, code, title) => {
@@ -381,7 +398,7 @@ class GameLog extends React.Component {
 									placement="top"
 									overlay={<Tooltip>Epic</Tooltip>}
 								>
-									<p>E</p>
+									<p className="fauxdesto">E</p>
 								</OverlayTrigger>
 							}
 						</li>
@@ -552,7 +569,9 @@ class GameLog extends React.Component {
         );
     };
 
-    render_wealth = (wealthObj) => {
+    render_wealth = () => {
+    	let wealthObj = !!this.state.statusData && !!this.state.statusData[this.props.data.code] ? {...this.state.statusData[this.props.data.code].wealth} : null;
+
         return (
             <Container className="wealthWrapper wrapper">
 				<h1 className="sectionTitle">Character Wealth</h1>
@@ -562,12 +581,8 @@ class GameLog extends React.Component {
 					<div className="amount cell">
 						<span className="val">
 							<Wealth
-								isEmpty={wealthObj === undefined}
-								wealthObj={
-									wealthObj === undefined
-										? undefined
-										: wealthObj.starting
-								}
+								isEmpty={wealthObj === null}
+								wealthObj={ wealthObj === null ? {} : wealthObj.starting }
 							/>
 						</span>
 					</div>
@@ -579,12 +594,8 @@ class GameLog extends React.Component {
 						<span className="val">
 							<Wealth
 								colorless
-								/*loss*/ isEmpty={wealthObj === undefined}
-								wealthObj={
-									wealthObj === undefined
-										? undefined
-										: wealthObj.spent
-								}
+								isEmpty={wealthObj === null}
+								wealthObj={ wealthObj === null ? {} : wealthObj.spent }
 							/>
 						</span>
 					</div>
@@ -594,12 +605,8 @@ class GameLog extends React.Component {
 						<span className="val">
 							<Wealth
 								colorless
-								/*gain*/ isEmpty={wealthObj === undefined}
-								wealthObj={
-									wealthObj === undefined
-										? undefined
-										: wealthObj.earned
-								}
+								isEmpty={wealthObj === null}
+								wealthObj={ wealthObj === null ? {} : wealthObj.earned }
 							/>
 						</span>
 					</div>
@@ -608,12 +615,8 @@ class GameLog extends React.Component {
 					<div className="amount cell bottom">
 						<span className="val">
 							<Wealth
-								isEmpty={wealthObj === undefined}
-								wealthObj={
-									wealthObj === undefined
-										? undefined
-										: wealthObj.ending
-								}
+								isEmpty={wealthObj === null}
+								wealthObj={ wealthObj === null ? {} : wealthObj.ending }
 							/>
 						</span>
 					</div>
@@ -677,7 +680,7 @@ class GameLog extends React.Component {
 					<div className="leftCol arCol">
 						{this.render_advancement()}
 						{this.render_rewards()}
-						{this.render_wealth(this.state.data.gameWealth)}
+						{this.render_wealth()}
 					</div>
 
 					<div className="rightCol arCol">{this.render_legacy()}</div>
@@ -703,7 +706,7 @@ class GameLog extends React.Component {
 						<InputGroup className="dropdownGroup">
 							<DropdownButton
 								variant="light"
-								title={this.state.tempIsEpic ? <>Epic Event <span className="dotE">E</span></> : "AL Game"}
+								title={this.state.tempIsEpic ? <>Epic Event <span className="dotE fauxdesto">E</span></> : "AL Game"}
 								alignRight
 							>
 								<Dropdown.Item
@@ -751,33 +754,10 @@ class GameLog extends React.Component {
 							</DropdownButton>
 						</InputGroup>
 
-						{/* set tierOverride */}
-						{/* <InputGroup className="dropdownGroup"> */}
-						{/* 	<DropdownButton */}
-						{/* 		variant="light" */}
-						{/* 		title="Tier Override" */}
-						{/* 		alignRight */}
-						{/* 	> */}
-						{/* 		{_map([1,2,3,4], (t) => { */}
-						{/* 			return ( */}
-						{/* 				<Dropdown.Item */}
-						{/* 					href="#" */}
-						{/* 					eventKey={t} */}
-						{/* 					active={false} */}
-						{/* 					onSelect={(e) => {}} */}
-						{/* 				> */}
-						{/* 					Tier {t} */}{/* NOTE DEFAULT  */}
-						{/* 				</Dropdown.Item> */}
-						{/* 			); */}
-						{/* 		})} */}
-						{/* 	</DropdownButton> */}
-						{/* </InputGroup> */}
-
-						{/* set useEp */}
 						<InputGroup className="dropdownGroup">
 							<DropdownButton
 								variant="light"
-								title={"useEP"}
+								title={"autoCalcWealth"}
 								alignRight
 							>
 								<Dropdown.Item
@@ -786,7 +766,7 @@ class GameLog extends React.Component {
 									active={false}
 									onSelect={(e) => {}}
 								>
-									Include EP
+									Automatically Calculate Ending Gold
 								</Dropdown.Item>
 								<Dropdown.Item
 									href="#"
@@ -794,7 +774,7 @@ class GameLog extends React.Component {
 									active={false}
 									onSelect={(e) => {}}
 								>
-									Exclude EP
+									Manually Enter Ending Gold
 								</Dropdown.Item>
 							</DropdownButton>
 						</InputGroup>
@@ -957,16 +937,17 @@ class GameLog extends React.Component {
 
 				{/* WEALTH */}
 				<li className="editRow wealthRow">
-					{_map({"Starting": {}, "Spent (–)": {}, "Earned (+)": {}, "Ending": {}}, (wealth,label) => {
+					{_map({"Starting ": {}, "Spent (–)": {}, "Earned (+)": {}, "Ending ": {}}, (wealth,label) => {
 						var condenseLabel;
+
 					    switch (label) {
-					        case "Starting":
+					        case "Starting ":
 					            condenseLabel = <>S<span className="partCondense">tarting</span></>; break;
 					        case "Spent (–)":
 					            condenseLabel = <><span className="partCondense">Spent&nbsp;(</span>-<span className="partCondense">)</span></>; break;
 					        case "Earned (+)":
 					            condenseLabel = <><span className="partCondense">Earned&nbsp;(</span>+<span className="partCondense">)</span></>; break;
-					        case "Ending":
+					        case "Ending ":
 					            condenseLabel = <>E<span className="partCondense">nding</span></>; break;
 					        default: condenseLabel = "";
 					    }
@@ -981,7 +962,11 @@ class GameLog extends React.Component {
 								</InputGroup.Prepend>
 
 								<div className="wealthEditArea">
-									<WealthEdit wealth={wealth} useEp={this.state.useEp} />
+									<WealthEdit 
+										fullWealth={this.state.tempWealth} 
+										useEp={this.state.useEp} 
+										type={label.toLowerCase().substr(0,label.indexOf(" "))} 
+										updateHandler={this.updateWealthHandler} />
 								</div>
 
 								<InputGroup
@@ -1191,9 +1176,7 @@ class GameLog extends React.Component {
             // 								</div>
             // 
             // 								<div className="rightCol arCol">
-            // 									{this.render_wealth(
-            // 										this.state.data.gameWealth
-            // 									)}
+            // 									{this.render_wealth()}
             // 								</div>
             // 							</div>
             // 
@@ -1230,9 +1213,7 @@ class GameLog extends React.Component {
             // 								<div className="leftCol arCol">NOTES</div>
             // 
             // 								<div className="rightCol arCol">
-            // 									{this.render_wealth(
-            // 										this.state.data.gameWealth
-            // 									)}
+            // 									{this.render_wealth()}
             // 								</div>
             // 							</div>
             // 

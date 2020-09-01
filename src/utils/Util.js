@@ -6,6 +6,9 @@ export const fadeIn = "animate__animated animate__fadeIn";
 export const fadeInUp = "animate__animated animate__fadeInUp";
 export const bounceIn = "animate__animated animate__bounceIn";
 
+export const excludeInWealth = ["e","+","-","."];
+export const emptyWealth = {cp: 0, sp: 0, ep: 0, gp: 0, pp: 0};
+
 export const dmRewardNote =
     "When you run an adventure, you earn the Adventure Record for that adventure, which you may apply to one of your Oracle of War characters. Apply the same rewards to the Adventure Record as your group earned, including legacy events. If a legacy event was awarded to a specific character, you may tick that event for your own character too.";
 

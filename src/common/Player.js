@@ -29,6 +29,7 @@ import {
     condenseWealth,
     classes5e,
     classesUA,
+    excludeInWealth
 } from "utils/Util";
 
 import "./Player.scss";
@@ -46,13 +47,15 @@ class Player extends Component {
         optionsObj: PropTypes.object,
         saveHandler: PropTypes.func,
         totalLevels: PropTypes.number.isRequired,
+        latestWealth: PropTypes.object.isRequired,
     };
 
     static defaultProps = {
         optionsObj: {
             autoLeveling: "",
             tierSetting: 0,
-            useEp: true,
+            // useEp: true,
+            autoWealth: false,
         },
         saveHandler: (e) => {},
     };
@@ -70,24 +73,42 @@ class Player extends Component {
         // options
         autoLeveling: this.props.optionsObj.autoLeveling,
         tierSetting: this.props.optionsObj.tierSetting,
-        useEp: this.props.optionsObj.useEp,
+        useEp: true, //this.props.optionsObj.useEp,
+        autoWealth: this.props.optionsObj.autoWealth,
 
         // temp
     	tempAutoLeveling: this.props.optionsObj.autoLeveling,
         tempTierSetting: this.props.optionsObj.tierSetting,
-        tempUseEp: this.props.optionsObj.useEp,
+        tempUseEp: true, // this.props.optionsObj.useEp,
+        tempAutoWealth: this.props.optionsObj.autoWealth,
+
+        latestWealth: this.props.latestWealth,
+        // noEpLatestWealth: {}
         
     };
+
+    // componentDidMount() {
+    // 	this.getNoEpWealth(this.state.latestWealth)
+    // }
 
     componentWillReceiveProps(newProps) {
         this.setState({
             playerObj: newProps.playerObj,
             totalLevels: newProps.totalLevels,
+            latestWealth: newProps.latestWealth,
+            // noEpLatestWealth: this.getNoEpWealth(newProps.latestWealth),
 
             autoLeveling: newProps.optionsObj.autoLeveling,
             tierSetting: newProps.optionsObj.tierSetting,
-            useEp: newProps.optionsObj.useEp,
-        });
+            useEp: true, //newProps.optionsObj.useEp,
+            autoWealth: newProps.optionsObj.autoWealth,
+        },
+        	(e) => {
+        		if (this.state.tempAutoWealth) {
+        			this.updateTempInfo("wealth",this.state.latestWealth)
+        		}
+        	}
+        );
     }
 
     //FUNCTIONS
@@ -114,13 +135,15 @@ class Player extends Component {
 	                playerObj: trimStringsInObjectFlatly({...this.state.tempObj}),
 	                autoLeveling: this.state.tempAutoLeveling,
 	            	tierSetting: this.state.tempTierSetting,
-	            	useEp: this.state.tempUseEp
+	            	// useEp: this.state.tempUseEp,
+	            	autoWealth: this.state.tempAutoWealth,
 	            }, this.props.saveHandler(
 	            	trimStringsInObjectFlatly({...this.state.tempObj}), 
 	            	{
 	                	autoLeveling: this.state.tempAutoLeveling,
 	                	tierSetting: this.state.tempTierSetting,
-	                	useEp: this.state.tempUseEp
+	                	// useEp: this.state.tempUseEp,
+	                	autoWealth: this.state.tempAutoWealth,
 	            	}
 	            ))
             });
@@ -131,7 +154,8 @@ class Player extends Component {
                 tempObj: { ...this.state.playerObj },
                 tempAutoLeveling: this.props.optionsObj.autoLeveling,
                 tempTierSetting: this.props.optionsObj.tierSetting,
-                tempUseEp: this.props.optionsObj.useEp
+                // tempUseEp: this.props.optionsObj.useEp,
+                tempAutoWealth: this.props.optionsObj.autoWealth,
             });
         }
     };
@@ -142,19 +166,22 @@ class Player extends Component {
         this.setState({ tempObj: newObj });
     };
 
-    setTempWealth = (money, denom) => {
+    setTempWealth = (money, denom) => {   
         let tempWealthObj = {
             ...this.state.tempObj.wealth,
             [denom]: money === "" ? 0 : Math.abs(parseInt(money)),
         };
+
         this.updateTempInfo("wealth", tempWealthObj);
     };
 
     calcWealth = () => {
-        let condensedObj = condenseWealth(
-            getTotalCopper(this.state.tempObj.wealth),
-            this.state.tempUseEp
-        );
+    	if (this.state.tempAutoWealth) {
+    		var newWealthObj = { ...this.state.latestWealth };
+    		return;
+    	}
+
+        let condensedObj = condenseWealth(getTotalCopper(this.state.tempObj.wealth),this.state.tempUseEp);
 
         if (
             JSON.stringify(condensedObj) === JSON.stringify(this.state.tempObj.wealth)
@@ -189,21 +216,29 @@ class Player extends Component {
         return 4;
     };
 
-    settempUseEp = (val) => {
-        // convert EP to SP and add to SP
-        if (!val && this.state.tempObj.wealth.ep !== 0) {
-            var newWealthObj = { ...this.state.tempObj.wealth };
-            let newSp = newWealthObj.ep * 5;
-            newWealthObj.sp = newWealthObj.sp + newSp;
-            newWealthObj.ep = 0;
-            this.updateTempInfo("wealth", newWealthObj);
-            this.props.addToast(
-                (newSp / 5 + " ep converted into " + newSp + " sp"), { appearance: "warning" }
-            );
-        }
-
-        this.setState({ tempUseEp: val });
-    };
+//     setTempUseEp = (val) => {
+//         // convert EP to SP and add to SP
+//         if (!val && this.state.tempObj.wealth.ep !== 0) {
+//             var newWealthObj = { ...this.state.tempObj.wealth };
+//             let newSp = newWealthObj.ep * 5;
+//             newWealthObj.sp = newWealthObj.sp + newSp;
+//             newWealthObj.ep = 0;
+//             this.updateTempInfo("wealth", newWealthObj);
+//             this.props.addToast(
+//                 (newSp / 5 + " ep converted into " + newSp + " sp"), { appearance: "warning" }
+//             );
+//         }
+// 
+//         this.setState({ tempUseEp: val });
+//     };
+// 
+//     getNoEpWealth = (wealthObj) => {
+// 		var noEpLatestWealth = {...wealthObj};
+// 		noEpLatestWealth.sp = noEpLatestWealth.ep * 5;
+// 		noEpLatestWealth.ep = 0;
+// 
+// 		return noEpLatestWealth;
+//     }
 
     addNewClass = () => {
         this.setState({ mountAnimSpeed: { animationDuration: "inerit" } });
@@ -284,6 +319,11 @@ class Player extends Component {
 
     //RENDERERS
     render_displayInfo = () => {
+    	var wealthObj = this.state.tempAutoWealth ? this.state.latestWealth : this.state.playerObj.wealth;
+    	// if (!this.state.tempUseEp) {
+    	// 	wealthObj = this.state.tempAutoWealth ? this.getNoEpWealth(this.state.latestWealth) : this.getNoEpWealth(this.state.playerObj.wealth);
+    	// }
+
         return (
             <span className="playerBoxContent">
 				{!!this.state.playerObj.character && (
@@ -297,18 +337,10 @@ class Player extends Component {
 					<div className="infoItem tierItem">
 						<h1>Tier:</h1>
 						<ul className="tierList">
-							<li className={this.getTier() > 0 ? "filled" : ""}>
-								1
-							</li>
-							<li className={this.getTier() > 1 ? "filled" : ""}>
-								2
-							</li>
-							<li className={this.getTier() > 2 ? "filled" : ""}>
-								3
-							</li>
-							<li className={this.getTier() > 3 ? "filled" : ""}>
-								4
-							</li>
+							<li className={this.getTier() > 0 ? "filled" : ""}>1</li>
+							<li className={this.getTier() > 1 ? "filled" : ""}>2</li>
+							<li className={this.getTier() > 2 ? "filled" : ""}>3</li>
+							<li className={this.getTier() > 3 ? "filled" : ""}>4</li>
 						</ul>
 					</div>
 				)}
@@ -333,9 +365,7 @@ class Player extends Component {
 						<div className="infoItem">
 							<h1>Wealth:</h1>
 							<p>
-								<Wealth
-									wealthObj={this.state.playerObj.wealth}
-								/>
+								<Wealth wealthObj={wealthObj} />
 							</p>
 						</div>
 					)}
@@ -501,12 +531,9 @@ class Player extends Component {
 											"copper (1cp)",
 										];
 
-										if (
-											!this.state.tempUseEp &&
-											denom === "ep"
-										) {
-											return <></>;
-										}
+										// if ( !this.state.tempUseEp && denom === "ep" ) {return <></>;}
+
+										let currentWealthObj = this.state.tempAutoWealth ? this.state.latestWealth : this.state.tempObj.wealth;
 
 										return (
 											<InputGroup
@@ -518,27 +545,21 @@ class Player extends Component {
 													id={denom}
 													type="number"
 													min="0"
-													value={this.state.tempObj.wealth[denom].toString().replace(/^0+/, "")}
-													onChange={(e) => {this.setTempWealth(e.target.value,denom);}}
 													placeholder="0"
-												></Form.Control>
+													disabled={this.state.tempAutoWealth}
+													value={currentWealthObj[denom].toString().replace(/^0+/, "")}
+													onChange={(e) => {this.setTempWealth(e.target.value,denom);}}
+													onKeyDown={(e) => {excludeInWealth.includes(e.key) && e.preventDefault();}}
+												/>
 												<InputGroup.Append>
 													<InputGroup.Text id={denom}>
 														<OverlayTrigger
 															placement="top"
 															overlay={
-																<Tooltip>
-																	{
-																		conversion[
-																			key
-																		]
-																	}
-																</Tooltip>
+																<Tooltip>{conversion[key]}</Tooltip>
 															}
 														>
-															<span className="bookFont bold">
-																{denom}
-															</span>
+															<span className="bookFont bold">{denom}</span>
 														</OverlayTrigger>
 													</InputGroup.Text>
 												</InputGroup.Append>
@@ -549,16 +570,15 @@ class Player extends Component {
 							</div>
 
 							<InputGroup
-								className="calcButtonGroup rightGroup"
+								className={classnames("calcButtonGroup rightGroup", this.state.tempAutoWealth && "disabled")}
 								onClick={this.calcWealth.bind(this)}
 							>
 								<OverlayTrigger
 									placement="top"
-									overlay={
-										<Tooltip>Condense Coinage</Tooltip>
-									}
+									overlay={<Tooltip>Condense Coinage</Tooltip>}
+									trigger={this.state.tempAutoWealth ? [] : ['hover','focus']}
 								>
-									<InputGroup.Append>
+									<InputGroup.Append as="button">
 										<InputGroup.Text id="wealth-calc">
 											<span className="calcMoneyIcon">
 												<IoIosCalculator />
@@ -620,7 +640,7 @@ class Player extends Component {
 								className="addClassGroup rightGroup"
 								onClick={this.addNewClass.bind(this)}
 							>
-								<InputGroup.Append>
+								<InputGroup.Append as="button">
 									<InputGroup.Text id="add-class">
 										<span className="plusIcon">
 											<HiPlusCircle />
@@ -716,38 +736,72 @@ class Player extends Component {
 									</DropdownButton>
 								</InputGroup>
 
-								{/* set tempUseEp */}
+								{/* set auto last gold */}
 								<InputGroup className="playerInfoGroup dropdownGroup">
 									<DropdownButton
 										variant="light"
-										title={this.state.tempUseEp ? "Include EP" : "Exclude EP"}
+										title={this.state.tempAutoWealth ? "Auto Wealth" : "Manual Wealth"}
 										alignRight
 									>
 										<Dropdown.Item
 											href="#"
 											eventKey="t"
-											active={this.state.tempUseEp === true}
-											onSelect={this.settempUseEp.bind(this,true)}
+											active={this.state.tempAutoWealth === false}
+											onSelect={
+												(e) => {this.setState({tempAutoWealth: false},
+													(e) => { 
+														if (this.state.autoWealth) {
+															this.updateTempInfo("wealth",this.state.latestWealth)
+														}
+													}
+												);
+											}}
 										>
-											Include EP
+											Manual<span className="condense">ly Enter</span> Wealth
 										</Dropdown.Item>
 										<Dropdown.Item
 											href="#"
 											eventKey="f"
-											active={this.state.tempUseEp === false}
-											onSelect={this.settempUseEp.bind(this,false)}
+											active={this.state.tempAutoWealth === true}
+											onSelect={(e) => {this.setState({tempAutoWealth: true});}}
 										>
-											Exclude EP
+											<span className="condense">Use </span>Latest Wealth
 										</Dropdown.Item>
 									</DropdownButton>
 								</InputGroup>
+
+								{/* set tempUseEp */}
+								{/* <InputGroup className="playerInfoGroup dropdownGroup"> */}
+								{/* 	<DropdownButton */}
+								{/* 		variant="light" */}
+								{/* 		title={this.state.tempUseEp ? "Include EP" : "Exclude EP"} */}
+								{/* 		alignRight */}
+								{/* 	> */}
+								{/* 		<Dropdown.Item */}
+								{/* 			href="#" */}
+								{/* 			eventKey="t" */}
+								{/* 			active={this.state.tempUseEp === true} */}
+								{/* 			onSelect={this.setTempUseEp.bind(this,true)} */}
+								{/* 		> */}
+								{/* 			Include EP */}
+								{/* 		</Dropdown.Item> */}
+								{/* 		<Dropdown.Item */}
+								{/* 			href="#" */}
+								{/* 			eventKey="f" */}
+								{/* 			active={this.state.tempUseEp === false} */}
+								{/* 			onSelect={this.setTempUseEp.bind(this,false)} */}
+								{/* 		> */}
+								{/* 			Exclude EP */}
+								{/* 		</Dropdown.Item> */}
+								{/* 	</DropdownButton> */}
+								{/* </InputGroup> */}
 							</div>
 
 							<InputGroup
 								className="addClassGroup rightGroup"
 								onClick={(e) => {this.setState({showHelpModal: true});}}
 							>
-								<InputGroup.Append>
+								<InputGroup.Append as="button">
 									<InputGroup.Text id="add-class">
 										<span className="helpIcon">
 											<IoMdHelpCircle />
@@ -897,13 +951,20 @@ class Player extends Component {
 							</ul>
 						</li>
 						<li>
-							<h1>Including and Excluding EP</h1>
+							<h1>Manual and Auto Wealth</h1>
 							<ul>
-								<li>You may include or exclude ethereum pieces (ep) from your Current Wealth inputs.</li>
-								<li>Setting this to 'Exclude EP' will convert any ep into sp and add it to your current sp.</li>
-								<li>This is (currently) only set for player options only; each log will have its own individual setting.</li>
+								<li>Auto Wealth will use the Ending Gold of the most recent log.</li>
+								<li>Auto Wealth prevents any changes to Current Wealth other than setting 'Include/Exclude EP'.</li>
 							</ul>
 						</li>
+						{/* <li> */}
+						{/* 	<h1>Including and Excluding EP</h1> */}
+						{/* 	<ul> */}
+						{/* 		<li>You may include or exclude ethereum pieces (ep) from your Current Wealth inputs.</li> */}
+						{/* 		<li>Setting this to 'Exclude EP' will convert any ep into sp and add it to your current sp.</li> */}
+						{/* 		<li>This is (currently) only set for player options only; each log will have its own individual setting.</li> */}
+						{/* 	</ul> */}
+						{/* </li> */}
 						<li>
 							<h1>Condensing Coinage <IoIosCalculator /></h1>
 							<ul>

@@ -16,7 +16,7 @@ import SideNav, { NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
 import ClickOutside from 'react-click-outside';
 import { ToastProvider } from "react-toast-notifications";
 
-import { fadeInUp, fadeIn, getFirstObject, getFirstKey } from "utils/Util";
+import { fadeInUp, fadeIn, getFirstObject, getFirstKey, emptyWealth } from "utils/Util";
 import Player from "common/Player";
 import Summary from "common/Summary";
 import GameLog from "GameLog";
@@ -37,20 +37,23 @@ class AdvRecordLog extends React.Component {
 	        "classes": {},
 	        "tier": '',
 	        "base": "",
-	        "wealth": {cp: 0, sp: 0, ep: 0, gp: 0, pp: 0}
+	        "wealth": emptyWealth
 	    },
 	    optionsData: {
 	    	autoLeveling: "",
 			tierSetting: 0,
-			useEp: true
+			// useEp: true,
+			autoWealth: false
 	    },
 	    gameData: [],
 	    statusData: [],
+	    
 	    showAddRecordArea: false,
 	    loaded: false,
 	    isSidebarOpen: false,
 	    eventArr: [],
-	    deleteCode: -1
+	    deleteCode: -1,
+	    openEditorCode: -1
 	};
 
 	componentDidMount() {
@@ -66,11 +69,13 @@ class AdvRecordLog extends React.Component {
 		this.setState({ showAddRecordArea: !this.state.showAddRecordArea });
 	};
 
-	addRecord = (recordObj) => {
+	addRecord = (recordObj, openEditor) => {
 		let newGameData = this.state.gameData;
 		newGameData.push(recordObj);
 
-		this.setState({ gameData: newGameData, statusData: [...this.state.statusData, {[recordObj.code]: {} }] });
+		let newEditorCode = openEditor ? recordObj.code : -1;
+
+		this.setState({ openEditorCode: newEditorCode, gameData: newGameData, statusData: [...this.state.statusData, {[recordObj.code]: {} }] });
 		this.toggleAddRecordArea();
 	};
 
@@ -208,6 +213,21 @@ class AdvRecordLog extends React.Component {
 		return levelCount;
 	}
 
+	getlatestWealth = () => {
+		let data = [...this.state.statusData].reverse();
+
+		// latest wealth must be a log with an "ending" object, otherwise it will be ignored
+		// - this means it will not immediately update when a new, unediting log is added
+		for (var i = 0; i < this.state.statusData.length; i++) {
+			if (!!getFirstObject(data[i]).wealth && !!getFirstObject(data[i]).wealth.ending) {
+				// return latest wealth object with ending wealth
+				return {...emptyWealth, ...getFirstObject(data[i]).wealth.ending};
+			}
+		}
+
+		return {...emptyWealth};
+	}
+
 	//RENDERERS
 	render_gameLogs = (gamesObj) => {
 		return (
@@ -242,6 +262,7 @@ class AdvRecordLog extends React.Component {
 								deleteHandler={this.handleDelete}
 								wasDm={wasDm}
 								wasEpic={wasEpic}
+								startWithEdit={this.state.openEditorCode === logData.code}
 							/>
 						</Collapse>
 					);
@@ -368,8 +389,13 @@ class AdvRecordLog extends React.Component {
 													/>
 												</Form>
 											</div>
+
 											<p className="description text bookFont" dangerouslySetInnerHTML={{ __html: statusInfo.description }} />
-											{statusInfo.option !== null && <div className="list text bookFont" dangerouslySetInnerHTML={{ __html: statusInfo.option }} />}
+
+											{statusInfo.option !== null && 
+												<div className="list text bookFont" dangerouslySetInnerHTML={{ __html: statusInfo.option }} />
+											}
+
 											{statusInfo.selections.length > 0 && _map(statusInfo.selections, (selection, key) => {
 												return <div key={key} className="list text bookFont" dangerouslySetInnerHTML={{ __html: selection }} />
 											})}
@@ -407,6 +433,7 @@ class AdvRecordLog extends React.Component {
 								optionsObj={this.state.optionsData}
 								saveHandler={this.savePlayerDataHandler}
 								totalLevels={this.getTotalLoggedLevels()}
+								latestWealth={this.getlatestWealth()}
 							/>
 
 						</Container>

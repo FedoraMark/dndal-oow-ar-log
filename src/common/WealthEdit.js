@@ -8,6 +8,8 @@ import Tooltip from "react-bootstrap/Tooltip";
 
 import style from "./wealthEdit.module.scss";
 
+import { excludeInWealth } from "utils/Util"
+
 const denominations = ["pp", "gp", "ep", "sp", "cp"];
 const conversion = [
 	"platinum (1000cp)",
@@ -19,24 +21,39 @@ const conversion = [
 
 class WealthEdit extends Component {
 	static propTypes = {
-		wealth: PropTypes.object.isRequired,
-		useEp: PropTypes.bool,
+		fullWealth: PropTypes.object.isRequired,
+		// useEp: PropTypes.bool,
+		type: PropTypes.string.isRequired, // starting, spent, earned, ending
+		updateHandler: PropTypes.func,
 	};
 
 	static defaultProps = {
-		useEp: true,
+		// useEp: true,
+		updateHandler: () => {},
 	};
 
 	state = {
-		wealth: this.props.wealth,
-		useEp: this.props.useEp,
+		wealth: this.props.fullWealth[this.props.type],
+		useEp: true, //this.props.useEp,
+
 	};
 
 	componentWillReceiveProps(newProps) {
-		this.setState({
-			wealth: newProps.wealth,
-			useEp: newProps.useEp,
-		});
+		if (newProps.save) {
+			this.setState({
+				fullWealth: newProps.fullWealth,
+				// useEp: newProps.useEp,
+			});
+		}
+	}
+
+	setWealth = (val, denom) => {
+		let newWealth = {...this.state.wealth}
+		newWealth[denom] = val === "" ? 0 : Math.abs(parseInt(val));
+
+		this.setState({wealth: newWealth},
+			this.props.updateHandler(newWealth, this.props.type)
+		);
 	}
 
 	render() {
@@ -60,9 +77,8 @@ class WealthEdit extends Component {
 										? this.state.wealth[denom].toString().replace(/^0+/, "")
 										: ""
 								}
-								onChange={(e) => {
-									/*this.setTempWealth(e.target.value, denom);*/
-								}}
+								onChange={(e) => {this.setWealth(e.target.value, denom);}}
+								onKeyDown={(e) => {excludeInWealth.includes(e.key) && e.preventDefault();}}
 							/>
 							<InputGroup.Append className={style.denomBox}>
 								<InputGroup.Text>
