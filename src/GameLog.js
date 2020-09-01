@@ -357,7 +357,7 @@ class GameLog extends React.Component {
 	    })
 
 	    if (endingWealthObj.pp < 0) {
-	        this.props.addToast("Ending Gold results in negative total value", { appearance: "error" });
+	        !this.state.negativeEndingGold && this.props.addToast("Ending Gold results in negative value", { appearance: "error" });
 	        this.setState({negativeEndingGold: true});
 	        return {...emptyWealth};
 	    } else if (this.state.negativeEndingGold) {
