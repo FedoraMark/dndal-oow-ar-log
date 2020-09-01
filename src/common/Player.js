@@ -537,6 +537,7 @@ class Player extends Component {
 												key={key}
 												className={"money " + denom}
 											>
+												
 												<Form.Control
 													className="handwritten"
 													id={denom}
@@ -548,6 +549,7 @@ class Player extends Component {
 													value={currentWealthObj[denom].toString().replace(/^0+/, "")}
 													onChange={(e) => {this.setTempWealth(e.target.value,denom);}}
 													onKeyDown={(e) => {excludeInWealth.includes(e.key) && e.preventDefault();}}
+													autocomplete="off"
 												/>
 												<InputGroup.Append>
 													<InputGroup.Text id={denom}>
