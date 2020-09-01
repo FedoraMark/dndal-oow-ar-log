@@ -460,19 +460,24 @@ $halfGap: .25rem;
 
                         cursor: pointer;
 
-                        &:hover,
-                        &:focus {
-                            .input-group-text {
-                                color: white;
-                                background-color: $color-active-background;
-                            }
-                        }
-
-                        .input-group-append {
+                        button {
                             width: 50px;
+                            padding: 0;
+
+                            border: 0;
+                            outline: 0;
+
+                            &:hover,
+                            &:focus {
+                                .input-group-text {
+                                    color: white;
+                                    background-color: $color-active-background;
+                                }
+                            }
 
                             .input-group-text {
                                 width: 100%;
+                                height: 100%;
 
                                 -webkit-transition: color, background .25s ease;
                                    -moz-transition: color, background .25s ease;
@@ -486,6 +491,24 @@ $halfGap: .25rem;
                                     margin-top: -.3rem;
 
                                     font-size: 1.21rem;
+                                }
+                            }
+                        }
+
+                        &.disabled {
+                            pointer-events: none;
+
+                            .input-group-append {
+                                .input-group-text {
+                                    opacity: .5;
+                                }
+
+                                &:hover,
+                                &:focus {
+                                    .input-group-text {
+                                        color: initial;
+                                        background-color: initial;
+                                    }
                                 }
                             }
                         }
@@ -626,8 +649,8 @@ $halfGap: .25rem;
 
                         .dotE {
                             display: inline-flex;
-                            width: 1.5rem;
-                            height: 1.5rem;
+                            width: 1.25rem;
+                            height: 1.25rem;
 
                             justify-content: center;
                             align-items: center;

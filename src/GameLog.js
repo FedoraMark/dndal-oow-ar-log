@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
+import _each from "lodash/each";
 import _isEqual from "lodash/isEqual";
 import _map from "lodash/map";
 import _pull from "lodash/pull";
@@ -36,6 +37,8 @@ import {
     getFirstKey,
     condenseWealth,
     getTotalCopper,
+    currency,
+    emptyWealth,
 } from "utils/Util";
 
 import "animate.css";
@@ -70,6 +73,7 @@ class GameLog extends React.Component {
         logUpdateHandler: PropTypes.func,
         wasDm: PropTypes.bool,
         wasEpic: PropTypes.bool,
+        autoCalc: PropTypes.bool,
         startWithEdit: PropTypes.bool,
         deleteHandler: PropTypes.func,
         saveHandler: PropTypes.func,
@@ -84,6 +88,7 @@ class GameLog extends React.Component {
         startWithEdit: false,
         wasDm: false,
         wasEpic: false,
+        autoCalc: true,
         deleteHandler: () => {},
         saveHandler: () => {},
     };
@@ -96,6 +101,7 @@ class GameLog extends React.Component {
         showDeleteModal: false,
         wasDm: this.props.wasDm,
         wasEpic: this.props.wasEpic,
+        autoCalc: this.props.autoCalc,
 
         // currentWealthTab: 0,
 
@@ -109,6 +115,7 @@ class GameLog extends React.Component {
         tempDmNumber: "",
         tempIsDm: this.props.wasDm,
         tempIsEpic: this.props.wasEpic,
+        tempAutoCalc: this.props.autoCalc,
         tempWealth: !!this.props.statusData ? {...this.props.statusData.wealth} : {starting: {}, spent: {}, earned: {}, ending: {}},
     };
 
@@ -122,8 +129,15 @@ class GameLog extends React.Component {
             statusData: newProps.statuses,
             wasDm: newProps.wasDm,
             wasEpic: newProps.wasEpic,
+            autoCalc: newProps.autoCalc
             // do not update startWithEdit
-        });
+        }, 
+        	// (e) => {
+	        // 	if (newProps.autoCalc) {
+	        // 		this.setState({tempWealth: {...this.state.tempWealth, ending: this.calcEndingWealth(this.state.tempWealth)}});
+	        // 	} 
+    	    // }
+        );
     }
 
     //FUNCTIONS
@@ -218,9 +232,10 @@ class GameLog extends React.Component {
                 tempDmNumber: this.state.tempIsDm ? "" : this.state.tempDmNumber.trim(),
                 tempEvent: this.state.tempEvent.trim(),
                 tempDate: this.state.tempDate.trim(),
-                wasDm: this.state.tempIsDm, // redundant?
-                wasEpic: this.state.tempIsEpic, // redundant?
-                tempWealth: this.state.tempWealth, // redundant?
+                // wasDm: this.state.tempIsDm, // redundant?
+                // wasEpic: this.state.tempIsEpic, // redundant?
+                // autoCalc: this.state.autoCalc, // redundant?
+                // tempWealth: this.state.tempWealth, // redundant?
             },
             this.updateEventHandler(tempStatusData, true)
         );
@@ -245,6 +260,7 @@ class GameLog extends React.Component {
             this.setState({
             	tempIsDm: this.state.wasDm,
                 tempIsEpic: this.state.wasEpic,
+                tempAutoCalc: this.state.autoCalc,
                 tempEvent: this.getPropOrEmpty(statusObj, "event", null),
                 tempDate: this.getPropOrEmpty(statusObj, "date", null),
                 tempWealth: wealthCheck === "" ? {starting: {}, spent: {}, earned: {}, ending: {}} : wealthCheck,
@@ -299,6 +315,10 @@ class GameLog extends React.Component {
 		var newTempWealth = {...this.state.tempWealth};
 		newTempWealth[type] = wealthTypeObj;
 
+		if (this.state.tempAutoCalc) {
+			newTempWealth = {...newTempWealth, ending: this.calcEndingWealth(newTempWealth)};
+		} 
+
 		this.setState({tempWealth: newTempWealth});
 	}
 
@@ -312,6 +332,42 @@ class GameLog extends React.Component {
 			this.props.addToast(("Coinage condensed in " + type.toUpperCase()), { appearance: "success" });
 		}
 	}
+
+	calcEndingWealth = (fullWealthObj) => {
+	    var endingWealthObj = { ...emptyWealth };
+
+	    // calculate each column and save to opject
+	    _each(currency, (p) => {
+	        var starting = fullWealthObj["starting"][p];
+	        var spent = fullWealthObj["spent"][p];
+	        var earned = fullWealthObj["earned"][p];
+
+	        starting = !!starting ? starting : 0;
+	        spent = !!spent ? spent : 0;
+	        earned = !!earned ? earned : 0;
+
+	        endingWealthObj[p] = starting - spent + earned;
+	    });
+
+	    let valDigits = {cp: 10, sp: 5, ep: 2, gp: 10};
+
+	    // remove negatives up to PP
+	    _each(currency, (p,i) => {
+	        while(endingWealthObj[p] < 0 && i < 4) {
+	            let nextP = currency[i+1];
+
+	            endingWealthObj[nextP]--;
+	            endingWealthObj[p] += valDigits[p];
+	        }
+	    })
+
+	    if (endingWealthObj.pp < 0) {
+	        this.props.addToast("Ending Gold results in negative total value", { appearance: "error" });
+	        return {...emptyWealth};
+	    }
+
+	    return endingWealthObj;
+	};
 
     //RENDERERS
     render_titleAndCode = (type, code, title) => {
@@ -770,24 +826,24 @@ class GameLog extends React.Component {
 						<InputGroup className="dropdownGroup">
 							<DropdownButton
 								variant="light"
-								title={"autoCalcWealth"}
+								title={this.state.tempAutoCalc ? "Auto Calculate Gold" : "Manually Enter Gold"}
 								alignRight
 							>
 								<Dropdown.Item
 									href="#"
-									eventKey="t"
-									active={false}
-									onSelect={(e) => {}}
+									eventKey="auto"
+									active={this.state.tempAutoCalc}
+									onSelect={(e) => {this.setState({tempAutoCalc: true});}}
 								>
-									Automatically Calculate Ending Gold
+									Auto<span className="condense"> Calculate</span> Ending Gold
 								</Dropdown.Item>
 								<Dropdown.Item
 									href="#"
-									eventKey="f"
-									active={false}
-									onSelect={(e) => {}}
+									eventKey="manu"
+									active={!this.state.tempAutoCalc}
+									onSelect={(e) => {this.setState({tempAutoCalc: false});}}
 								>
-									Manually Enter Ending Gold
+									Manual<span className="condense">ly Enter</span> Ending Gold
 								</Dropdown.Item>
 							</DropdownButton>
 						</InputGroup>
@@ -980,18 +1036,20 @@ class GameLog extends React.Component {
 										fullWealth={this.state.tempWealth} 
 										useEp={this.state.useEp} 
 										type={displayLabel} 
-										updateHandler={this.updateWealthHandler} />
+										updateHandler={this.updateWealthHandler}
+										disabled={this.state.tempAutoCalc && displayLabel === "ending"}
+									/>
 								</div>
 
 								<InputGroup
-									className="calcButtonGroup rightGroup"
+									className={classnames("calcButtonGroup rightGroup",this.state.tempAutoCalc && displayLabel === "ending" && "disabled")}
 									onClick={this.condenseCoinage.bind(this,displayLabel)}
 								>
 									<OverlayTrigger
 										placement="top"
 										overlay={<Tooltip>Condense Coinage</Tooltip>}
 									>
-										<InputGroup.Append>
+										<InputGroup.Append as="button">
 											<InputGroup.Text>
 												<span className="calcMoneyIcon"><IoIosCalculator /></span>
 											</InputGroup.Text>

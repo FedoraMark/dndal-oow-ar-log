@@ -30,6 +30,7 @@ import {
     condenseWealth,
     classes5e,
     classesUA,
+    currency,
     excludeInWealth
 } from "utils/Util";
 
@@ -178,7 +179,6 @@ class Player extends Component {
 
     calcWealth = () => {
     	if (this.state.tempAutoWealth) {
-    		var newWealthObj = { ...this.state.latestWealth };
     		return;
     	}
 
@@ -517,7 +517,7 @@ class Player extends Component {
 							{/* Should really do this as a grid */}
 							<div className="currencyInputsWrapper middleGroup">
 								{_map(
-									["pp", "gp", "ep", "sp", "cp"],
+									[...currency].reverse(),
 									(denom, key) => {
 										let conversion = [
 											"platinum (1000cp)",

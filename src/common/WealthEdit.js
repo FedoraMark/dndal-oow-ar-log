@@ -12,46 +12,48 @@ import { excludeInWealth } from "utils/Util"
 
 const denominations = ["pp", "gp", "ep", "sp", "cp"];
 const conversion = [
-	"platinum (1000cp)",
-	"gold (100cp)",
-	"ethereum (50cp)",
-	"silver (10cp)",
-	"copper (1cp)",
+    "platinum (1000cp)",
+    "gold (100cp)",
+    "ethereum (50cp)",
+    "silver (10cp)",
+    "copper (1cp)",
 ];
 
 class WealthEdit extends Component {
-	static propTypes = {
-		fullWealth: PropTypes.object.isRequired,
-		type: PropTypes.string.isRequired, // starting, spent, earned, ending
-		updateHandler: PropTypes.func,
-	};
+    static propTypes = {
+        fullWealth: PropTypes.object.isRequired,
+        type: PropTypes.string.isRequired, // starting, spent, earned, ending
+        updateHandler: PropTypes.func,
+        disabled: PropTypes.bool,
+    };
 
-	static defaultProps = {
-		updateHandler: () => {},
-	};
+    static defaultProps = {
+        updateHandler: () => {},
+        disabled: false,
+    };
 
-	state = {
-		wealth: this.props.fullWealth[this.props.type],
-		useEp: true, //this.props.useEp,
+    state = {
+        wealth: this.props.fullWealth[this.props.type],
+        disabled: this.props.disabled,
+        useEp: true, //this.props.useEp,
+    };
 
-	};
+    componentWillReceiveProps(newProps) {
+        this.setState({ disabled: newProps.disabled, wealth: newProps.fullWealth[this.props.type] });
+    }
 
-	componentWillReceiveProps(newProps) {
-		this.setState({ wealth: newProps.fullWealth[this.props.type] });
-	}
+    setWealth = (val, denom) => {
+        let newWealth = { ...this.state.wealth }
+        newWealth[denom] = val === "" ? 0 : Math.abs(parseInt(val));
 
-	setWealth = (val, denom) => {
-		let newWealth = { ...this.state.wealth }
-		newWealth[denom] = val === "" ? 0 : Math.abs(parseInt(val));
+        this.setState({ wealth: newWealth },
+            this.props.updateHandler(newWealth, this.props.type)
+        );
+    }
 
-		this.setState({wealth: newWealth},
-			this.props.updateHandler(newWealth, this.props.type)
-		);
-	}
-
-	render() {
-		return (
-			<div className={style.coinInputsWrapper}>
+    render() {
+        return (
+            <div className={style.coinInputsWrapper}>
 				{_map(denominations, (denom, key) => {
 					if (!this.state.useEp && denom === "ep") {
 						return <></>;
@@ -72,6 +74,7 @@ class WealthEdit extends Component {
 								}
 								onChange={(e) => {this.setWealth(e.target.value, denom);}}
 								onKeyDown={(e) => {excludeInWealth.includes(e.key) && e.preventDefault();}}
+								disabled={this.state.disabled}
 							/>
 							<InputGroup.Append className={style.denomBox}>
 								<InputGroup.Text>
@@ -87,8 +90,8 @@ class WealthEdit extends Component {
 					);
 				})}
 			</div>
-		);
-	}
+        );
+    }
 }
 
 export default WealthEdit;
