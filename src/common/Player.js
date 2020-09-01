@@ -549,8 +549,7 @@ class Player extends Component {
 													value={currentWealthObj[denom].toString().replace(/^0+/, "")}
 													onChange={(e) => {this.setTempWealth(e.target.value,denom);}}
 													onKeyDown={(e) => {excludeInWealth.includes(e.key) && e.preventDefault();}}
-													autoComplete="new-password"
-                                					// autoComplete="off"
+													autoComplete={denom === "cp" ? "new-password" : "off"}
 												/>
 												<InputGroup.Append>
 													<InputGroup.Text id={denom}>
