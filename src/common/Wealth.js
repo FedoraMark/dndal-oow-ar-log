@@ -11,7 +11,8 @@ class Wealth extends React.Component {
         isEmpty: PropTypes.bool,
         gain: PropTypes.bool,
         loss: PropTypes.bool,
-        colorless: PropTypes.bool
+        colorless: PropTypes.bool,
+        error: PropTypes.bool,
     }
 
     static defaultProps = {
@@ -19,7 +20,8 @@ class Wealth extends React.Component {
         wealthObj: {},
         gain: false,
         loss: false,
-        colorless: false
+        colorless: false,
+        error: false,
     }
 
     isInvalid = (val) => {
@@ -45,9 +47,15 @@ class Wealth extends React.Component {
     }
 
     render() {
-        const { gain, loss, colorless } = this.props;
+        const { gain, loss, colorless, error } = this.props;
 
-        let style = classnames("money", gain && "gain", loss && "loss", colorless && "colorless");
+        if (error) {
+            return (
+                <span className="wealthMoney error">—</span>
+            );
+        }
+
+        let style = classnames("wealthMoney", gain && "gain", loss && "loss", colorless && "colorless");
 
         if (this.state.pp === 0 && this.state.gp === 0 && this.state.ep === 0 && this.state.sp === 0 && this.state.cp === 0) {
             return (

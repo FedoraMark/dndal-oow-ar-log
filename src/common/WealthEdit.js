@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import classnames from "classnames";
 import _map from "lodash/map";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
@@ -25,21 +26,28 @@ class WealthEdit extends Component {
         type: PropTypes.string.isRequired, // starting, spent, earned, ending
         updateHandler: PropTypes.func,
         disabled: PropTypes.bool,
+        error: PropTypes.bool,
     };
 
     static defaultProps = {
         updateHandler: () => {},
         disabled: false,
+        error: false,
     };
 
     state = {
         wealth: this.props.fullWealth[this.props.type],
         disabled: this.props.disabled,
+        error: this.props.error,
         useEp: true, //this.props.useEp,
     };
 
     componentWillReceiveProps(newProps) {
-        this.setState({ disabled: newProps.disabled, wealth: newProps.fullWealth[this.props.type] });
+        this.setState({
+            disabled: newProps.disabled,
+            error: newProps.error,
+            wealth: newProps.fullWealth[this.props.type]
+        });
     }
 
     setWealth = (val, denom) => {
@@ -59,19 +67,19 @@ class WealthEdit extends Component {
 						return <></>;
 					}
 
+					let value = !!this.state.wealth[denom]
+						? this.state.wealth[denom].toString().replace(/^0+/, "")
+						: "";
+
 					return (
-						<InputGroup key={key} className={style.money}>
+						<InputGroup key={key} className={classnames(style.money, this.state.error && style.error)}>
 							<Form.Control
 								className="handwritten"
 								id={denom}
-								type="number"
+								type={this.state.error ? "text" : "number"}
 								min="0"
 								placeholder="0"
-								value={
-									!!this.state.wealth[denom]
-										? this.state.wealth[denom].toString().replace(/^0+/, "")
-										: ""
-								}
+								value={this.state.error ? "—" : value}
 								onChange={(e) => {this.setWealth(e.target.value, denom);}}
 								onKeyDown={(e) => {excludeInWealth.includes(e.key) && e.preventDefault();}}
 								disabled={this.state.disabled}

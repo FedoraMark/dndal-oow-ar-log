@@ -102,6 +102,7 @@ class GameLog extends React.Component {
         wasDm: this.props.wasDm,
         wasEpic: this.props.wasEpic,
         autoCalc: this.props.autoCalc,
+        negativeEndingGold: false,
 
         // currentWealthTab: 0,
 
@@ -131,13 +132,7 @@ class GameLog extends React.Component {
             wasEpic: newProps.wasEpic,
             autoCalc: newProps.autoCalc
             // do not update startWithEdit
-        }, 
-        	// (e) => {
-	        // 	if (newProps.autoCalc) {
-	        // 		this.setState({tempWealth: {...this.state.tempWealth, ending: this.calcEndingWealth(this.state.tempWealth)}});
-	        // 	} 
-    	    // }
-        );
+        });
     }
 
     //FUNCTIONS
@@ -363,7 +358,11 @@ class GameLog extends React.Component {
 
 	    if (endingWealthObj.pp < 0) {
 	        this.props.addToast("Ending Gold results in negative total value", { appearance: "error" });
+	        this.setState({negativeEndingGold: true});
 	        return {...emptyWealth};
+	    } else if (this.state.negativeEndingGold) {
+	    	this.props.addToast("Ending Gold is no longer negative", { appearance: "success" });
+	    	this.setState({negativeEndingGold: false});
 	    }
 
 	    return endingWealthObj;
@@ -686,6 +685,7 @@ class GameLog extends React.Component {
 							<Wealth
 								isEmpty={wealthObj === null}
 								wealthObj={ wealthObj === null ? {} : wealthObj.ending }
+								error={this.state.negativeEndingGold}
 							/>
 						</span>
 					</div>
@@ -1006,25 +1006,26 @@ class GameLog extends React.Component {
 
 				{/* WEALTH */}
 				<li className="editRow wealthRow">
-					{_map({"Starting ": {}, "Spent (–)": {}, "Earned (+)": {}, "Ending ": {}}, (wealth,label) => {
+					{_map({"Starting ": {}, "Spent (–)": {}, "Earned (+)": {}, "Ending ": {}}, (wealth,label) => { // leave spaces
+						
 						var condenseLabel;
-
 					    switch (label) {
-					        case "Starting ":
+					        case "Starting ": // leave space
 					            condenseLabel = <>S<span className="partCondense">tarting</span></>; break;
 					        case "Spent (–)":
 					            condenseLabel = <><span className="partCondense">Spent&nbsp;(</span>-<span className="partCondense">)</span></>; break;
 					        case "Earned (+)":
 					            condenseLabel = <><span className="partCondense">Earned&nbsp;(</span>+<span className="partCondense">)</span></>; break;
-					        case "Ending ":
+					        case "Ending ": // leave space
 					            condenseLabel = <>E<span className="partCondense">nding</span></>; break;
 					        default: condenseLabel = "";
 					    }
 
 					    let displayLabel = label.toLowerCase().substr(0,label.indexOf(" "));
+					    let error = this.state.tempAutoCalc && displayLabel === "ending" && this.state.negativeEndingGold
 
 						return (
-							<InputGroup key={label} className="editRow flexRow">
+							<InputGroup key={label} className={classnames("editRow flexRow", error && "error")}>
 								<InputGroup.Prepend className="leftGroup">
 									<InputGroup.Text className="oswald">
 										{condenseLabel}
@@ -1038,6 +1039,7 @@ class GameLog extends React.Component {
 										type={displayLabel} 
 										updateHandler={this.updateWealthHandler}
 										disabled={this.state.tempAutoCalc && displayLabel === "ending"}
+										error={error}
 									/>
 								</div>
 
@@ -1046,8 +1048,8 @@ class GameLog extends React.Component {
 									onClick={this.condenseCoinage.bind(this,displayLabel)}
 								>
 									<OverlayTrigger
-										placement="top"
-										overlay={<Tooltip>Condense Coinage</Tooltip>}
+										placement="top-end"
+										overlay={<Tooltip>Condense {displayLabel.charAt(0).toUpperCase() + displayLabel.slice(1)} Coinage</Tooltip>}
 									>
 										<InputGroup.Append as="button">
 											<InputGroup.Text>

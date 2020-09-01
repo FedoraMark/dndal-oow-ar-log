@@ -11,9 +11,24 @@
 
         font-size: 1rem !important;
 
+        input,
+        span span {
+            @include transition();
+        }
+
         &:not(:last-of-type) {
             margin-bottom: .25rem !important;
         }
+
+        // &.error {
+        //     * {
+        //         border-color: $color-bs-danger !important;
+        //     }
+
+        //     input {
+        //         color: $color-bs-danger;
+        //     }
+        // }
 
         .denomBox {
             width: auto;

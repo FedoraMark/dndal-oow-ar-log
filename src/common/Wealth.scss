@@ -1,15 +1,19 @@
 // STYLES
-.money {
+.wealthMoney {
     &.gain:not(.loss) {
         color: #16a085;
     }
 
-    &.loss:not(.gain) {
+    &.loss:not(.gain), {
         color: #e74c3c;
     }
 
     &.colorless {
         color: #7f8c8d !important;
+    }
+
+    &.error {
+        color: #d9534f;
     }
 
     .comma:last-of-type {
