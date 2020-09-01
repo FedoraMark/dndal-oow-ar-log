@@ -320,7 +320,7 @@ class GameLog extends React.Component {
 	condenseCoinage = (type) => {
 		var newCoinage =  condenseWealth(getTotalCopper(this.state.tempWealth[type]),true);
 
-		if (_isEqual(newCoinage,this.state.tempWealth[type])) {
+		if (_isEqual(newCoinage,this.state.tempWealth[type]) || (getTotalCopper(newCoinage) === 0 && getTotalCopper(this.state.tempWealth[type]) === 0)) {
 			this.props.addToast(("No change to coinage in " + type.toUpperCase()), { appearance: "info" });
 		} else {
 			this.updateWealthHandler(newCoinage,type);
