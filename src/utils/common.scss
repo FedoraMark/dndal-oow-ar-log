@@ -107,6 +107,10 @@ body {
     flex-grow: 1;
 }
 
+.noWrap {
+    white-space: nowrap;
+}
+
 .flexBetwixt {
     justify-content: space-between !important;
 }

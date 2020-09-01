@@ -929,6 +929,7 @@ class GameLog extends React.Component {
 						</InputGroup.Prepend>
 						<Form.Control
 							className="handwritten"
+							type="date"
 							value={this.state.tempDate}
 							onChange={(e) => {
 								this.setState({ tempDate: e.target.value });
@@ -1143,16 +1144,17 @@ class GameLog extends React.Component {
 				</Modal.Header>
 				<Modal.Body>
 					<div className="modalBody">
-						<span
-							className="fauxdesto"
+						<div
+							className="fauxdesto nowrap"
 							dangerouslySetInnerHTML={{
 								__html: this.state.data.code
 									.toUpperCase()
 									.split("-")
 									.join("<span class='hyphen'>-</span>"),
 							}}
-						/>{" "}
-						<span className="fauxdesto italic">{this.state.data.title}</span>
+						/>
+						{" "}
+						<div className="fauxdesto italic noWrap" style={{fontSize: "2.8rem", marginTop: "-.9rem"}}>{this.state.data.title}</div>
 					</div>
 				</Modal.Body>
 				<Modal.Footer className="flexBetwixt">
@@ -1189,6 +1191,8 @@ class GameLog extends React.Component {
 					)}
 					style={style}
 				>
+					{!this.props.preview && <div className="stickyCover" />}
+
 					{this.render_titleAndCode(this.state.data.type,this.state.data.code,this.state.data.title)}
 
 					<Collapse

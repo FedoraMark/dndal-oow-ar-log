@@ -77,6 +77,7 @@ class WealthEdit extends Component {
 								className="handwritten"
 								id={denom}
 								type={this.state.error ? "text" : "number"}
+                                pattern="[0-9]*"
 								min="0"
 								placeholder="0"
 								value={this.state.error ? "—" : value}

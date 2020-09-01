@@ -4,6 +4,7 @@ import classnames from "classnames";
 import _each from "lodash/each";
 import _isEqual from "lodash/isEqual";
 import _map from "lodash/map";
+import Button from "react-bootstrap/Button";
 import Collapse from "react-bootstrap/Collapse";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
@@ -540,6 +541,7 @@ class Player extends Component {
 													className="handwritten"
 													id={denom}
 													type="number"
+													pattern="[0-9]*"
 													min="0"
 													placeholder="0"
 													disabled={this.state.tempAutoWealth}
@@ -661,7 +663,7 @@ class Player extends Component {
 								<InputGroup className="playerInfoGroup dropdownGroup">
 									<DropdownButton
 										variant="light"
-										title={this.state.tempAutoLeveling ? ("Auto-leveling " + this.state.tempAutoLeveling.toUpperCase().replace(/ /g, "\u00a0")) : "Manual Levels"}
+										title={this.state.tempAutoLeveling ? ("Leveling " + this.state.tempAutoLeveling.toUpperCase().replace(/ /g, "\u00a0")) : "Manual Levels"}
 										alignRight
 									>
 										<Dropdown.Item
@@ -761,7 +763,7 @@ class Player extends Component {
 											active={this.state.tempAutoWealth === true}
 											onSelect={(e) => {this.setState({tempAutoWealth: true});}}
 										>
-											<span className="condense">Use </span>Latest Wealth
+											<span className="condense">Use </span>Auto Wealth
 										</Dropdown.Item>
 									</DropdownButton>
 								</InputGroup>
@@ -942,7 +944,7 @@ class Player extends Component {
 							<h1>Manual and Auto Tier</h1>
 							<ul>
 								<li>Auto Tier will set the character's current tier based on class levels.</li>
-								<li>This is based on the total levels set to classes and not to checked Advancements in game logs.</li>
+								<li>This is based on the total levels set for classes and not to checked Advancements in game logs.</li>
 								<li>This will work in conjunction with auto-leveling.</li>
 							</ul>
 						</li>
@@ -950,25 +952,24 @@ class Player extends Component {
 							<h1>Manual and Auto Wealth</h1>
 							<ul>
 								<li>Auto Wealth will use the Ending Gold of the most recent log.</li>
-								<li>Auto Wealth prevents any changes to Current Wealth other than setting 'Include/Exclude EP'.</li>
 							</ul>
 						</li>
-						{/* <li> */}
-						{/* 	<h1>Including and Excluding EP</h1> */}
-						{/* 	<ul> */}
-						{/* 		<li>You may include or exclude ethereum pieces (ep) from your Current Wealth inputs.</li> */}
-						{/* 		<li>Setting this to 'Exclude EP' will convert any ep into sp and add it to your current sp.</li> */}
-						{/* 		<li>This is (currently) only set for player options only; each log will have its own individual setting.</li> */}
-						{/* 	</ul> */}
-						{/* </li> */}
 						<li>
 							<h1>Condensing Coinage <IoIosCalculator /></h1>
 							<ul>
-								<li>This will convert your wealth into using the least amount of coins possible.</li>
+								<li>This will convert your wealth to use the least amount of coins possible.</li>
 							</ul>
 						</li>
 					</ul>
 				</Modal.Body>
+				<Modal.Footer>
+					<Button
+						variant="secondary"
+						onClick={(e) => {this.setState({showHelpModal: false});}}
+					>
+						Close
+					</Button>
+				</Modal.Footer>
 			</Modal>
     	);
     }
