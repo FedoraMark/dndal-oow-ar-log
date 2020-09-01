@@ -110,16 +110,16 @@ class Summary extends Component {
 							Cancel
 						</Button>
 						<Button
+							variant="outline-primary"
+							onClick={this.handleAddRecord.bind(this, false)}
+						>
+							Add Record
+						</Button>
+						<Button
 							variant="primary"
 							onClick={this.handleAddRecord.bind(this, true)}
 						>
 							Add and Edit
-						</Button>
-						<Button
-							variant="primary"
-							onClick={this.handleAddRecord.bind(this, false)}
-						>
-							Add Record
 						</Button>
 					</Modal.Footer>
 				</Modal>

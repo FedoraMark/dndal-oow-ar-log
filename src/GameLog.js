@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
+import _isEqual from "lodash/isEqual";
 import _map from "lodash/map";
 import _pull from "lodash/pull";
 import Button from 'react-bootstrap/Button'
@@ -22,19 +23,20 @@ import { FaSave } from "react-icons/fa";
 import { ImMenu2 } from "react-icons/im";
 import { IoIosCalculator } from "react-icons/io";
 
-import {
-    dmRewardNote,
-    playerRewardNote,
-    getFirstObject,
-    getFirstKey,
-} from "utils/Util";
-
 import EditButton from "common/EditButton";
 import Wealth from "common/Wealth";
 import WealthEdit from "common/WealthEdit";
 import Event from "selectors/Event";
 import Option from "selectors/Option";
 import Select from "selectors/Select";
+import {
+    dmRewardNote,
+    playerRewardNote,
+    getFirstObject,
+    getFirstKey,
+    condenseWealth,
+    getTotalCopper,
+} from "utils/Util";
 
 import "animate.css";
 import "GameLog.scss";
@@ -298,6 +300,17 @@ class GameLog extends React.Component {
 		newTempWealth[type] = wealthTypeObj;
 
 		this.setState({tempWealth: newTempWealth});
+	}
+
+	condenseCoinage = (type) => {
+		var newCoinage =  condenseWealth(getTotalCopper(this.state.tempWealth[type]),true);
+
+		if (_isEqual(newCoinage,this.state.tempWealth[type])) {
+			this.props.addToast(("No change to coinage in " + type.toUpperCase()), { appearance: "info" });
+		} else {
+			this.updateWealthHandler(newCoinage,type);
+			this.props.addToast(("Coinage condensed in " + type.toUpperCase()), { appearance: "success" });
+		}
 	}
 
     //RENDERERS
@@ -951,7 +964,8 @@ class GameLog extends React.Component {
 					            condenseLabel = <>E<span className="partCondense">nding</span></>; break;
 					        default: condenseLabel = "";
 					    }
-						
+
+					    let displayLabel = label.toLowerCase().substr(0,label.indexOf(" "));
 
 						return (
 							<InputGroup key={label} className="editRow flexRow">
@@ -965,13 +979,13 @@ class GameLog extends React.Component {
 									<WealthEdit 
 										fullWealth={this.state.tempWealth} 
 										useEp={this.state.useEp} 
-										type={label.toLowerCase().substr(0,label.indexOf(" "))} 
+										type={displayLabel} 
 										updateHandler={this.updateWealthHandler} />
 								</div>
 
 								<InputGroup
 									className="calcButtonGroup rightGroup"
-									onClick={(e) => {console.log("calc " + label);}}
+									onClick={this.condenseCoinage.bind(this,displayLabel)}
 								>
 									<OverlayTrigger
 										placement="top"

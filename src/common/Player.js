@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import _each from "lodash/each";
+import _isEqual from "lodash/isEqual";
 import _map from "lodash/map";
 import Collapse from "react-bootstrap/Collapse";
 import Dropdown from "react-bootstrap/Dropdown";
@@ -73,13 +74,13 @@ class Player extends Component {
         // options
         autoLeveling: this.props.optionsObj.autoLeveling,
         tierSetting: this.props.optionsObj.tierSetting,
-        useEp: true, //this.props.optionsObj.useEp,
+        // useEp: this.props.optionsObj.useEp,
         autoWealth: this.props.optionsObj.autoWealth,
 
         // temp
     	tempAutoLeveling: this.props.optionsObj.autoLeveling,
         tempTierSetting: this.props.optionsObj.tierSetting,
-        tempUseEp: true, // this.props.optionsObj.useEp,
+        // tempUseEp: this.props.optionsObj.useEp,
         tempAutoWealth: this.props.optionsObj.autoWealth,
 
         latestWealth: this.props.latestWealth,
@@ -181,11 +182,9 @@ class Player extends Component {
     		return;
     	}
 
-        let condensedObj = condenseWealth(getTotalCopper(this.state.tempObj.wealth),this.state.tempUseEp);
+        let condensedObj = condenseWealth(getTotalCopper(this.state.tempObj.wealth),true);
 
-        if (
-            JSON.stringify(condensedObj) === JSON.stringify(this.state.tempObj.wealth)
-        ) {
+        if (_isEqual(condensedObj,this.state.tempObj.wealth)) {
             this.props.addToast("No change to coinage", { appearance: "info" });
         } else {
             this.props.addToast("Coinaged condensed", { appearance: "success" });
@@ -319,7 +318,7 @@ class Player extends Component {
 
     //RENDERERS
     render_displayInfo = () => {
-    	var wealthObj = this.state.tempAutoWealth ? this.state.latestWealth : this.state.playerObj.wealth;
+    	var wealthObj = this.state.tempAutoWealth ? this.state.latestWealth : this.state.tempObj.wealth;
     	// if (!this.state.tempUseEp) {
     	// 	wealthObj = this.state.tempAutoWealth ? this.getNoEpWealth(this.state.latestWealth) : this.getNoEpWealth(this.state.playerObj.wealth);
     	// }
@@ -360,13 +359,10 @@ class Player extends Component {
 					</div>
 				)}
 
-				{!!this.state.playerObj.wealth &&
-					getTotalCopper(this.state.playerObj.wealth) > 0 && (
+				{!!wealthObj && (getTotalCopper(wealthObj) > 0 || this.state.autoWealth) && (
 						<div className="infoItem">
 							<h1>Wealth:</h1>
-							<p>
-								<Wealth wealthObj={wealthObj} />
-							</p>
+							<p><Wealth wealthObj={wealthObj} /></p>
 						</div>
 					)}
 

@@ -22,13 +22,11 @@ const conversion = [
 class WealthEdit extends Component {
 	static propTypes = {
 		fullWealth: PropTypes.object.isRequired,
-		// useEp: PropTypes.bool,
 		type: PropTypes.string.isRequired, // starting, spent, earned, ending
 		updateHandler: PropTypes.func,
 	};
 
 	static defaultProps = {
-		// useEp: true,
 		updateHandler: () => {},
 	};
 
@@ -39,16 +37,11 @@ class WealthEdit extends Component {
 	};
 
 	componentWillReceiveProps(newProps) {
-		if (newProps.save) {
-			this.setState({
-				fullWealth: newProps.fullWealth,
-				// useEp: newProps.useEp,
-			});
-		}
+		this.setState({ wealth: newProps.fullWealth[this.props.type] });
 	}
 
 	setWealth = (val, denom) => {
-		let newWealth = {...this.state.wealth}
+		let newWealth = { ...this.state.wealth }
 		newWealth[denom] = val === "" ? 0 : Math.abs(parseInt(val));
 
 		this.setState({wealth: newWealth},
@@ -84,13 +77,9 @@ class WealthEdit extends Component {
 								<InputGroup.Text>
 									<OverlayTrigger
 										placement="top"
-										overlay={
-											<Tooltip>{conversion[key]}</Tooltip>
-										}
+										overlay={<Tooltip>{conversion[key]}</Tooltip>}
 									>
-										<span className="bookFont bold">
-											{denom}
-										</span>
+										<span className="bookFont bold">{denom}</span>
 									</OverlayTrigger>
 								</InputGroup.Text>
 							</InputGroup.Append>
