@@ -84,7 +84,8 @@ class WealthEdit extends Component {
 								onChange={(e) => {this.setWealth(e.target.value, denom);}}
 								onKeyDown={(e) => {excludeInWealth.includes(e.key) && e.preventDefault();}}
 								disabled={this.state.disabled}
-                                autoComplete="off"
+                                autoComplete="new-password"
+                                // autoComplete="off"
 							/>
 							<InputGroup.Append className={style.denomBox}>
 								<InputGroup.Text>
