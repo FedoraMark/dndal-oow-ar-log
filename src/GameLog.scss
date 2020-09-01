@@ -129,6 +129,8 @@ $halfGap: .25rem;
             @include flex(flex-start, center);
 
             .name {
+                margin-right: .1rem;
+
                 flex-wrap: wrap;
 
                 @include flex(center, center, row);
@@ -140,7 +142,7 @@ $halfGap: .25rem;
                 }
 
                 .code {
-                    padding: 0 .5rem;
+                    padding: 0 .5rem 0 0 !important;
 
                     text-transform: uppercase;
 
