@@ -97,7 +97,7 @@ class AdvRecordLog extends React.Component {
 	};
 
 	toggleExpendedEvent = (code, title) => {		
-		var newStatusData = {...this.state.statusData};
+		var newStatusData = [...this.state.statusData];
 		let index = _findIndex(newStatusData, (e) => {
 			return getFirstKey(e) === code;
 		});
