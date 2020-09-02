@@ -8,8 +8,13 @@ export const bounceIn = "animate__animated animate__bounceIn";
 
 export const excludeInWealth = ["e", "+", "-", "."];
 export const emptyWealth = { cp: 0, sp: 0, ep: 0, gp: 0, pp: 0 };
-export const emptyLogWealth = {starting: emptyWealth, spent: emptyWealth, earned: emptyWealth, ending: emptyWealth};
-export const currency = ["cp", "sp", "ep", "gp", "pp"]
+export const emptyLogWealth = {
+    starting: emptyWealth,
+    spent: emptyWealth,
+    earned: emptyWealth,
+    ending: emptyWealth,
+};
+export const currency = ["cp", "sp", "ep", "gp", "pp"];
 
 export const dmRewardNote =
     "When you run an adventure, you earn the Adventure Record for that adventure, which you may apply to one of your Oracle of War characters. Apply the same rewards to the Adventure Record as your group earned, including legacy events. If a legacy event was awarded to a specific character, you may tick that event for your own character too.";
@@ -32,8 +37,20 @@ export const classes5e = [
     "Warlock",
     "Wizard",
 ];
+
 export const classesUA = ["Blood Hunter", "Mystic"];
-// export const coins5e = ["cp","sp","ep","gp","pp"];
+
+export const startingWealthLog = {
+    record: "start",
+    code: "start_campaign",
+    title: "Starting Wealth and Notes",
+    type: "Starting Wealth and Notes",
+    date: "",
+    notes: {
+        player: "Hail and well met!\n\nBegin your <i>Oracle of War</i> campgaign by entering your starting wealth and any important notes into this log.",
+    },
+    wealth: {...emptyLogWealth}
+};
 
 // FUNCTIONS
 export const getFirstObject = (obj) => {

@@ -51,7 +51,8 @@ const ACTIVE = 1;
 
 const GAME = "game";
 const SALVAGE = "salvage";
-const NOTES = "notes;"
+const NOTES = "notes";
+const START = "start";
 
 function withToast(Component) {
     return function WrappedComponent(props) {
@@ -120,7 +121,7 @@ class GameLog extends React.Component {
 
         tempEvent: "",
         tempDate: "",
-        tempNotes: "",
+        tempNotes: !!this.props.data.notes && !!this.props.data.notes.player ? this.props.data.notes.player : "",
         tempDmName: "",
         tempDmNumber: "",
         tempTier: -1,
@@ -135,6 +136,8 @@ class GameLog extends React.Component {
         if (!!this.dateFieldRef.current) {
         	this.dateFieldRef.current.defaultValue = "";
         }
+
+        !this.props.preview && this.saveTempData();
 
         this.props.resetStartWithEditHandler();
         // if (this.props.startWithEdit) {
@@ -438,7 +441,7 @@ class GameLog extends React.Component {
 								dangerouslySetInnerHTML={{__html: code.split("-").join("<span class='hyphen'>-</span>")}}
 							/>
 						)}
-						<span className="fauxdesto italic">{title}</span>
+						<span className={classnames("fauxdesto", [GAME, SALVAGE].includes(this.state.data.type) && "italic")}>{title}</span>
 					</span>
 				</h1>
 			</div>
@@ -1049,6 +1052,20 @@ class GameLog extends React.Component {
         );
     }
 
+    render_editStartData = () => {
+    	return (
+            <ul className="editWrapper">
+            	{/* OPTIONS */}
+				{this.render_editOptionsRow(START)}
+
+				<hr />
+
+            	{/* ACTIONS */}
+				{this.render_editActionsRow()}
+            </ul>
+        );
+    }
+
     render_editOptionsRow = (type) => {
 	    return (	
 	    	<li className="editRow optionsRow">
@@ -1255,7 +1272,7 @@ class GameLog extends React.Component {
 									.join("<span class='hyphen'>-</span>"),
 							}}
 						/>
-						{" "}
+						{" "} {/* THIS SPACE ON PURPOSE */}
 						<div className="fauxdesto italic noWrap" style={{fontSize: "2.8rem", marginTop: "-.9rem"}}>{this.state.data.title}</div>
 					</div>
 				</Modal.Body>
@@ -1379,6 +1396,7 @@ class GameLog extends React.Component {
 				</Container>
 			);
         } else if (this.state.data.record === "notes") {
+        	// NOTES LOG
 			return (
 				<Container
 					fluid
@@ -1412,7 +1430,56 @@ class GameLog extends React.Component {
 							<div className="logDataWrapper">
 								{this.render_notesInfo()}
 
-								<div className="twoCol">
+								<div className="twoCol notesLog">
+									<div className="leftCol arCol">
+										{this.render_wealth(true)}
+									</div>
+
+									<div className="rightCol arCol">
+										{this.render_advNotes(true)}
+									</div>
+								</div>
+							</div>
+						</div>
+					</Collapse>
+
+					{this.render_deleteModal()}
+				</Container>
+			);
+        } else if (this.state.data.record === "start") {
+        	// STARTING LOG
+			return (
+				<Container
+					fluid
+					className={classnames(
+						className,
+						"gameBox",
+						"notesWealthBox",
+						!this.state.isCollapsed && "expanded",
+						this.state.isEditing && "editing",
+						preview && "preview",
+					)}
+					style={style}
+				>
+
+					{!this.props.preview && <div className={classnames("stickyCover", this.state.isDeleting && "deleting")} />}
+
+					{this.render_titleAndCode(this.state.data.code,this.state.data.title,true)}
+
+					<Collapse in={!this.state.isCollapsed}>
+						<div className="content">
+							<Collapse
+								in={this.state.isEditing}
+								unmountOnExit
+								mountOnEnter
+							>
+								<div className="editContent">
+									{this.render_editStartData()}
+								</div>
+							</Collapse>
+
+							<div className="logDataWrapper">
+								<div className="twoCol notesLog">
 									<div className="leftCol arCol">
 										{this.render_wealth(true)}
 									</div>

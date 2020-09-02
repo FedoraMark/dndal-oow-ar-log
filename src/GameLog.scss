@@ -321,6 +321,19 @@ $halfGap: .25rem;
                 }
             }
 
+            &.notesLog {
+                margin-top: .5rem;
+
+                .notesWrapper {
+                    height: 100%;
+                    padding-bottom: .5rem;
+
+                    .box {
+                        height: 100%;
+                    }
+                }
+            }
+
             .rewardsWrapper {
                 flex-grow: 1;
 

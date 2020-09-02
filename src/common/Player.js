@@ -253,6 +253,10 @@ class Player extends Component {
         });
 
         this.updateTempInfo("classes", newClassLevelObj);
+
+        if (oldClass === this.state.tempAutoLeveling) {
+        	this.setState({tempAutoLeveling: newClass});	
+        }
     };
 
     removeClass = (cl) => {
@@ -505,7 +509,7 @@ class Player extends Component {
 
 										return (
 											<InputGroup
-												key={key}
+												key={denom}
 												className={"money " + denom}
 											>
 
@@ -592,7 +596,7 @@ class Player extends Component {
 												this.state.topClass === clss && "zFix",
 												classLen === 1 && "firstLast",
 												this.state.tempAutoLeveling !== "" && "disabled",
-												this.state.tempAutoLeveling === clss && "disabledClass"
+												this.state.tempAutoLeveling === clss && "autoLevelingClass"
 											)}
 											onClick={this.setTopClass.bind(this,clss)}
 											style={this.state.mountAnimSpeed}
@@ -720,7 +724,7 @@ class Player extends Component {
 											active={this.state.tempAutoWealth === true}
 											onSelect={(e) => {this.setState({tempAutoWealth: true});}}
 										>
-											<span className="condense">Use </span>Auto Wealth
+											Auto<span className="condense">matically Enter</span> Wealth
 										</Dropdown.Item>
 										<Dropdown.Item
 											href="#"
@@ -793,7 +797,6 @@ class Player extends Component {
 					as={InputGroup.Prepend}
 					variant="secondary"
 					title={selClass}
-					disabled={selClass === this.state.tempAutoLeveling}
 					onSelect={(e) => {this.setState({mountAnimSpeed: { animationDuration: "0s" }});}}
 				>
 					{_map(classes5e, (c, i) => {
@@ -847,15 +850,19 @@ class Player extends Component {
 							);
 						}
 					})}
-					<Dropdown.Divider />
-					<Dropdown.Item
-						className="remove oswald"
-						href="#"
-						onSelect={this.removeClass.bind(this, selClass)}
-					>
-						<span>Remove</span>
-						<AiTwotoneDelete />
-					</Dropdown.Item>
+					{this.state.autoLeveling !== selClass &&
+						<>
+							<Dropdown.Divider />
+							<Dropdown.Item
+								className="remove oswald"
+								href="#"
+								onSelect={this.removeClass.bind(this, selClass)}
+							>
+								<span>Remove</span>
+								<AiTwotoneDelete />
+							</Dropdown.Item>
+						</>
+					}
 				</DropdownButton>
 
 				<DropdownButton
@@ -907,10 +914,8 @@ class Player extends Component {
 						<li>
 							<h1>Manual and Auto Leveling</h1>
 							<ul>
-								<li>After adding a class you can choose one of your classes to automatically add levels.</li>
-								<li>Levels added are the total number of checked Advancements in game logs (minus any multiclassing levels) starting at level 1.</li>
+								<li>Auto Leveling will use the total number of checked Advancements in game logs (minus any multiclassing levels) to the assigned class.</li>
 								<li>If there are more levels set from multiclassing than total levels, then the selected class' level will be 0.</li>
-								<li>You cannot manually change any class levels or the selected class.</li>
 							</ul>
 						</li>
 						<li>

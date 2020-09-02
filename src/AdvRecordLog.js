@@ -16,7 +16,7 @@ import SideNav, { NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
 import ClickOutside from 'react-click-outside';
 import { ToastProvider } from "react-toast-notifications";
 
-import { fadeInUp, fadeIn, getFirstObject, getFirstKey, emptyWealth, emptyLogWealth } from "utils/Util";
+import { fadeInUp, fadeIn, getFirstObject, getFirstKey, emptyWealth, emptyLogWealth, startingWealthLog } from "utils/Util";
 import Player from "common/Player";
 import Summary from "common/Summary";
 import GameLog from "GameLog";
@@ -30,6 +30,7 @@ import games_oow from "./data/oowGames.json";
 
 const NOTES_WEALTH = "notes";
 const SALVAGE = "salvage"
+const GENERIC_CLASS = {Player: 1}
 
 class AdvRecordLog extends React.Component {
 	state = {
@@ -37,18 +38,18 @@ class AdvRecordLog extends React.Component {
 	        "player": "",
 	        "dci": "",
 	        "character": "Sam Pel",
-	        "classes": {},
+	        "classes": GENERIC_CLASS,
 	        "tier": 0,
 	        "base": "",
 	        "wealth": emptyWealth
 	    },
 	    optionsData: {
-	    	autoLeveling: "",
+	    	autoLeveling: getFirstKey(GENERIC_CLASS),
 			tierSetting: 0,
 			autoWealth: true,
 			// useEp: true,
 	    },
-	    gameData: [],
+	    gameData: [{...startingWealthLog}],
 	    statusData: [],
 	    
 	    showAddRecordArea: false,
@@ -56,7 +57,7 @@ class AdvRecordLog extends React.Component {
 	    isSidebarOpen: false,
 	    eventArr: [],
 	    deleteCode: "",
-	    openEditorCode: -1
+	    openEditorCode: ""
 	};
 
 	componentDidMount() {
@@ -230,9 +231,6 @@ class AdvRecordLog extends React.Component {
 		var newGameData = [...this.state.gameData];
 		var newStatusData = [...this.state.statusData];
 
-		newGameData[index].deleted = true;
-		getFirstObject(newStatusData[index]).deleted = true
-
 		newGameData.splice(index, 1);
 		newStatusData.splice(index, 1);
 
@@ -300,7 +298,7 @@ class AdvRecordLog extends React.Component {
 								style={{ animationDelay: delayTime * key + "ms" }} // OTHER PART OF THE ISSUE
 								data={logData}
 								statuses={this.state.statusData[key]}
-								collapse={!this.state.loaded} // OTHER PART OF THE ISSUE
+								collapse={!this.state.loaded && Object.keys(this.state.gameData).length !== 1} // OTHER PART OF THE ISSUE
 								logUpdateHandler={this.updateLogStatus}
 								deleteHandler={this.handleDelete}
 								wasDm={wasDm}

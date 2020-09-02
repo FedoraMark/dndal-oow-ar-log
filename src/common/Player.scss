@@ -346,14 +346,13 @@ $halfGap: .25rem;
                     @include flex(stretch, flex-start, column);
 
                     .disabled {
-                        .levelDropdown,
-                        &.disabledClass .dropdown {
+                        .levelDropdown {
                             button:after {
                                 display: none;
                             }
                         }
 
-                        &.disabledClass div:not(.levelDropdown) button {
+                        &.autoLevelingClass div:not(.levelDropdown) button {
                             text-decoration: underline;
                         }
                     }
