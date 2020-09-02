@@ -381,7 +381,7 @@ class GameLog extends React.Component {
 	        this.setState({negativeEndingGold: true});
 	        return {...emptyWealth};
 	    } else if (this.state.negativeEndingGold) {
-	    	this.props.addToast("Ending Gold is no longer negative", { appearance: "success" });
+	    	this.props.addToast("You are no longer in debt", { appearance: "success" });
 	    	this.setState({negativeEndingGold: false});
 	    }
 
