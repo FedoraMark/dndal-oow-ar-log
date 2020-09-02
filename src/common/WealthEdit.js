@@ -72,7 +72,7 @@ class WealthEdit extends Component {
 						: "";
 
 					return (
-						<InputGroup key={key} className={classnames(style.money, this.state.error && style.error)}>
+						<InputGroup key={denom} className={classnames(style.money, this.state.error && style.error)}>
 							<Form.Control
 								className="handwritten"
 								id={denom}

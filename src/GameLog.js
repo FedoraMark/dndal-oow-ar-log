@@ -1343,6 +1343,9 @@ class GameLog extends React.Component {
 					)}
 					style={style}
 				>
+
+					{!this.props.preview && <div className={classnames("stickyCover", this.state.isDeleting && "deleting")} />}
+
 					{this.render_titleAndCode(null,this.state.data.title)}
 
 					<Collapse in={!this.state.isCollapsed}>
@@ -1391,6 +1394,9 @@ class GameLog extends React.Component {
 					)}
 					style={style}
 				>
+				
+					{!this.props.preview && <div className={classnames("stickyCover", this.state.isDeleting && "deleting")} />}
+
 					{this.render_titleAndCode(this.state.data.code,this.state.data.title,true)}
 
 					<Collapse in={!this.state.isCollapsed}>

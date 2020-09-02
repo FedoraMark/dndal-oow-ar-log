@@ -16,7 +16,7 @@ import SideNav, { NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
 import ClickOutside from 'react-click-outside';
 import { ToastProvider } from "react-toast-notifications";
 
-import { fadeInUp, fadeIn, getFirstObject, getFirstKey, emptyWealth, emptyLogWealth, mon } from "utils/Util";
+import { fadeInUp, fadeIn, getFirstObject, getFirstKey, emptyWealth, emptyLogWealth } from "utils/Util";
 import Player from "common/Player";
 import Summary from "common/Summary";
 import GameLog from "GameLog";
@@ -82,7 +82,6 @@ class AdvRecordLog extends React.Component {
 		if ([NOTES_WEALTH, SALVAGE].includes(record)) {
 			newCode = record + "_" + Math.random().toString(36).substr(2, 9);;
 			let type = record === NOTES_WEALTH ? "Notes and Wealth Changes" : "Salvage Mission";
-			let d = new Date();
 
 			newLogData = {record: record, type: type, title: "New " + record + " log", code: newCode, tier: this.state.charData.tier === 0 ? 1 : this.state.charData.tier};
 			newLogStatus = {[newCode]: {tier: this.state.charData.tier === 0 ? 1 : this.state.charData.tier, wealth: this.getPrevEndingWealth()}};
@@ -229,23 +228,15 @@ class AdvRecordLog extends React.Component {
 		}
 
 		var newGameData = [...this.state.gameData];
-		newGameData.splice(index, 1);
-
 		var newStatusData = [...this.state.statusData];
+
+		newGameData[index].deleted = true;
+		getFirstObject(newStatusData[index]).deleted = true
+
+		newGameData.splice(index, 1);
 		newStatusData.splice(index, 1);
 
-		// console.log("NGD", newGameData);
-		// console.log("NSD", newStatusData);
-
-		setTimeout(() => {
-			// console.log("APPLY DELETION");
-		  	this.setState({gameData: newGameData, statusData: newStatusData});
-		  	// LOOKS TO BE THE ISSUE HERE WITH SPLICES AND DELETE CODES
-		}, 200);
-
-		
-
-		
+		this.setState({deleteCode: "", gameData: newGameData, statusData: newStatusData});
 	}
 
 	resetStartWithEditHandler = () => {
@@ -281,8 +272,6 @@ class AdvRecordLog extends React.Component {
 
 	//RENDERERS
 	render_gameLogs = (gamesObj) => {
-		console.log(gamesObj);
-
 		return (
 			<Container className="gameList">
 				{_map(gamesObj, (logData, key) => {
@@ -297,18 +286,17 @@ class AdvRecordLog extends React.Component {
 						? this.state.statusData[key][logData.code].dungeonMaster.isDm
 						: {...logData.dungeonMaster}.isDm;
 
-					// console.log(logData.code);
 
 					return (
 						<Collapse
-							key={key}
+							key={logData.code}
 							in={logData.code !== this.state.deleteCode}
 							mountOnEnter
 							unmountOnExit
 							onExited={this.removeLog.bind(this,logData.code)}
 						>
 							<GameLog
-								className={animClass}
+								className={animClass} // OTHER PART OF THE ISSUE
 								style={{ animationDelay: delayTime * key + "ms" }} // OTHER PART OF THE ISSUE
 								data={logData}
 								statuses={this.state.statusData[key]}
@@ -431,7 +419,7 @@ class AdvRecordLog extends React.Component {
 						let keyCodeTitle = event.code + " " + event.title;
 
 						return (
-							<SideNav.Nav key={key}>
+							<SideNav.Nav key={keyCodeTitle}>
 								<NavItem eventKey={keyCodeTitle} navitemClassName={classnames("eventItem", statusInfo.expended && "expended")}>
 								 	<NavIcon>
 								 		<Badge pill variant={statusInfo.expended ? "secondary" : "light"}>&nbsp;</Badge>
