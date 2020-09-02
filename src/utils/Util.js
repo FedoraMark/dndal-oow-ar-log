@@ -47,7 +47,7 @@ export const startingWealthLog = {
     type: "Starting Wealth and Notes",
     date: "",
     notes: {
-        player: "Hail and well met!\n\nBegin your <i>Oracle of War</i> campgaign by entering your starting wealth and any important notes into this log.",
+        player: "Hail and well met!\n\nBegin your <i>Oracle of War</i> campaign by entering your starting wealth and any important notes into this log.",
     },
     wealth: {...emptyLogWealth}
 };
