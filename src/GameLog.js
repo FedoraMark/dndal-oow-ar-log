@@ -136,8 +136,6 @@ class GameLog extends React.Component {
         	this.dateFieldRef.current.defaultValue = "";
         }
 
-        console.log("mount", this.state.data.code);
-
         this.props.resetStartWithEditHandler();
         // if (this.props.startWithEdit) {
         // 	this.setState({isEditing: true});
@@ -1394,7 +1392,7 @@ class GameLog extends React.Component {
 					)}
 					style={style}
 				>
-				
+
 					{!this.props.preview && <div className={classnames("stickyCover", this.state.isDeleting && "deleting")} />}
 
 					{this.render_titleAndCode(this.state.data.code,this.state.data.title,true)}
