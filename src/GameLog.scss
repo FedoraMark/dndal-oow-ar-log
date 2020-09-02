@@ -90,6 +90,10 @@ $halfGap: .25rem;
 
         color: white;
         background: currentColor;
+
+        &.deleting {
+            display: none;
+        }
     }
 
     .playerNotes {
@@ -117,12 +121,14 @@ $halfGap: .25rem;
             border-bottom-width: 1px;
             border-left-color: black;
 
-
-
             &,
             h1 {
                 border-top-left-radius: .3rem;
                 border-top-right-radius: .3rem;
+            }
+
+            &.deleting {
+                top: -2px !important;
             }
         }
 
@@ -650,6 +656,8 @@ $halfGap: .25rem;
                 }
 
                 .actionsRow {
+                    margin-bottom: 0;
+
                     flex-wrap: nowrap;
 
                     @include flex(stretch);

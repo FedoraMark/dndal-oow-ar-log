@@ -111,13 +111,13 @@ class Summary extends Component {
 						</Button>
 						<Button
 							variant="outline-primary"
-							onClick={this.handleAddRecord.bind(this, false)}
+							onClick={this.handleAddRecord.bind(this, false, gameData.type)}
 						>
 							Add Record
 						</Button>
 						<Button
 							variant="primary"
-							onClick={this.handleAddRecord.bind(this, true)}
+							onClick={this.handleAddRecord.bind(this, true, gameData.type)}
 						>
 							Add and Edit
 						</Button>

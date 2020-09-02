@@ -126,22 +126,30 @@
             box-sizing: border-box;
 
             border-width: 2px !important;
-            border-color: lightgray;
-            background: $color-background-white !important;
+            border-color: $color-edit-border !important;
+            background-color: $color-background-white !important;
+
+            @include transition();
 
             &:hover,
             &:focus {
                 cursor: pointer;
 
-                border-color: black;
+                color: $color-active-text;
+                border-color: $color-active-background !important;
+                background-color: $color-active-background !important;
             }
 
             &.disabled {
                 pointer-events: none;
 
                 opacity: .4;
-            }
 
+                &:hover,
+                &:focus {
+                    cursor: pointer;
+                }
+            }
 
             .card-body {
                 @include flex(flex-start, flex-start, column);

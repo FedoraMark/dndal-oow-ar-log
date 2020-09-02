@@ -19,7 +19,7 @@
   "options": {
     "autoLeveling": false,
     "tierSetting": 0,
-    "useEp": true
+    "autoWealth": true
   },
   "games": [
     {

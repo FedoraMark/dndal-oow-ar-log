@@ -57,8 +57,8 @@ class Player extends Component {
         optionsObj: {
             autoLeveling: "",
             tierSetting: 0,
-            // useEp: true,
             autoWealth: false,
+            // useEp: true,
         },
         saveHandler: (e) => {},
     };
@@ -103,8 +103,8 @@ class Player extends Component {
 
             autoLeveling: newProps.optionsObj.autoLeveling,
             tierSetting: newProps.optionsObj.tierSetting,
-            useEp: true, //newProps.optionsObj.useEp,
             autoWealth: newProps.optionsObj.autoWealth,
+            useEp: true, //newProps.optionsObj.useEp,
         },
         	(e) => {
         		if (this.state.tempAutoWealth) {
@@ -209,36 +209,12 @@ class Player extends Component {
 	        });
 	    }
 
-        if (totalLevel < 1) { return 0; }
+        // if (totalLevel < 1) { return 0; }
         if (totalLevel < 5) { return 1; }
         if (totalLevel < 11) { return 2; }
         if (totalLevel < 17) { return 3; }
         return 4;
     };
-
-//     setTempUseEp = (val) => {
-//         // convert EP to SP and add to SP
-//         if (!val && this.state.tempObj.wealth.ep !== 0) {
-//             var newWealthObj = { ...this.state.tempObj.wealth };
-//             let newSp = newWealthObj.ep * 5;
-//             newWealthObj.sp = newWealthObj.sp + newSp;
-//             newWealthObj.ep = 0;
-//             this.updateTempInfo("wealth", newWealthObj);
-//             this.props.addToast(
-//                 (newSp / 5 + " ep converted into " + newSp + " sp"), { appearance: "warning" }
-//             );
-//         }
-// 
-//         this.setState({ tempUseEp: val });
-//     };
-// 
-//     getNoEpWealth = (wealthObj) => {
-// 		var noEpLatestWealth = {...wealthObj};
-// 		noEpLatestWealth.sp = noEpLatestWealth.ep * 5;
-// 		noEpLatestWealth.ep = 0;
-// 
-// 		return noEpLatestWealth;
-//     }
 
     addNewClass = () => {
         this.setState({ mountAnimSpeed: { animationDuration: "inerit" } });
@@ -320,9 +296,6 @@ class Player extends Component {
     //RENDERERS
     render_displayInfo = () => {
     	var wealthObj = this.state.tempAutoWealth ? this.state.latestWealth : this.state.tempObj.wealth;
-    	// if (!this.state.tempUseEp) {
-    	// 	wealthObj = this.state.tempAutoWealth ? this.getNoEpWealth(this.state.latestWealth) : this.getNoEpWealth(this.state.playerObj.wealth);
-    	// }
 
         return (
             <span className="playerBoxContent">
@@ -527,8 +500,6 @@ class Player extends Component {
 											"silver (10cp)",
 											"copper (1cp)",
 										];
-
-										// if ( !this.state.tempUseEp && denom === "ep" ) {return <></>;}
 
 										let currentWealthObj = this.state.tempAutoWealth ? this.state.latestWealth : this.state.tempObj.wealth;
 
@@ -745,6 +716,14 @@ class Player extends Component {
 									>
 										<Dropdown.Item
 											href="#"
+											eventKey="f"
+											active={this.state.tempAutoWealth === true}
+											onSelect={(e) => {this.setState({tempAutoWealth: true});}}
+										>
+											<span className="condense">Use </span>Auto Wealth
+										</Dropdown.Item>
+										<Dropdown.Item
+											href="#"
 											eventKey="t"
 											active={this.state.tempAutoWealth === false}
 											onSelect={
@@ -758,14 +737,6 @@ class Player extends Component {
 											}}
 										>
 											Manual<span className="condense">ly Enter</span> Wealth
-										</Dropdown.Item>
-										<Dropdown.Item
-											href="#"
-											eventKey="f"
-											active={this.state.tempAutoWealth === true}
-											onSelect={(e) => {this.setState({tempAutoWealth: true});}}
-										>
-											<span className="condense">Use </span>Auto Wealth
 										</Dropdown.Item>
 									</DropdownButton>
 								</InputGroup>

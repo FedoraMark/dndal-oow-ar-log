@@ -49,6 +49,10 @@ const EXPENDED = -1;
 const UNSELECTED = 0;
 const ACTIVE = 1;
 
+const GAME = "game";
+const SALVAGE = "salvage";
+const NOTES = "notes;"
+
 function withToast(Component) {
     return function WrappedComponent(props) {
         const toastFuncs = useToasts();
@@ -79,6 +83,7 @@ class GameLog extends React.Component {
         startWithEdit: PropTypes.bool,
         deleteHandler: PropTypes.func,
         saveHandler: PropTypes.func,
+        resetStartWithEditHandler: PropTypes.func,
     };
 
     static defaultProps = {
@@ -93,6 +98,7 @@ class GameLog extends React.Component {
         autoCalc: true,
         deleteHandler: () => {},
         saveHandler: () => {},
+        resetStartWithEditHandler: () => {},
     };
 
     state = {
@@ -105,6 +111,7 @@ class GameLog extends React.Component {
         wasEpic: this.props.wasEpic,
         autoCalc: this.props.autoCalc,
         negativeEndingGold: false,
+        isDeleting: false,
 
         // currentWealthTab: 0,
 
@@ -116,6 +123,7 @@ class GameLog extends React.Component {
         tempNotes: "",
         tempDmName: "",
         tempDmNumber: "",
+        tempTier: -1,
         tempIsDm: this.props.wasDm,
         tempIsEpic: this.props.wasEpic,
         tempAutoCalc: this.props.autoCalc,
@@ -127,6 +135,12 @@ class GameLog extends React.Component {
         if (!!this.dateFieldRef.current) {
         	this.dateFieldRef.current.defaultValue = "";
         }
+
+        this.props.resetStartWithEditHandler();
+        // if (this.props.startWithEdit) {
+        // 	this.setState({isEditing: true});
+        // }
+
     }
 
     componentWillReceiveProps(newProps) {
@@ -136,7 +150,7 @@ class GameLog extends React.Component {
             wasDm: newProps.wasDm,
             wasEpic: newProps.wasEpic,
             autoCalc: newProps.autoCalc,
-            // do not update startWithEdit
+            tier: !!newProps.data.tier ? newProps.data.tier : this.state.tier,
         });
     }
 
@@ -224,6 +238,7 @@ class GameLog extends React.Component {
                 isDm: this.state.tempIsDm,
             },
             wealth: this.state.tempWealth,
+            tier: this.state.tempTier,
         };
 
         this.setState({
@@ -232,17 +247,13 @@ class GameLog extends React.Component {
                 tempDmNumber: this.state.tempIsDm ? "" : this.state.tempDmNumber.trim(),
                 tempEvent: this.state.tempEvent.trim(),
                 tempDate: this.state.tempDate.trim(),
-                // wasDm: this.state.tempIsDm, // redundant?
-                // wasEpic: this.state.tempIsEpic, // redundant?
-                // autoCalc: this.state.autoCalc, // redundant?
-                // tempWealth: this.state.tempWealth, // redundant?
             },
             this.updateEventHandler(tempStatusData, true)
         );
     };
 
     getPropOrEmpty = (obj, prop, child) => {
-        if (obj[prop] === undefined) {
+        if (!obj || !obj[prop]) {
             return "";
         }
 
@@ -250,7 +261,7 @@ class GameLog extends React.Component {
             return obj[prop];
         }
 
-        return obj[prop][child] !== undefined ? obj[prop][child] : "";
+        return !!obj[prop][child] ? obj[prop][child] : "";
     };
 
     setTempData = (statusObj) => {
@@ -262,6 +273,7 @@ class GameLog extends React.Component {
                 tempIsEpic: this.state.wasEpic,
                 tempAutoCalc: this.state.autoCalc,
                 tempWealth: wealthCheck === "" ? {...emptyLogWealth} : wealthCheck,
+                tempTier: this.getPropOrEmpty(statusObj, "tier", null),
                 tempEvent: this.getPropOrEmpty(statusObj, "event", null),
                 tempDate: this.getPropOrEmpty(statusObj, "date", null),
                 tempNotes: this.getPropOrEmpty(statusObj, "notes", "player"),
@@ -374,12 +386,13 @@ class GameLog extends React.Component {
 	};
 
     //RENDERERS
-    render_titleAndCode = (type, code, title) => {
+    render_titleAndCode = (code, title, suppressCode) => {
         return (
             <div
 				className={classnames(
 					"titleWrapper",
-					!this.props.preview && "sticky"
+					!this.props.preview && "sticky",
+					this.state.isDeleting && "deleting"
 				)}
 			>
 				{!this.props.preview && (
@@ -419,7 +432,7 @@ class GameLog extends React.Component {
 						{!this.props.preview && this.state.wasDm && (
 								<FaDiceD20 className="diceIcon" />
 							)}
-						{code !== null && (
+						{!suppressCode && !!code && (
 							<span
 								className="code"
 								dangerouslySetInnerHTML={{__html: code.split("-").join("<span class='hyphen'>-</span>")}}
@@ -435,7 +448,7 @@ class GameLog extends React.Component {
     render_gameInfo = () => {
         let code = this.state.data.code;
 
-        let epic = !!this.state.statusData[code] && this.state.statusData[code].isForEpic !== undefined ? this.state.statusData[code].isForEpic : this.state.data.record === "epic";
+        let epic = !!this.state.statusData[code] && !!this.state.statusData[code].isForEpic ? this.state.statusData[code].isForEpic : this.state.data.record === "epic";
         let date = !!this.state.statusData[code] ? this.state.statusData[code].date : '';
         let event = !!this.state.statusData[code] ? this.state.statusData[code].event : '';
         let dmObj = !!this.state.statusData[code] ? {...this.state.statusData[code].dungeonMaster} : {};
@@ -498,6 +511,14 @@ class GameLog extends React.Component {
 			</Container>
         );
     };
+
+    render_salvageInfo = () => {
+    	return <div>(hidden CODE), TITLE, DM INFO, DATE, SALVAGE EARNED, LEVEL UP</div>
+    }
+
+    render_notesInfo = () => {
+    	return <div>(hidden CODE), TITLE, DATE</div>
+    }
 
     render_advNotes = (suppressTitle) => {
         var statusNotes = this.state.statusData[this.state.data.code] !== undefined
@@ -642,12 +663,12 @@ class GameLog extends React.Component {
         );
     };
 
-    render_wealth = () => {
+    render_wealth = (suppressTitle) => {
     	let wealthObj = !!this.state.statusData && !!this.state.statusData[this.props.data.code] ? {...this.state.statusData[this.props.data.code].wealth} : null;
 
         return (
             <Container className="wealthWrapper wrapper">
-				<h1 className="sectionTitle">Character Wealth</h1>
+				{!suppressTitle && <h1 className="sectionTitle">Character Wealth</h1>}
 
 				<Container className="wealthContent box">
 					<div className="header cell">Starting Gold</div>
@@ -758,7 +779,7 @@ class GameLog extends React.Component {
 					</div>
 
 					<div className="rightCol arCol">{this.render_legacy()}</div>
-				</div>{" "}
+				</div>
 			</div>
         );
     };
@@ -768,92 +789,7 @@ class GameLog extends React.Component {
             <ul className="editWrapper">
 
             	{/* OPTIONS */}
-				<li className="editRow optionsRow">
-					<InputGroup className="optionsLabel">
-						<InputGroup.Prepend className="oswald">
-							<InputGroup.Text><span className="condense">Log&nbsp;</span>Options</InputGroup.Text>
-						</InputGroup.Prepend>
-					</InputGroup>
-
-					<div className="flexRow">
-						{/* set isEpic */}
-						<InputGroup className="dropdownGroup">
-							<DropdownButton
-								variant="light"
-								title={this.state.tempIsEpic ? <>Epic Event <span className="dotE fauxdesto">E</span></> : "AL Game"}
-								alignRight
-							>
-								<Dropdown.Item
-									href="#"
-									eventKey="game"
-									active={!this.state.tempIsEpic}
-									onSelect={(e) => {this.setState({tempIsEpic: false});}}
-								>
-									This was a normal AL game
-								</Dropdown.Item>
-								<Dropdown.Item
-									href="#"
-									eventKey="epic"
-									active={this.state.tempIsEpic}
-									onSelect={(e) => {this.setState({tempIsEpic: true});}}
-								>
-									This game was for an EPIC event
-								</Dropdown.Item>
-							</DropdownButton>
-						</InputGroup>
-
-						{/* set isDm */}
-						<InputGroup className="dropdownGroup">
-							<DropdownButton
-								variant="light"
-								title={this.state.tempIsDm ? <>Dungeon Master <FaDiceD20 /></> : "Player"}
-								alignRight
-							>
-								<Dropdown.Item
-									href="#"
-									eventKey="player"
-									active={!this.state.tempIsDm}
-									onSelect={(e) => {this.setState({tempIsDm: false});}}
-								>
-									I was a PLAYER for this game
-								</Dropdown.Item>
-								<Dropdown.Item
-									href="#"
-									eventKey="dm"
-									active={this.state.tempIsDm}
-									onSelect={(e) => {this.setState({tempIsDm: true});}}
-								>
-									I was the DM for this game
-								</Dropdown.Item>
-							</DropdownButton>
-						</InputGroup>
-
-						<InputGroup className="dropdownGroup">
-							<DropdownButton
-								variant="light"
-								title={this.state.tempAutoCalc ? "Auto Calculate Gold" : "Manually Enter Gold"}
-								alignRight
-							>
-								<Dropdown.Item
-									href="#"
-									eventKey="auto"
-									active={this.state.tempAutoCalc}
-									onSelect={(e) => {this.setState({tempAutoCalc: true});}}
-								>
-									Auto<span className="condense"> Calculate</span> Ending Gold
-								</Dropdown.Item>
-								<Dropdown.Item
-									href="#"
-									eventKey="manu"
-									active={!this.state.tempAutoCalc}
-									onSelect={(e) => {this.setState({tempAutoCalc: false});}}
-								>
-									Manual<span className="condense">ly Enter</span> Ending Gold
-								</Dropdown.Item>
-							</DropdownButton>
-						</InputGroup>
-					</div>
-				</li>
+				{this.render_editOptionsRow(GAME)}
 
 				<hr />
 
@@ -937,7 +873,6 @@ class GameLog extends React.Component {
 							value={this.state.tempDate}
 							ref={this.dateFieldRef}
 							onChange={(e) => {
-								console.log('test');
 								this.setState({ tempDate: e.target.value });
 								
 								const target = e.target
@@ -1080,67 +1015,222 @@ class GameLog extends React.Component {
 				<hr />
 
 				{/* ACTIONS */}
-				<li className="editRow actionsRow">
-					<InputGroup className="actionLabel">
-						<InputGroup.Prepend className="oswald">
-							<InputGroup.Text><span className="condense">Log&nbsp;</span>Actions</InputGroup.Text>
-						</InputGroup.Prepend>
-					</InputGroup>
-
-					<div className="flexRow">
-						<Button 
-							href="#"
-							variant="danger"
-							ref={this.deleteButton}
-							disabled={!this.state.isEditing}
-							onClick={(e) => {this.setState({showDeleteModal: true});}}
-							onMouseEnter={(e) => {this.deleteButton.current.focus()}}
-							onMouseUp={(e) => {this.deleteButton.current.blur()}}
-						>
-							Delete<span className="buttonIcon"><AiTwotoneDelete /></span>
-						</Button>
-
-						<Button
-							href="#"
-							variant="info"
-							ref={this.moveButton}
-							disabled={!this.state.isEditing}
-							onClick={(e) => {console.log("MOVE BUTTON");}}
-							onMouseEnter={(e) => {this.moveButton.current.focus()}}
-							onMouseUp={(e) => {this.moveButton.current.blur()}}
-						>
-							Move<span className="buttonIcon"><ImMenu2 /></span>
-						</Button>
-						
-						<Button
-							href="#"
-							variant="secondary"
-							ref={this.cancelButton}
-							disabled={!this.state.isEditing}
-							onClick={this.setIsEditing.bind(this, false, false)}
-							onMouseEnter={(e) => {this.cancelButton.current.focus()}}
-							onMouseUp={(e) => {this.cancelButton.current.blur()}}
-						>
-							Cancel<span className="buttonIcon"><AiFillCloseCircle /></span>
-						</Button>
-
-						<Button
-							href="#"
-							variant="primary"
-							ref={this.saveButton}
-							disabled={!this.state.isEditing}
-							onClick={this.setIsEditing.bind(this, false, true)}
-							onMouseEnter={(e) => {this.saveButton.current.focus()}}
-							onMouseUp={(e) => {this.saveButton.current.blur()}}
-						>
-							Save<span className="buttonIcon"><FaSave /></span>
-						</Button>
-					</div>
-				</li>
+				{this.render_editActionsRow()}
 				
 			</ul>
         );
     };
+
+    render_editSalvageData = () => {
+    	return (
+            <ul className="editWrapper">
+            	{/* OPTIONS */}
+				{this.render_editOptionsRow(SALVAGE)}
+
+				<hr />
+
+            	{/* ACTIONS */}
+				{this.render_editActionsRow()}
+            </ul>
+        );
+    }
+
+    render_editNotesData = () => {
+    	return (
+            <ul className="editWrapper">
+            	{/* OPTIONS */}
+				{this.render_editOptionsRow(NOTES)}
+
+				<hr />
+
+            	{/* ACTIONS */}
+				{this.render_editActionsRow()}
+            </ul>
+        );
+    }
+
+    render_editOptionsRow = (type) => {
+	    return (	
+	    	<li className="editRow optionsRow">
+				<InputGroup className="optionsLabel">
+					<InputGroup.Prepend className="oswald">
+						<InputGroup.Text><span className="condense">Log&nbsp;</span>Options</InputGroup.Text>
+					</InputGroup.Prepend>
+				</InputGroup>
+
+				<div className="flexRow">
+					{/* set isEpic */}
+					{[GAME].includes(type) &&
+						<InputGroup className="dropdownGroup">
+							<DropdownButton
+								variant="light"
+								title={this.state.tempIsEpic ? <>Epic Event <span className="dotE fauxdesto">E</span></> : "AL Game"}
+								alignRight
+							>
+								<Dropdown.Item
+									href="#"
+									eventKey="game"
+									active={!this.state.tempIsEpic}
+									onSelect={(e) => {this.setState({tempIsEpic: false});}}
+								>
+									This was a normal AL game
+								</Dropdown.Item>
+								<Dropdown.Item
+									href="#"
+									eventKey="epic"
+									active={this.state.tempIsEpic}
+									onSelect={(e) => {this.setState({tempIsEpic: true});}}
+								>
+									This game was for an EPIC event
+								</Dropdown.Item>
+							</DropdownButton>
+						</InputGroup>
+					}
+
+					{/* set tier */}
+					{[SALVAGE].includes(type) &&
+						<InputGroup className="dropdownGroup">
+							<DropdownButton
+								variant="light"
+								title={this.state.tempTier === 0 ? "No Tier Set" : "Tier " + this.state.tempTier}
+								alignRight
+							>
+								{_map([0,1,2,3,4], (t) => {
+									return (
+										<Dropdown.Item
+											href="#"
+											key={t}
+											eventKey={t}
+											active={this.state.tempTier === t}
+											onSelect={(e) => {this.setState({tempTier: t});}}
+										>
+											{t === 0 ? "None" : "Tier " + t}
+										</Dropdown.Item>
+									);
+								})}
+							</DropdownButton>
+						</InputGroup>
+					}
+
+					{/* set isDm */}
+					{[GAME, SALVAGE].includes(type) &&
+						<InputGroup className="dropdownGroup">
+							<DropdownButton
+								variant="light"
+								title={this.state.tempIsDm ? <>Dungeon Master <FaDiceD20 /></> : "Player"}
+								alignRight
+							>
+								<Dropdown.Item
+									href="#"
+									eventKey="player"
+									active={!this.state.tempIsDm}
+									onSelect={(e) => {this.setState({tempIsDm: false});}}
+								>
+									I was a PLAYER for this game
+								</Dropdown.Item>
+								<Dropdown.Item
+									href="#"
+									eventKey="dm"
+									active={this.state.tempIsDm}
+									onSelect={(e) => {this.setState({tempIsDm: true});}}
+								>
+									I was the DM for this game
+								</Dropdown.Item>
+							</DropdownButton>
+						</InputGroup>
+					}
+
+					{/* set autoCalc */}
+					<InputGroup className="dropdownGroup">
+						<DropdownButton
+							variant="light"
+							title={this.state.tempAutoCalc ? "Auto Calculate Gold" : "Manually Enter Gold"}
+							alignRight
+						>
+							<Dropdown.Item
+								href="#"
+								eventKey="auto"
+								active={this.state.tempAutoCalc}
+								onSelect={(e) => {this.setState({tempAutoCalc: true});}}
+							>
+								Auto<span className="condense"> Calculate</span> Ending Gold
+							</Dropdown.Item>
+							<Dropdown.Item
+								href="#"
+								eventKey="manu"
+								active={!this.state.tempAutoCalc}
+								onSelect={(e) => {this.setState({tempAutoCalc: false});}}
+							>
+								Manual<span className="condense">ly Enter</span> Ending Gold
+							</Dropdown.Item>
+						</DropdownButton>
+					</InputGroup>
+				</div>
+			</li>
+		);
+    }
+
+    render_editActionsRow = () => {
+    	return (
+    		<li className="editRow actionsRow">
+				<InputGroup className="actionLabel">
+					<InputGroup.Prepend className="oswald">
+						<InputGroup.Text><span className="condense">Log&nbsp;</span>Actions</InputGroup.Text>
+					</InputGroup.Prepend>
+				</InputGroup>
+
+				<div className="flexRow">
+					<Button 
+						href="#"
+						variant="danger"
+						ref={this.deleteButton}
+						disabled={!this.state.isEditing}
+						onClick={(e) => {this.setState({showDeleteModal: true});}}
+						onMouseEnter={(e) => {this.deleteButton.current.focus()}}
+						onMouseUp={(e) => {this.deleteButton.current.blur()}}
+					>
+						Delete<span className="buttonIcon"><AiTwotoneDelete /></span>
+					</Button>
+
+					<Button
+						href="#"
+						variant="info"
+						ref={this.moveButton}
+						disabled={!this.state.isEditing}
+						onClick={(e) => {console.log("MOVE BUTTON");}}
+						onMouseEnter={(e) => {this.moveButton.current.focus()}}
+						onMouseUp={(e) => {this.moveButton.current.blur()}}
+					>
+						Move<span className="buttonIcon"><ImMenu2 /></span>
+					</Button>
+					
+					<Button
+						href="#"
+						variant="secondary"
+						ref={this.cancelButton}
+						disabled={!this.state.isEditing}
+						onClick={this.setIsEditing.bind(this, false, false)}
+						onMouseEnter={(e) => {this.cancelButton.current.focus()}}
+						onMouseUp={(e) => {this.cancelButton.current.blur()}}
+					>
+						Cancel<span className="buttonIcon"><AiFillCloseCircle /></span>
+					</Button>
+
+					<Button
+						href="#"
+						variant="primary"
+						ref={this.saveButton}
+						disabled={!this.state.isEditing}
+						onClick={this.setIsEditing.bind(this, false, true)}
+						onMouseEnter={(e) => {this.saveButton.current.focus()}}
+						onMouseUp={(e) => {this.saveButton.current.blur()}}
+					>
+						Save<span className="buttonIcon"><FaSave /></span>
+					</Button>
+				</div>
+			</li>
+		);
+    }
 
     render_deleteModal = () => {
         return (
@@ -1178,7 +1268,7 @@ class GameLog extends React.Component {
 					</Button>
 					<Button
 						variant="danger"
-						onClick={(e) => {this.setState({showDeleteModal: false}, this.props.deleteHandler(this.state.data.code));}}
+						onClick={(e) => {this.setState({showDeleteModal: false, isDeleting: true}, this.props.deleteHandler(this.state.data.code));}}
 					>
 						Delete
 					</Button>
@@ -1187,6 +1277,7 @@ class GameLog extends React.Component {
         );
     }
 
+    // ***** MAIN RENDER *****
     render() {
         const { style, className, preview } = this.props;
 
@@ -1197,15 +1288,15 @@ class GameLog extends React.Component {
 					className={classnames(
 						className,
 						"gameBox",
-						preview && "preview",
 						!this.state.isCollapsed && "expanded",
-						this.state.isEditing && "editing"
+						this.state.isEditing && "editing",
+						preview && "preview",
 					)}
 					style={style}
 				>
-					{!this.props.preview && <div className="stickyCover" />}
+					{!this.props.preview && <div className={classnames("stickyCover", this.state.isDeleting && "deleting")} />}
 
-					{this.render_titleAndCode(this.state.data.type,this.state.data.code,this.state.data.title)}
+					{this.render_titleAndCode(this.state.data.code,this.state.data.title)}
 
 					<Collapse
 						in={!this.state.isCollapsed}
@@ -1236,83 +1327,101 @@ class GameLog extends React.Component {
 				</Container>
             );
         } else if (this.state.data.record === "salvage") {
-            // TO BE DONE
-            // 			return (
-            // 				<Container
-            // 					fluid
-            // 					className={classnames(
-            // 						className,
-            // 						"gameBox",
-            // 						"salvageBox",
-            // 						!this.state.isCollapsed && "expanded",
-            // 						preview && "preview"
-            // 					)}
-            // 					style={style}
-            // 				>
-            // 					{this.render_titleAndCode(
-            // 						this.state.data.type,
-            // 						null,
-            // 						this.state.data.title
-            // 					)}
-            // 
-            // 					<Collapse in={!this.state.isCollapsed}>
-            // 						<div className="content">
-            // 							{this.render_gameInfo()}
-            // 
-            // 							<div className="twoCol">
-            // 								<div className="leftCol arCol">
-            // 									SALVAGE
-            // 									<br />
-            // 									LEVEL UP?
-            // 								</div>
-            // 
-            // 								<div className="rightCol arCol">
-            // 									{this.render_wealth()}
-            // 								</div>
-            // 							</div>
-            // 
-            // 							{this.render_advNotes(true)}
-            // 						</div>
-            // 					</Collapse>
-            // 				</Container>
-            // 			);
+        	// SALVAGE MISSION LOG
+			return (
+				<Container
+					fluid
+					className={classnames(
+						className,
+						"gameBox",
+						"salvageBox",
+						!this.state.isCollapsed && "expanded",
+						this.state.isEditing && "editing",
+						preview && "preview",
+					)}
+					style={style}
+				>
+					{this.render_titleAndCode(null,this.state.data.title)}
+
+					<Collapse in={!this.state.isCollapsed}>
+						<div className="content">
+							<Collapse
+								in={this.state.isEditing}
+								unmountOnExit
+								mountOnEnter
+							>
+								<div className="editContent">
+									{this.render_editSalvageData()}
+								</div>
+							</Collapse>
+
+							<div className="logDataWrapper">
+								{this.render_salvageInfo()}
+
+								<div className="twoCol">
+									<div className="leftCol arCol">
+										{this.render_wealth(true)}
+									</div>
+
+									<div className="rightCol arCol">
+										{this.render_advNotes(true)}
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</Collapse>
+
+					{this.render_deleteModal()}
+				</Container>
+			);
         } else if (this.state.data.record === "notes") {
-            // TO BE DONE
-            // 			return (
-            // 				<Container
-            // 					fluid
-            // 					className={classnames(
-            // 						className,
-            // 						"gameBox",
-            // 						"notesWealthBox",
-            // 						!this.state.isCollapsed && "expanded",
-            // 						preview && "preview"
-            // 					)}
-            // 					style={style}
-            // 				>
-            // 					{this.render_titleAndCode(
-            // 						this.state.data.type,
-            // 						null,
-            // 						"Notes / Wealth"
-            // 					)}
-            // 
-            // 					<Collapse in={!this.state.isCollapsed}>
-            // 						<div className="content">
-            // 							{this.render_gameInfo()}
-            // 
-            // 							<div className="twoCol">
-            // 								<div className="leftCol arCol">NOTES</div>
-            // 
-            // 								<div className="rightCol arCol">
-            // 									{this.render_wealth()}
-            // 								</div>
-            // 							</div>
-            // 
-            // 							{this.render_advNotes(true)}
-            // 						</div>
-            // 					</Collapse>
-            // 				</Container>
-            // 			);
+			return (
+				<Container
+					fluid
+					className={classnames(
+						className,
+						"gameBox",
+						"notesWealthBox",
+						!this.state.isCollapsed && "expanded",
+						this.state.isEditing && "editing",
+						preview && "preview",
+					)}
+					style={style}
+				>
+					{this.render_titleAndCode(this.state.data.code,this.state.data.title,true)}
+
+					<Collapse in={!this.state.isCollapsed}>
+						<div className="content">
+							<Collapse
+								in={this.state.isEditing}
+								unmountOnExit
+								mountOnEnter
+							>
+								<div className="editContent">
+									{this.render_editNotesData()}
+								</div>
+							</Collapse>
+
+							<div className="logDataWrapper">
+								{this.render_notesInfo()}
+
+								<div className="twoCol">
+									<div className="leftCol arCol">
+										{this.render_wealth(true)}
+									</div>
+
+									<div className="rightCol arCol">
+										{this.render_advNotes(true)}
+									</div>
+								</div>
+							</div>
+						</div>
+					</Collapse>
+
+					{this.render_deleteModal()}
+				</Container>
+			);
         }
 
         return <></>;

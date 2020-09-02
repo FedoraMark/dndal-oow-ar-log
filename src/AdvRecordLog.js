@@ -28,6 +28,9 @@ import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 import games_oow from "./data/oowGames.json";
 // import chara_SamPel from "./data/SamPel.json";
 
+const NOTES_WEALTH = "notes";
+const SALVAGE = "salvage"
+
 class AdvRecordLog extends React.Component {
 	state = {
 		charData: {
@@ -35,15 +38,15 @@ class AdvRecordLog extends React.Component {
 	        "dci": "",
 	        "character": "Sam Pel",
 	        "classes": {},
-	        "tier": '',
+	        "tier": 0,
 	        "base": "",
 	        "wealth": emptyWealth
 	    },
 	    optionsData: {
 	    	autoLeveling: "",
 			tierSetting: 0,
+			autoWealth: true,
 			// useEp: true,
-			autoWealth: false
 	    },
 	    gameData: [],
 	    statusData: [],
@@ -69,10 +72,43 @@ class AdvRecordLog extends React.Component {
 		this.setState({ showAddRecordArea: !this.state.showAddRecordArea });
 	};
 
-	addRecord = (recordObj, openEditor) => {
+	addRecord = (recordObj, openEditor, record) => {
+		var newLogData = {...recordObj};
+		var newLogStatus = {[recordObj.code]: {wealth: this.getPrevEndingWealth()}};
+		var newEditorCode = openEditor ? recordObj.code : -1;
+		var newCode = recordObj.code;
+
+		// notes_wealth and salvage logs
+		if ([NOTES_WEALTH, SALVAGE].includes(record)) {
+			
+			var numUnique = 1;
+			_filter(this.state.gameData, (g) => {
+				if (!!g.record && g.record === record) {
+					numUnique++; // NEEDS TO BE FIXED FOR DELETED AND RE-INSERTED LOGS
+				}
+			});
+
+			newCode = record + "_" + numUnique;
+			let type = record === NOTES_WEALTH ? "Notes and Wealth Changes" : "Salvage Mission";
+
+			newLogData = {record: record, type: type, title: "New " + record + " log " + numUnique, code: newCode, tier: this.state.charData.tier === 0 ? 1 : this.state.charData.tier};
+			newLogStatus = {[newCode]: {tier: this.state.charData.tier === 0 ? 1 : this.state.charData.tier, wealth: this.getPrevEndingWealth()}};
+			newEditorCode = newCode;
+		}
+
+		var newGameData = [...this.state.gameData];
+		newGameData.push(newLogData);
+
+		var newStatusData = [...this.state.statusData];
+		newStatusData.push(newLogStatus);
+
+		this.setState({ openEditorCode: newEditorCode, gameData: newGameData, statusData: newStatusData});
+		this.toggleAddRecordArea();
+	};
+
+	getPrevEndingWealth = () => {
 		var startingWealth = {...emptyLogWealth};
 
-		// get previous log's ending wealth object
 		if (this.state.gameData.length > 0) {
 			let prevLogObj = getFirstObject(_find(this.state.statusData, (s,c) => {
 				return getFirstKey(s) === this.state.gameData[this.state.gameData.length-1].code;
@@ -84,17 +120,8 @@ class AdvRecordLog extends React.Component {
 			}
 		}
 
-		let newGameData = [...this.state.gameData];
-		newGameData.push(recordObj);
-
-		let newEditorCode = openEditor ? recordObj.code : -1;
-
-		var newStatusData = [...this.state.statusData];
-		newStatusData.push({[recordObj.code]: {wealth: startingWealth}});
-
-		this.setState({ openEditorCode: newEditorCode, gameData: newGameData, statusData: newStatusData});
-		this.toggleAddRecordArea();
-	};
+		return startingWealth;
+	}
 
 	toggleExpendedEvent = (code, title) => {		
 		var newStatusData = [...this.state.statusData];
@@ -170,7 +197,7 @@ class AdvRecordLog extends React.Component {
 
 		this.state.statusData.forEach((log) => {
 			_map(getFirstObject(log), (event, title) => {
-				if (event.legacy) {
+				if (!!event && event.legacy) {
 					eventArr.push({title: title, code: getFirstKey(log), event: event});
 				}
 			})
@@ -201,7 +228,7 @@ class AdvRecordLog extends React.Component {
 
 	removeLog = (code) => {
 		let index = this.state.gameData.findIndex((c) => {
-			return c.code = code
+			return c.code === code
 		});
 
 		if (index < 0) {
@@ -213,9 +240,15 @@ class AdvRecordLog extends React.Component {
 		// let title = newGameData.splice(index, 1).title; // ADD TOAST
 
 		var newStatusData = [...this.state.statusData];
-		newStatusData.splice(index,1);
+		newStatusData.splice(index, 1);
 
-		this.setState({deleteCode: -1, gameData: newGameData, statusData: newStatusData});
+		this.setState({deleteCode: -1, openEditorCode: -1,}, 
+			this.setState({gameData: newGameData, statusData: newStatusData})
+		);
+	}
+
+	resetStartWithEditHandler = () => {
+		this.setState({openEditorCode: -1});
 	}
 
 	getTotalLoggedLevels = () => {
@@ -253,7 +286,7 @@ class AdvRecordLog extends React.Component {
 					let delayTime = this.state.loaded ? 0 : 200;
 					let animClass = this.state.loaded ? fadeIn : fadeInUp;
 
-					let wasEpic = !!this.state.statusData[key] && !!this.state.statusData[key][logData.code] && this.state.statusData[key][logData.code].isForEpic !== undefined
+					let wasEpic = !!this.state.statusData[key] && !!this.state.statusData[key][logData.code] && !!this.state.statusData[key][logData.code].isForEpic
 						? this.state.statusData[key][logData.code].isForEpic === true
 						: logData.isForEpic;
 
@@ -279,7 +312,8 @@ class AdvRecordLog extends React.Component {
 								deleteHandler={this.handleDelete}
 								wasDm={wasDm}
 								wasEpic={wasEpic}
-								startWithEdit={this.state.openEditorCode === logData.code}
+								// startWithEdit={this.state.openEditorCode === logData.code}
+								// resetStartWithEditHandler={this.resetStartWithEditHandler}
 							/>
 						</Collapse>
 					);
@@ -312,6 +346,37 @@ class AdvRecordLog extends React.Component {
 				>
 					<div>
 						<ul className="addLogWrapper">
+							{/* notes and wealth log */}
+							<li className="addItem" id="newNotes">
+								<Card 
+									className="customItem"
+									onClick={this.addRecord.bind(this,{},true,NOTES_WEALTH)}
+								>
+									<Card.Body>
+										<Card.Title>Notes / Wealth</Card.Title>
+										<Card.Subtitle>
+											Notes and wealth changes
+										</Card.Subtitle>
+									</Card.Body>
+								</Card>
+							</li>
+
+							{/* salvage log */}
+							<li className="addItem" id="newSalvage">
+								<Card 
+									 className="customItem"
+									 onClick={this.addRecord.bind(this,{},true,SALVAGE)}
+								>
+									<Card.Body>
+										<Card.Title>Salvage Mission</Card.Title>
+										<Card.Subtitle>
+											Salvage mission log
+										</Card.Subtitle>
+									</Card.Body>
+								</Card>
+							</li>
+
+							{/* games logs */}
 							{_map(games_oow.records, (game, key) => {
 								return (
 									<li
@@ -327,28 +392,6 @@ class AdvRecordLog extends React.Component {
 									</li>
 								);
 							})}
-
-							<li className="addItem" id="newSalvage">
-								<Card className="customItem disabled">
-									<Card.Body>
-										<Card.Title>Salvage Mission</Card.Title>
-										<Card.Subtitle>
-											Salvage mission log
-										</Card.Subtitle>
-									</Card.Body>
-								</Card>
-							</li>
-
-							<li className="addItem" id="newNotes">
-								<Card className="customItem disabled">
-									<Card.Body>
-										<Card.Title>Notes / Wealth</Card.Title>
-										<Card.Subtitle>
-											Notes and wealth changes
-										</Card.Subtitle>
-									</Card.Body>
-								</Card>
-							</li>
 						</ul>
 					</div>
 				</Collapse>
