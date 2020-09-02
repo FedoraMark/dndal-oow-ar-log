@@ -16,7 +16,7 @@ import SideNav, { NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
 import ClickOutside from 'react-click-outside';
 import { ToastProvider } from "react-toast-notifications";
 
-import { fadeInUp, fadeIn, getFirstObject, getFirstKey, emptyWealth, emptyLogWealth } from "utils/Util";
+import { fadeInUp, fadeIn, getFirstObject, getFirstKey, emptyWealth, emptyLogWealth, mon } from "utils/Util";
 import Player from "common/Player";
 import Summary from "common/Summary";
 import GameLog from "GameLog";
@@ -55,7 +55,7 @@ class AdvRecordLog extends React.Component {
 	    loaded: false,
 	    isSidebarOpen: false,
 	    eventArr: [],
-	    deleteCode: -1,
+	    deleteCode: "",
 	    openEditorCode: -1
 	};
 
@@ -80,18 +80,11 @@ class AdvRecordLog extends React.Component {
 
 		// notes_wealth and salvage logs
 		if ([NOTES_WEALTH, SALVAGE].includes(record)) {
-			
-			var numUnique = 1;
-			_filter(this.state.gameData, (g) => {
-				if (!!g.record && g.record === record) {
-					numUnique++; // NEEDS TO BE FIXED FOR DELETED AND RE-INSERTED LOGS
-				}
-			});
-
-			newCode = record + "_" + numUnique;
+			newCode = record + "_" + Math.random().toString(36).substr(2, 9);;
 			let type = record === NOTES_WEALTH ? "Notes and Wealth Changes" : "Salvage Mission";
+			let d = new Date();
 
-			newLogData = {record: record, type: type, title: "New " + record + " log " + numUnique, code: newCode, tier: this.state.charData.tier === 0 ? 1 : this.state.charData.tier};
+			newLogData = {record: record, type: type, title: "New " + record + " log", code: newCode, tier: this.state.charData.tier === 0 ? 1 : this.state.charData.tier};
 			newLogStatus = {[newCode]: {tier: this.state.charData.tier === 0 ? 1 : this.state.charData.tier, wealth: this.getPrevEndingWealth()}};
 			newEditorCode = newCode;
 		}
@@ -237,12 +230,22 @@ class AdvRecordLog extends React.Component {
 
 		var newGameData = [...this.state.gameData];
 		newGameData.splice(index, 1);
-		// let title = newGameData.splice(index, 1).title; // ADD TOAST
 
 		var newStatusData = [...this.state.statusData];
-		newStatusData.splice(index,1);
+		newStatusData.splice(index, 1);
 
-		this.setState({deleteCode: -1, gameData: newGameData, statusData: newStatusData});
+		// console.log("NGD", newGameData);
+		// console.log("NSD", newStatusData);
+
+		setTimeout(() => {
+			// console.log("APPLY DELETION");
+		  	this.setState({gameData: newGameData, statusData: newStatusData});
+		  	// LOOKS TO BE THE ISSUE HERE WITH SPLICES AND DELETE CODES
+		}, 200);
+
+		
+
+		
 	}
 
 	resetStartWithEditHandler = () => {
@@ -278,6 +281,8 @@ class AdvRecordLog extends React.Component {
 
 	//RENDERERS
 	render_gameLogs = (gamesObj) => {
+		console.log(gamesObj);
+
 		return (
 			<Container className="gameList">
 				{_map(gamesObj, (logData, key) => {
@@ -292,20 +297,22 @@ class AdvRecordLog extends React.Component {
 						? this.state.statusData[key][logData.code].dungeonMaster.isDm
 						: {...logData.dungeonMaster}.isDm;
 
+					// console.log(logData.code);
+
 					return (
 						<Collapse
 							key={key}
 							in={logData.code !== this.state.deleteCode}
 							mountOnEnter
-							dismountOnExit
+							unmountOnExit
 							onExited={this.removeLog.bind(this,logData.code)}
 						>
 							<GameLog
 								className={animClass}
-								style={{ animationDelay: delayTime * key + "ms" }}
+								style={{ animationDelay: delayTime * key + "ms" }} // OTHER PART OF THE ISSUE
 								data={logData}
 								statuses={this.state.statusData[key]}
-								collapse={!this.state.loaded}
+								collapse={!this.state.loaded} // OTHER PART OF THE ISSUE
 								logUpdateHandler={this.updateLogStatus}
 								deleteHandler={this.handleDelete}
 								wasDm={wasDm}

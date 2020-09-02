@@ -91,6 +91,8 @@ $halfGap: .25rem;
         color: white;
         background: currentColor;
 
+        @include transition(none,0);
+
         &.deleting {
             display: none;
         }

@@ -136,6 +136,8 @@ class GameLog extends React.Component {
         	this.dateFieldRef.current.defaultValue = "";
         }
 
+        console.log("mount", this.state.data.code);
+
         this.props.resetStartWithEditHandler();
         // if (this.props.startWithEdit) {
         // 	this.setState({isEditing: true});
