@@ -63,6 +63,7 @@ class GameLog extends React.Component {
         this.moveButton = React.createRef();
         this.cancelButton = React.createRef();
         this.saveButton = React.createRef();
+        this.dateFieldRef = React.createRef(); 
     }
 
     static propTypes = {
@@ -123,6 +124,9 @@ class GameLog extends React.Component {
 
     componentDidMount() {
         !this.props.preview && this.setTempData(this.props.statuses[this.props.data.code]);
+        if (!!this.dateFieldRef.current) {
+        	this.dateFieldRef.current.defaultValue = "";
+        }
     }
 
     componentWillReceiveProps(newProps) {
@@ -931,8 +935,16 @@ class GameLog extends React.Component {
 							className="handwritten"
 							type="date"
 							value={this.state.tempDate}
+							ref={this.dateFieldRef}
 							onChange={(e) => {
+								console.log('test');
 								this.setState({ tempDate: e.target.value });
+								
+								const target = e.target
+								setTimeout(()=>{
+							      target.defaultValue = "";
+							    }, 100);
+
 							}}
 						/>
 					</InputGroup>
