@@ -209,8 +209,6 @@ class GameLog extends React.Component {
     };
 
     setIsEditing = (editing, save) => {
-        this.setState({ isEditing: editing });
-
         if (editing) {
             // open
             this.setTempData(this.state.statusData[this.props.data.code]);
@@ -221,6 +219,8 @@ class GameLog extends React.Component {
             // close - cancel
             this.setTempData(this.state.statusData[this.props.data.code]);
         }
+
+        this.setState({ isEditing: editing });
     };
 
     saveTempData = () => {

@@ -240,11 +240,9 @@ class AdvRecordLog extends React.Component {
 		// let title = newGameData.splice(index, 1).title; // ADD TOAST
 
 		var newStatusData = [...this.state.statusData];
-		newStatusData.splice(index, 1);
+		newStatusData.splice(index,1);
 
-		this.setState({deleteCode: -1, openEditorCode: -1,}, 
-			this.setState({gameData: newGameData, statusData: newStatusData})
-		);
+		this.setState({deleteCode: -1, gameData: newGameData, statusData: newStatusData});
 	}
 
 	resetStartWithEditHandler = () => {
@@ -312,8 +310,8 @@ class AdvRecordLog extends React.Component {
 								deleteHandler={this.handleDelete}
 								wasDm={wasDm}
 								wasEpic={wasEpic}
-								// startWithEdit={this.state.openEditorCode === logData.code}
-								// resetStartWithEditHandler={this.resetStartWithEditHandler}
+								startWithEdit={this.state.openEditorCode === logData.code}
+								resetStartWithEditHandler={this.resetStartWithEditHandler}
 							/>
 						</Collapse>
 					);
