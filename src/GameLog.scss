@@ -403,7 +403,6 @@ $halfGap: .25rem;
             }
 
             .arCol {
-                flex-basis: 0;
                 flex-grow: 1;
             }
 
@@ -1134,6 +1133,10 @@ $halfGap: .25rem;
 
                         .salvageAdv {
                             margin-right: .25rem;
+
+                            .checkArea .label {
+                                font-size: .77rem !important;
+                            }
                         }
 
                         .salvageRow {
@@ -1427,26 +1430,35 @@ $halfGap: .25rem;
 
                     flex-direction: row !important;
 
+
                     .leftCol {
                         margin-right: -.75rem !important;
                     }
 
-                    .cell {
-                        min-height: 4.14rem;
-                    }
+                    .rightCol {
+                        max-width: 50%;
 
-                    .salvageContent {
-                        flex-direction: column;
+                        .salvageContent {
+                            flex-direction: column;
 
-                        .salvageAdv,
-                        .salvageRow {
-                            max-width: initial;
-                            margin: 0;
+                            .salvageAdv,
+                            .salvageRow {
+                                max-width: initial;
+                                margin: 0;
 
-                            .selectWrapper {
-                                margin: 0 0 .75rem;
+                                .selectWrapper {
+                                    margin: 0 0 .75rem;
+                                }
+                            }
+
+                            .salvageAdv .checkArea .label {
+                                font-size: 1rem !important;
                             }
                         }
+                    }
+
+                    .cell {
+                        min-height: 4.14rem;
                     }
                 }
 
