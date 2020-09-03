@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import _each from "lodash/each";
+import _find from "lodash/find";
 import _isEqual from "lodash/isEqual";
 import _map from "lodash/map";
 import _pull from "lodash/pull";
@@ -19,8 +20,8 @@ import Tooltip from "react-bootstrap/Tooltip";
 import { useToasts } from "react-toast-notifications";
 
 import { AiTwotoneDelete, AiFillCloseCircle } from "react-icons/ai";
-import { FaDiceD20 } from "react-icons/fa";
-import { FaSave } from "react-icons/fa";
+import { FaDiceD20, FaSave } from "react-icons/fa";
+import { FiCornerDownRight } from "react-icons/fi";
 import { GiPokecog } from "react-icons/gi";
 import { ImMenu2 } from "react-icons/im";
 import { IoIosCalculator } from "react-icons/io";
@@ -32,6 +33,8 @@ import Event from "selectors/Event";
 import Option from "selectors/Option";
 import Select from "selectors/Select";
 import {
+	animFaster,
+    heartBeat,
     dmRewardNote,
     playerRewardNote,
     getFirstObject,
@@ -42,6 +45,9 @@ import {
     emptyWealth,
     emptyLogWealth,
     strip,
+    salvageLevelFootnote,
+    salvagePerHour,
+    excludeInWealth
 } from "utils/Util";
 
 import "animate.css";
@@ -60,7 +66,7 @@ const START = "start";
 function withToast(Component) {
     return function WrappedComponent(props) {
         const toastFuncs = useToasts();
-        return <Component {...props} {...toastFuncs} />; //BUG - Exclude EP - "Warning: Each child in a list should have a unique "key" prop.""
+        return <Component {...props} {...toastFuncs} />;
     };
 }
 
@@ -116,22 +122,24 @@ class GameLog extends React.Component {
         autoCalc: this.props.autoCalc,
         negativeEndingGold: false,
         isDeleting: false,
-        tier: -1,
+        tier: 0,
         titleOverride: !!this.props.statuses[this.props.data.code] && !!this.props.statuses[this.props.data.code].titleOverride 
         ? this.props.statuses[this.props.data.code].titleOverride 
         : this.props.data.title, // should just save to DATA
-
-        // currentWealthTab: 0,
 
         rewardGroup0: [],
         // rewardGroup1: [], // currently unneeded
 
         tempEvent: "",
         tempDate: "",
-        tempNotes: !!this.props.data.notes && !!this.props.data.notes.player ? this.props.data.notes.player : "",
+        tempNotes: !!this.props.statuses[this.props.data.code] && !!this.props.statuses[this.props.data.code].notes && !!this.props.statuses[this.props.data.code].notes.player 
+        	? this.props.statuses[this.props.data.code].notes.player 
+        	: "",
         tempDmName: "",
         tempDmNumber: "",
-        tempTier: -1,
+        tempTier: !!this.props.statuses[this.props.data.code] && !!this.props.statuses[this.props.data.code].tier 
+            ? this.props.statuses[this.props.data.code].tier 
+            : this.props.data.tier,
         tempIsDm: this.props.wasDm,
         tempIsEpic: this.props.wasEpic,
         tempAutoCalc: this.props.autoCalc,
@@ -148,8 +156,10 @@ class GameLog extends React.Component {
         	this.dateFieldRef.current.defaultValue = "";
         }
 
-        !this.props.preview && this.setTempData(this.props.statuses[this.props.data.code]);
-        !this.props.preview && this.saveTempData();
+        if (!this.props.preview) {
+        	this.setTempData(this.props.statuses[this.props.data.code]);
+        	this.saveTempData();
+        }
 
         this.props.resetStartWithEditHandler();
     }
@@ -161,8 +171,12 @@ class GameLog extends React.Component {
             wasDm: newProps.wasDm,
             wasEpic: newProps.wasEpic,
             autoCalc: newProps.autoCalc,
-            tier: !!newProps.data.tier ? newProps.data.tier : this.state.tier,
-            titleOverride: !!newProps.statuses[newProps.data.code] && !!newProps.statuses[newProps.data.code].titleOverride ? newProps.statuses[newProps.data.code].titleOverride : this.state.titleOverride,
+            tier: this.getPropOrEmpty(newProps.statuses[newProps.data.code],"tier",null)
+	            ? newProps.statuses[newProps.data.code].tier
+	            : this.state.data.tier,
+            titleOverride: this.getPropOrEmpty(newProps.statuses[newProps.data.code],"titleOverride",null) 
+	            ? newProps.statuses[newProps.data.code].titleOverride 
+	            : this.state.titleOverride,
         });
     }
 
@@ -195,6 +209,12 @@ class GameLog extends React.Component {
         this.updateEventHandler({
             advancement: { legacy: false, active: val },
         });
+    };
+
+    salvageHandler = (key, val) => {
+    	this.updateEventHandler({
+    		missionComplete: { legacy: false, complete: val}
+    	}, true);
     };
 
     selectRewardHandler = (key, val, title) => {
@@ -241,7 +261,7 @@ class GameLog extends React.Component {
             isForEpic: this.state.tempIsEpic,
             notes: {
                 ...this.state.statusData.notes,
-                player: strip(this.state.tempNotes.trim()),
+                player: !!this.state.tempNotes ? strip(this.state.tempNotes.trim()) : "",
             },
             event: this.state.tempEvent.trim(),
             date: this.state.tempDate.trim(),
@@ -252,6 +272,7 @@ class GameLog extends React.Component {
             },
             wealth: this.state.tempWealth,
             tier: this.state.tempTier,
+            // add wasDm, wasEpic, autoCalc here
         };
 
         if ([NOTES, START, SALVAGE].includes(this.state.data.record)) {
@@ -259,7 +280,7 @@ class GameLog extends React.Component {
         }
 
         this.setState({
-                tempNotes: strip(this.state.tempNotes.trim()),
+                tempNotes: !!this.state.tempNotes ? strip(this.state.tempNotes.trim()) : "",
                 tempDmName: this.state.tempIsDm ? "" : this.state.tempDmName.trim(),
                 tempDmNumber: this.state.tempIsDm ? "" : this.state.tempDmNumber.trim(),
                 tempEvent: this.state.tempEvent.trim(),
@@ -478,6 +499,8 @@ class GameLog extends React.Component {
         let event = !!this.state.statusData[code] ? this.state.statusData[code].event : '';
         let dmObj = !!this.state.statusData[code] ? {...this.state.statusData[code].dungeonMaster} : {};
 
+        let showTier = this.props.preview ? this.state.tempTier : this.state.tier;
+
         var dmStr = "";
         if (!this.state.wasDm) {
             if ("name" in dmObj && dmObj.name.length > 0) {
@@ -490,21 +513,25 @@ class GameLog extends React.Component {
             }
         }
 
+        if (!(showTier > 0 || (!!date && date !== "") || (!!event && event !== "") || (!this.props.preview && (dmStr !== "") || this.state.wasDm))) {
+        	return <></>;
+        }
+
         return (
             <Container>
 				<ul className="infoWrapper">
-					{!!this.state.data.tier && (
+					{showTier > 0 && (
 						<li className="tier">
 							<h1>Tier:</h1>
 
 							<OverlayTrigger
 								placement="top"
-								overlay={<Tooltip>Tier {this.state.data.tier}</Tooltip>}
+								overlay={<Tooltip>Tier {showTier}</Tooltip>}
 							>
-								<p>{this.state.data.tier}</p>
+								<p>{showTier}</p>
 							</OverlayTrigger>
 
-							{(epic || (this.props.preview && this.state.data.record === "epic")) && 
+							{(epic || (this.props.preview && this.state.data.record === EPIC)) && 
 								<OverlayTrigger
 									placement="top"
 									overlay={<Tooltip>Epic</Tooltip>}
@@ -537,20 +564,32 @@ class GameLog extends React.Component {
         );
     };
 
-    render_salvageInfo = () => {
-    	return <div>DM INFO, DATE, SALVAGE EARNED, LEVEL UP</div>
-    }
 
     render_advNotes = (suppressTitle) => {
-        var statusNotes = this.state.statusData[this.state.data.code] !== undefined
-        	? this.state.statusData[this.state.data.code].notes 
-        	: {};
-        let allNotes = { ...this.state.data.notes, ...statusNotes };
+
+        var allNotes = {...this.state.data.notes};
+        if (!!this.state.statusData[this.state.data.code] && this.state.statusData[this.state.data.code].notes) {
+        	_each({...this.state.statusData[this.state.data.code].notes}, (note,type) => {
+        			allNotes[type] = note;
+        	});        	
+        }
+
+        if (Object.keys(allNotes).length === 0) {
+        	return <></>;
+        }
+
+    	let aNote = _find(allNotes, (n) => {
+    		return n.trim() !== "";
+    	});
+
+        if (!aNote) {
+        	return <></>;
+        }
 
         return (
             <Container className="notesWrapper wrapper">
 				{!suppressTitle && (
-					<h1 className="sectionTitle">Adventure Notes</h1>
+					<h1 className="sectionTitle">{this.state.data.record === SALVAGE ? "Mission" : "Adventure"} Notes</h1>
 				)}
 				<div className="box">
 					{"game" in allNotes && (
@@ -573,30 +612,99 @@ class GameLog extends React.Component {
         );
     };
 
-    render_advancement = () => {
+    render_advancement = (isSalvageMission = false) => {
         const { preview } = this.props;
 
-        let isSelected =
-            this.state.statusData[this.state.data.code] !== undefined && this.state.statusData[this.state.data.code].advancement !== undefined
+        let isSelected = !!this.state.statusData[this.state.data.code] && !!this.state.statusData[this.state.data.code].advancement
             ? this.state.statusData[this.state.data.code].advancement.active 
             : false;
+
+        let missionComplete = !!this.state.statusData[this.state.data.code] && !!this.state.statusData[this.state.data.code].missionComplete
+            ? this.state.statusData[this.state.data.code].missionComplete.complete 
+            : false;
+
+        let hoursPlayed = !!this.state.statusData[this.state.data.code] && !!this.state.statusData[this.state.data.code].salvageHours
+            ? this.state.statusData[this.state.data.code].salvageHours.hours 
+            : 0;
+
+        let salvageRate = missionComplete ? salvagePerHour[this.state.tier-1] : salvagePerHour[this.state.tier-1]/2;
+
+        var totalPlayed = isNaN(salvageRate) && isNaN(salvageRate) ? 0 : hoursPlayed * salvageRate;
 
         return (
             <Container className="advWrapper wrapper">
 				<h1 className="sectionTitle">Advancement</h1>
 				<div className="box">
-					<Select
-						label={this.state.data.advancement.label}
-						type="checkbox"
-						isBold
-						isSelected={isSelected}
-						isDisabled={preview || this.state.isEditing}
-						selectHandler={this.advancementHandler}
-					/>
+					<span className="salvageContent">
+						<span className="salvageAdv">
+							<Select
+								label="Successfully Completed Mission"
+								type="checkbox"
+								isBold
+								isSelected={missionComplete}
+								isDisabled={preview || this.state.isEditing}
+								selectHandler={this.salvageHandler}
+							/>
+
+							<Select
+								label={isSalvageMission ? "Character&nbsp;Advancement (Level&nbsp;Up?)" : this.state.data.advancement.label}
+								type="checkbox"
+								isBold
+								indent
+								isSelected={isSelected}
+								isDisabled={preview || this.state.isEditing || !missionComplete}
+								selectHandler={this.advancementHandler}
+							/>
+						</span>
+
+						{isSalvageMission &&
+							<div className="salvageRow">
+								<InputGroup>
+									<InputGroup.Prepend>
+										<InputGroup.Text className={classnames("bookFont bold")}>
+											<FiCornerDownRight />&nbsp;Salvage Earned&nbsp;
+											<span key={salvageRate} className={classnames(animFaster,heartBeat)}>
+												({salvageRate}/hr)
+											</span>
+										</InputGroup.Text>
+									</InputGroup.Prepend>
+									<InputGroup.Append>
+										<InputGroup.Text className={classnames("bookFont bold")}>
+											{totalPlayed}
+										</InputGroup.Text>
+									</InputGroup.Append>
+								</InputGroup>
+
+								<InputGroup>
+									<InputGroup.Prepend>
+										<InputGroup.Text className="bookFont bold">Hours Played (to max)</InputGroup.Text>
+									</InputGroup.Prepend>
+									<InputGroup.Append>
+										<Form.Control
+											className="handwritten textBoxCenter"
+											type="number"
+											pattern="[0-9]*"
+											min="0"
+											max="24"
+											value={hoursPlayed}
+											onKeyDown={(e) => {excludeInWealth.includes(e.key) && e.preventDefault();}}
+											onChange={(e) => {
+												var limit = e.target.value > 24 ? 24 : e.target.value;
+												this.updateEventHandler({salvageHours: {hours: limit}},true);
+											}}
+										/>
+									</InputGroup.Append>
+								</InputGroup>
+							</div>
+						}
+					</span>
+
+					{isSalvageMission && <hr />}
+
 					<p
 						className="bookFont footnote"
 						dangerouslySetInnerHTML={{
-							__html: this.state.data.advancement.footnote,
+							__html: (isSalvageMission ? salvageLevelFootnote : this.state.data.advancement.footnote),
 						}}
 					/>
 				</div>
@@ -805,12 +913,12 @@ class GameLog extends React.Component {
         );
     };
 
-    render_editGameData = () => {
+    render_editLogData = () => {
         return (
             <ul className="editWrapper">
 
             	{/* OPTIONS */}
-				{this.render_editOptionsRow(GAME)}
+				{this.render_editOptionsRow()}
 
 				<hr />
 
@@ -818,80 +926,10 @@ class GameLog extends React.Component {
 				{this.render_editPlayerNotes()}
 
 				{/* DUNGEON MASTER GROUP */}
-				<li className={classnames("editRow flexRow", this.state.tempIsDm && "disable")}>
-					<InputGroup>
-						<InputGroup.Prepend>
-							<InputGroup.Text className="oswald">
-								DM Name
-							</InputGroup.Text>
-						</InputGroup.Prepend>
-						<Form.Control
-							className="handwritten"
-							disabled={this.state.tempIsDm}
-							value={this.state.tempIsDm ? "You are the DM" : this.state.tempDmName}
-							onChange={(e) => {
-								this.setState({ tempDmName: e.target.value });
-							}}
-						/>
-					</InputGroup>
-
-					<InputGroup>
-						<InputGroup.Prepend>
-							<InputGroup.Text className="oswald">
-								DM DCI #
-							</InputGroup.Text>
-						</InputGroup.Prepend>
-						<Form.Control
-							className="handwritten"
-							disabled={this.state.tempIsDm}
-							value={this.state.tempIsDm ? "You are the DM" : this.state.tempDmNumber}
-							onChange={(e) => {
-								this.setState({ tempDmNumber: e.target.value });
-							}}
-						/>
-					</InputGroup>
-				</li>
+				{this.render_editDmGroup()}
 
 				{/* EVENT AND DATE GROUP */}
-				<li className="editRow flexRow">
-					<InputGroup>
-						<InputGroup.Prepend>
-							<InputGroup.Text className="oswald">
-								Event
-							</InputGroup.Text>
-						</InputGroup.Prepend>
-						<Form.Control
-							className="handwritten"
-							value={this.state.tempEvent}
-							onChange={(e) => {
-								this.setState({ tempEvent: e.target.value });
-							}}
-						/>
-					</InputGroup>
-
-					<InputGroup>
-						<InputGroup.Prepend>
-							<InputGroup.Text className="oswald">
-								Date
-							</InputGroup.Text>
-						</InputGroup.Prepend>
-						<Form.Control
-							className="handwritten"
-							type="date"
-							value={this.state.tempDate}
-							ref={this.dateFieldRef}
-							onChange={(e) => {
-								this.setState({ tempDate: e.target.value });
-								
-								const target = e.target
-								setTimeout(()=>{
-							      target.defaultValue = "";
-							    }, 100);
-
-							}}
-						/>
-					</InputGroup>
-				</li>
+				{this.render_eventDateGroup()}
 
 				<hr />
 
@@ -977,7 +1015,26 @@ class GameLog extends React.Component {
     	return (
             <ul className="editWrapper">
             	{/* OPTIONS */}
-				{this.render_editOptionsRow(SALVAGE)}
+				{this.render_editOptionsRow()}
+
+				<hr />
+
+				{/* CODE AND TITLE GROUP */}
+				{this.render_editCodeAndTitleGroup()}
+
+				{/* PLAYER NOTES */}
+            	{this.render_editPlayerNotes()}
+
+				{/* DUNGEON MASTER GROUP */}
+				{this.render_editDmGroup()}
+
+				{/* EVENT AND DATE GROUP */}
+				{this.render_eventDateGroup()}
+
+				<hr />
+
+				{/* WEALTH */}
+				{this.render_editWealthRow()}
 
 				<hr />
 
@@ -991,59 +1048,23 @@ class GameLog extends React.Component {
     	return (
             <ul className="editWrapper notes">
             	{/* NOTES OPTIONS */}
-            	{this.state.data.record === NOTES && this.render_editOptionsRow(NOTES)}
-
-            	{/* START WEALTH (above) */}
-            	{this.state.data.record === START && this.render_editWealthRow(true)}
-
-            	<hr />
+            	{this.state.data.record === NOTES && 
+            		<>
+            			{this.render_editOptionsRow()}
+            			<hr />
+            		</>
+            	}
 
             	{/* CODE AND TITLE GROUP */}
-				<li className="editRow flexRow">
-					<InputGroup>
-						<InputGroup.Prepend>
-							<InputGroup.Text className="oswald">
-								Title
-							</InputGroup.Text>
-						</InputGroup.Prepend>
-						<Form.Control
-							className="handwritten"
-							placeholder={this.state.data.code}
-							value={this.state.tempTitle}
-							onChange={(e) => {this.setState({ tempTitle: e.target.value });}}
-						/>
-					</InputGroup>
-
-					<OverlayTrigger
-						placement="top"
-						overlay={<Tooltip>Unique Idenifier</Tooltip>}
-					>
-						<InputGroup>
-						
-							<InputGroup.Prepend>
-								<InputGroup.Text className="oswald">
-									Code
-								</InputGroup.Text>
-							</InputGroup.Prepend>
-							<Form.Control
-								className="handwritten"
-								value={this.state.data.code}
-								disabled
-							/>
-						</InputGroup>
-					</OverlayTrigger>
-				</li>
+				{this.render_editCodeAndTitleGroup()}
 
 				{/* PLAYER NOTES */}
             	{this.render_editPlayerNotes()}
 
-            	{/* NOTES WEALTH (below) */}
-            	{this.state.data.record === NOTES && 
-            		<>
-            			<hr />
-            			{this.render_editWealthRow()}
-            		</>
-            	}
+            	<hr />
+
+            	{/* NOTES WEALTH */}
+            	{this.render_editWealthRow(this.state.data.record === START)}
 
             	<hr />
 
@@ -1051,6 +1072,127 @@ class GameLog extends React.Component {
 				{this.render_editActionsRow(this.state.data.record === START)}
             </ul>
         );
+    }
+
+    render_eventDateGroup = () => {
+    	return (
+    		<li className="editRow flexRow">
+				<InputGroup>
+					<InputGroup.Prepend>
+						<InputGroup.Text className="oswald">
+							Event
+						</InputGroup.Text>
+					</InputGroup.Prepend>
+					<Form.Control
+						className="handwritten"
+						value={this.state.tempEvent}
+						onChange={(e) => {
+							this.setState({ tempEvent: e.target.value });
+						}}
+					/>
+				</InputGroup>
+
+				<InputGroup>
+					<InputGroup.Prepend>
+						<InputGroup.Text className="oswald">
+							Date
+						</InputGroup.Text>
+					</InputGroup.Prepend>
+					<Form.Control
+						className="handwritten"
+						type="date"
+						value={this.state.tempDate}
+						ref={this.dateFieldRef}
+						onChange={(e) => {
+							this.setState({ tempDate: e.target.value });
+							
+							const target = e.target
+							setTimeout(()=>{
+						      target.defaultValue = "";
+						    }, 100);
+
+						}}
+					/>
+				</InputGroup>
+			</li>
+		);
+    }
+
+    render_editCodeAndTitleGroup = () => {
+    	return (
+    		<li className="editRow flexRow">
+				<InputGroup>
+					<InputGroup.Prepend>
+						<InputGroup.Text className="oswald">
+							Title
+						</InputGroup.Text>
+					</InputGroup.Prepend>
+					<Form.Control
+						className="handwritten"
+						placeholder={this.state.data.code}
+						value={this.state.tempTitle}
+						onChange={(e) => {this.setState({ tempTitle: e.target.value });}}
+					/>
+				</InputGroup>
+
+				<OverlayTrigger
+					placement="top"
+					overlay={<Tooltip>Unique Idenifier</Tooltip>}
+				>
+					<InputGroup>
+					
+						<InputGroup.Prepend>
+							<InputGroup.Text className="oswald">
+								Code
+							</InputGroup.Text>
+						</InputGroup.Prepend>
+						<Form.Control
+							className="handwritten"
+							value={this.state.data.code}
+							disabled
+						/>
+					</InputGroup>
+				</OverlayTrigger>
+			</li>
+		);
+    }
+
+    render_editDmGroup = () => {
+    	return (
+    		<li className={classnames("editRow flexRow", this.state.tempIsDm && "disable")}>
+				<InputGroup>
+					<InputGroup.Prepend>
+						<InputGroup.Text className="oswald">
+							DM Name
+						</InputGroup.Text>
+					</InputGroup.Prepend>
+					<Form.Control
+						className="handwritten"
+						disabled={this.state.tempIsDm}
+						value={this.state.tempIsDm ? "You are the DM" : this.state.tempDmName}
+						onChange={(e) => {
+							this.setState({ tempDmName: e.target.value });
+						}}
+					/>
+				</InputGroup>
+
+				<InputGroup>
+					<InputGroup.Prepend>
+						<InputGroup.Text className="oswald">
+							DM DCI #
+						</InputGroup.Text>
+					</InputGroup.Prepend>
+					<Form.Control
+						className="handwritten"
+						disabled={this.state.tempIsDm}
+						value={this.state.tempIsDm ? "You are the DM" : this.state.tempDmNumber}
+						onChange={(e) => {
+							this.setState({ tempDmNumber: e.target.value });
+						}}
+					/>
+				</InputGroup>
+			</li>
+    	);
     }
 
     render_editWealthRow = (isStartingLog = false) => {
@@ -1119,7 +1261,7 @@ class GameLog extends React.Component {
 		);
     }
 
-    render_editOptionsRow = (type) => {
+    render_editOptionsRow = () => {
 	    return (	
 	    	<li className="editRow optionsRow">
 				<InputGroup className="optionsLabel">
@@ -1129,8 +1271,33 @@ class GameLog extends React.Component {
 				</InputGroup>
 
 				<div className="flexRow">
+					{/* set tier */}
+					{[SALVAGE].includes(this.state.data.record) &&
+						<InputGroup className="dropdownGroup">
+							<DropdownButton
+								variant="light"
+								title={this.state.tempTier > 0 ? "Tier " + this.state.tempTier : "No Tier Set"}
+								alignRight
+							>
+								{_map([-1,1,2,3,4], (t) => {
+									return (
+										<Dropdown.Item
+											href="#"
+											key={t}
+											eventKey={t}
+											active={this.state.tempTier === t}
+											onSelect={(e) => {this.setState({tempTier: t});}}
+										>
+											{t > 0 ? "Tier " + t : "None"}
+										</Dropdown.Item>
+									);
+								})}
+							</DropdownButton>
+						</InputGroup>
+					}
+
 					{/* set isEpic */}
-					{[GAME].includes(type) &&
+					{[GAME, EPIC, SALVAGE].includes(this.state.data.record) &&
 						<InputGroup className="dropdownGroup">
 							<DropdownButton
 								variant="light"
@@ -1157,33 +1324,8 @@ class GameLog extends React.Component {
 						</InputGroup>
 					}
 
-					{/* set tier */}
-					{[SALVAGE].includes(type) &&
-						<InputGroup className="dropdownGroup">
-							<DropdownButton
-								variant="light"
-								title={this.state.tempTier === 0 ? "No Tier Set" : "Tier " + this.state.tempTier}
-								alignRight
-							>
-								{_map([0,1,2,3,4], (t) => {
-									return (
-										<Dropdown.Item
-											href="#"
-											key={t}
-											eventKey={t}
-											active={this.state.tempTier === t}
-											onSelect={(e) => {this.setState({tempTier: t});}}
-										>
-											{t === 0 ? "None" : "Tier " + t}
-										</Dropdown.Item>
-									);
-								})}
-							</DropdownButton>
-						</InputGroup>
-					}
-
 					{/* set isDm */}
-					{[GAME, SALVAGE].includes(type) &&
+					{[GAME, EPIC, SALVAGE].includes(this.state.data.record) &&
 						<InputGroup className="dropdownGroup">
 							<DropdownButton
 								variant="light"
@@ -1415,7 +1557,7 @@ class GameLog extends React.Component {
 									mountOnEnter
 								>
 									<div className="editContent">
-										{this.render_editGameData()}
+										{this.render_editLogData()}
 									</div>
 								</Collapse>
 							}
@@ -1466,16 +1608,17 @@ class GameLog extends React.Component {
 								</div>
 							</Collapse>
 
-							<div className="logDataWrapper">
-								{this.render_advNotes(true)}
+							<div className="logDataWrapper salvageInfoWrapper">
+								{this.render_gameInfo()}
+								{this.render_advNotes(false)}
 
 								<div className="twoCol">
 									<div className="leftCol arCol">
-										{this.render_wealth(true)}
+										{this.render_wealth()}
 									</div>
 
 									<div className="rightCol arCol">
-										{this.render_salvageInfo()}
+										{this.render_advancement(true)}
 									</div>
 								</div>
 							</div>
@@ -1525,7 +1668,7 @@ class GameLog extends React.Component {
 							</Collapse>
 
 							<div className="logDataWrapper">
-								<div className="twoCol notesLog">
+								<div className={classnames("twoCol notesLog", this.state.data.record === START && "startLog")}>
 									<div className="leftCol arCol">
 										{this.state.data.record === NOTES ? this.render_wealth(true) :
 											<Container className="wealthWrapper wrapper">
@@ -1545,7 +1688,7 @@ class GameLog extends React.Component {
 										}
 									</div>
 
-									{!!this.state.statusData[code] && !!this.state.statusData[code].notes && this.state.statusData[code].notes.player &&
+									{!!this.state.tempNotes !== "" &&
 										<div className="rightCol arCol">
 											{this.render_advNotes(true)}
 										</div>

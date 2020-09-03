@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import InputGroup from "react-bootstrap/InputGroup";
+import { FiCornerDownRight } from "react-icons/fi";
 
 import "selectors/SelectOption.scss";
 
@@ -16,6 +17,7 @@ class Select extends React.Component {
         selectHandler: PropTypes.func,
         isExpended: PropTypes.bool,
         title: PropTypes.string,
+        indent: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -59,7 +61,7 @@ class Select extends React.Component {
 
     //RENDERERS
     render() {
-        const { label, type, isBold } = this.props;
+        const { label, type, isBold, indent} = this.props;
 
         if (type === "checkbox") {
             return (
@@ -75,10 +77,10 @@ class Select extends React.Component {
                                 onChange={this.toggleSelect.bind(this)} // DOUBLE SELECTS WITH THIS AND ONCLICK ABOVE
                             />
                         </InputGroup.Prepend>
-                        <p
-                            className={classnames("label bookFont",isBold && "bold")}
-                            dangerouslySetInnerHTML={{ __html: label }}
-                        />
+                        <p className={classnames("label bookFont",isBold && "bold")} >
+                            {indent && <FiCornerDownRight className="arrow" />}
+                            <span dangerouslySetInnerHTML={{ __html: label }} />
+                        </p>
                     </InputGroup>
                 </div>
             );

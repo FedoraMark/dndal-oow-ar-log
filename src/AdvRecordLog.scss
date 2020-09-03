@@ -136,8 +136,8 @@
                 cursor: pointer;
 
                 color: $color-active-text;
-                border-color: #0062cc !important;
-                background-color: #0069d9 !important;
+                border-color: $color-bs-buttonBorder !important;
+                background-color: $color-bs-buttonBg !important;
             }
 
             &.disabled {

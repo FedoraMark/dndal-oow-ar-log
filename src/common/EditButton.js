@@ -44,7 +44,9 @@ class EditButton extends Component {
 					style.editButtonWrapper,
 					className,
 					this.state.active && style.active,
-					(left ? style.left : style.right)
+					(left ? style.left : style.right),
+					save && style.save,
+					cancel && style.cancel,
 				)}
 				ref={this.editButton}
 				onClick={(e) => {

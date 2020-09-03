@@ -76,6 +76,8 @@ $color-group-text: #495057;
 $color-edit-border: darkgray;
 $color-bs-lightbg: #f8f9fa;
 $color-bs-danger: #d9534f;
+$color-bs-buttonBorder: #0062cc;
+$color-bs-buttonBg: #0069d9;
 
 // font-families
 $fontFamily-fauxdesto: Fauxdesto, Impact, Charcoal, sans-serif;
@@ -109,6 +111,10 @@ body {
 
 .noWrap {
     white-space: nowrap;
+}
+
+.textBoxCenter {
+    text-align: center;
 }
 
 .flexBetwixt {

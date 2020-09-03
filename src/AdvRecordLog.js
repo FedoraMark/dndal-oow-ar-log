@@ -19,7 +19,7 @@ import { ToastProvider } from "react-toast-notifications";
 import { GiPokecog } from "react-icons/gi";
 import { RiEditCircleFill } from "react-icons/ri"
 
-import { fadeInUp, fadeIn, getFirstObject, getFirstKey, emptyWealth, emptyLogWealth, startingWealthLog } from "utils/Util";
+import { fadeInUp, fadeIn, getFirstObject, getFirstKey, emptyWealth, emptyLogWealth, startingWealthLog, startingStatusLog } from "utils/Util";
 import Player from "common/Player";
 import Summary from "common/Summary";
 import GameLog from "GameLog";
@@ -31,7 +31,7 @@ import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 import games_oow from "./data/oowGames.json";
 // import chara_SamPel from "./data/SamPel.json";
 
-const NOTES_WEALTH = "notes";
+const NOTES = "notes";
 const SALVAGE = "salvage"
 const GENERIC_CLASS = {Player: 1}
 
@@ -53,7 +53,7 @@ class AdvRecordLog extends React.Component {
 			// useEp: true,
 	    },
 	    gameData: [{...startingWealthLog}],
-	    statusData: [],
+	    statusData: [startingStatusLog],
 	    
 	    showAddRecordArea: false,
 	    loaded: false,
@@ -82,13 +82,13 @@ class AdvRecordLog extends React.Component {
 		var newEditorCode = openEditor ? recordObj.code : -1;
 		var newCode = recordObj.code;
 
-		// notes_wealth and salvage logs
-		if ([NOTES_WEALTH, SALVAGE].includes(record)) {
+		// NOTES and salvage logs
+		if ([NOTES, SALVAGE].includes(record)) {
 			newCode = record + "_" + Math.random().toString(36).substr(2, 9);;
-			let displayType = record === NOTES_WEALTH ? "Wealth and Notes" : "Salvage Mission";
+			let displayType = record === NOTES ? "Wealth and Notes" : "Salvage Mission";
 
 			newLogData = {record: record, type: displayType, title: displayType + " Log", code: newCode, tier: this.state.charData.tier === 0 ? 1 : this.state.charData.tier};
-			newLogStatus = {[newCode]: {notes: {player: "Changes between sessions." }, titleOverride: displayType + " Log", tier: this.state.charData.tier === 0 ? 1 : this.state.charData.tier, wealth: this.getPrevEndingWealth()}};
+			newLogStatus = {[newCode]: {notes: {player: record === NOTES ? "Wealth changes and notes for between sessions." : "Salvage mission notes." }, titleOverride: displayType + " Log", tier: this.state.charData.tier === 0 ? 1 : this.state.charData.tier, wealth: this.getPrevEndingWealth()}};
 			newEditorCode = newCode;
 		}
 
@@ -142,6 +142,7 @@ class AdvRecordLog extends React.Component {
 		} else {
 			statusArr[changeIndex] = logStatusObj;
 		}
+
 
 		this.setState({ statusData: statusArr });
 	};
@@ -344,7 +345,7 @@ class AdvRecordLog extends React.Component {
 							<li className="addItem" id="newNotes">
 								<Card 
 									className="customItem"
-									onClick={this.addRecord.bind(this,{},true,NOTES_WEALTH)}
+									onClick={this.addRecord.bind(this,{},true,NOTES)}
 								>
 									<Card.Body>
 										<RiEditCircleFill className="cardIcon" />

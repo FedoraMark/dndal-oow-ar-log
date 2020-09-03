@@ -325,6 +325,11 @@ class Player extends Component {
 					</div>
 				)}
 
+				<div className="infoItem">
+					<h1>Level:</h1>
+					<p className="classList">{this.state.currentTotalLevels}</p>
+				</div>
+
 				{(!!this.state.playerObj.player ||
 					!!this.state.playerObj.dci) && (
 					<div className="infoItem">
@@ -341,11 +346,11 @@ class Player extends Component {
 				)}
 
 				{!!wealthObj && (getTotalCopper(wealthObj) > 0 || this.state.autoWealth) && (
-						<div className="infoItem">
-							<h1>Wealth:</h1>
-							<p><Wealth wealthObj={wealthObj} /></p>
-						</div>
-					)}
+					<div className="infoItem">
+						<h1>Wealth:</h1>
+						<p><Wealth wealthObj={wealthObj} /></p>
+					</div>
+				)}
 
 				{Object.keys(this.state.playerObj.classes).length > 0 && !(Object.keys(this.state.playerObj.classes).length === 1 && getFirstKey(this.state.playerObj.classes) === "Player") && (
 					<div className="infoItem">
@@ -364,11 +369,6 @@ class Player extends Component {
 						</p>
 					</div>
 				)}
-
-				<div className="infoItem">
-					<h1>Level:</h1>
-					<p className="classList">{this.state.currentTotalLevels}</p>
-				</div>
 
 			</span>
         );

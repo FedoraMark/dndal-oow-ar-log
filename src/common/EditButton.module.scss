@@ -20,6 +20,8 @@ $offset: 1rem;
 
     font-size: medium;
 
+    cursor: pointer;
+
     color: $color-inactive-text;
     border: 5px solid white;
     border-radius: 100%;
@@ -34,8 +36,6 @@ $offset: 1rem;
 
     &:hover,
     &:focus {
-        cursor: pointer;
-
         color: $color-hover-text;
         background: $color-hover-background;
     }
@@ -44,6 +44,22 @@ $offset: 1rem;
 .active {
     color: $color-active-text;
     background: $color-active-background;
+
+    &.save {
+        &:hover,
+        &:focus {
+            border-color: $color-bs-buttonBorder;
+            background-color: $color-bs-buttonBg;
+        }
+    }
+
+    &.cancel {
+        &:hover,
+        &:focus {
+            border-color: #202020;
+            background-color: #222;
+        }
+    }
 }
 
 .left {

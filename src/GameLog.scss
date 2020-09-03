@@ -328,6 +328,69 @@ $halfGap: .25rem;
             }
         }
 
+        .salvageInfoWrapper {
+            .twoCol {
+                @include flex(stretch, stretch, column-reverse);
+
+                .cell {
+                    min-height: 0;
+                }
+            }
+
+            .advWrapper {
+                height: 100%;
+                padding-bottom: .5rem;
+
+                .selectWrapper,
+                .salvageRow {
+                    margin-bottom: .5rem;
+                }
+
+                .salvageAdv {
+                    @include flex(center, center, column);
+                }
+
+                .salvageRow {
+                    @include flex(center,center,column-reverse);
+
+                    & > div {
+                        display: inline-flex;
+
+                        flex-wrap: nowrap;
+
+                        &:last-of-type {
+                            margin-bottom: .5rem;
+                        }
+
+                        .input-group-prepend {
+                            flex-grow: 1;
+
+                            & > span {
+                                width: 100%;
+                            }
+                        }
+
+                        .input-group-append {
+                            width: 5rem;
+
+                            input {
+                                font-size: .8rem;
+
+                                border-top-left-radius: 0;
+                                border-bottom-left-radius: 0;
+                            }
+
+                            span {
+                                width: 100%;
+
+                                justify-content: center;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         .twoCol {
             display: block;
 
@@ -355,7 +418,11 @@ $halfGap: .25rem;
             &.notesLog {
                 margin-top: .5rem;
 
-                @include flex(stretch, stretch, column);
+                @include flex(stretch, stretch, column-reverse);
+
+                &.startLog {
+                    flex-direction: column;
+                }
 
                 .arCol {
                     flex-basis: auto;
@@ -422,7 +489,7 @@ $halfGap: .25rem;
                     padding: calc(.25rem + 1px) .5rem .1rem;
 
                     grid-template-columns: 1fr 2fr;
-                    grid-template-rows: repeat(4, 1fr);
+                    grid-template-rows: repeat(4, auto);
 
                     &.startingOnly {
                         padding: calc(.25rem + 1px) .5rem;
@@ -435,6 +502,8 @@ $halfGap: .25rem;
                     padding: .25rem .5rem .1rem;
 
                     text-align: left;
+
+                    @include flex(center, flex-start);
 
                     &:not(.bottom) {
                         border-bottom: 1px solid $color-bshr;
@@ -830,7 +899,7 @@ $halfGap: .25rem;
     }
 
     &.salvageBox .notesWrapper .box {
-        margin-bottom: 1rem;
+        margin-bottom: .5rem;
     }
 
     &.editing {
@@ -946,6 +1015,10 @@ $halfGap: .25rem;
                     }
                 }
             }
+
+            .salvageInfoWrapper .advWrapper .salvageRow > div .input-group-append input {
+                font-size: .9rem;
+            }
         }
     }
 }
@@ -1026,6 +1099,52 @@ $halfGap: .25rem;
                         }
                     }
                 }
+            }
+        }
+
+        .salvageInfoWrapper {
+            .twoCol {
+                flex-direction: column-reverse !important;
+
+                .leftCol {
+                    margin: 0 !important;
+                }
+
+                .rightCol {
+                    .salvageContent {
+                        margin-bottom: -.25rem;
+
+                        @include flex(stretch, space-between, row);
+
+                        .salvageAdv,
+                        .salvageRow {
+                            max-width: 50%;
+
+                            flex-grow: 1;
+
+                            input {
+                                font-size: .8rem;
+                            }
+
+                            & > span,
+                            & > div {
+                                height: 2.075rem;
+                            }
+                        }
+
+                        .salvageAdv {
+                            margin-right: .25rem;
+                        }
+
+                        .salvageRow {
+                            margin-left: .25rem;
+                        }
+                    }
+                }
+            }
+
+            .footnote {
+                font-size: .9rem !important;
             }
         }
 
@@ -1299,6 +1418,40 @@ $halfGap: .25rem;
                             }
                         }
                     }
+                }
+            }
+
+            .salvageInfoWrapper {
+                .twoCol {
+                    margin-bottom: -.5rem;
+
+                    flex-direction: row !important;
+
+                    .leftCol {
+                        margin-right: -.75rem !important;
+                    }
+
+                    .cell {
+                        min-height: 4.14rem;
+                    }
+
+                    .salvageContent {
+                        flex-direction: column;
+
+                        .salvageAdv,
+                        .salvageRow {
+                            max-width: initial;
+                            margin: 0;
+
+                            .selectWrapper {
+                                margin: 0 0 .75rem;
+                            }
+                        }
+                    }
+                }
+
+                .footnote {
+                    font-size: .78rem !important;
                 }
             }
         }

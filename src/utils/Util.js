@@ -5,6 +5,7 @@ export const animFaster = "animate__faster";
 export const fadeIn = "animate__animated animate__fadeIn";
 export const fadeInUp = "animate__animated animate__fadeInUp";
 export const bounceIn = "animate__animated animate__bounceIn";
+export const heartBeat = "animate__animated animate__heartBeat";
 
 export const excludeInWealth = ["e", "+", "-", "."];
 export const emptyWealth = { cp: 0, sp: 0, ep: 0, gp: 0, pp: 0 };
@@ -15,6 +16,8 @@ export const emptyLogWealth = {
     ending: emptyWealth,
 };
 export const currency = ["cp", "sp", "ep", "gp", "pp"];
+
+export const salvagePerHour = [50,100,200,400]
 
 export const dmRewardNote =
     "When you run an adventure, you earn the Adventure Record for that adventure, which you may apply to one of your Oracle of War characters. Apply the same rewards to the Adventure Record as your group earned, including legacy events. If a legacy event was awarded to a specific character, you may tick that event for your own character too.";
@@ -46,17 +49,26 @@ export const startingWealthLog = {
     title: "Starting Wealth and Notes",
     type: "Starting Wealth and Notes",
     date: "",
-    notes: {
-        player: "Hail and well met!\n\nBegin your Oracle of War campaign by entering your starting wealth and any important notes into this log.",
-    },
-    wealth: { ...emptyLogWealth }
+    wealth: { ...emptyLogWealth },
 };
+
+export const startingStatusLog = {
+    [startingWealthLog.code]: {
+        notes: {
+            player:
+                "Hail and well met!\n\nBegin your Oracle of War campaign by entering your starting wealth and any important notes into this log.",
+        },
+    },
+};
+
+export const salvageLevelFootnote =
+    "A character who successfully completes a salvage mission can choose to gain a level at the end of that adventure. A character may forego taking this level advancement; if so, they still earn salvage for their base.";
 
 // FUNCTIONS
 export const strip = (html) => {
-    var doc = new DOMParser().parseFromString(html, 'text/html');
+    var doc = new DOMParser().parseFromString(html, "text/html");
     return doc.body.textContent || "";
-}
+};
 
 export const getFirstObject = (obj) => {
     return obj[Object.keys(obj)[0]];
