@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import _each from "lodash/each";
 import _isEqual from "lodash/isEqual";
 import _map from "lodash/map";
 import Button from "react-bootstrap/Button";
