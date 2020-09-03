@@ -181,7 +181,7 @@ $halfGap: .25rem;
 
                     .code {
                         display: inline-flex;
-                        padding: 0 .5rem 0 0 !important;
+                        padding: 0;
 
                         justify-content: flex-end;
                         align-items: center;
@@ -330,7 +330,7 @@ $halfGap: .25rem;
 
         .salvageInfoWrapper {
             .twoCol {
-                @include flex(stretch, stretch, column-reverse);
+                @include flex(stretch, stretch, column);
 
                 .cell {
                     min-height: 0;
@@ -339,7 +339,7 @@ $halfGap: .25rem;
 
             .advWrapper {
                 height: 100%;
-                padding-bottom: .5rem;
+                padding-bottom: 0rem;
 
                 .selectWrapper,
                 .salvageRow {
@@ -347,6 +347,8 @@ $halfGap: .25rem;
                 }
 
                 .salvageAdv {
+                    margin-bottom: 0;
+
                     @include flex(center, center, column);
                 }
 
@@ -882,7 +884,7 @@ $halfGap: .25rem;
             }
 
             textarea {
-                min-height: 7rem;
+                min-height: 10rem;
 
                 box-sizing: border-box;
             }
@@ -956,6 +958,10 @@ $halfGap: .25rem;
             font-size: 2rem;
 
             .name {
+                .code {
+                    padding-right: .5rem !important;
+                }
+
                 .titleIcon {
                     font-size: 1.5rem;
 
@@ -1041,7 +1047,7 @@ $halfGap: .25rem;
 
                 .code {
                     width: auto;
-                    padding-right: .5rem;
+
 
                     .hyphen {
                         bottom: .6rem;
@@ -1103,7 +1109,7 @@ $halfGap: .25rem;
 
         .salvageInfoWrapper {
             .twoCol {
-                flex-direction: column-reverse !important;
+                flex-direction: column !important;
 
                 .leftCol {
                     margin: 0 !important;
@@ -1153,6 +1159,10 @@ $halfGap: .25rem;
 
         .editContent {
             .editWrapper {
+                textarea {
+                    min-height: 7rem;
+                }
+
                 .editRow {
                     .input-group-prepend .input-group-text {
                         width: 7rem;
@@ -1425,18 +1435,20 @@ $halfGap: .25rem;
             }
 
             .salvageInfoWrapper {
+                .advWrapper .salvageRow > div .input-group-append input {
+                    font-size: 1rem;
+                }
+
                 .twoCol {
-                    margin-bottom: -.5rem;
+                    margin-bottom: 0rem;
 
                     flex-direction: row !important;
 
 
                     .leftCol {
-                        margin-right: -.75rem !important;
-                    }
-
-                    .rightCol {
                         max-width: 50%;
+                        margin-right: -.75rem !important;
+
 
                         .salvageContent {
                             flex-direction: column;
@@ -1447,7 +1459,7 @@ $halfGap: .25rem;
                                 margin: 0;
 
                                 .selectWrapper {
-                                    margin: 0 0 .75rem;
+                                    margin: 0 0 .5rem;
                                 }
                             }
 
@@ -1458,7 +1470,7 @@ $halfGap: .25rem;
                     }
 
                     .cell {
-                        min-height: 4.14rem;
+                        min-height: 4.36rem;
                     }
                 }
 

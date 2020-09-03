@@ -608,7 +608,7 @@ class GameLog extends React.Component {
         );
     };
 
-    render_advancement = (isSalvageMission = false) => {
+    render_advancement = (isSalvageMission) => {
         const { preview } = this.props;
 
         let isSelected = !!this.state.statusData[this.state.data.code] && !!this.state.statusData[this.state.data.code].advancement
@@ -633,22 +633,24 @@ class GameLog extends React.Component {
 				<div className="box">
 					<span className="salvageContent">
 						<span className="salvageAdv">
-							<Select
-								label="Successfully Completed Mission"
-								type="checkbox"
-								isBold
-								isSelected={missionComplete}
-								isDisabled={preview || this.state.isEditing}
-								selectHandler={this.salvageHandler}
-							/>
+							{isSalvageMission &&
+								<Select
+									label="Successfully Completed Mission"
+									type="checkbox"
+									isBold
+									isSelected={missionComplete}
+									isDisabled={preview || this.state.isEditing}
+									selectHandler={this.salvageHandler}
+								/>
+							}
 
 							<Select
 								label={isSalvageMission ? "Character&nbsp;Advancement (Level&nbsp;Up?)" : this.state.data.advancement.label}
 								type="checkbox"
 								isBold
-								indent
+								indent={isSalvageMission}
 								isSelected={isSelected}
-								isDisabled={preview || this.state.isEditing || !missionComplete}
+								isDisabled={preview || this.state.isEditing || (isSalvageMission && !missionComplete)}
 								selectHandler={this.advancementHandler}
 							/>
 						</span>
@@ -898,7 +900,7 @@ class GameLog extends React.Component {
 
 				<div className="twoCol">
 					<div className="leftCol arCol">
-						{this.render_advancement()}
+						{this.render_advancement(false)}
 						{this.render_rewards()}
 						{this.render_wealth()}
 					</div>
@@ -1485,9 +1487,9 @@ class GameLog extends React.Component {
 							</>
 						}
 						<div 
-							className={classnames("fauxdesto noWrap", [GAME, EPIC, SALVAGE].includes(this.state.data.record) && "italic")} 
-							style={{fontSize: "2.8rem", marginTop: [GAME, EPIC].includes(this.state.data.record) ? "-.9rem" : "0"}}
-							dangerouslySetInnerHTML={{__html: this.fauxdestoHyphenFix(this.state.data.title) }}
+							className={classnames("fauxdesto", [GAME, EPIC, SALVAGE].includes(this.state.data.record) && "italic")} 
+							style={{fontSize: "2.8rem", lineHeight: "1", marginTop: [GAME, EPIC].includes(this.state.data.record) ? "-.5rem" : "0"}}
+							dangerouslySetInnerHTML={{__html: this.fauxdestoHyphenFix( [GAME, EPIC].includes(this.state.data.record) ? this.state.data.title : this.state.tempTitle) }}
 						/>
 					</div>
 				</Modal.Body>
@@ -1610,11 +1612,11 @@ class GameLog extends React.Component {
 
 								<div className="twoCol">
 									<div className="leftCol arCol">
-										{this.render_wealth()}
+										{this.render_advancement(true)}
 									</div>
 
 									<div className="rightCol arCol">
-										{this.render_advancement(true)}
+										{this.render_wealth()}
 									</div>
 								</div>
 							</div>
