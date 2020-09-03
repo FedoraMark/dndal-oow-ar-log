@@ -357,6 +357,10 @@ $halfGap: .25rem;
 
                 @include flex(stretch, stretch, column);
 
+                .arCol {
+                    flex-basis: auto;
+                }
+
                 .notesWrapper {
                     height: 100%;
 
