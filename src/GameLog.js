@@ -513,10 +513,6 @@ class GameLog extends React.Component {
             }
         }
 
-        if (!(showTier > 0 || (!!date && date !== "") || (!!event && event !== "") || (!this.props.preview && (dmStr !== "") || this.state.wasDm))) {
-        	return <></>;
-        }
-
         return (
             <Container>
 				<ul className="infoWrapper">
@@ -1279,7 +1275,7 @@ class GameLog extends React.Component {
 								title={this.state.tempTier > 0 ? "Tier " + this.state.tempTier : "No Tier Set"}
 								alignRight
 							>
-								{_map([-1,1,2,3,4], (t) => {
+								{_map([1,2,3,4], (t) => {
 									return (
 										<Dropdown.Item
 											href="#"
@@ -1288,7 +1284,7 @@ class GameLog extends React.Component {
 											active={this.state.tempTier === t}
 											onSelect={(e) => {this.setState({tempTier: t});}}
 										>
-											{t > 0 ? "Tier " + t : "None"}
+											Tier {t}
 										</Dropdown.Item>
 									);
 								})}
