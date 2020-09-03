@@ -56,6 +56,12 @@ $halfGap: .25rem;
         }
     }
 
+    &.notesWealthBox {
+        .titleWrapper .title {
+            padding: .5rem 1rem;
+        }
+    }
+
     &:not(.editing) {
         .sticky:before {
             content: "";

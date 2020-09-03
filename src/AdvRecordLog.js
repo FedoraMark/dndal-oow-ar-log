@@ -85,7 +85,7 @@ class AdvRecordLog extends React.Component {
 			let displayType = record === NOTES_WEALTH ? "Wealth and Notes" : "Salvage Mission";
 
 			newLogData = {record: record, type: displayType, title: displayType + " Log", code: newCode, tier: this.state.charData.tier === 0 ? 1 : this.state.charData.tier};
-			newLogStatus = {[newCode]: {tier: this.state.charData.tier === 0 ? 1 : this.state.charData.tier, wealth: this.getPrevEndingWealth()}};
+			newLogStatus = {[newCode]: {notes: {player: "Changes between sessions." }, titleOverride: displayType + " Log", tier: this.state.charData.tier === 0 ? 1 : this.state.charData.tier, wealth: this.getPrevEndingWealth()}};
 			newEditorCode = newCode;
 		}
 

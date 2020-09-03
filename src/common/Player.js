@@ -32,7 +32,8 @@ import {
     classes5e,
     classesUA,
     currency,
-    excludeInWealth
+    excludeInWealth,
+    getFirstKey,
 } from "utils/Util";
 
 import "./Player.scss";
@@ -58,7 +59,6 @@ class Player extends Component {
             autoLeveling: "",
             tierSetting: 0,
             autoWealth: false,
-            // useEp: true,
         },
         saveHandler: (e) => {},
     };
@@ -76,37 +76,33 @@ class Player extends Component {
         // options
         autoLeveling: this.props.optionsObj.autoLeveling,
         tierSetting: this.props.optionsObj.tierSetting,
-        // useEp: this.props.optionsObj.useEp,
         autoWealth: this.props.optionsObj.autoWealth,
 
         // temp
     	tempAutoLeveling: this.props.optionsObj.autoLeveling,
         tempTierSetting: this.props.optionsObj.tierSetting,
-        // tempUseEp: this.props.optionsObj.useEp,
         tempAutoWealth: this.props.optionsObj.autoWealth,
 
         latestWealth: this.props.latestWealth,
-        // noEpLatestWealth: {}
-        
+        currentTotalLevels: 0,
     };
 
-    // componentDidMount() {
-    // 	this.getNoEpWealth(this.state.latestWealth)
-    // }
+    componentDidMount() {
+    	this.setState({currentTotalLevels: this.getTotalLevel(this.state.totalLevels)});
+    }
 
     componentWillReceiveProps(newProps) {
         this.setState({
             playerObj: newProps.playerObj,
             totalLevels: newProps.totalLevels,
             latestWealth: newProps.latestWealth,
-            // noEpLatestWealth: this.getNoEpWealth(newProps.latestWealth),
 
             autoLeveling: newProps.optionsObj.autoLeveling,
             tierSetting: newProps.optionsObj.tierSetting,
             autoWealth: newProps.optionsObj.autoWealth,
-            useEp: true, //newProps.optionsObj.useEp,
         },
         	(e) => {
+        		this.setState({currentTotalLevels: this.getTotalLevel(this.state.totalLevels)});
         		if (this.state.tempAutoWealth) {
         			this.updateTempInfo("wealth",this.state.latestWealth)
         		}
@@ -138,18 +134,19 @@ class Player extends Component {
 	                playerObj: trimStringsInObjectFlatly({...this.state.tempObj}),
 	                autoLeveling: this.state.tempAutoLeveling,
 	            	tierSetting: this.state.tempTierSetting,
-	            	// useEp: this.state.tempUseEp,
 	            	autoWealth: this.state.tempAutoWealth,
-	            }, this.props.saveHandler(
-	            	trimStringsInObjectFlatly({...this.state.tempObj}), 
-	            	{
-	                	autoLeveling: this.state.tempAutoLeveling,
-	                	tierSetting: this.state.tempTierSetting,
-	                	// useEp: this.state.tempUseEp,
-	                	autoWealth: this.state.tempAutoWealth,
-	            	}
-	            ))
-            });
+	            }, () => {
+	            	this.setState({currentTotalLevels: this.getTotalLevel(this.state.totalLevels)});
+            		this.props.saveHandler(
+		            	trimStringsInObjectFlatly({...this.state.tempObj}), 
+		            	{
+		                	autoLeveling: this.state.tempAutoLeveling,
+		                	tierSetting: this.state.tempTierSetting,
+		                	autoWealth: this.state.tempAutoWealth,
+		            	}
+		            );
+	            });
+	        });
         } else {
             // CANCEL
             this.setState({
@@ -157,7 +154,6 @@ class Player extends Component {
                 tempObj: { ...this.state.playerObj },
                 tempAutoLeveling: this.props.optionsObj.autoLeveling,
                 tempTierSetting: this.props.optionsObj.tierSetting,
-                // tempUseEp: this.props.optionsObj.useEp,
                 tempAutoWealth: this.props.optionsObj.autoWealth,
             });
         }
@@ -199,22 +195,30 @@ class Player extends Component {
             return this.state.tempTierSetting;
         }
 
-        var totalLevel = 0;
-
-        if (this.state.autoLeveling !== "") {
-        	totalLevel = this.state.totalLevels;
-        } else {
-	        _each(this.state.playerObj.classes, (lv) => {
-	            totalLevel += lv;
-	        });
-	    }
-
         // if (totalLevel < 1) { return 0; }
-        if (totalLevel < 5) { return 1; }
-        if (totalLevel < 11) { return 2; }
-        if (totalLevel < 17) { return 3; }
+        if (this.state.currentTotalLevels < 5) { return 1; }
+        if (this.state.currentTotalLevels < 11) { return 2; }
+        if (this.state.currentTotalLevels < 17) { return 3; }
         return 4;
     };
+
+    getTotalLevel = (newTotalLevels) => {
+   		// if 0 classes - return level 1
+    	if (Object.keys(this.state.playerObj.classes).length === 0) {
+   			return this.state.totalLevels + 1;
+    	}
+
+		var totalLevels = this.state.tempAutoLeveling === "" ? 0 : this.getAutoLevel();
+
+    	_map(this.state.playerObj.classes,(level, clss) => {
+				if (this.state.tempAutoLeveling !== clss) {
+					totalLevels += level;
+				}
+			}
+		);
+
+        return totalLevels;
+    }
 
     addNewClass = () => {
         this.setState({ mountAnimSpeed: { animationDuration: "inerit" } });
@@ -255,7 +259,7 @@ class Player extends Component {
         this.updateTempInfo("classes", newClassLevelObj);
 
         if (oldClass === this.state.tempAutoLeveling) {
-        	this.setState({tempAutoLeveling: newClass});	
+        	this.setState({tempAutoLeveling: newClass});
         }
     };
 
@@ -344,21 +348,16 @@ class Player extends Component {
 						</div>
 					)}
 
-				{Object.keys(this.state.playerObj.classes).length > 0 && (
+				{Object.keys(this.state.playerObj.classes).length > 0 && !(Object.keys(this.state.playerObj.classes).length === 1 && getFirstKey(this.state.playerObj.classes) === "Player") && (
 					<div className="infoItem">
-						<h1>
-							{"Class" +
-								(Object.keys(this.state.playerObj.classes)
-									.length !== 1
-									? "es:"
-									: ":")}
-						</h1>
+						<h1>{"Class" + (Object.keys(this.state.playerObj.classes).length !== 1 ? "es:" : ":")}</h1>
 						<p className="classList">
 							{_map(this.state.playerObj.classes,(level, clss) => {
-								var autoLevelNum = this.state.autoLeveling === clss ? this.getAutoLevel() : level
+								let autoLevelNum = this.state.autoLeveling === clss ? this.getAutoLevel() : level
+								let levelStr = Object.keys(this.state.playerObj.classes).length > 1 ? (" (" + autoLevelNum + ")") : "";
 								return (
 									<span className="class" key={clss}>
-										{clss + " (" + autoLevelNum + ")"}
+										{clss + levelStr}
 										<span className="comma">, </span>
 									</span>
 								);
@@ -366,6 +365,12 @@ class Player extends Component {
 						</p>
 					</div>
 				)}
+
+				<div className="infoItem">
+					<h1>Level:</h1>
+					<p className="classList">{this.state.currentTotalLevels}</p>
+				</div>
+
 			</span>
         );
     };
@@ -744,32 +749,6 @@ class Player extends Component {
 										</Dropdown.Item>
 									</DropdownButton>
 								</InputGroup>
-
-								{/* set tempUseEp */}
-								{/* <InputGroup className="playerInfoGroup dropdownGroup"> */}
-								{/* 	<DropdownButton */}
-								{/* 		variant="light" */}
-								{/* 		title={this.state.tempUseEp ? "Include EP" : "Exclude EP"} */}
-								{/* 		alignRight */}
-								{/* 	> */}
-								{/* 		<Dropdown.Item */}
-								{/* 			href="#" */}
-								{/* 			eventKey="t" */}
-								{/* 			active={this.state.tempUseEp === true} */}
-								{/* 			onSelect={this.setTempUseEp.bind(this,true)} */}
-								{/* 		> */}
-								{/* 			Include EP */}
-								{/* 		</Dropdown.Item> */}
-								{/* 		<Dropdown.Item */}
-								{/* 			href="#" */}
-								{/* 			eventKey="f" */}
-								{/* 			active={this.state.tempUseEp === false} */}
-								{/* 			onSelect={this.setTempUseEp.bind(this,false)} */}
-								{/* 		> */}
-								{/* 			Exclude EP */}
-								{/* 		</Dropdown.Item> */}
-								{/* 	</DropdownButton> */}
-								{/* </InputGroup> */}
 							</div>
 
 							<InputGroup
@@ -850,7 +829,7 @@ class Player extends Component {
 							);
 						}
 					})}
-					{this.state.autoLeveling !== selClass &&
+					{this.state.tempAutoLeveling !== selClass &&
 						<>
 							<Dropdown.Divider />
 							<Dropdown.Item

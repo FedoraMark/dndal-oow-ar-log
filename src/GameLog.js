@@ -116,7 +116,9 @@ class GameLog extends React.Component {
         negativeEndingGold: false,
         isDeleting: false,
         tier: -1,
-        titleOverride: !!this.props.statuses[this.props.data.code] && !!this.props.statuses[this.props.data.code].titleOverride ? this.props.statuses[this.props.data.code].titleOverride : this.props.data.title, // should just save to DATA
+        titleOverride: !!this.props.statuses[this.props.data.code] && !!this.props.statuses[this.props.data.code].titleOverride 
+        ? this.props.statuses[this.props.data.code].titleOverride 
+        : this.props.data.title, // should just save to DATA
 
         // currentWealthTab: 0,
 
@@ -132,16 +134,20 @@ class GameLog extends React.Component {
         tempIsDm: this.props.wasDm,
         tempIsEpic: this.props.wasEpic,
         tempAutoCalc: this.props.autoCalc,
-        tempWealth: !!this.props.statuses[this.props.data.code] && !!this.props.statuses[this.props.data.code].wealth ? {...this.props.statuses[this.props.data.code].wealth} : {...emptyLogWealth},
-        tempTitle: !!this.props.statuses[this.props.data.code] && !!this.props.statuses[this.props.data.code].titleOverride ? this.props.statuses[this.props.data.code].titleOverride : this.props.data.title, // should just save to DATA
+        tempWealth: !!this.props.statuses[this.props.data.code] && !!this.props.statuses[this.props.data.code].wealth 
+        ? {...this.props.statuses[this.props.data.code].wealth} 
+        : {...emptyLogWealth},
+        tempTitle: !!this.props.statuses[this.props.data.code] && !!this.props.statuses[this.props.data.code].titleOverride 
+        ? this.props.statuses[this.props.data.code].titleOverride 
+        : this.props.data.title, // should just save to DATA
     };
 
     componentDidMount() {
-        !this.props.preview && this.setTempData(this.props.statuses[this.props.data.code]);
         if (!!this.dateFieldRef.current) {
         	this.dateFieldRef.current.defaultValue = "";
         }
 
+        !this.props.preview && this.setTempData(this.props.statuses[this.props.data.code]);
         !this.props.preview && this.saveTempData();
 
         this.props.resetStartWithEditHandler();
@@ -230,7 +236,7 @@ class GameLog extends React.Component {
     };
 
     saveTempData = () => {
-        let tempStatusData = {
+        var tempStatusData = {
             isForEpic: this.state.tempIsEpic,
             notes: {
                 ...this.state.statusData.notes,
@@ -245,8 +251,11 @@ class GameLog extends React.Component {
             },
             wealth: this.state.tempWealth,
             tier: this.state.tempTier,
-            titleOverride: this.state.tempTitle.trim(),
         };
+
+        if ([NOTES, START, SALVAGE].includes(this.state.data.record)) {
+        	tempStatusData.titleOverride = this.state.tempTitle.trim() === "" ? this.state.data.code : this.state.tempTitle.trim();
+        }
 
         this.setState({
                 tempNotes: strip(this.state.tempNotes.trim()),
@@ -254,20 +263,16 @@ class GameLog extends React.Component {
                 tempDmNumber: this.state.tempIsDm ? "" : this.state.tempDmNumber.trim(),
                 tempEvent: this.state.tempEvent.trim(),
                 tempDate: this.state.tempDate.trim(),
-                tempTitle: this.state.tempTitle.trim(),
+                tempTitle: this.state.tempTitle.trim() === "" ? this.state.data.code : this.state.tempTitle.trim(),
             },
             this.updateEventHandler(tempStatusData, true)
         );
     };
 
     getPropOrEmpty = (obj, prop, child) => {
-        if (!obj || !obj[prop]) {
-            return "";
-        }
+        if (!obj || !obj[prop]) { return ""; }
 
-        if (child === null) {
-            return obj[prop];
-        }
+        if (child === null) { return obj[prop]; }
 
         return !!obj[prop][child] ? obj[prop][child] : "";
     };
@@ -1001,23 +1006,30 @@ class GameLog extends React.Component {
 						</InputGroup.Prepend>
 						<Form.Control
 							className="handwritten"
+							placeholder={this.state.data.code}
 							value={this.state.tempTitle}
 							onChange={(e) => {this.setState({ tempTitle: e.target.value });}}
 						/>
 					</InputGroup>
 
-					<InputGroup>
-						<InputGroup.Prepend>
-							<InputGroup.Text className="oswald">
-								Code
-							</InputGroup.Text>
-						</InputGroup.Prepend>
-						<Form.Control
-							className="handwritten"
-							value={this.state.data.code}
-							disabled
-						/>
-					</InputGroup>
+					<OverlayTrigger
+						placement="top"
+						overlay={<Tooltip>Unique Idenifier</Tooltip>}
+					>
+						<InputGroup>
+						
+							<InputGroup.Prepend>
+								<InputGroup.Text className="oswald">
+									Code
+								</InputGroup.Text>
+							</InputGroup.Prepend>
+							<Form.Control
+								className="handwritten"
+								value={this.state.data.code}
+								disabled
+							/>
+						</InputGroup>
+					</OverlayTrigger>
 				</li>
 
 				{/* PLAYER NOTES */}
@@ -1361,7 +1373,7 @@ class GameLog extends React.Component {
     render() {
         const { style, className, preview } = this.props;
         let code = this.state.data.code;
-        let title = this.state.data.title;
+        let title = this.state.titleOverride;
 
         let wealthObj = !!this.state.statusData && !!this.state.statusData[this.state.data.code] 
         	? {...this.state.statusData[this.state.data.code].wealth}
@@ -1384,7 +1396,7 @@ class GameLog extends React.Component {
 				>
 					{!this.props.preview && <div className={classnames("stickyCover", this.state.isDeleting && "deleting")} />}
 
-					{this.render_titleAndCode(code,title)}
+					{this.render_titleAndCode(code,title,false)}
 
 					<Collapse
 						in={!this.state.isCollapsed}
@@ -1490,7 +1502,7 @@ class GameLog extends React.Component {
 
 					{!this.props.preview && <div className={classnames("stickyCover", this.state.isDeleting && "deleting")} />}
 
-					{this.render_titleAndCode(code,this.state.titleOverride,true)}
+					{this.render_titleAndCode(code,title,true)}
 
 					<Collapse
 						in={!this.state.isCollapsed}
@@ -1509,8 +1521,6 @@ class GameLog extends React.Component {
 									{this.render_editNotesData()}
 								</div>
 							</Collapse>
-
-							
 
 							<div className="logDataWrapper">
 								<div className="twoCol notesLog">
