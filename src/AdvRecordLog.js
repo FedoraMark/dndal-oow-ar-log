@@ -5,6 +5,7 @@ import _find from 'lodash/find';
 import _findIndex from "lodash/findIndex";
 import _map from "lodash/map";
 import _sortBy from "lodash/sortBy";
+import SideNav, { NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
 import Badge from 'react-bootstrap/Badge';
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
@@ -12,9 +13,11 @@ import Collapse from "react-bootstrap/Collapse";
 import Container from "react-bootstrap/Container";
 import Form from 'react-bootstrap/Form'
 import Jumbotron from "react-bootstrap/Jumbotron";
-import SideNav, { NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
 import ClickOutside from 'react-click-outside';
 import { ToastProvider } from "react-toast-notifications";
+
+import { GiPokecog } from "react-icons/gi";
+import { RiEditCircleFill } from "react-icons/ri"
 
 import { fadeInUp, fadeIn, getFirstObject, getFirstKey, emptyWealth, emptyLogWealth, startingWealthLog } from "utils/Util";
 import Player from "common/Player";
@@ -344,6 +347,7 @@ class AdvRecordLog extends React.Component {
 									onClick={this.addRecord.bind(this,{},true,NOTES_WEALTH)}
 								>
 									<Card.Body>
+										<RiEditCircleFill className="cardIcon" />
 										<Card.Title>Notes / Wealth</Card.Title>
 										<Card.Subtitle>
 											Notes and wealth changes
@@ -359,6 +363,7 @@ class AdvRecordLog extends React.Component {
 									 onClick={this.addRecord.bind(this,{},true,SALVAGE)}
 								>
 									<Card.Body>
+										<GiPokecog className="cardIcon" />
 										<Card.Title>Salvage Mission</Card.Title>
 										<Card.Subtitle>
 											Salvage mission log

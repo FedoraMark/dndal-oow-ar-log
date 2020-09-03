@@ -5,7 +5,7 @@ import Fade from "react-bootstrap/Fade";
 import { FiEdit, FiX } from "react-icons/fi";
 import { FaSave } from "react-icons/fa";
 
-import style from "./editButton.module.scss";
+import style from "./EditButton.module.scss";
 
 class EditButton extends Component {
 	constructor(props) {

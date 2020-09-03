@@ -7,7 +7,7 @@ import InputGroup from "react-bootstrap/InputGroup";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 
-import style from "./wealthEdit.module.scss";
+import style from "./WealthEdit.module.scss";
 
 import { excludeInWealth } from "utils/Util"
 

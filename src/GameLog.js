@@ -21,6 +21,7 @@ import { useToasts } from "react-toast-notifications";
 import { AiTwotoneDelete, AiFillCloseCircle } from "react-icons/ai";
 import { FaDiceD20 } from "react-icons/fa";
 import { FaSave } from "react-icons/fa";
+import { GiPokecog } from "react-icons/gi";
 import { ImMenu2 } from "react-icons/im";
 import { IoIosCalculator } from "react-icons/io";
 
@@ -449,19 +450,20 @@ class GameLog extends React.Component {
 					onClick={this.toggleCollapsed.bind(this)}
 				>
 					<span className="name">
-						{!this.props.preview && this.state.wasDm && (
-								<FaDiceD20 className="diceIcon" />
+						<GiPokecog style={{visibility: this.props.data.record === SALVAGE ? "initial" : "hidden"}} className="titleIcon cogIcon" />
+						<div className="titleText">
+							{!suppressCode && !!code && (
+								<span
+									className="code"
+									dangerouslySetInnerHTML={{__html: this.fauxdestoHyphenFix(code)}}
+								/>
 							)}
-						{!suppressCode && !!code && (
-							<span
-								className="code"
-								dangerouslySetInnerHTML={{__html: this.fauxdestoHyphenFix(code)}}
+							<span 
+								className={classnames("fauxdesto title", [GAME, EPIC, SALVAGE].includes(this.state.data.record) && "italic")} 
+								dangerouslySetInnerHTML={{__html: this.fauxdestoHyphenFix(title)}} 
 							/>
-						)}
-						<span 
-							className={classnames("fauxdesto", [GAME, EPIC, SALVAGE].includes(this.state.data.record) && "italic")} 
-							dangerouslySetInnerHTML={{__html: this.fauxdestoHyphenFix(title)}} 
-						/>
+						</div>
+						<FaDiceD20 style={{visibility: !this.props.preview && this.state.wasDm ? "initial" : "hidden"}} className="titleIcon diceIcon" />
 					</span>
 				</h1>
 			</div>
@@ -1465,7 +1467,7 @@ class GameLog extends React.Component {
 							</Collapse>
 
 							<div className="logDataWrapper">
-								{this.render_salvageInfo()}
+								{this.render_advNotes(true)}
 
 								<div className="twoCol">
 									<div className="leftCol arCol">
@@ -1473,7 +1475,7 @@ class GameLog extends React.Component {
 									</div>
 
 									<div className="rightCol arCol">
-										{this.render_advNotes(true)}
+										{this.render_salvageInfo()}
 									</div>
 								</div>
 							</div>

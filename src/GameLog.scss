@@ -164,28 +164,53 @@ $halfGap: .25rem;
             .name {
                 margin-right: .1rem;
 
-                flex-wrap: wrap;
+                flex-wrap: nowrap;
 
                 @include flex(center, center, row);
 
-                .diceIcon {
-                    margin-top: -.1rem;
+                .titleText {
+                    flex-wrap: wrap;
 
-                    font-size: 1.25rem;
+                    @include flex(center, center, row);
+
+                    .title {
+                        padding: 0;
+
+                        white-space: normal;
+                    }
+
+                    .code {
+                        display: inline-flex;
+                        padding: 0 .5rem 0 0 !important;
+
+                        justify-content: flex-end;
+                        align-items: center;
+
+                        text-transform: uppercase;
+
+                        .hyphen {
+                            position: relative;
+                            bottom: .45rem;
+
+                            margin: 0 .05rem;
+                        }
+                    }
                 }
 
-                .code {
-                    padding: 0 .5rem 0 0 !important;
+                .titleIcon {
+                    min-width: 1.5rem;
+                    margin-top: -.1rem;
 
-                    text-transform: uppercase;
+                    &.cogIcon {
+                        margin-right: .25rem;
 
-                    @include flex(center, flex-end);
+                        font-size: 1.25rem;
+                    }
 
-                    .hyphen {
-                        position: relative;
-                        bottom: .45rem;
+                    &.diceIcon {
+                        margin-left: .4rem;
 
-                        margin: 0 .05rem;
+                        font-size: 1rem;
                     }
                 }
             }
@@ -858,8 +883,18 @@ $halfGap: .25rem;
         .titleWrapper .title {
             font-size: 2rem;
 
-            .name .diceIcon {
-                font-size: 1.5rem;
+            .name {
+                .titleIcon {
+                    font-size: 1.5rem;
+
+                    &.diceIcon {
+                        font-size: 1.25rem;
+                    }
+                }
+
+                .titleText {
+                    flex-wrap: nowrap;
+                }
             }
         }
 
@@ -918,8 +953,14 @@ $halfGap: .25rem;
             font-size: 2.25rem;
 
             .name {
-                .diceIcon {
+                .titleIcon {
                     font-size: 1.75rem;
+
+                    &.diceIcon {
+                        margin-left: .6rem;
+
+                        font-size: 1.5rem;
+                    }
                 }
 
                 .code {
@@ -1107,8 +1148,14 @@ $halfGap: .25rem;
             font-size: 2.75rem;
 
             .name {
-                .diceIcon {
+                .titleIcon {
                     font-size: 2rem;
+
+                    &.diceIcon {
+                        margin-left: .75rem;
+
+                        font-size: 1.75rem;
+                    }
                 }
 
                 .code {

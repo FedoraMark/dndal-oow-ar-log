@@ -154,6 +154,18 @@
             .card-body {
                 @include flex(flex-start, flex-start, column);
 
+                .cardIcon {
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+
+                    margin: .5rem;
+
+                    font-size: 1.25rem;
+
+                    @include flex(center, flex-start, row-reverse);
+                }
+
                 .card-title {
                     margin: 0 .75rem .5rem 0 !important;
 
