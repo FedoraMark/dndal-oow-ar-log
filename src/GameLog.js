@@ -40,6 +40,7 @@ import {
     currency,
     emptyWealth,
     emptyLogWealth,
+    strip,
 } from "utils/Util";
 
 import "animate.css";
@@ -50,6 +51,7 @@ const UNSELECTED = 0;
 const ACTIVE = 1;
 
 const GAME = "game";
+const EPIC = "epic";
 const SALVAGE = "salvage";
 const NOTES = "notes";
 const START = "start";
@@ -113,6 +115,8 @@ class GameLog extends React.Component {
         autoCalc: this.props.autoCalc,
         negativeEndingGold: false,
         isDeleting: false,
+        tier: -1,
+        titleOverride: !!this.props.statuses[this.props.data.code] && !!this.props.statuses[this.props.data.code].titleOverride ? this.props.statuses[this.props.data.code].titleOverride : this.props.data.title, // should just save to DATA
 
         // currentWealthTab: 0,
 
@@ -128,7 +132,8 @@ class GameLog extends React.Component {
         tempIsDm: this.props.wasDm,
         tempIsEpic: this.props.wasEpic,
         tempAutoCalc: this.props.autoCalc,
-        tempWealth: !!this.props.statuses && !!this.props.statuses.wealth ? {...this.props.statuses.wealth} : {...emptyLogWealth},
+        tempWealth: !!this.props.statuses[this.props.data.code] && !!this.props.statuses[this.props.data.code].wealth ? {...this.props.statuses[this.props.data.code].wealth} : {...emptyLogWealth},
+        tempTitle: !!this.props.statuses[this.props.data.code] && !!this.props.statuses[this.props.data.code].titleOverride ? this.props.statuses[this.props.data.code].titleOverride : this.props.data.title, // should just save to DATA
     };
 
     componentDidMount() {
@@ -140,10 +145,6 @@ class GameLog extends React.Component {
         !this.props.preview && this.saveTempData();
 
         this.props.resetStartWithEditHandler();
-        // if (this.props.startWithEdit) {
-        // 	this.setState({isEditing: true});
-        // }
-
     }
 
     componentWillReceiveProps(newProps) {
@@ -154,6 +155,7 @@ class GameLog extends React.Component {
             wasEpic: newProps.wasEpic,
             autoCalc: newProps.autoCalc,
             tier: !!newProps.data.tier ? newProps.data.tier : this.state.tier,
+            titleOverride: !!newProps.statuses[newProps.data.code] && !!newProps.statuses[newProps.data.code].titleOverride ? newProps.statuses[newProps.data.code].titleOverride : this.state.titleOverride,
         });
     }
 
@@ -214,15 +216,16 @@ class GameLog extends React.Component {
     setIsEditing = (editing, save) => {
         if (editing) {
             // open
-            this.setTempData(this.state.statusData[this.props.data.code]);
+            this.setTempData(this.state.statusData[this.state.data.code]);
         } else if (save) {
             // close - save
             this.saveTempData();
         } else {
             // close - cancel
-            this.setTempData(this.state.statusData[this.props.data.code]);
+            this.setTempData(this.state.statusData[this.state.data.code]);
         }
 
+		this.state.tempAutoCalc && this.calcEndingWealth(this.state.tempWealth,true);
         this.setState({ isEditing: editing });
     };
 
@@ -231,7 +234,7 @@ class GameLog extends React.Component {
             isForEpic: this.state.tempIsEpic,
             notes: {
                 ...this.state.statusData.notes,
-                player: this.state.tempNotes.trim(),
+                player: strip(this.state.tempNotes.trim()),
             },
             event: this.state.tempEvent.trim(),
             date: this.state.tempDate.trim(),
@@ -242,14 +245,16 @@ class GameLog extends React.Component {
             },
             wealth: this.state.tempWealth,
             tier: this.state.tempTier,
+            titleOverride: this.state.tempTitle.trim(),
         };
 
         this.setState({
-                tempNotes: this.state.tempNotes.trim(),
+                tempNotes: strip(this.state.tempNotes.trim()),
                 tempDmName: this.state.tempIsDm ? "" : this.state.tempDmName.trim(),
                 tempDmNumber: this.state.tempIsDm ? "" : this.state.tempDmNumber.trim(),
                 tempEvent: this.state.tempEvent.trim(),
                 tempDate: this.state.tempDate.trim(),
+                tempTitle: this.state.tempTitle.trim(),
             },
             this.updateEventHandler(tempStatusData, true)
         );
@@ -279,15 +284,16 @@ class GameLog extends React.Component {
                 tempTier: this.getPropOrEmpty(statusObj, "tier", null),
                 tempEvent: this.getPropOrEmpty(statusObj, "event", null),
                 tempDate: this.getPropOrEmpty(statusObj, "date", null),
-                tempNotes: this.getPropOrEmpty(statusObj, "notes", "player"),
+                tempTitle: this.getPropOrEmpty(statusObj, "titleOverride", null),
+                tempNotes: strip(this.getPropOrEmpty(statusObj, "notes", "player")),
                 tempDmName: this.getPropOrEmpty(statusObj, "dungeonMaster", "name"),
                 tempDmNumber: this.getPropOrEmpty(statusObj, "dungeonMaster", "dci"),
             });
     };
 
     setEvent = (eTitle, eState) => {
-	    var existingData = !!this.state.statusData[this.props.data.code] && !!this.state.statusData[this.props.data.code][eTitle]
-	    	? { ...this.state.statusData[this.props.data.code][eTitle] }
+	    var existingData = !!this.state.statusData[this.state.data.code] && !!this.state.statusData[this.state.data.code][eTitle]
+	    	? { ...this.state.statusData[this.state.data.code][eTitle] }
 	    	: {};
 
 	    switch (eState) {
@@ -318,7 +324,7 @@ class GameLog extends React.Component {
 	            };
 	            break;
 	        default:
-	            console.warn( "WARNING: Invalid state (" + eState + ") for event " + eTitle + " in " + this.props.data.code );
+	            console.warn( "WARNING: Invalid state (" + eState + ") for event " + eTitle + " in " + this.state.data.code );
 	            return;
 	    }
 
@@ -330,7 +336,7 @@ class GameLog extends React.Component {
 		var newTempWealth = {...this.state.tempWealth};
 		newTempWealth[type] = wealthTypeObj;
 
-		if (this.state.tempAutoCalc) {
+		if (this.state.tempAutoCalc && this.state.data.record !== START) {
 			newTempWealth = {...newTempWealth, ending: this.calcEndingWealth(newTempWealth)};
 		}
 
@@ -348,21 +354,23 @@ class GameLog extends React.Component {
 		}
 	}
 
-	calcEndingWealth = (fullWealthObj) => {
+	calcEndingWealth = (fullWealthObj,suppressToast = false) => {
 	    var endingWealthObj = { ...emptyWealth };
 
 	    // calculate each column and save to opject
-	    _each(currency, (p) => {
-	        var starting = fullWealthObj["starting"][p];
-	        var spent = fullWealthObj["spent"][p];
-	        var earned = fullWealthObj["earned"][p];
+	    if (!!fullWealthObj) {
+		    _each(currency, (p) => {
+		        var starting = !!fullWealthObj["starting"] ? fullWealthObj["starting"][p] : 0;
+		        var spent = !!fullWealthObj["spent"] ? fullWealthObj["spent"][p] : 0;
+		        var earned = !!fullWealthObj["earned"] ? fullWealthObj["earned"][p] : 0;
 
-	        starting = !!starting ? starting : 0;
-	        spent = !!spent ? spent : 0;
-	        earned = !!earned ? earned : 0;
+		        starting = !!starting ? starting : 0;
+		        spent = !!spent ? spent : 0;
+		        earned = !!earned ? earned : 0;
 
-	        endingWealthObj[p] = starting - spent + earned;
-	    });
+		        endingWealthObj[p] = starting - spent + earned;
+		    });
+		}
 
 	    let valDigits = {cp: 10, sp: 5, ep: 2, gp: 10};
 
@@ -377,16 +385,20 @@ class GameLog extends React.Component {
 	    })
 
 	    if (endingWealthObj.pp < 0) {
-	        !this.state.negativeEndingGold && this.props.addToast("Ending Gold results in negative value", { appearance: "error" });
+	        !suppressToast && !this.state.negativeEndingGold && this.props.addToast("Ending Gold results in negative value", { appearance: "error" });
 	        this.setState({negativeEndingGold: true});
 	        return {...emptyWealth};
 	    } else if (this.state.negativeEndingGold) {
-	    	this.props.addToast("You are no longer in debt", { appearance: "success" });
+	    	!suppressToast && this.props.addToast("You are no longer in debt", { appearance: "success" });
 	    	this.setState({negativeEndingGold: false});
 	    }
 
 	    return endingWealthObj;
 	};
+
+	fauxdestoHyphenFix = (str) => {
+		return str.split("-").join("<span class='hyphen'>-</span>");
+	}
 
     //RENDERERS
     render_titleAndCode = (code, title, suppressCode) => {
@@ -438,10 +450,13 @@ class GameLog extends React.Component {
 						{!suppressCode && !!code && (
 							<span
 								className="code"
-								dangerouslySetInnerHTML={{__html: code.split("-").join("<span class='hyphen'>-</span>")}}
+								dangerouslySetInnerHTML={{__html: this.fauxdestoHyphenFix(code)}}
 							/>
 						)}
-						<span className={classnames("fauxdesto", [GAME, SALVAGE].includes(this.state.data.type) && "italic")}>{title}</span>
+						<span 
+							className={classnames("fauxdesto", [GAME, EPIC, SALVAGE].includes(this.state.data.record) && "italic")} 
+							dangerouslySetInnerHTML={{__html: this.fauxdestoHyphenFix(title)}} 
+						/>
 					</span>
 				</h1>
 			</div>
@@ -516,11 +531,7 @@ class GameLog extends React.Component {
     };
 
     render_salvageInfo = () => {
-    	return <div>(hidden CODE), TITLE, DM INFO, DATE, SALVAGE EARNED, LEVEL UP</div>
-    }
-
-    render_notesInfo = () => {
-    	return <div>(hidden CODE), TITLE, DATE</div>
+    	return <div>DM INFO, DATE, SALVAGE EARNED, LEVEL UP</div>
     }
 
     render_advNotes = (suppressTitle) => {
@@ -666,8 +677,8 @@ class GameLog extends React.Component {
         );
     };
 
-    render_wealth = (suppressTitle) => {
-    	let wealthObj = !!this.state.statusData && !!this.state.statusData[this.props.data.code] ? {...this.state.statusData[this.props.data.code].wealth} : null;
+    render_wealth = (suppressTitle = false) => {
+    	let wealthObj = !!this.state.statusData && !!this.state.statusData[this.state.data.code] ? {...this.state.statusData[this.state.data.code].wealth} : null;
 
         return (
             <Container className="wealthWrapper wrapper">
@@ -787,7 +798,7 @@ class GameLog extends React.Component {
         );
     };
 
-    render_editData = () => {
+    render_editGameData = () => {
         return (
             <ul className="editWrapper">
 
@@ -797,20 +808,7 @@ class GameLog extends React.Component {
 				<hr />
 
 				{/* PLAYER NOTES */}
-				<InputGroup as="li" className="editRow">
-					<InputGroup.Prepend>
-						<InputGroup.Text className="oswald">
-							<span className="condense">Player&nbsp;</span>
-							Notes
-						</InputGroup.Text>
-					</InputGroup.Prepend>
-					<Form.Control
-						as="textarea"
-						className="handwritten"
-						value={this.state.tempNotes}
-						onChange={(e) => {this.setState({tempNotes: e.target.value});}}
-					/>
-				</InputGroup>
+				{this.render_editPlayerNotes()}
 
 				{/* DUNGEON MASTER GROUP */}
 				<li className={classnames("editRow flexRow", this.state.tempIsDm && "disable")}>
@@ -957,63 +955,7 @@ class GameLog extends React.Component {
 				<hr />
 
 				{/* WEALTH */}
-				<li className="editRow wealthRow">
-					{_map({"Starting ": {}, "Spent (–)": {}, "Earned (+)": {}, "Ending ": {}}, (wealth,label) => { // leave spaces
-						
-						var condenseLabel;
-					    switch (label) {
-					        case "Starting ": // leave space
-					            condenseLabel = <>S<span className="partCondense">tarting</span></>; break;
-					        case "Spent (–)":
-					            condenseLabel = <><span className="partCondense">Spent&nbsp;(</span>-<span className="partCondense">)</span></>; break;
-					        case "Earned (+)":
-					            condenseLabel = <><span className="partCondense">Earned&nbsp;(</span>+<span className="partCondense">)</span></>; break;
-					        case "Ending ": // leave space
-					            condenseLabel = <>E<span className="partCondense">nding</span></>; break;
-					        default: condenseLabel = "";
-					    }
-
-					    let displayLabel = label.toLowerCase().substr(0,label.indexOf(" "));
-					    let error = this.state.tempAutoCalc && displayLabel === "ending" && this.state.negativeEndingGold
-
-						return (
-							<InputGroup key={label} className={classnames("editRow flexRow", error && "error")}>
-								<InputGroup.Prepend className="leftGroup">
-									<InputGroup.Text className="oswald">
-										{condenseLabel}
-									</InputGroup.Text>
-								</InputGroup.Prepend>
-
-								<div className="wealthEditArea">
-									<WealthEdit 
-										fullWealth={this.state.tempWealth} 
-										useEp={this.state.useEp} 
-										type={displayLabel} 
-										updateHandler={this.updateWealthHandler}
-										disabled={this.state.tempAutoCalc && displayLabel === "ending"}
-										error={error}
-									/>
-								</div>
-
-								<InputGroup
-									className={classnames("calcButtonGroup rightGroup",this.state.tempAutoCalc && displayLabel === "ending" && "disabled")}
-									onClick={this.condenseCoinage.bind(this,displayLabel)}
-								>
-									<OverlayTrigger
-										placement="top-end"
-										overlay={<Tooltip>Condense {displayLabel.charAt(0).toUpperCase() + displayLabel.slice(1)} Coinage</Tooltip>}
-									>
-										<InputGroup.Append className="toBeButton">
-											<InputGroup.Text>
-												<span className="calcMoneyIcon"><IoIosCalculator /></span>
-											</InputGroup.Text>
-										</InputGroup.Append>
-									</OverlayTrigger>
-								</InputGroup>
-							</InputGroup>
-						)
-					})}
-				</li>
+				{this.render_editWealthRow()}
 
 				<hr />
 
@@ -1040,30 +982,127 @@ class GameLog extends React.Component {
 
     render_editNotesData = () => {
     	return (
-            <ul className="editWrapper">
-            	{/* OPTIONS */}
-				{this.render_editOptionsRow(NOTES)}
+            <ul className="editWrapper notes">
+            	{/* NOTES OPTIONS */}
+            	{this.state.data.record === NOTES && this.render_editOptionsRow(NOTES)}
 
-				<hr />
+            	{/* START WEALTH (above) */}
+            	{this.state.data.record === START && this.render_editWealthRow(true)}
+
+            	<hr />
+
+            	{/* CODE AND TITLE GROUP */}
+				<li className="editRow flexRow">
+					<InputGroup>
+						<InputGroup.Prepend>
+							<InputGroup.Text className="oswald">
+								Title
+							</InputGroup.Text>
+						</InputGroup.Prepend>
+						<Form.Control
+							className="handwritten"
+							value={this.state.tempTitle}
+							onChange={(e) => {this.setState({ tempTitle: e.target.value });}}
+						/>
+					</InputGroup>
+
+					<InputGroup>
+						<InputGroup.Prepend>
+							<InputGroup.Text className="oswald">
+								Code
+							</InputGroup.Text>
+						</InputGroup.Prepend>
+						<Form.Control
+							className="handwritten"
+							value={this.state.data.code}
+							disabled
+						/>
+					</InputGroup>
+				</li>
+
+				{/* PLAYER NOTES */}
+            	{this.render_editPlayerNotes()}
+
+            	{/* NOTES WEALTH (below) */}
+            	{this.state.data.record === NOTES && 
+            		<>
+            			<hr />
+            			{this.render_editWealthRow()}
+            		</>
+            	}
+
+            	<hr />
 
             	{/* ACTIONS */}
-				{this.render_editActionsRow()}
+				{this.render_editActionsRow(this.state.data.record === START)}
             </ul>
         );
     }
 
-    render_editStartData = () => {
+    render_editWealthRow = (isStartingLog = false) => {
+    	let labelArr = isStartingLog ? {"firstStart": {}} : {"Starting ": {}, "Spent (–)": {}, "Earned (+)": {}, "Ending ": {}};
     	return (
-            <ul className="editWrapper">
-            	{/* OPTIONS */}
-				{this.render_editOptionsRow(START)}
+    		<li className="editRow wealthRow">
+				{_map(labelArr, (wealth,label) => { // leave spaces
+					
+					var condenseLabel;
+				    switch (label) {
+				    	case "firstStart": 
+				    		condenseLabel = <><span className="partCondense">Wealth</span><span className="_partCondense">$</span></>; break;
+				        case "Starting ": // leave space
+				            condenseLabel = <>S<span className="partCondense">tarting</span></>; break;
+				        case "Spent (–)":
+				            condenseLabel = <><span className="partCondense">Spent&nbsp;(</span>-<span className="partCondense">)</span></>; break;
+				        case "Earned (+)":
+				            condenseLabel = <><span className="partCondense">Earned&nbsp;(</span>+<span className="partCondense">)</span></>; break;
+				        case "Ending ": // leave space
+				            condenseLabel = <>E<span className="partCondense">nding</span></>; break;
+				        default: condenseLabel = "";
+			    	}
 
-				<hr />
+			    	let displayLabel = label.toLowerCase().substr(0,label.indexOf(" "));
+    				let error = !isStartingLog && this.state.tempAutoCalc && displayLabel === "ending" && this.state.negativeEndingGold;
 
-            	{/* ACTIONS */}
-				{this.render_editActionsRow()}
-            </ul>
-        );
+			    	return (
+			    		<InputGroup key={label} className={classnames("editRow flexRow", error && "error")}>
+							<InputGroup.Prepend className="leftGroup">
+								<InputGroup.Text className="oswald">
+									{condenseLabel}
+								</InputGroup.Text>
+							</InputGroup.Prepend>
+
+							<div className="wealthEditArea">
+								<WealthEdit 
+									fullWealth={this.state.tempWealth} 
+									useEp={this.state.useEp} 
+									type={displayLabel} 
+									updateHandler={this.updateWealthHandler}
+									disabled={!isStartingLog && this.state.tempAutoCalc && displayLabel === "ending"}
+									error={error}
+									isStart={isStartingLog}
+								/>
+							</div>
+
+							<InputGroup
+								className={classnames("calcButtonGroup rightGroup",!isStartingLog && this.state.tempAutoCalc && displayLabel === "ending" && "disabled")}
+								onClick={this.condenseCoinage.bind(this, isStartingLog ? "ending" : displayLabel)}
+							>
+								<OverlayTrigger
+									placement="top-end"
+									overlay={<Tooltip>Condense{isStartingLog ? " " : " " + displayLabel.charAt(0).toUpperCase() + displayLabel.slice(1)} Coinage</Tooltip>}
+								>
+									<InputGroup.Append className="toBeButton">
+										<InputGroup.Text>
+											<span className="calcMoneyIcon"><IoIosCalculator /></span>
+										</InputGroup.Text>
+									</InputGroup.Append>
+								</OverlayTrigger>
+							</InputGroup>
+						</InputGroup>
+			    	);
+			    })}
+		    </li>
+		);
     }
 
     render_editOptionsRow = (type) => {
@@ -1187,7 +1226,26 @@ class GameLog extends React.Component {
 		);
     }
 
-    render_editActionsRow = () => {
+    render_editPlayerNotes = () => {
+    	return (
+    		<InputGroup as="li" className="editRow">
+				<InputGroup.Prepend>
+					<InputGroup.Text className="oswald">
+						<span className="condense">Player&nbsp;</span>
+						Notes
+					</InputGroup.Text>
+				</InputGroup.Prepend>
+				<Form.Control
+					as="textarea"
+					className="handwritten"
+					value={this.state.tempNotes}
+					onChange={(e) => {this.setState({tempNotes: e.target.value});}}
+				/>
+			</InputGroup>
+    	);
+    }
+
+    render_editActionsRow = (suppressMove = false) => {
     	return (
     		<li className="editRow actionsRow">
 				<InputGroup className="actionLabel">
@@ -1209,17 +1267,19 @@ class GameLog extends React.Component {
 						Delete<span className="buttonIcon"><AiTwotoneDelete /></span>
 					</Button>
 
-					<Button
-						href="#"
-						variant="info"
-						ref={this.moveButton}
-						disabled={!this.state.isEditing}
-						onClick={(e) => {console.log("MOVE BUTTON");}}
-						onMouseEnter={(e) => {this.moveButton.current.focus()}}
-						onMouseUp={(e) => {this.moveButton.current.blur()}}
-					>
-						Move<span className="buttonIcon"><ImMenu2 /></span>
-					</Button>
+					{!suppressMove && 
+						<Button
+							href="#"
+							variant="info"
+							ref={this.moveButton}
+							disabled={!this.state.isEditing}
+							onClick={(e) => {console.log("MOVE BUTTON");}}
+							onMouseEnter={(e) => {this.moveButton.current.focus()}}
+							onMouseUp={(e) => {this.moveButton.current.blur()}}
+						>
+							Move<span className="buttonIcon"><ImMenu2 /></span>
+						</Button>
+					}
 					
 					<Button
 						href="#"
@@ -1263,17 +1323,20 @@ class GameLog extends React.Component {
 				</Modal.Header>
 				<Modal.Body>
 					<div className="modalBody">
-						<div
-							className="fauxdesto nowrap"
-							dangerouslySetInnerHTML={{
-								__html: this.state.data.code
-									.toUpperCase()
-									.split("-")
-									.join("<span class='hyphen'>-</span>"),
-							}}
+						{[GAME, EPIC].includes(this.state.data.record) && 
+							<>
+								<div
+									className="fauxdesto nowrap"
+									dangerouslySetInnerHTML={{__html: this.fauxdestoHyphenFix(this.state.data.code.toUpperCase()) }}
+								/>
+								{" "} {/* THIS SPACE ON PURPOSE */}
+							</>
+						}
+						<div 
+							className={classnames("fauxdesto noWrap", [GAME, EPIC, SALVAGE].includes(this.state.data.record) && "italic")} 
+							style={{fontSize: "2.8rem", marginTop: [GAME, EPIC].includes(this.state.data.record) ? "-.9rem" : "0"}}
+							dangerouslySetInnerHTML={{__html: this.fauxdestoHyphenFix(this.state.data.title) }}
 						/>
-						{" "} {/* THIS SPACE ON PURPOSE */}
-						<div className="fauxdesto italic noWrap" style={{fontSize: "2.8rem", marginTop: "-.9rem"}}>{this.state.data.title}</div>
 					</div>
 				</Modal.Body>
 				<Modal.Footer className="flexBetwixt">
@@ -1297,8 +1360,16 @@ class GameLog extends React.Component {
     // ***** MAIN RENDER *****
     render() {
         const { style, className, preview } = this.props;
+        let code = this.state.data.code;
+        let title = this.state.data.title;
 
-        if (["game", "epic"].includes(this.state.data.record)) {
+        let wealthObj = !!this.state.statusData && !!this.state.statusData[this.state.data.code] 
+        	? {...this.state.statusData[this.state.data.code].wealth}
+        	: null ;
+
+
+        if ([GAME, EPIC].includes(this.state.data.record)) {
+        	// GAME AND EPIC LOG
             return (
                 <Container
 					fluid
@@ -1313,7 +1384,7 @@ class GameLog extends React.Component {
 				>
 					{!this.props.preview && <div className={classnames("stickyCover", this.state.isDeleting && "deleting")} />}
 
-					{this.render_titleAndCode(this.state.data.code,this.state.data.title)}
+					{this.render_titleAndCode(code,title)}
 
 					<Collapse
 						in={!this.state.isCollapsed}
@@ -1330,7 +1401,7 @@ class GameLog extends React.Component {
 									mountOnEnter
 								>
 									<div className="editContent">
-										{this.render_editData()}
+										{this.render_editGameData()}
 									</div>
 								</Collapse>
 							}
@@ -1343,7 +1414,7 @@ class GameLog extends React.Component {
 				
 				</Container>
             );
-        } else if (this.state.data.record === "salvage") {
+        } else if (this.state.data.record === SALVAGE) {
         	// SALVAGE MISSION LOG
 			return (
 				<Container
@@ -1361,9 +1432,15 @@ class GameLog extends React.Component {
 
 					{!this.props.preview && <div className={classnames("stickyCover", this.state.isDeleting && "deleting")} />}
 
-					{this.render_titleAndCode(null,this.state.data.title)}
+					{this.render_titleAndCode(null,title)}
 
-					<Collapse in={!this.state.isCollapsed}>
+					<Collapse
+						in={!this.state.isCollapsed}
+						className="editCollapse"
+						// timeout="1"
+						unmountOnExit
+						mountOnEnter
+					>
 						<div className="content">
 							<Collapse
 								in={this.state.isEditing}
@@ -1395,8 +1472,8 @@ class GameLog extends React.Component {
 					{this.render_deleteModal()}
 				</Container>
 			);
-        } else if (this.state.data.record === "notes") {
-        	// NOTES LOG
+        } else if ([NOTES, START].includes(this.state.data.record)) {
+        	// NOTES AND START LOG
 			return (
 				<Container
 					fluid
@@ -1413,9 +1490,15 @@ class GameLog extends React.Component {
 
 					{!this.props.preview && <div className={classnames("stickyCover", this.state.isDeleting && "deleting")} />}
 
-					{this.render_titleAndCode(this.state.data.code,this.state.data.title,true)}
+					{this.render_titleAndCode(code,this.state.titleOverride,true)}
 
-					<Collapse in={!this.state.isCollapsed}>
+					<Collapse
+						in={!this.state.isCollapsed}
+						className="editCollapse"
+						// timeout="1"
+						unmountOnExit
+						mountOnEnter
+					>
 						<div className="content">
 							<Collapse
 								in={this.state.isEditing}
@@ -1427,68 +1510,38 @@ class GameLog extends React.Component {
 								</div>
 							</Collapse>
 
-							<div className="logDataWrapper">
-								{this.render_notesInfo()}
-
-								<div className="twoCol notesLog">
-									<div className="leftCol arCol">
-										{this.render_wealth(true)}
-									</div>
-
-									<div className="rightCol arCol">
-										{this.render_advNotes(true)}
-									</div>
-								</div>
-							</div>
-						</div>
-					</Collapse>
-
-					{this.render_deleteModal()}
-				</Container>
-			);
-        } else if (this.state.data.record === "start") {
-        	// STARTING LOG
-			return (
-				<Container
-					fluid
-					className={classnames(
-						className,
-						"gameBox",
-						"notesWealthBox",
-						!this.state.isCollapsed && "expanded",
-						this.state.isEditing && "editing",
-						preview && "preview",
-					)}
-					style={style}
-				>
-
-					{!this.props.preview && <div className={classnames("stickyCover", this.state.isDeleting && "deleting")} />}
-
-					{this.render_titleAndCode(this.state.data.code,this.state.data.title,true)}
-
-					<Collapse in={!this.state.isCollapsed}>
-						<div className="content">
-							<Collapse
-								in={this.state.isEditing}
-								unmountOnExit
-								mountOnEnter
-							>
-								<div className="editContent">
-									{this.render_editStartData()}
-								</div>
-							</Collapse>
+							
 
 							<div className="logDataWrapper">
 								<div className="twoCol notesLog">
 									<div className="leftCol arCol">
-										{this.render_wealth(true)}
+										{this.state.data.record === NOTES ? this.render_wealth(true) :
+											<Container className="wealthWrapper wrapper">
+												<Container className="wealthContent startingOnly box">
+													<div className="header cell bottom">Starting Wealth</div>
+													<div className="amount cell bottom">
+														<span className="val">
+															<Wealth
+																isEmpty={wealthObj === null}
+																wealthObj={ wealthObj === null ? {} : wealthObj.ending }
+																error={this.state.negativeEndingGold}
+															/>
+														</span>
+													</div>
+												</Container>
+											</Container>
+										}
 									</div>
 
-									<div className="rightCol arCol">
-										{this.render_advNotes(true)}
-									</div>
+									{!!this.state.statusData[code] && !!this.state.statusData[code].notes && this.state.statusData[code].notes.player &&
+										<div className="rightCol arCol">
+											{this.render_advNotes(true)}
+										</div>
+									}
 								</div>
 							</div>
+							
+
 						</div>
 					</Collapse>
 

@@ -551,7 +551,9 @@
           "instructions": "Choose ONE bonus reward:",
           "options": [
             "a <i>+2 shield</i> for defeating Bastian. The shield bears the faded and defaced heraldry of Karnath.",
-            "200 gp for returning at least one of the warforged spies back to Argonth alive."
+            "200 gp for returning at least one of the warforged spies back to Argonth alive.",
+            "200 gp for turning in a group of soldiers conspiring against General Tyresh.",
+            "200 gp for successfully completing the \"Four Ts\" without angering General Tyresh."
           ]
         }
       ],
@@ -567,7 +569,11 @@
           },
           {
             "title": "Not This Time, Death",
-            "description": "You managed to save General Tyresh from what appears to have been an attempt to assassinate him, perpetrated from someone loyal to Breland. While he's unlikely to publicly acknowledge your bravery, he repays you for it (in private, of course). General Tyresh provides you with 100 gp."
+            "description": "You managed to save General Tyresh from what appears to have been an attempt to assassinate him, perpetrated from someone loyal to Breland. While he's unlikely to publicly acknowledge your bravery, he repays you for it (in private, of course). General Tyresh provides you with 100 gp from his personal coffers in honor of saving his life."
+          },
+          {
+            "title": "Your Face Is Known",
+            "description": "You have brough yourself to the Lord of Blades' attention—as a killer of warforged and an obstacle to his plans to form a warforged nation. Who knowns how far across Khorvaire his reach extends . . .?"
           }
         ]
       }

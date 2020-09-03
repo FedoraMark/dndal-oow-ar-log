@@ -47,12 +47,17 @@ export const startingWealthLog = {
     type: "Starting Wealth and Notes",
     date: "",
     notes: {
-        player: "Hail and well met!\n\nBegin your <i>Oracle of War</i> campaign by entering your starting wealth and any important notes into this log.",
+        player: "Hail and well met!\n\nBegin your Oracle of War campaign by entering your starting wealth and any important notes into this log.",
     },
-    wealth: {...emptyLogWealth}
+    wealth: { ...emptyLogWealth }
 };
 
 // FUNCTIONS
+export const strip = (html) => {
+    var doc = new DOMParser().parseFromString(html, 'text/html');
+    return doc.body.textContent || "";
+}
+
 export const getFirstObject = (obj) => {
     return obj[Object.keys(obj)[0]];
 };

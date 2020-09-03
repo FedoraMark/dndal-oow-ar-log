@@ -198,12 +198,19 @@ body {
 
 // Small devices (landscape phones, 576px and up)
 @media (min-width: 576px) {
+    ._partCondense {
+        display: none;
+    }
 }
 
 // Medium devices (tablets, 768px and up)
 @media (min-width: 768px) {
     .partCondense {
         display: none;
+    }
+
+    ._partCondense {
+        display: initial;
     }
 }
 
@@ -215,6 +222,10 @@ body {
 
     .partCondense {
         display: initial;
+    }
+
+    ._partCondense {
+        display: none;
     }
 }
 

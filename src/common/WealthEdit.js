@@ -27,16 +27,18 @@ class WealthEdit extends Component {
         updateHandler: PropTypes.func,
         disabled: PropTypes.bool,
         error: PropTypes.bool,
+        isStart: PropTypes.bool,
     };
 
     static defaultProps = {
         updateHandler: () => {},
         disabled: false,
         error: false,
+        isStart: false,
     };
 
     state = {
-        wealth: this.props.fullWealth[this.props.type],
+        wealth: this.props.isStart ? this.props.fullWealth.ending : this.props.fullWealth[this.props.type],
         disabled: this.props.disabled,
         error: this.props.error,
         useEp: true, //this.props.useEp,
@@ -46,7 +48,7 @@ class WealthEdit extends Component {
         this.setState({
             disabled: newProps.disabled,
             error: newProps.error,
-            wealth: newProps.fullWealth[this.props.type]
+            wealth: newProps.isStart ? newProps.fullWealth.ending : newProps.fullWealth[newProps.type],
         });
     }
 
@@ -55,15 +57,19 @@ class WealthEdit extends Component {
         newWealth[denom] = val === "" ? 0 : Math.abs(parseInt(val));
 
         this.setState({ wealth: newWealth },
-            this.props.updateHandler(newWealth, this.props.type)
+            this.props.updateHandler(newWealth, this.props.isStart ? "ending" : this.props.type)
         );
     }
 
     render() {
+        if (!this.state.wealth) {
+            return <></>;
+        }
+
         return (
             <div className={style.coinInputsWrapper}>
 				{_map(denominations, (denom, key) => {
-					if (!this.state.useEp && denom === "ep") {
+					if (denom === "ep" && !this.state.useEp) {
 						return <></>;
 					}
 
@@ -72,7 +78,7 @@ class WealthEdit extends Component {
 						: "";
 
 					return (
-						<InputGroup key={denom} className={classnames(style.money, this.state.error && style.error)}>
+						<InputGroup key={key} className={classnames(style.money, this.state.error && style.error)}>
 							<Form.Control
 								className="handwritten"
 								id={denom}

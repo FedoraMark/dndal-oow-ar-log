@@ -82,9 +82,9 @@ class AdvRecordLog extends React.Component {
 		// notes_wealth and salvage logs
 		if ([NOTES_WEALTH, SALVAGE].includes(record)) {
 			newCode = record + "_" + Math.random().toString(36).substr(2, 9);;
-			let type = record === NOTES_WEALTH ? "Notes and Wealth Changes" : "Salvage Mission";
+			let displayType = record === NOTES_WEALTH ? "Wealth and Notes" : "Salvage Mission";
 
-			newLogData = {record: record, type: type, title: "New " + record + " log", code: newCode, tier: this.state.charData.tier === 0 ? 1 : this.state.charData.tier};
+			newLogData = {record: record, type: displayType, title: displayType + " Log", code: newCode, tier: this.state.charData.tier === 0 ? 1 : this.state.charData.tier};
 			newLogStatus = {[newCode]: {tier: this.state.charData.tier === 0 ? 1 : this.state.charData.tier, wealth: this.getPrevEndingWealth()}};
 			newEditorCode = newCode;
 		}
