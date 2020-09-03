@@ -155,16 +155,17 @@
             margin: 0 0 .5rem !important;
         }
     }
+
+    .previewModal > .modal-content {
+        width: 700px;
+    }
 }
 
 // Large devices (desktops, 992px and up)
 @media (min-width: 992px) {
-    // .cardWrapper {
-    //     .notes,
-    //     .ellipsis {
-    //         display: block;
-    //     }
-    // }
+    .previewModal > .modal-content {
+        width: initial;
+    }
 }
 
 // Extra large devices (large desktops, 1200px and up)

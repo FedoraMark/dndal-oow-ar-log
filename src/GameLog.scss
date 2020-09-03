@@ -1143,6 +1143,72 @@ $halfGap: .25rem;
             }
         }
     }
+
+    .gameBox.preview {
+        .titleWrapper .title {
+            font-size: 2.25rem;
+
+            .name {
+                .code {
+                    width: auto;
+                    padding-right: .5rem;
+
+                    .hyphen {
+                        bottom: .6rem;
+                    }
+                }
+            }
+
+            .title {
+                justify-content: space-between;
+                align-items: center;
+            }
+        }
+
+        .content {
+            .bookFont {
+                font-size: .8rem;
+
+                &.gameNotes {
+                    font-size: .9rem;
+                }
+            }
+
+            .instructions {
+                font-size: .9rem;
+            }
+
+            .footnote {
+                font-size: .75rem;
+            }
+
+            .sectionTitle {
+                font-size: 2rem;
+            }
+
+            .twoCol {
+                @include flex(stretch, center, row);
+
+                .leftCol {
+                    margin-right: -15px;
+                }
+
+                .wealthWrapper {
+                    .header {
+                        font-size: 1.2rem;
+                    }
+
+                    .amount {
+                        font-size: 1rem;
+
+                        .val {
+                            top: .175rem;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 // Large devices (desktops, 992px and up)
@@ -1261,72 +1327,6 @@ $halfGap: .25rem;
 
                     .input-group-append {
                         width: 50px !important;
-                    }
-                }
-            }
-        }
-    }
-
-    .gameBox.preview {
-        .titleWrapper .title {
-            font-size: 2.25rem;
-
-            .name {
-                .code {
-                    width: auto;
-                    padding-right: .5rem;
-
-                    .hyphen {
-                        bottom: .6rem;
-                    }
-                }
-            }
-
-            .title {
-                justify-content: space-between;
-                align-items: center;
-            }
-        }
-
-        .content {
-            .bookFont {
-                font-size: .8rem;
-
-                &.gameNotes {
-                    font-size: .9rem;
-                }
-            }
-
-            .instructions {
-                font-size: .9rem;
-            }
-
-            .footnote {
-                font-size: .75rem;
-            }
-
-            .sectionTitle {
-                font-size: 2rem;
-            }
-
-            .twoCol {
-                @include flex(stretch, center, row);
-
-                .leftCol {
-                    margin-right: -15px;
-                }
-
-                .wealthWrapper {
-                    .header {
-                        font-size: 1.2rem;
-                    }
-
-                    .amount {
-                        font-size: 1rem;
-
-                        .val {
-                            top: .175rem;
-                        }
                     }
                 }
             }

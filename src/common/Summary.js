@@ -90,6 +90,7 @@ class Summary extends Component {
 				</Card.Body>
 
 				<Modal
+					dialogClassName="previewModal"
 					size={"xl"}
 					centered
 					scrollable
