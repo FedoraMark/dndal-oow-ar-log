@@ -109,6 +109,7 @@ class GameLog extends React.Component {
         deleteHandler: () => {},
         saveHandler: () => {},
         resetStartWithEditHandler: () => {},
+
     };
 
     state = {
@@ -142,7 +143,9 @@ class GameLog extends React.Component {
             : this.props.data.tier,
         tempIsDm: this.props.wasDm,
         tempIsEpic: this.props.wasEpic,
-        tempAutoCalc: this.props.autoCalc,
+        tempAutoCalc: !!this.props.statuses[this.props.data.code] && !!this.props.statuses[this.props.data.code].autoCalc 
+        	? this.props.statuses[this.props.data.code].autoCalc
+        	: this.props.autoCalc,
         tempWealth: !!this.props.statuses[this.props.data.code] && !!this.props.statuses[this.props.data.code].wealth 
         ? {...this.props.statuses[this.props.data.code].wealth} 
         : {...emptyLogWealth},
@@ -165,18 +168,16 @@ class GameLog extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
+    	let statObj = newProps.statuses[newProps.data.code];
+
         this.setState({
             data: newProps.data,
             statusData: newProps.statuses,
             wasDm: newProps.wasDm,
             wasEpic: newProps.wasEpic,
-            autoCalc: newProps.autoCalc,
-            tier: this.getPropOrEmpty(newProps.statuses[newProps.data.code],"tier",null)
-	            ? newProps.statuses[newProps.data.code].tier
-	            : this.state.data.tier,
-            titleOverride: this.getPropOrEmpty(newProps.statuses[newProps.data.code],"titleOverride",null) 
-	            ? newProps.statuses[newProps.data.code].titleOverride 
-	            : this.state.titleOverride,
+            autoCalc: this.getPropOrEmpty(statObj,"autoCalc",null) !== "" ? statObj.autoCalc : this.state.autoCalc,
+            tier: this.getPropOrEmpty(statObj,"tier",null) ? statObj.tier : this.state.data.tier,
+            titleOverride: this.getPropOrEmpty(statObj,"titleOverride",null)  ? statObj.titleOverride  : this.state.titleOverride,
         });
     }
 
@@ -272,7 +273,7 @@ class GameLog extends React.Component {
             },
             wealth: this.state.tempWealth,
             tier: this.state.tempTier,
-            // add wasDm, wasEpic, autoCalc here
+            autoCalc: this.state.tempAutoCalc,
         };
 
         if ([NOTES, START, SALVAGE].includes(this.state.data.record)) {
@@ -292,7 +293,11 @@ class GameLog extends React.Component {
     };
 
     getPropOrEmpty = (obj, prop, child) => {
-        if (!obj || !obj[prop]) { return ""; }
+        if (!obj) { return ""; }
+
+        if (typeof obj[prop] === "boolean") { return obj[prop]; } // return boolean prop due to !! functionalty
+
+        if (!obj[prop]) { return ""; }
 
         if (child === null) { return obj[prop]; }
 
@@ -304,9 +309,9 @@ class GameLog extends React.Component {
 
         !!statusObj &&
             this.setState({
-            	tempIsDm: this.state.wasDm,
-                tempIsEpic: this.state.wasEpic,
-                tempAutoCalc: this.state.autoCalc,
+				// tempIsDm: this.state.wasDm,
+				// tempIsEpic: this.state.wasEpic,
+				// tempAutoCalc: this.state.autoCalc,
                 tempWealth: wealthCheck === "" ? {...emptyLogWealth} : wealthCheck,
                 tempTier: this.getPropOrEmpty(statusObj, "tier", null),
                 tempEvent: this.getPropOrEmpty(statusObj, "event", null),
@@ -629,7 +634,7 @@ class GameLog extends React.Component {
 
         return (
             <Container className="advWrapper wrapper">
-				<h1 className="sectionTitle">Advancement</h1>
+				<h1 className="sectionTitle">Advancement{isSalvageMission && " & Salvage"}</h1>
 				<div className="box">
 					<span className="salvageContent">
 						<span className="salvageAdv">
