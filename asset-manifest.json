@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/dndal-oow-ar-log/static/css/main.567b4305.chunk.css",
-    "main.js": "/dndal-oow-ar-log/static/js/main.212b8c90.chunk.js",
-    "main.js.map": "/dndal-oow-ar-log/static/js/main.212b8c90.chunk.js.map",
+    "main.js": "/dndal-oow-ar-log/static/js/main.d37feff4.chunk.js",
+    "main.js.map": "/dndal-oow-ar-log/static/js/main.d37feff4.chunk.js.map",
     "runtime-main.js": "/dndal-oow-ar-log/static/js/runtime-main.bac7c5d5.js",
     "runtime-main.js.map": "/dndal-oow-ar-log/static/js/runtime-main.bac7c5d5.js.map",
     "static/css/2.dcc91a2f.chunk.css": "/dndal-oow-ar-log/static/css/2.dcc91a2f.chunk.css",
     "static/js/2.6d97ab7c.chunk.js": "/dndal-oow-ar-log/static/js/2.6d97ab7c.chunk.js",
     "static/js/2.6d97ab7c.chunk.js.map": "/dndal-oow-ar-log/static/js/2.6d97ab7c.chunk.js.map",
     "index.html": "/dndal-oow-ar-log/index.html",
-    "precache-manifest.7b6b9587ff1b87d4b2b97bfcba70ce56.js": "/dndal-oow-ar-log/precache-manifest.7b6b9587ff1b87d4b2b97bfcba70ce56.js",
+    "precache-manifest.2baab410cd743a9f7a08e48cf74999ad.js": "/dndal-oow-ar-log/precache-manifest.2baab410cd743a9f7a08e48cf74999ad.js",
     "service-worker.js": "/dndal-oow-ar-log/service-worker.js",
     "static/css/2.dcc91a2f.chunk.css.map": "/dndal-oow-ar-log/static/css/2.dcc91a2f.chunk.css.map",
     "static/css/main.567b4305.chunk.css.map": "/dndal-oow-ar-log/static/css/main.567b4305.chunk.css.map",
@@ -21,6 +21,6 @@
     "static/css/2.dcc91a2f.chunk.css",
     "static/js/2.6d97ab7c.chunk.js",
     "static/css/main.567b4305.chunk.css",
-    "static/js/main.212b8c90.chunk.js"
+    "static/js/main.d37feff4.chunk.js"
   ]
 }
