@@ -54,6 +54,28 @@
                     opacity: 1;
                 }
             }
+
+            &.dragging,
+            &:active {
+                z-index: 1000;
+
+                -webkit-transform: translate(0, -.75rem);
+                   -moz-transform: translate(0, -.75rem);
+                    -ms-transform: translate(0, -.75rem);
+                     -o-transform: translate(0, -.75rem);
+                        transform: translate(0, -.75rem);
+
+                color: $color-active-text;
+                border-color: $color-moveBorder;
+                background-color: $color-moveBg;
+                -webkit-box-shadow: 0 10px 10px 0 rgba(0, 0, 0, .4);
+                   -moz-box-shadow: 0 10px 10px 0 rgba(0, 0, 0, .4);
+                        box-shadow: 0 10px 10px 0 rgba(0, 0, 0, .4);
+
+                .dIcon {
+                    opacity: 1;
+                }
+            }
         }
 
         &.dUndraggable {
@@ -64,30 +86,6 @@
             &.dFirst {
                 border-bottom-right-radius: 0;
                 border-bottom-left-radius: 0;
-            }
-        }
-
-        &.dragging,
-        &:active {
-            z-index: 1000;
-
-            -webkit-transform: translate(0,-.75rem);
-               -moz-transform: translate(0,-.75rem);
-                -ms-transform: translate(0,-.75rem);
-                 -o-transform: translate(0,-.75rem);
-                    transform: translate(0,-.75rem);
-
-            color: $color-active-text;
-            border-color: $color-moveBorder;
-            background-color: $color-moveBg;
-            -webkit-box-shadow: 0 10px 10px 0 rgba(0,0,0,.4);
-               -moz-box-shadow: 0 10px 10px 0 rgba(0,0,0,.4);
-                    box-shadow: 0 10px 10px 0 rgba(0,0,0,.4);
-
-
-
-            .dIcon {
-                opacity: 1;
             }
         }
 
@@ -111,6 +109,7 @@
             &:first-of-type {
                 margin-left: .5rem;
             }
+
             &:last-of-type {
                 margin-right: .5rem;
             }
@@ -189,8 +188,6 @@
         position: relative;
 
         margin: 1rem 0;
-
-
 
         .newButton {
             font-size: 2rem;
@@ -326,9 +323,9 @@
         width: 0;
         overflow-y: scroll;
 
-        background: rgba(0,0,0,0);
+        background: rgba(0, 0, 0, 0);
 
-        @include transition();;
+        @include transition();
 
         &:not(.openBar) {
             overflow: hidden;
@@ -337,11 +334,11 @@
 
             .toggle {
                 border-radius: 0 0 50% 0;
-                background: rgba(255,255,255,.85);
+                background: rgba(255, 255, 255, .85);
 
                 &:hover,
                 &:focus {
-                    background: rgba(0,0,0,.85);
+                    background: rgba(0, 0, 0, .85);
 
                     @include transition();
 
@@ -357,7 +354,7 @@
 
             pointer-events: auto;
 
-            background: rgba(0,0,0,.85);
+            background: rgba(0, 0, 0, .85);
 
             .toggle {
                 span {
@@ -397,7 +394,6 @@
 
             color: transparent !important;
         }
-
 
         .title {
             font-size: 1.1rem;
@@ -442,13 +438,12 @@
 
             cursor: auto !important;
 
-            background-color: rgba(0, 0, 0, .25)
-            !important;
+            background-color: rgba(0, 0, 0, .25) !important;
 
             .code {
                 font-weight: bold;
 
-                @include flex(center,space-between);
+                @include flex(center, space-between);
 
                 span {
                     white-space: nowrap;
@@ -474,6 +469,7 @@
                             background-color: darkgray;
                         }
                     }
+
                     .custom-control-input:checked ~ .custom-control-label {
                         &:before {
                             border-color: gray;

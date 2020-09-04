@@ -21,7 +21,7 @@ import ClickOutside from "react-click-outside";
 import { ToastProvider } from "react-toast-notifications";
 
 import { AiFillDollarCircle } from "react-icons/ai";
-import { FaDiceD20 } from "react-icons/fa";
+// import { FaDiceD20 } from "react-icons/fa";
 import { GiPokecog, GiD4} from "react-icons/gi";
 import { ImMenu } from "react-icons/im";
 import { RiEditCircleFill } from "react-icons/ri";
@@ -342,6 +342,7 @@ class AdvRecordLog extends React.Component {
 				{_map(gamesObj, (logData, key) => {
 					let delayTime = this.state.loaded ? 0 : 200;
 					let animClass = this.state.loaded ? fadeIn : fadeInUp;
+					let duration = this.state.finishedMoving ? {animationDuration: "1ms"} : {} ;
 
 					let wasEpic = !!this.state.statusData[key] && !!this.state.statusData[key][logData.code] && !!this.state.statusData[key][logData.code].isForEpic
 						? this.state.statusData[key][logData.code].isForEpic === true
@@ -350,7 +351,6 @@ class AdvRecordLog extends React.Component {
 					let wasDm   = !!this.state.statusData[key] && !!this.state.statusData[key][logData.code] && !!this.state.statusData[key][logData.code].dungeonMaster
 						? this.state.statusData[key][logData.code].dungeonMaster.isDm
 						: {...logData.dungeonMaster}.isDm;
-
 
 					return (
 						<Collapse
@@ -361,11 +361,11 @@ class AdvRecordLog extends React.Component {
 							onExited={this.removeLog.bind(this,logData.code)}
 						>
 							<GameLog
-								className={animClass} // OTHER PART OF THE ISSUE
-								style={{ animationDelay: delayTime * key + "ms" }} // OTHER PART OF THE ISSUE
+								className={animClass}
+								style={{ animationDelay: delayTime * key + "ms", ...duration }}
 								data={logData}
 								statuses={this.state.statusData[key]}
-								collapse={!this.state.loaded && Object.keys(this.state.gameData).length !== 1} // OTHER PART OF THE ISSUE
+								collapse={!this.state.loaded && Object.keys(this.state.gameData).length !== 1}
 								logUpdateHandler={this.updateLogStatus}
 								deleteHandler={this.handleDelete}
 								wasDm={wasDm}
@@ -601,7 +601,7 @@ class AdvRecordLog extends React.Component {
 									if (log.record === START) { return; }
 
 									let isDm = !!statusObj && !!statusObj.dungeonMaster && statusObj.dungeonMaster.isDm;
-									let titleOverride = !!statusObj && !!statusObj.titleOverride ? statusObj.titleOverride : log.titleOverride;
+									let titleOverride = ![GAME,EPIC].includes(log.record) && !!statusObj && !!statusObj.titleOverride ? statusObj.titleOverride : log.title;
 									
 									return (
 										<Draggable 
@@ -622,7 +622,7 @@ class AdvRecordLog extends React.Component {
 													<span style={{textAlign: "center"}}>
 														{[GAME, EPIC].includes(log.record) && <span className="dCode">{log.code.toUpperCase()}</span>}
 														<span className="dTitle">{titleOverride}</span>
-														{isDm && <FaDiceD20 /> }
+														{/* {isDm && <FaDiceD20 /> } */}
 													</span>
 													{log.code !== startingWealthLog.code && <ImMenu className="dIcon" />}
 												</li>
@@ -649,7 +649,9 @@ class AdvRecordLog extends React.Component {
 				<Modal.Footer className="flexBetwixt evenButtons">
 					<Button 
 						variant="secondary" 
-						onClick={() => {this.setState({showReorderModal: false});}}
+						onClick={() => {this.setState({finishedMoving: true, showReorderModal: false},
+							this.setState({finishedMoving: false}));
+						}}
 					>
 						Cancel
 					</Button>
@@ -657,7 +659,8 @@ class AdvRecordLog extends React.Component {
 						variant="info"
 						onClick={() => {
 							this.setState(
-								{
+								{	
+									finishedMoving: true,
 									showReorderModal: false,
 									gameData: [...this.state.gameDataReorder].reverse(),
 									statusData: [...this.state.statusDataReorder].reverse(),
