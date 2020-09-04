@@ -78,6 +78,8 @@ $color-bs-lightbg: #f8f9fa;
 $color-bs-danger: #d9534f;
 $color-bs-buttonBorder: #0062cc;
 $color-bs-buttonBg: #0069d9;
+$color-moveBorder: #138496;
+$color-moveBg: darken(#17a2b8, 6%);
 
 // font-families
 $fontFamily-fauxdesto: Fauxdesto, Impact, Charcoal, sans-serif;
@@ -101,6 +103,10 @@ body {
     display: block;
 }
 
+.bold {
+    font-weight: bold !important;
+}
+
 .condense {
     display: none;
 }
@@ -119,6 +125,12 @@ body {
 
 .flexBetwixt {
     justify-content: space-between !important;
+}
+
+.evenButtons {
+    button {
+        width: 6rem;
+    }
 }
 
 .bookFont {
@@ -175,8 +187,7 @@ body {
 
 .modal-footer {
     button {
-        // padding-right: .6rem;
-        // padding-left: .6rem;
+        font-family: $fontFamily-oswald;
     }
     button:first-of-type {
         margin-left: 0;

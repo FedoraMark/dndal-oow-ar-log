@@ -1,38 +1,59 @@
 import React from "react";
 import classnames from "classnames";
+import SideNav, { NavItem, NavIcon, NavText } from "@trendmicro/react-sidenav";
+import arrayMove from "array-move";
 import _filter from "lodash/filter";
-import _find from 'lodash/find';
+import _find from "lodash/find";
 import _findIndex from "lodash/findIndex";
 import _map from "lodash/map";
 import _sortBy from "lodash/sortBy";
-import SideNav, { NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
-import Badge from 'react-bootstrap/Badge';
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import Badge from "react-bootstrap/Badge";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Collapse from "react-bootstrap/Collapse";
 import Container from "react-bootstrap/Container";
-import Form from 'react-bootstrap/Form'
+import Fade from "react-bootstrap/Fade";
+import Form from "react-bootstrap/Form";
 import Jumbotron from "react-bootstrap/Jumbotron";
-import ClickOutside from 'react-click-outside';
+import Modal from "react-bootstrap/Modal";
+import ClickOutside from "react-click-outside";
 import { ToastProvider } from "react-toast-notifications";
 
-import { GiPokecog } from "react-icons/gi";
-import { RiEditCircleFill } from "react-icons/ri"
+import { AiFillDollarCircle } from "react-icons/ai";
+import { FaDiceD20 } from "react-icons/fa";
+import { GiPokecog, GiD4} from "react-icons/gi";
+import { ImMenu } from "react-icons/im";
+import { RiEditCircleFill } from "react-icons/ri";
 
-import { fadeInUp, fadeIn, getFirstObject, getFirstKey, emptyWealth, emptyLogWealth, startingWealthLog, startingStatusLog } from "utils/Util";
+import EditButton from "common/EditButton";
 import Player from "common/Player";
 import Summary from "common/Summary";
 import GameLog from "GameLog";
+import {
+	fadeInUp,
+	fadeIn,
+	getFirstObject,
+	getFirstKey,
+	emptyWealth,
+	emptyLogWealth,
+	startingWealthLog,
+	startingWealthStatus,
+} from "utils/Util";
 
 import "AdvRecordLog.scss";
 import "animate.css";
-import '@trendmicro/react-sidenav/dist/react-sidenav.css';
+import "@trendmicro/react-sidenav/dist/react-sidenav.css";
 
 import games_oow from "./data/oowGames.json";
 // import chara_SamPel from "./data/SamPel.json";
 
+const GAME = "game";
+const EPIC = "epic";
+const SALVAGE = "salvage";
 const NOTES = "notes";
-const SALVAGE = "salvage"
+const START = "start";
+
 const GENERIC_CLASS = {Player: 1}
 
 class AdvRecordLog extends React.Component {
@@ -53,14 +74,19 @@ class AdvRecordLog extends React.Component {
 			// useEp: true,
 	    },
 	    gameData: [{...startingWealthLog}],
-	    statusData: [startingStatusLog],
+	    statusData: [startingWealthStatus],
+
+	    gameDataReorder: [],
+	    statusDataReorder: [],
 	    
 	    showAddRecordArea: false,
 	    loaded: false,
 	    isSidebarOpen: false,
 	    eventArr: [],
 	    deleteCode: "",
-	    openEditorCode: ""
+	    openEditorCode: "",
+	    showReorderModal: false,
+	    finishedMoving: false,
 	};
 
 	componentDidMount() {
@@ -77,12 +103,18 @@ class AdvRecordLog extends React.Component {
 	};
 
 	addStartingWealthRecord = (e) => {
-		e.stopPropagation(); //prevent addRecord from being fired
+		e.stopPropagation(); //prevent addRecord() from being fired
+
+		var newGameData = [...this.state.gameData];
+		newGameData.unshift({...startingWealthLog})
+
+		var newStatusData = [...this.state.statusData];
+		newStatusData.unshift({...startingWealthStatus})
 
 		this.setState({
-			openEditorCode: startingStatusLog.code,
-			gameData: [{ ...startingWealthLog }],
-			statusData: [startingStatusLog],
+			openEditorCode: startingWealthStatus.code,
+			gameData: newGameData,
+			statusData: newStatusData,
 		});
 		this.toggleAddRecordArea();
 	};
@@ -283,6 +315,26 @@ class AdvRecordLog extends React.Component {
 		return {...emptyWealth};
 	}
 
+	moveModalSetup = (code) => {
+		this.setState({
+			showReorderModal: true, 
+			gameDataReorder: [...this.state.gameData].reverse(), 
+			statusDataReorder: [...this.state.statusData].reverse() }
+		);
+	}
+
+	// DRAG DROP
+	onDragEnd = (drop) => {
+		if (!drop.destination) {
+			return;
+		}
+
+		var newGameList = arrayMove([...this.state.gameDataReorder],drop.source.index,drop.destination.index);
+		var newStatusList = arrayMove([...this.state.statusDataReorder],drop.source.index,drop.destination.index);
+
+		this.setState({gameDataReorder: newGameList, statusDataReorder: newStatusList });
+	};
+
 	//RENDERERS
 	render_gameLogs = (gamesObj) => {
 		return (
@@ -329,8 +381,25 @@ class AdvRecordLog extends React.Component {
 	};
 
 	render_newRecordArea = () => {
+		var first = _find(this.state.gameDataReorder, (log) => {
+			return log.record === START;
+		})
+
 		return (
 			<Container className="newRecordWrapper">
+				<Fade
+					in={Object.keys(this.state.gameData).length > 2 || (Object.keys(this.state.gameData).length > 1 && !!first)}
+					mountOnEnter
+					unmountOnExit
+				>
+					<EditButton
+						move
+						right
+						className="moveButton"
+						onClick={this.moveModalSetup.bind(this)}
+					/>
+				</Fade>
+
 				<Button
 					className={classnames(
 						"newButton",
@@ -365,7 +434,8 @@ class AdvRecordLog extends React.Component {
 										<Card.Subtitle>
 											Notes and wealth changes
 										</Card.Subtitle>
-										<Collapse in={!Object.keys(this.state.gameData).length} className="addAsStartLink" >
+										<Collapse in={_findIndex(this.state.gameData, (log) => {return log.record === START;}) === -1}
+											className="addAsStartLink" >
 											<Card.Link>
 												<Badge
 													pill
@@ -489,42 +559,158 @@ class AdvRecordLog extends React.Component {
 		);
 	};
 
+	render_reorderModal = () => {
+		var first = _find(this.state.gameDataReorder, (log) => {
+			return log.record === START;
+		})
+
+		let firstTitle = "";
+		if (!!first) {
+			firstTitle =
+				!!this.state.statusData[0][first.code] &&
+				!!this.state.statusData[0][first.code].titleOverride
+					? this.state.statusData[0][first.code].titleOverride
+					: first.title;
+		}
+
+        return (
+            <Modal
+				className="reorderModal"
+				size={"lg"}
+				centered
+				show={this.state.showReorderModal}
+				onHide={() => {this.setState({showReorderModal: false});}}
+			>
+				<Modal.Header closeButton>
+					<Modal.Title>Redorder Logs</Modal.Title>
+				</Modal.Header>
+
+				<Modal.Body>
+					<Droppable droppableId="reorderList" type="LOG">
+						{(provided, snapshot) => (
+							<ul 
+								className="draggableList"
+								ref={provided.innerRef}
+  								{...provided.droppableProps}
+  							>
+								{_map(this.state.gameDataReorder, (log,index) => {
+									let statusObj = getFirstObject(_find(this.state.statusData, (s) => {
+										return getFirstKey(s) === log.code;
+									}));
+
+									if (log.record === START) { return; }
+
+									let isDm = !!statusObj && !!statusObj.dungeonMaster && statusObj.dungeonMaster.isDm;
+									let titleOverride = !!statusObj && !!statusObj.titleOverride ? statusObj.titleOverride : log.titleOverride;
+									
+									return (
+										<Draggable 
+											key={log.code} 
+											draggableId={log.code} 
+											index={index}
+										>
+											{(provided, snapshot) => (
+												<li 
+													className={classnames("dItem",snapshot.isDragging && "dragging")} 
+													ref={provided.innerRef}
+													{...provided.draggableProps}
+													{...provided.dragHandleProps}
+												>
+													{log.record === SALVAGE && <GiPokecog className="dTypeIcon" /> }
+													{log.record === NOTES && <RiEditCircleFill className="dTypeIcon" /> }
+													{[GAME, EPIC].includes(log.record) && <GiD4 className="dTypeIcon" /> }
+													<span style={{textAlign: "center"}}>
+														{[GAME, EPIC].includes(log.record) && <span className="dCode">{log.code.toUpperCase()}</span>}
+														<span className="dTitle">{titleOverride}</span>
+														{isDm && <FaDiceD20 /> }
+													</span>
+													{log.code !== startingWealthLog.code && <ImMenu className="dIcon" />}
+												</li>
+											)}
+										</Draggable>
+									);
+								})}
+
+								{provided.placeholder}
+							</ul>
+						)}
+					</Droppable>
+
+					{ !!first &&
+						<ul className="draggableList dStatic">
+							<li className="dItem dUndraggable dFirst">
+								<AiFillDollarCircle className="dTypeIcon" />
+								<span className="dTitle">{firstTitle}</span>
+							</li>
+						</ul>
+					}
+				</Modal.Body>
+
+				<Modal.Footer className="flexBetwixt evenButtons">
+					<Button 
+						variant="secondary" 
+						onClick={() => {this.setState({showReorderModal: false});}}
+					>
+						Cancel
+					</Button>
+					<Button
+						variant="info"
+						onClick={() => {
+							this.setState(
+								{
+									showReorderModal: false,
+									gameData: [...this.state.gameDataReorder].reverse(),
+									statusData: [...this.state.statusDataReorder].reverse(),
+								}
+							);
+						}}
+					>
+						Save
+					</Button>
+				</Modal.Footer>
+			</Modal>
+        );
+    }
+
 	render() {
 		return (
 			<ToastProvider autoDismiss autoDismissTimeout="3000">
-				<div className="log">
+				<DragDropContext onDragEnd={this.onDragEnd}>
+					<div className="log">
 
-					{this.render_activeEventSideBar()}
+						{this.render_activeEventSideBar()}
 
-					<Jumbotron>
-						<Container>
-							<div className="titleBox">
-								<h1>Eberron: Oracle of War</h1>
-								<h2>Adventure Records Log</h2>
-							</div>
-						</Container>
-					</Jumbotron>
+						<Jumbotron>
+							<Container>
+								<div className="titleBox">
+									<h1>Eberron: Oracle of War</h1>
+									<h2>Adventure Records Log</h2>
+								</div>
+							</Container>
+						</Jumbotron>
 
-					<span className="contentWrapper">
-						<Container>
-							<Player 
-								playerObj={this.state.charData}
-								optionsObj={this.state.optionsData}
-								saveHandler={this.savePlayerDataHandler}
-								totalLevels={this.getTotalLoggedLevels()}
-								latestWealth={this.getlatestWealth()}
-							/>
+						<span className="contentWrapper">
+							<Container>
+								<Player 
+									playerObj={this.state.charData}
+									optionsObj={this.state.optionsData}
+									saveHandler={this.savePlayerDataHandler}
+									totalLevels={this.getTotalLoggedLevels()}
+									latestWealth={this.getlatestWealth()}
+								/>
 
-						</Container>
+							</Container>
 
-						{this.render_newRecordArea()}
+							{this.render_newRecordArea()}
 
-						{this.render_gameLogs(this.state.gameData)}
-						{/* {this.render_gameLogs(games_oow.records)} */}
-					</span>
+							{this.render_gameLogs(this.state.gameData)}
+						</span>
 
-					<Jumbotron className="footer" />
-				</div>
+						<Jumbotron className="footer" />
+					</div>
+
+					{this.render_reorderModal()}
+				</DragDropContext>
 			</ToastProvider>
 		);
 	}

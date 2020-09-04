@@ -2,6 +2,127 @@
 @import "./utils/common.scss";
 
 // STYLES
+.draggableList {
+    display: block;
+    width: 75%;
+    padding: 0;
+    margin: 1rem auto;
+
+    list-style: none;
+
+    &.dStatic {
+        margin-top: -.25rem;
+    }
+
+    .dItem {
+        position: relative;
+
+        width: auto;
+        padding: .5rem 2rem;
+        margin-bottom: .75rem;
+
+        font-size: .9rem;
+
+        cursor: pointer;
+
+        border: 2px solid $color-active-background;
+        border-radius: 10px;
+        background: $color-background-darker;
+
+        @include flex();
+
+        & > span {
+            text-align: center;
+        }
+
+        .dCode {
+            margin-right: -.1rem;
+
+            white-space: nowrap;
+        }
+
+        &:not(.dUndraggable) {
+            &:hover,
+            &:focus {
+                color: $color-active-text;
+                border-color: $color-moveBorder;
+                background-color: $color-moveBg;
+
+                @include transition();
+
+                .dIcon {
+                    opacity: 1;
+                }
+            }
+        }
+
+        &.dUndraggable {
+            cursor: auto;
+
+            opacity: .5;
+
+            &.dFirst {
+                border-bottom-right-radius: 0;
+                border-bottom-left-radius: 0;
+            }
+        }
+
+        &.dragging,
+        &:active {
+            z-index: 1000;
+
+            -webkit-transform: translate(0,-.75rem);
+               -moz-transform: translate(0,-.75rem);
+                -ms-transform: translate(0,-.75rem);
+                 -o-transform: translate(0,-.75rem);
+                    transform: translate(0,-.75rem);
+
+            color: $color-active-text;
+            border-color: $color-moveBorder;
+            background-color: $color-moveBg;
+            -webkit-box-shadow: 0 10px 10px 0 rgba(0,0,0,.4);
+               -moz-box-shadow: 0 10px 10px 0 rgba(0,0,0,.4);
+                    box-shadow: 0 10px 10px 0 rgba(0,0,0,.4);
+
+
+
+            .dIcon {
+                opacity: 1;
+            }
+        }
+
+        .dIcon {
+            position: absolute;
+            right: .5rem;
+
+            opacity: .75;
+        }
+
+        .dTypeIcon {
+            position: absolute;
+            left: .5rem;
+        }
+
+        span {
+            margin: .25rem;
+
+            font-family: $fontFamily-book-bold;
+
+            &:first-of-type {
+                margin-left: .5rem;
+            }
+            &:last-of-type {
+                margin-right: .5rem;
+            }
+
+            &.dTitle {
+                font-family: $fontFamily-book-boldItalic;
+                font-style: italic;
+            }
+        }
+    }
+}
+
 .log {
     min-height: 100vh;
 
@@ -65,7 +186,11 @@
     }
 
     .newRecordWrapper {
+        position: relative;
+
         margin: 1rem 0;
+
+
 
         .newButton {
             font-size: 2rem;
@@ -437,6 +562,12 @@
 
 // Large devices (desktops, 992px and up)
 @media (min-width:992px) {
+    .draggableList {
+        .dItem {
+            font-size: 1.25rem;
+        }
+    }
+
     .log .titleBox {
         h1 {
             font-size: 5rem;

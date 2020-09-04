@@ -23,7 +23,6 @@ import { AiTwotoneDelete, AiFillCloseCircle } from "react-icons/ai";
 import { FaDiceD20, FaSave } from "react-icons/fa";
 import { FiCornerDownRight } from "react-icons/fi";
 import { GiPokecog } from "react-icons/gi";
-import { ImMenu2 } from "react-icons/im";
 import { IoIosCalculator } from "react-icons/io";
 
 import EditButton from "common/EditButton";
@@ -74,7 +73,6 @@ class GameLog extends React.Component {
     constructor(props) {
         super(props);
         this.deleteButton = React.createRef();
-        this.moveButton = React.createRef();
         this.cancelButton = React.createRef();
         this.saveButton = React.createRef();
         this.dateFieldRef = React.createRef(); 
@@ -109,7 +107,6 @@ class GameLog extends React.Component {
         deleteHandler: () => {},
         saveHandler: () => {},
         resetStartWithEditHandler: () => {},
-
     };
 
     state = {
@@ -118,6 +115,7 @@ class GameLog extends React.Component {
         isCollapsed: this.props.collapse,
         isEditing: this.props.startWithEdit,
         showDeleteModal: false,
+        loaded: true,
         wasDm: this.props.wasDm,
         wasEpic: this.props.wasEpic,
         autoCalc: this.props.autoCalc,
@@ -125,8 +123,8 @@ class GameLog extends React.Component {
         isDeleting: false,
         tier: 0,
         titleOverride: !!this.props.statuses[this.props.data.code] && !!this.props.statuses[this.props.data.code].titleOverride 
-        ? this.props.statuses[this.props.data.code].titleOverride 
-        : this.props.data.title, // should just save to DATA
+            ? this.props.statuses[this.props.data.code].titleOverride 
+            : this.props.data.title, // should just save to DATA
 
         rewardGroup0: [],
         // rewardGroup1: [], // currently unneeded
@@ -666,7 +664,7 @@ class GameLog extends React.Component {
 									<InputGroup.Prepend>
 										<InputGroup.Text className={classnames("bookFont bold")}>
 											<FiCornerDownRight />&nbsp;Salvage Earned&nbsp;
-											<span key={salvageRate} className={classnames(animFaster,heartBeat)}>
+											<span key={salvageRate} className={classnames(animFaster, heartBeat)} style={{animationDuration: this.state.loaded ? ".5s" : "1ms"}}>
 												({salvageRate}/hr)
 											</span>
 										</InputGroup.Text>
@@ -1426,20 +1424,6 @@ class GameLog extends React.Component {
 					>
 						Delete<span className="buttonIcon"><AiTwotoneDelete /></span>
 					</Button>
-
-					{!suppressMove && 
-						<Button
-							href="#"
-							variant="info"
-							ref={this.moveButton}
-							disabled={!this.state.isEditing}
-							onClick={(e) => {console.log("MOVE BUTTON");}}
-							onMouseEnter={(e) => {this.moveButton.current.focus()}}
-							onMouseUp={(e) => {this.moveButton.current.blur()}}
-						>
-							Move<span className="buttonIcon"><ImMenu2 /></span>
-						</Button>
-					}
 					
 					<Button
 						href="#"
@@ -1600,6 +1584,8 @@ class GameLog extends React.Component {
 						// timeout="1"
 						unmountOnExit
 						mountOnEnter
+                        onEntered={() => {this.setState({loaded: true});}}
+                        onExit={() => {this.setState({loaded: false});}}
 					>
 						<div className="content">
 							<Collapse

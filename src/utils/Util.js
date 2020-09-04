@@ -52,7 +52,7 @@ export const startingWealthLog = {
     wealth: { ...emptyLogWealth },
 };
 
-export const startingStatusLog = {
+export const startingWealthStatus = {
     [startingWealthLog.code]: {
         notes: {
             player:

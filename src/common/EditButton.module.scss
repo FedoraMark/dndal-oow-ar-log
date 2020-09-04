@@ -69,3 +69,20 @@ $offset: 1rem;
 .right {
     right: -$offset;
 }
+
+.move {
+    right: 0;
+
+    background: whitesmoke;
+
+    .icon {
+        margin-top: -.1rem;
+    }
+
+    &:hover,
+    &:focus {
+        color: white;
+        border-color: $color-moveBorder;
+        background-color: $color-moveBg;
+    }
+}
