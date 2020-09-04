@@ -345,15 +345,26 @@ $halfGap: .25rem;
 
                     @include flex(stretch, flex-start, column);
 
-                    .disabled {
+                    .autoLevelingClass {
                         .levelDropdown {
                             button:after {
                                 display: none;
                             }
                         }
 
-                        &.autoLevelingClass div:not(.levelDropdown) button {
-                            text-decoration: underline;
+                        &.autoLevelingClass {
+                            div button {
+                                color: $color-bs-buttonBg !important;
+                            }
+
+                            div:not(.levelDropdown) button {
+                                text-decoration: underline;
+
+                                text-decoration-color: $color-bs-buttonBg;
+                            }
+
+                            .levelDropdown {
+                            }
                         }
                     }
 

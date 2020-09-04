@@ -595,11 +595,10 @@ class Player extends Component {
 											key={clss}
 											className={classnames(
 												"playerInfoGroup classDropdownGroup",
-												animFaster,
-												bounceIn,
+												clss !== "Player" && animFaster,
+												clss !== "Player" && bounceIn,
 												this.state.topClass === clss && "zFix",
 												classLen === 1 && "firstLast",
-												this.state.tempAutoLeveling !== "" && "disabled",
 												this.state.tempAutoLeveling === clss && "autoLevelingClass"
 											)}
 											onClick={this.setTopClass.bind(this,clss)}
@@ -847,30 +846,25 @@ class Player extends Component {
 					as={InputGroup.Append}
 					variant="outline-secondary"
 					title={selLevel}
-					disabled={this.state.tempAutoLeveling !== ""}
+					disabled={this.state.tempAutoLeveling === selClass}
 					alignRight
 					className={classnames(
 						"levelDropdown",
-						this.state.tempAutoLeveling !== "" && "disabled"
+						this.state.tempAutoLeveling === selClass && "disabled"
 					)}
 				>
-					{_map(
-						Array.from(Array(20), (_, i) => {
-							return i + 1;
-						}),
-						(l) => {
-							return (
-								<Dropdown.Item
-									key={l}
-									href="#"
-									active={selLevel === l}
-									onSelect={this.setClassLevel.bind(this,selClass,selClass,l)}
-								>
-									{l}
-								</Dropdown.Item>
-							);
-						}
-					)}
+					{_map( Array.from(Array(20), (_, i) => { return i + 1; }), (l) => {
+						return (
+							<Dropdown.Item
+								key={l}
+								href="#"
+								active={selLevel === l}
+								onSelect={this.setClassLevel.bind(this,selClass,selClass,l)}
+							>
+								{l}
+							</Dropdown.Item>
+						);
+					})}
 				</DropdownButton>
             </>
         );

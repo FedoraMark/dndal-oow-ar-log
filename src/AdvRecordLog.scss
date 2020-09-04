@@ -171,6 +171,22 @@
 
                     font-weight: bold;
                 }
+
+                .addAsStartLink {
+                    margin-left: -.5rem;
+
+                    span {
+                        margin-top: .75rem;
+
+                        background: white;
+
+                        &:hover,
+                        &:focus {
+                            color: $color-active-text;
+                            background: $color-active-background;
+                        }
+                    }
+                }
             }
         }
     }

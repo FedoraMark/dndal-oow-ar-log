@@ -76,6 +76,17 @@ class AdvRecordLog extends React.Component {
 		this.setState({ showAddRecordArea: !this.state.showAddRecordArea });
 	};
 
+	addStartingWealthRecord = (e) => {
+		e.stopPropagation(); //prevent addRecord from being fired
+
+		this.setState({
+			openEditorCode: startingStatusLog.code,
+			gameData: [{ ...startingWealthLog }],
+			statusData: [startingStatusLog],
+		});
+		this.toggleAddRecordArea();
+	};
+
 	addRecord = (recordObj, openEditor, record) => {
 		var newLogData = {...recordObj};
 		var newLogStatus = {[recordObj.code]: {wealth: this.getPrevEndingWealth()}};
@@ -341,6 +352,7 @@ class AdvRecordLog extends React.Component {
 				>
 					<div>
 						<ul className="addLogWrapper">
+
 							{/* notes and wealth log */}
 							<li className="addItem" id="newNotes">
 								<Card 
@@ -353,6 +365,16 @@ class AdvRecordLog extends React.Component {
 										<Card.Subtitle>
 											Notes and wealth changes
 										</Card.Subtitle>
+										<Collapse in={!Object.keys(this.state.gameData).length} className="addAsStartLink" >
+											<Card.Link>
+												<Badge
+													pill
+													onClick={this.addStartingWealthRecord.bind(this)}
+												>
+													Add as starting wealth
+												</Badge>
+											</Card.Link>
+										</Collapse>
 									</Card.Body>
 								</Card>
 							</li>
