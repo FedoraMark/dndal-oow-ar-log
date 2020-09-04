@@ -45,7 +45,7 @@ import {
     emptyWealth,
     emptyLogWealth,
     strip,
-    salvageLevelFootnote,
+    // salvageLevelFootnote,
     salvagePerHour,
     excludeInWealth
 } from "utils/Util";
@@ -697,14 +697,15 @@ class GameLog extends React.Component {
 						}
 					</span>
 
-					{isSalvageMission && <hr />}
+					{/* {isSalvageMission && <hr />} */}
 
-					<p
-						className="bookFont footnote"
-						dangerouslySetInnerHTML={{
-							__html: (isSalvageMission ? salvageLevelFootnote : this.state.data.advancement.footnote),
-						}}
-					/>
+					{!isSalvageMission && 
+						<p
+							className="bookFont footnote"
+							dangerouslySetInnerHTML={{ __html: this.state.data.advancement.footnote }}
+							// dangerouslySetInnerHTML={{ __html: (isSalvageMission ? salvageLevelFootnote : this.state.data.advancement.footnote) }}
+						/>
+					}
 				</div>
 			</Container>
         );
