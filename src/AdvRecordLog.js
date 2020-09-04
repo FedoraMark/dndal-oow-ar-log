@@ -18,7 +18,8 @@ import Form from "react-bootstrap/Form";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Modal from "react-bootstrap/Modal";
 import ClickOutside from "react-click-outside";
-import { ToastProvider } from "react-toast-notifications";
+import { useToasts } from "react-toast-notifications";
+
 
 import { AiFillDollarCircle } from "react-icons/ai";
 // import { FaDiceD20 } from "react-icons/fa";
@@ -55,6 +56,13 @@ const NOTES = "notes";
 const START = "start";
 
 const GENERIC_CLASS = {Player: 1}
+
+function withToast(Component) {
+    return function WrappedComponent(props) {
+        const toastFuncs = useToasts();
+        return <Component {...props} {...toastFuncs} />;
+    };
+}
 
 class AdvRecordLog extends React.Component {
 	state = {
@@ -278,10 +286,17 @@ class AdvRecordLog extends React.Component {
 		var newGameData = [...this.state.gameData];
 		var newStatusData = [...this.state.statusData];
 
+		let statusObj = getFirstObject(_find(newStatusData, (s) => {
+			return getFirstKey(s) === code;
+		}));
+		let displayTitle = [GAME,EPIC].includes(newGameData[index].record) ? (code.toUpperCase() + " ") : "";
+		displayTitle += ![GAME,EPIC].includes(newGameData[index].record) && !!statusObj && !!statusObj.titleOverride ? statusObj.titleOverride : newGameData[index].title;
+		
 		newGameData.splice(index, 1);
-		newStatusData.splice(index, 1);
+		newStatusData.splice(index, 1);						
 
 		this.setState({deleteCode: "", gameData: newGameData, statusData: newStatusData});
+		this.props.addToast(("Deleted record " + displayTitle), { appearance: "error" })
 	}
 
 	resetStartWithEditHandler = () => {
@@ -580,6 +595,7 @@ class AdvRecordLog extends React.Component {
 				centered
 				show={this.state.showReorderModal}
 				onHide={() => {this.setState({showReorderModal: false});}}
+				backdrop="static"
 			>
 				<Modal.Header closeButton>
 					<Modal.Title>Redorder Logs</Modal.Title>
@@ -658,6 +674,12 @@ class AdvRecordLog extends React.Component {
 					<Button
 						variant="info"
 						onClick={() => {
+							if (JSON.stringify([...this.state.gameDataReorder].reverse()) === JSON.stringify(this.state.gameData)) {
+								this.props.addToast("No changes to log order", { appearance: "info" })
+							} else {
+								this.props.addToast("Logs successfully rearranged", { appearance: "success" })
+							}
+
 							this.setState(
 								{	
 									finishedMoving: true,
@@ -677,7 +699,7 @@ class AdvRecordLog extends React.Component {
 
 	render() {
 		return (
-			<ToastProvider autoDismiss autoDismissTimeout="3000">
+			
 				<DragDropContext onDragEnd={this.onDragEnd}>
 					<div className="log">
 
@@ -714,9 +736,9 @@ class AdvRecordLog extends React.Component {
 
 					{this.render_reorderModal()}
 				</DragDropContext>
-			</ToastProvider>
+
 		);
 	}
 }
 
-export default AdvRecordLog;
+export default withToast(AdvRecordLog);

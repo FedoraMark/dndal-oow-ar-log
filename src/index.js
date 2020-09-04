@@ -4,10 +4,13 @@ import "./index.css";
 import AdvRecordLog from "AdvRecordLog";
 import * as serviceWorker from "./serviceWorker";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { ToastProvider } from "react-toast-notifications";
 
 ReactDOM.render(
 	<React.StrictMode>
-		<AdvRecordLog />
+		<ToastProvider autoDismiss autoDismissTimeout="3000">
+			<AdvRecordLog />
+		</ToastProvider>
 	</React.StrictMode>,
 	document.getElementById("root")
 );
