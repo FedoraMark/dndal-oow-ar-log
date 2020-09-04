@@ -2,6 +2,7 @@ import React from "react";
 import classnames from "classnames";
 import SideNav, { NavItem, NavIcon, NavText } from "@trendmicro/react-sidenav";
 import arrayMove from "array-move";
+import _each from "lodash/each";
 import _filter from "lodash/filter";
 import _find from "lodash/find";
 import _findIndex from "lodash/findIndex";
@@ -19,7 +20,6 @@ import Jumbotron from "react-bootstrap/Jumbotron";
 import Modal from "react-bootstrap/Modal";
 import ClickOutside from "react-click-outside";
 import { useToasts } from "react-toast-notifications";
-
 
 import { AiFillDollarCircle } from "react-icons/ai";
 // import { FaDiceD20 } from "react-icons/fa";
@@ -40,6 +40,7 @@ import {
 	emptyLogWealth,
 	startingWealthLog,
 	startingWealthStatus,
+	getTier,
 } from "utils/Util";
 
 import "AdvRecordLog.scss";
@@ -138,9 +139,27 @@ class AdvRecordLog extends React.Component {
 			newCode = record + "_" + Math.random().toString(36).substr(2, 9);;
 			let displayType = record === NOTES ? "Wealth and Notes" : "Salvage Mission";
 
-			newLogData = {record: record, type: displayType, title: displayType + " Log", code: newCode, tier: this.state.charData.tier === 0 ? 1 : this.state.charData.tier};
-			newLogStatus = {[newCode]: {notes: {player: record === NOTES ? "Wealth changes and notes for between sessions." : "Salvage mission notes." }, titleOverride: displayType + " Log", tier: this.state.charData.tier === 0 ? 1 : this.state.charData.tier, wealth: this.getPrevEndingWealth()}};
-			newEditorCode = newCode;
+			newLogData = {
+				record: record,
+				type: displayType,
+				title: displayType + " Log",
+				code: newCode,
+				tier: this.getInfoTier(),
+			};
+			newLogStatus = {
+				[newCode]: {
+					notes: {
+						player:
+							record === NOTES
+								? "Wealth changes and notes for between sessions."
+								: "Salvage mission notes.",
+					},
+					tier: this.getInfoTier(),
+					titleOverride: displayType + " Log",
+					wealth: this.getPrevEndingWealth(),
+				},
+			};
+			newEditorCode = newCode
 		}
 
 		var newGameData = [...this.state.gameData];
@@ -152,6 +171,17 @@ class AdvRecordLog extends React.Component {
 		this.setState({ openEditorCode: newEditorCode, gameData: newGameData, statusData: newStatusData});
 		this.toggleAddRecordArea();
 	};
+
+	getInfoTier = () => {
+		if (this.state.charData.tier !== 0) { return this.state.charData.tier};
+
+		var totalLevels = 0;
+		_each(this.state.charData.classes, (lv) => {
+			totalLevels += lv;
+		})
+
+		return getTier(totalLevels);
+	}
 
 	getPrevEndingWealth = () => {
 		var startingWealth = {...emptyLogWealth};
@@ -418,7 +448,7 @@ class AdvRecordLog extends React.Component {
 				<Button
 					className={classnames(
 						"newButton",
-						"fauxdesto",
+						"oswald",
 						this.state.showAddRecordArea ? "isOpen" : ""
 					)}
 					variant="light"

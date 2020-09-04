@@ -89,6 +89,14 @@ export const trimStringsInObjectFlatly = (obj) => {
     return trimmedData;
 };
 
+export const getTier = (level) => {
+        if (level < 1) { return 0; }
+        if (level < 5) { return 1; }
+        if (level < 11) { return 2; }
+        if (level < 17) { return 3; }
+        return 4;
+}
+
 export const getTotalCopper = (wealthObj) => {
     return (
         (!wealthObj.pp ? 0 : wealthObj.pp) * 1000 +

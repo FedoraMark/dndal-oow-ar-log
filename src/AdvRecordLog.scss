@@ -4,7 +4,6 @@
 // STYLES
 .draggableList {
     display: block;
-    width: 75%;
     padding: 0;
     margin: 1rem auto;
 
@@ -44,26 +43,16 @@
         &:not(.dUndraggable) {
             &:hover,
             &:focus {
-                color: $color-active-text;
-                border-color: $color-moveBorder;
-                background-color: $color-moveBg;
-
                 @include transition();
 
                 .dIcon {
-                    opacity: 1;
+                    color: $color-moveBg;
                 }
             }
 
             &.dragging,
             &:active {
                 z-index: 1000;
-
-                -webkit-transform: translate(0, -.75rem);
-                   -moz-transform: translate(0, -.75rem);
-                    -ms-transform: translate(0, -.75rem);
-                     -o-transform: translate(0, -.75rem);
-                        transform: translate(0, -.75rem);
 
                 color: $color-active-text;
                 border-color: $color-moveBorder;
@@ -73,7 +62,7 @@
                         box-shadow: 0 10px 10px 0 rgba(0, 0, 0, .4);
 
                 .dIcon {
-                    opacity: 1;
+                    color: $color-active-text;
                 }
             }
         }
@@ -93,7 +82,9 @@
             position: absolute;
             right: .5rem;
 
-            opacity: .75;
+            color: gray;
+
+            @include transition();
         }
 
         .dTypeIcon {
@@ -190,7 +181,7 @@
         margin: 1rem 0;
 
         .newButton {
-            font-size: 2rem;
+            font-size: 1.75rem;
             font-weight: 300;
 
             border-width: 2px;
@@ -520,6 +511,10 @@
 
 // Small devices (landscape phones, 576px and up)
 @media (min-width:576px) {
+    .draggableList {
+        width: 85%;
+    }
+
     .log {
         .titleBox {
             h1 {
@@ -559,6 +554,8 @@
 // Large devices (desktops, 992px and up)
 @media (min-width:992px) {
     .draggableList {
+        width: 75%;
+
         .dItem {
             font-size: 1.25rem;
         }

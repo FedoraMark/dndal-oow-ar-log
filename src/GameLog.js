@@ -19,11 +19,12 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import { useToasts } from "react-toast-notifications";
 
-import { AiTwotoneDelete, AiFillCloseCircle } from "react-icons/ai";
+import { AiTwotoneDelete, AiFillCloseCircle, AiFillDollarCircle } from "react-icons/ai";
 import { FaDiceD20, FaSave } from "react-icons/fa";
 import { FiCornerDownRight } from "react-icons/fi";
-import { GiPokecog } from "react-icons/gi";
+import { GiPokecog, GiD4} from "react-icons/gi";
 import { IoIosCalculator } from "react-icons/io";
+import { RiEditCircleFill } from "react-icons/ri";
 
 import EditButton from "common/EditButton";
 import Wealth from "common/Wealth";
@@ -121,7 +122,7 @@ class GameLog extends React.Component {
         autoCalc: this.props.autoCalc,
         negativeEndingGold: false,
         isDeleting: false,
-        tier: 0,
+        tier: this.props.data.tier,
         titleOverride: !!this.props.statuses[this.props.data.code] && !!this.props.statuses[this.props.data.code].titleOverride 
             ? this.props.statuses[this.props.data.code].titleOverride 
             : this.props.data.title, // should just save to DATA
@@ -432,15 +433,37 @@ class GameLog extends React.Component {
 
     //RENDERERS
     render_titleAndCode = (code, title, suppressCode) => {
+        const { preview } = this.props;
+
+        var leftIcon;
+
+        switch(this.props.data.record) {
+            case SALVAGE:
+                leftIcon = <GiPokecog className="titleIcon leftIcon" />
+                break;
+            case GAME:
+            case EPIC:
+                leftIcon = <GiD4 className="titleIcon leftIcon" />
+                break;
+            case NOTES:
+                leftIcon = <RiEditCircleFill className="titleIcon leftIcon" />
+                break;
+            case START:
+                leftIcon = <AiFillDollarCircle className="titleIcon leftIcon" />
+                break;
+            default:
+                leftIcon = <></>;
+        }
+
         return (
             <div
 				className={classnames(
 					"titleWrapper",
-					!this.props.preview && "sticky",
+					!preview && "sticky",
 					this.state.isDeleting && "deleting"
 				)}
 			>
-				{!this.props.preview && (
+				{!preview && (
 					<>
 						<Fade
 							in={this.state.isEditing}
@@ -474,7 +497,8 @@ class GameLog extends React.Component {
 					onClick={this.toggleCollapsed.bind(this)}
 				>
 					<span className="name">
-						<GiPokecog style={{visibility: this.props.data.record === SALVAGE ? "initial" : "hidden"}} className="titleIcon cogIcon" />
+                        {!preview && leftIcon}
+
 						<div className="titleText">
 							{!suppressCode && !!code && (
 								<span
@@ -487,7 +511,8 @@ class GameLog extends React.Component {
 								dangerouslySetInnerHTML={{__html: this.fauxdestoHyphenFix(title)}} 
 							/>
 						</div>
-						<FaDiceD20 style={{visibility: !this.props.preview && this.state.wasDm ? "initial" : "hidden"}} className="titleIcon diceIcon" />
+
+						{!preview && this.state.wasDm && <FaDiceD20 className="titleIcon rightIcon" />}
 					</span>
 				</h1>
 			</div>
@@ -1659,7 +1684,13 @@ class GameLog extends React.Component {
 
 							<div className="logDataWrapper">
 								<div className={classnames("twoCol notesLog", this.state.data.record === START && "startLog")}>
-									<div className="leftCol arCol">
+									{!!this.state.tempNotes !== "" &&
+                                        <div className="rightCol arCol">
+                                            {this.render_advNotes(true)}
+                                        </div>
+                                    }
+
+                                    <div className="leftCol arCol">
 										{this.state.data.record === NOTES ? this.render_wealth(true) :
 											<Container className="wealthWrapper wrapper">
 												<Container className="wealthContent startingOnly box">
@@ -1677,12 +1708,6 @@ class GameLog extends React.Component {
 											</Container>
 										}
 									</div>
-
-									{!!this.state.tempNotes !== "" &&
-										<div className="rightCol arCol">
-											{this.render_advNotes(true)}
-										</div>
-									}
 								</div>
 							</div>
 							

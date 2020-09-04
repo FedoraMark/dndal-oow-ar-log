@@ -1,5 +1,6 @@
 // IMPORTS
 @import "./utils/common.scss";
+
 // VARS
 $gap: .5rem;
 $halfGap: .25rem;
@@ -53,12 +54,6 @@ $halfGap: .25rem;
             &.money {
                 display: none;
             }
-        }
-    }
-
-    &.notesWealthBox {
-        .titleWrapper .title {
-            padding: .5rem 1rem;
         }
     }
 
@@ -144,8 +139,7 @@ $halfGap: .25rem;
         }
 
         .title {
-            width: 100%;
-            padding: 1rem;
+            padding: 1rem 3.25rem;
             margin: 0;
 
             font-size: 1.6rem;
@@ -160,6 +154,29 @@ $halfGap: .25rem;
             background: $color-inactive-background;
 
             @include flex(flex-start, center);
+
+            .titleIcon {
+                position: absolute;
+
+                min-width: 1.25rem;
+                margin-top: -.1rem;
+
+                &.leftIcon {
+                    left: 1rem;
+
+                    margin-right: .25rem;
+
+                    font-size: 1.25rem;
+                }
+
+                &.rightIcon {
+                    right: 1rem;
+
+                    margin-left: .4rem;
+
+                    font-size: 1rem;
+                }
+            }
 
             .name {
                 margin-right: .1rem;
@@ -181,7 +198,7 @@ $halfGap: .25rem;
 
                     .code {
                         display: inline-flex;
-                        padding: 0;
+                        padding: 0 .25rem 0 0;
 
                         justify-content: flex-end;
                         align-items: center;
@@ -194,23 +211,6 @@ $halfGap: .25rem;
 
                             margin: 0 .05rem;
                         }
-                    }
-                }
-
-                .titleIcon {
-                    min-width: 1.5rem;
-                    margin-top: -.1rem;
-
-                    &.cogIcon {
-                        margin-right: .25rem;
-
-                        font-size: 1.25rem;
-                    }
-
-                    &.diceIcon {
-                        margin-left: .4rem;
-
-                        font-size: 1rem;
                     }
                 }
             }
@@ -359,7 +359,7 @@ $halfGap: .25rem;
                 .salvageRow {
                     margin-bottom: 0;
 
-                    @include flex(center,center,column-reverse);
+                    @include flex(center, center, column-reverse);
 
                     & > div {
                         display: inline-flex;
@@ -411,6 +411,8 @@ $halfGap: .25rem;
             }
 
             .arCol {
+                max-width: 100%;
+
                 flex-grow: 1;
             }
 
@@ -432,6 +434,8 @@ $halfGap: .25rem;
                 }
 
                 .arCol {
+                    max-width: 100%;
+
                     flex-basis: auto;
                 }
 
@@ -963,17 +967,19 @@ $halfGap: .25rem;
         .titleWrapper .title {
             font-size: 2rem;
 
+            .titleIcon {
+                &.leftIcon {
+                    font-size: 1.5rem;
+                }
+
+                &.rightIcon {
+                    font-size: 1.25rem;
+                }
+            }
+
             .name {
                 .code {
                     padding-right: .5rem !important;
-                }
-
-                .titleIcon {
-                    font-size: 1.5rem;
-
-                    &.diceIcon {
-                        font-size: 1.25rem;
-                    }
                 }
 
                 .titleText {
@@ -1036,24 +1042,30 @@ $halfGap: .25rem;
 
 // Medium devices (tablets, 768px and up)
 @media (min-width:768px) {
+    .gameBox .twoCol .arCol {
+        max-width: 50%;
+    }
+
+
     .gameBox:not(.preview) {
         .titleWrapper .title {
+            padding: 1rem 4rem;
+
             font-size: 2.25rem;
 
-            .name {
-                .titleIcon {
-                    font-size: 1.75rem;
+            .titleIcon {
+                font-size: 1.75rem;
 
-                    &.diceIcon {
-                        margin-left: .6rem;
+                &.rightIcon {
+                    margin-left: .6rem;
 
-                        font-size: 1.5rem;
-                    }
+                    font-size: 1.5rem;
                 }
+            }
 
+            .name {
                 .code {
                     width: auto;
-
 
                     .hyphen {
                         bottom: .6rem;
@@ -1361,23 +1373,23 @@ $halfGap: .25rem;
         .titleWrapper .title {
             font-size: 2.75rem;
 
-            .name {
-                .titleIcon {
-                    font-size: 2rem;
+            .titleIcon {
+                font-size: 2rem;
 
-                    &.diceIcon {
-                        margin-left: .75rem;
+                &.rightIcon {
+                    margin-left: .75rem;
 
-                        font-size: 1.75rem;
-                    }
+                    font-size: 1.75rem;
                 }
 
-                .code {
-                    width: auto;
-                    padding-right: .75rem;
+                .name {
+                    .code {
+                        width: auto;
+                        padding-right: .75rem;
 
-                    .hyphen {
-                        bottom: .75rem;
+                        .hyphen {
+                            bottom: .75rem;
+                        }
                     }
                 }
             }
@@ -1488,7 +1500,6 @@ $halfGap: .25rem;
                     .leftCol {
                         max-width: 50%;
 
-
                         .salvageContent {
                             flex-direction: column;
                             flex-grow: 1;
@@ -1497,7 +1508,6 @@ $halfGap: .25rem;
                             .salvageRow {
                                 max-width: initial;
                                 margin: 0;
-
 
                                 .selectWrapper {
                                     margin: 0 0 .75rem;

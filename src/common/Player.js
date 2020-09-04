@@ -33,6 +33,7 @@ import {
     currency,
     excludeInWealth,
     getFirstKey,
+    getTier,
 } from "utils/Util";
 
 import "./Player.scss";
@@ -189,16 +190,12 @@ class Player extends Component {
         this.updateTempInfo("wealth", condensedObj);
     };
 
-    getTier = () => {
+    getInfoTier = () => {
         if (this.state.tempTierSetting > 0) {
             return this.state.tempTierSetting;
         }
 
-        // if (totalLevel < 1) { return 0; }
-        if (this.state.currentTotalLevels < 5) { return 1; }
-        if (this.state.currentTotalLevels < 11) { return 2; }
-        if (this.state.currentTotalLevels < 17) { return 3; }
-        return 4;
+        return getTier(this.state.currentTotalLevels);
     };
 
     getTotalLevel = (newTotalLevels) => {
@@ -317,10 +314,10 @@ class Player extends Component {
 					<div className="infoItem tierItem">
 						<h1>Tier:</h1>
 						<ul className="tierList">
-							<li className={this.getTier() > 0 ? "filled" : ""}>1</li>
-							<li className={this.getTier() > 1 ? "filled" : ""}>2</li>
-							<li className={this.getTier() > 2 ? "filled" : ""}>3</li>
-							<li className={this.getTier() > 3 ? "filled" : ""}>4</li>
+							<li className={this.getInfoTier() > 0 ? "filled" : ""}>1</li>
+							<li className={this.getInfoTier() > 1 ? "filled" : ""}>2</li>
+							<li className={this.getInfoTier() > 2 ? "filled" : ""}>3</li>
+							<li className={this.getInfoTier() > 3 ? "filled" : ""}>4</li>
 						</ul>
 					</div>
 				)}
