@@ -582,6 +582,7 @@ class AdvRecordLog extends React.Component {
 		let firstTitle = "";
 		if (!!first) {
 			firstTitle =
+				!!this.state.statusData[0] &&
 				!!this.state.statusData[0][first.code] &&
 				!!this.state.statusData[0][first.code].titleOverride
 					? this.state.statusData[0][first.code].titleOverride
