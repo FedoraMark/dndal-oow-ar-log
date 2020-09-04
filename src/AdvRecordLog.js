@@ -600,7 +600,7 @@ class AdvRecordLog extends React.Component {
 
 									if (log.record === START) { return; }
 
-									let isDm = !!statusObj && !!statusObj.dungeonMaster && statusObj.dungeonMaster.isDm;
+									// let isDm = !!statusObj && !!statusObj.dungeonMaster && statusObj.dungeonMaster.isDm;
 									let titleOverride = ![GAME,EPIC].includes(log.record) && !!statusObj && !!statusObj.titleOverride ? statusObj.titleOverride : log.title;
 									
 									return (
