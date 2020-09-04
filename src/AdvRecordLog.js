@@ -342,7 +342,7 @@ class AdvRecordLog extends React.Component {
 				{_map(gamesObj, (logData, key) => {
 					let delayTime = this.state.loaded ? 0 : 200;
 					let animClass = this.state.loaded ? fadeIn : fadeInUp;
-					let duration = this.state.finishedMoving ? {animationDuration: "1ms"} : {} ;
+					animClass = this.state.finishedMoving ? "" : animClass;
 
 					let wasEpic = !!this.state.statusData[key] && !!this.state.statusData[key][logData.code] && !!this.state.statusData[key][logData.code].isForEpic
 						? this.state.statusData[key][logData.code].isForEpic === true
@@ -362,7 +362,7 @@ class AdvRecordLog extends React.Component {
 						>
 							<GameLog
 								className={animClass}
-								style={{ animationDelay: delayTime * key + "ms", ...duration }}
+								style={{ animationDelay: delayTime * key + "ms"}}
 								data={logData}
 								statuses={this.state.statusData[key]}
 								collapse={!this.state.loaded && Object.keys(this.state.gameData).length !== 1}
@@ -621,7 +621,7 @@ class AdvRecordLog extends React.Component {
 													{[GAME, EPIC].includes(log.record) && <GiD4 className="dTypeIcon" /> }
 													<span style={{textAlign: "center"}}>
 														{[GAME, EPIC].includes(log.record) && <span className="dCode">{log.code.toUpperCase()}</span>}
-														<span className="dTitle">{titleOverride}</span>
+														<span className={classnames("dTitle",![NOTES,START].includes(log.record) && "dItalic")}>{titleOverride}</span>
 														{/* {isDm && <FaDiceD20 /> } */}
 													</span>
 													{log.code !== startingWealthLog.code && <ImMenu className="dIcon" />}
