@@ -86,3 +86,8 @@ $offset: 1rem;
         background-color: $color-moveBg;
     }
 }
+
+.hide {
+    // display: none;
+    pointer-events: none;
+}

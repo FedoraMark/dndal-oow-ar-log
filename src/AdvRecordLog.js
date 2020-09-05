@@ -2,6 +2,7 @@ import React from "react";
 import classnames from "classnames";
 import SideNav, { NavItem, NavIcon, NavText } from "@trendmicro/react-sidenav";
 import arrayMove from "array-move";
+import downloadjs from "downloadjs";
 import _each from "lodash/each";
 import _filter from "lodash/filter";
 import _find from "lodash/find";
@@ -22,8 +23,10 @@ import ClickOutside from "react-click-outside";
 import { useToasts } from "react-toast-notifications";
 
 import { AiFillDollarCircle } from "react-icons/ai";
+import { BiImport, BiExport, BiReset } from "react-icons/bi";
 // import { FaDiceD20 } from "react-icons/fa";
 import { GiPokecog, GiD4} from "react-icons/gi";
+import { GrSettingsOption } from "react-icons/gr";
 import { ImMenu } from "react-icons/im";
 import { RiEditCircleFill } from "react-icons/ri";
 
@@ -56,7 +59,9 @@ const SALVAGE = "salvage";
 const NOTES = "notes";
 const START = "start";
 
-const GENERIC_CLASS = {Player: 1}
+const GENERIC_CLASS = {Player: 1};
+
+const resetTime = 250; //ms
 
 function withToast(Component) {
     return function WrappedComponent(props) {
@@ -66,24 +71,16 @@ function withToast(Component) {
 }
 
 class AdvRecordLog extends React.Component {
+	constructor(props) {
+        super(props);
+        this.inputRef = React.createRef();
+    }
+
 	state = {
-		charData: {
-	        "player": "",
-	        "dci": "",
-	        "character": "Sam Pel",
-	        "classes": GENERIC_CLASS,
-	        "tier": 0,
-	        "base": "",
-	        "wealth": emptyWealth
-	    },
-	    optionsData: {
-	    	autoLeveling: getFirstKey(GENERIC_CLASS),
-			tierSetting: 0,
-			autoWealth: true,
-			// useEp: true,
-	    },
-	    gameData: [{...startingWealthLog}],
-	    statusData: [startingWealthStatus],
+		charData: {},
+	    optionsData: {},
+	    gameData: [],
+	    statusData: [],
 
 	    gameDataReorder: [],
 	    statusDataReorder: [],
@@ -96,9 +93,12 @@ class AdvRecordLog extends React.Component {
 	    openEditorCode: "",
 	    showReorderModal: false,
 	    finishedMoving: false,
+	    showOptionsModal: false,
+	    changingData: false,
 	};
 
 	componentDidMount() {
+		this.resetData(true,true);
 		this.setState({ loaded: true });
 	}
 
@@ -380,6 +380,91 @@ class AdvRecordLog extends React.Component {
 		this.setState({gameDataReorder: newGameList, statusDataReorder: newStatusList });
 	};
 
+	// SAVE AND LOAD
+	exportData = () => {
+		// boy I really badly organized this data ...
+		let jsonData = {
+			player: { ...this.state.charData },
+			options: {...this.state.optionsData},
+			games: [...this.state.gameData],
+			statuses: [...this.state.statusData],
+		};
+
+		let fileName = jsonData.player.character.trim() !== "" ? jsonData.player.character.trim() : "unnamed";
+
+		downloadjs(JSON.stringify(jsonData), fileName + "_oowar-log.json", "application/json");
+
+		this.setState({showOptionsModal: false});
+	}
+
+	importData = (e) => {
+
+	    // TBD: CONFIRMATION
+
+	    let fileData = (e.target.files[0]);
+
+	    let reader = new FileReader();
+	    reader.readAsText(fileData);
+
+	    //TBD: VALIDATIONS
+
+	    this.setState({ showOptionsModal: false });
+
+	    reader.onload = () => {
+	        let jsonResult = JSON.parse(reader.result);
+	        this.props.addToast("Logs successfully loaded from " + fileData.name, { appearance: "warning" })
+
+	        this.setData(jsonResult.player, jsonResult.options, jsonResult.games, jsonResult.statuses);
+	    };
+
+	    reader.onerror = () => {
+	        this.setState({ changingData: false });
+	        this.props.addToast("Failed to read file " + fileData.name, { appearance: "error" })
+	    };
+	}
+
+	resetData = (suppressWarning, suppressToast) => {
+		this.setData(
+			{
+		        "player": "",
+		        "dci": "",
+		        "character": "Sam Pel",
+		        "classes": GENERIC_CLASS,
+		        "tier": 0,
+		        "base": "",
+		        "wealth": emptyWealth
+		    },
+		    {
+		    	autoLeveling: getFirstKey(GENERIC_CLASS),
+				tierSetting: 0,
+				autoWealth: true,
+				// useEp: true,
+		    },
+		    [{...startingWealthLog}],
+		    [startingWealthStatus],
+		);
+
+		if (!suppressToast) {
+			this.props.addToast("Logs have been reset", { appearance: "warning" })
+		}
+
+		this.setState({showOptionsModal: false});
+	}
+
+	setData = (char,opt,game,status) => {
+		this.setState({ changingData: true });
+
+		setTimeout(() => {
+            this.setState({
+                charData: char,
+                optionsData: opt,
+                gameData: game,
+                statusData: status,
+                changingData: false,
+            });
+        }, resetTime);
+	}
+
 	//RENDERERS
 	render_gameLogs = (gamesObj) => {
 		return (
@@ -604,6 +689,29 @@ class AdvRecordLog extends React.Component {
 		);
 	};
 
+	render_dataModal = () => {
+		return (
+			<Modal
+				className="optionsModal"
+				size="lg"
+				centered
+				show={this.state.showOptionsModal}
+				onHide={() => {this.setState({showOptionsModal: false});}}
+			>
+				<Modal.Header closeButton>
+					<Modal.Title>Options</Modal.Title>
+				</Modal.Header>
+
+				<Modal.Body className="dataOptions">
+					<input type="file" accept=".json" ref={this.inputRef} style={{display: "none"}} onChange={this.importData.bind(this)} />
+					<Button className="oswald" size="lg" variant="info" onClick={this.exportData.bind(this)}>Export&nbsp;<BiExport /></Button>
+					<Button className="oswald" size="lg" variant="info" onClick={() => {this.inputRef.current.click()}}>Import&nbsp;<BiImport /></Button>
+					<Button className="oswald" size="lg" variant="outline-danger" onClick={this.resetData.bind(this,false,false)}>Reset&nbsp;<BiReset /></Button>
+				</Modal.Body>
+			</Modal>
+		);
+	}
+
 	render_reorderModal = () => {
 		var first = _find(this.state.gameDataReorder, (log) => {
 			return log.record === START;
@@ -708,17 +816,21 @@ class AdvRecordLog extends React.Component {
 							if (JSON.stringify([...this.state.gameDataReorder].reverse()) === JSON.stringify(this.state.gameData)) {
 								this.props.addToast("No changes to log order", { appearance: "info" })
 							} else {
+								this.setState({changingData: true});
 								this.props.addToast("Logs successfully rearranged", { appearance: "success" })
 							}
 
-							this.setState(
-								{	
-									finishedMoving: true,
-									showReorderModal: false,
-									gameData: [...this.state.gameDataReorder].reverse(),
-									statusData: [...this.state.statusDataReorder].reverse(),
-								}
-							);
+							setTimeout(() => {
+								this.setState(
+									{	
+										finishedMoving: true,
+										showReorderModal: false,
+										gameData: [...this.state.gameDataReorder].reverse(),
+										statusData: [...this.state.statusDataReorder].reverse(),
+										changingData: false,
+									}
+								);
+							}, resetTime);
 						}}
 					>
 						Save
@@ -730,22 +842,33 @@ class AdvRecordLog extends React.Component {
 
 	render() {
 		return (
-			
-				<DragDropContext onDragEnd={this.onDragEnd}>
-					<div className="log">
+			<DragDropContext onDragEnd={this.onDragEnd}>
+				<div className="log">
 
-						{this.render_activeEventSideBar()}
+					{this.render_activeEventSideBar()}
 
-						<Jumbotron>
-							<Container>
-								<div className="titleBox">
-									<h1>Eberron: Oracle of War</h1>
-									<h2>Adventure Records Log</h2>
-								</div>
-							</Container>
-						</Jumbotron>
+					<div className="topNav">
+						<div className="flexSpace" />
+						<Button 
+							variant="link" 
+							className={this.state.showOptionsModal ? "spin" : ""} 
+							onClick={() => {this.setState({showOptionsModal: true});}}
+						>
+							<GrSettingsOption />
+						</Button>
+					</div>
 
-						<span className="contentWrapper">
+					<Jumbotron>
+						<Container>
+							<div className="titleBox">
+								<h1>Eberron: Oracle of War</h1>
+								<h2>Adventure Records Log</h2>
+							</div>
+						</Container>
+					</Jumbotron>
+
+					<Fade in={!this.state.changingData && this.state.loaded} unmountOnExit mountOnEnter>
+							<span className="contentWrapper">
 							<Container>
 								<Player 
 									playerObj={this.state.charData}
@@ -761,13 +884,14 @@ class AdvRecordLog extends React.Component {
 
 							{this.render_gameLogs(this.state.gameData)}
 						</span>
+					</Fade>
 
-						<Jumbotron className="footer" />
-					</div>
+					<Jumbotron className="footer" />
+				</div>
 
-					{this.render_reorderModal()}
-				</DragDropContext>
-
+				{this.render_reorderModal()}
+				{this.render_dataModal()}
+			</DragDropContext>
 		);
 	}
 }

@@ -985,7 +985,8 @@ class Player extends Component {
 							left
 							cancel
 							onClick={this.editInfo.bind(this, true)}
-							active={this.state.isEditing}
+							active
+							hide={!this.state.isEditing}
 						/>
 					</Fade>
 

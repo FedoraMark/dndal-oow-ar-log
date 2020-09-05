@@ -1,6 +1,16 @@
 // IMPORTS
 @import "./utils/common.scss";
 
+// ANIMS
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 // STYLES
 .draggableList {
     display: block;
@@ -113,6 +123,22 @@
     }
 }
 
+.optionsModal {
+    .dataOptions {
+        display: grid;
+
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 1fr 1fr;
+        gap: 1rem;
+
+        button {
+            min-width: 4rem;
+
+            @include flex();
+        }
+    }
+}
+
 .log {
     min-height: 100vh;
 
@@ -141,6 +167,41 @@
         background: $color-background-white;
 
         @include flex(center, flex-start, column);
+    }
+
+    .topNav {
+        position: absolute;
+        top: 0;
+        right: 0;
+
+        padding: .75rem .75rem .75rem 4.75rem;
+
+        @include flex(stretch,flex-end);
+
+        button {
+            padding: 0;
+
+            font-size: 2rem;
+
+            opacity: .5;
+            color: $color-active-background;
+
+            @include flex();
+            @include transition();
+
+            &.spin,
+            &:hover,
+            &:focus {
+                opacity: 1;
+
+                svg {
+                    animation-name: spin;
+                    animation-duration: 3000ms;
+                    animation-timing-function: linear;
+                    animation-iteration-count: infinite;
+                }
+            }
+        }
     }
 
     .titleBox {
@@ -558,6 +619,13 @@
 
         .dItem {
             font-size: 1.25rem;
+        }
+    }
+
+    .optionsModal {
+        .dataOptions {
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: 1fr;
         }
     }
 

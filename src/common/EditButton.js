@@ -23,11 +23,13 @@ class EditButton extends Component {
 		cancel: PropTypes.bool,
 		left: PropTypes.bool,
 		move: PropTypes.bool,
+		hide: PropTypes.bool,
 	};
 
 	static defaultProps = {
 		className: "",
 		active: false,
+		hide: false,
 	};
 
 	state = {
@@ -35,11 +37,11 @@ class EditButton extends Component {
 	};
 
 	componentWillReceiveProps(newProps) {
-		this.setState({ active: newProps.active });
+		this.setState({ active: newProps.active, hide: newProps.hide });
 	}
 
 	render() {
-		const { onClick, className, active, save, cancel, left, move } = this.props;
+		const { onClick, className, active, save, cancel, left, move, hide } = this.props;
 
 		return (
 			<button
@@ -51,6 +53,7 @@ class EditButton extends Component {
 					save && style.save,
 					cancel && style.cancel,
 					move && style.move,
+					hide && style.hide,
 				)}
 				ref={this.editButton}
 				onClick={(e) => {

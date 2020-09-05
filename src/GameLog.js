@@ -470,11 +470,12 @@ class GameLog extends React.Component {
 							mountOnEnter
 							unmountOnExit
 						>
-							<EditButton
+                            <EditButton
 								left
 								cancel
 								onClick={this.setIsEditing.bind(this,false,false)}
 								active
+                                hide={!this.state.isEditing}
 							/>
 						</Fade>
 
