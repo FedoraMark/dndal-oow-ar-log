@@ -211,13 +211,12 @@ body {
 
 // Extra small devices (portrait phones, less than 576px)
 // No media query for `xs` since this is the default in Bootstrap
-
+._partCondense {
+    display: none;
+}
 
 // Small devices (landscape phones, 576px and up)
 @media (min-width: 576px) {
-    ._partCondense {
-        display: none;
-    }
 }
 
 // Medium devices (tablets, 768px and up)

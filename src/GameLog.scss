@@ -55,6 +55,10 @@ $halfGap: .25rem;
                 display: none;
             }
         }
+
+        .titleWrapper .title {
+            padding: 1rem;
+        }
     }
 
     &:not(.editing) {

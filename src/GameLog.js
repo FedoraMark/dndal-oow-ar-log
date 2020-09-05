@@ -697,7 +697,7 @@ class GameLog extends React.Component {
 									</InputGroup.Prepend>
 									<InputGroup.Append>
 										<InputGroup.Text className={classnames("bookFont bold")}>
-											{totalPlayed}
+											{totalPlayed === "" ? 0 : totalPlayed}
 										</InputGroup.Text>
 									</InputGroup.Append>
 								</InputGroup>
@@ -713,10 +713,19 @@ class GameLog extends React.Component {
 											pattern="[0-9]*"
 											min="0"
 											max="24"
+                                            placeholder="0"
 											value={hoursPlayed}
 											onKeyDown={(e) => {excludeInWealth.includes(e.key) && e.preventDefault();}}
 											onChange={(e) => {
-												var limit = e.target.value > 24 ? 24 : e.target.value;
+                                                var limit = Math.abs(parseInt(e.target.value));
+                                                
+                                                if (limit < 0 || isNaN(limit) || limit === "") {
+                                                    limit = "";
+                                                } else if (limit > 24) {
+                                                    limit = 24;
+                                                }
+
+                                                e.target.value = limit;
 												this.updateEventHandler({salvageHours: {hours: limit}},true);
 											}}
 										/>
@@ -1685,12 +1694,6 @@ class GameLog extends React.Component {
 
 							<div className="logDataWrapper">
 								<div className={classnames("twoCol notesLog", this.state.data.record === START && "startLog")}>
-									{!!this.state.tempNotes !== "" &&
-                                        <div className="rightCol arCol">
-                                            {this.render_advNotes(true)}
-                                        </div>
-                                    }
-
                                     <div className="leftCol arCol">
 										{this.state.data.record === NOTES ? this.render_wealth(true) :
 											<Container className="wealthWrapper wrapper">
@@ -1709,6 +1712,12 @@ class GameLog extends React.Component {
 											</Container>
 										}
 									</div>
+
+                                    {!!this.state.tempNotes !== "" &&
+                                        <div className="rightCol arCol">
+                                            {this.render_advNotes(true)}
+                                        </div>
+                                    }
 								</div>
 							</div>
 							
