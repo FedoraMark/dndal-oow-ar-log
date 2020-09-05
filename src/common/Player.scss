@@ -634,6 +634,14 @@ $halfGap: .25rem;
                         &:active {
                             transition: none;
                         }
+
+                        .buttonIcon {
+                            margin-left: .25rem;
+
+                            svg {
+                                margin-top: -.2rem;
+                            }
+                        }
                     }
                 }
             }

@@ -15,7 +15,8 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import { useToasts } from "react-toast-notifications";
 
-import { AiTwotoneDelete } from "react-icons/ai";
+import { AiTwotoneDelete, AiFillCloseCircle } from "react-icons/ai";
+import { FaSave } from "react-icons/fa";
 import { HiPlusCircle } from "react-icons/hi";
 import { IoIosCalculator, IoMdHelpCircle } from "react-icons/io";
 
@@ -790,7 +791,7 @@ class Player extends Component {
 									onMouseEnter={(e) => {this.cancelButton.current.focus()}}
 									onMouseUp={(e) => {this.cancelButton.current.blur()}}
 								>
-									Cancel
+									Cancel<span className="buttonIcon"><AiFillCloseCircle /></span>
 								</Button>
 
 								<Button
@@ -802,7 +803,7 @@ class Player extends Component {
 									onMouseEnter={(e) => {this.saveButton.current.focus()}}
 									onMouseUp={(e) => {this.saveButton.current.blur()}}
 								>
-									Save
+									Save<span className="buttonIcon"><FaSave /></span>
 								</Button>
 							</div>
 						</li>
