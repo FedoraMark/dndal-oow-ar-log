@@ -35,6 +35,13 @@ $halfGap: .25rem;
 
     @include flex(center, flex-start, column);
 
+    hr {
+        width: 100%;
+        margin-top: .5rem;
+
+        border-color: $color-bshr !important;
+    }
+
     .playerBox {
         position: relative;
 
@@ -495,7 +502,7 @@ $halfGap: .25rem;
             }
 
             .optionsLevelWrapper {
-                margin: 0 $gap;
+                margin: 0 $gap $gap;
 
                 .leftGroup {
                     margin: 0 $halfGap 0 0;
@@ -593,6 +600,39 @@ $halfGap: .25rem;
                                 text-align: center;
                                 white-space: normal;
                             }
+                        }
+                    }
+                }
+            }
+
+            .actionsWrapper {
+                margin: 0 $gap;
+
+                .leftGroup {
+                    margin: 0 $gap 0 0;
+
+                    flex-basis: 0;
+                }
+
+                .rightGroup {
+                    flex-basis: 0;
+                    flex-grow: 1;
+
+                    @include flex(stretch, space-between, column);
+
+                    a.btn {
+                        margin-bottom: $halfGap;
+
+                        flex-grow: 1;
+
+                        font-family: $fontFamily-oswald;
+
+                        &:last-of-type {
+                            margin-bottom: 0;
+                        }
+
+                        &:active {
+                            transition: none;
                         }
                     }
                 }
@@ -695,6 +735,18 @@ $halfGap: .25rem;
 
                     &:not(:last-of-type) {
                         margin-right: $halfGap !important;
+                    }
+                }
+            }
+
+            .actionsWrapper .rightGroup {
+                flex-direction: row;
+
+                a.btn {
+                    margin-bottom: 0;
+
+                    &:not(:last-of-type) {
+                        margin-right: $gap;
                     }
                 }
             }

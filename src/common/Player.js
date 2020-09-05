@@ -46,6 +46,12 @@ function withToast(Component) {
 }
 
 class Player extends Component {
+	constructor(props) {
+        super(props);
+        this.cancelButton = React.createRef();
+        this.saveButton = React.createRef();
+    }
+
     static propTypes = {
         playerObj: PropTypes.object.isRequired,
         optionsObj: PropTypes.object,
@@ -392,6 +398,143 @@ class Player extends Component {
 			>
 				<div className="editingContent">
 					<ul className="editingFlex">
+						{/* OPTIONS */}
+						<li className="group optionsLevelWrapper splitGroupWrapper">
+							<InputGroup className="playerInfoGroup leftGroup">
+								<InputGroup.Prepend>
+									<InputGroup.Text id="character-options">
+										Options
+									</InputGroup.Text>
+								</InputGroup.Prepend>
+							</InputGroup>
+
+							<div className="playerInfoOptions middleGroup">
+								{/* set leveling */}
+								<InputGroup className="playerInfoGroup dropdownGroup">
+									<DropdownButton
+										variant="light"
+										title={this.state.tempAutoLeveling ? ("Leveling " + this.state.tempAutoLeveling.toUpperCase().replace(/ /g, "\u00a0")) : "Manual Levels"}
+										alignRight
+									>
+										<Dropdown.Item
+											href="#"
+											eventKey="f"
+											active={this.state.tempAutoLeveling === ""}
+											onSelect={(e) => {this.setState({tempAutoLeveling: ""});}}
+										>
+											Manual<span className="condense">ly&nbsp;Assign</span>&nbsp;Levels
+										</Dropdown.Item>
+
+										<Dropdown.Divider />
+
+										{Object.keys(this.state.tempObj.classes).length === 0 && 
+											<Dropdown.Item
+												href="#"
+												disabled
+											>
+												(create a class<span className="condense"> to auto-level</span>)
+											</Dropdown.Item>
+										}
+
+										{_map(this.state.tempObj.classes, (level, clss) => {
+											return (
+												<Dropdown.Item
+													href="#"
+													key={clss}
+													eventKey={clss}
+													active={this.state.tempAutoLeveling === clss}
+													onSelect={(e) => {this.setState({tempAutoLeveling: clss})}}
+												>
+													Auto-level {clss.toUpperCase().replace(/ /g, "\u00a0")}
+												</Dropdown.Item>
+											);
+										})}
+									</DropdownButton>
+								</InputGroup>
+
+								{/* set tier */}
+								<InputGroup className="playerInfoGroup dropdownGroup">
+									<DropdownButton
+										variant="light"
+										title={this.state.tempTierSetting > 0 ? "Tier " + this.state.tempTierSetting : "Auto Tier"}
+										alignRight
+									>
+										<Dropdown.Item
+											href="#"
+											eventKey="0"
+											active={this.state.tempTierSetting === 0}
+											onSelect={(e) => {this.setState({tempTierSetting: 0});}}
+										>
+											Auto
+										</Dropdown.Item>
+										<Dropdown.Divider />
+										{_map([1,2,3,4], (t) => {
+											return (
+												<Dropdown.Item
+													href="#"
+													key={t}
+													eventKey={t}
+													active={this.state.tempTierSetting === t}
+													onSelect={(e) => {this.setState({tempTierSetting: t});}}
+												>
+													Tier {t}
+												</Dropdown.Item>
+											);
+										})}
+									</DropdownButton>
+								</InputGroup>
+
+								{/* set auto last gold */}
+								<InputGroup className="playerInfoGroup dropdownGroup">
+									<DropdownButton
+										variant="light"
+										title={this.state.tempAutoWealth ? "Auto Wealth" : "Manual Wealth"}
+										alignRight
+									>
+										<Dropdown.Item
+											href="#"
+											eventKey="f"
+											active={this.state.tempAutoWealth === true}
+											onSelect={(e) => {this.setState({tempAutoWealth: true});}}
+										>
+											Auto<span className="condense">matically Enter</span> Wealth
+										</Dropdown.Item>
+										<Dropdown.Item
+											href="#"
+											eventKey="t"
+											active={this.state.tempAutoWealth === false}
+											onSelect={
+												(e) => {this.setState({tempAutoWealth: false},
+													(e) => { 
+														if (this.state.autoWealth) {
+															this.updateTempInfo("wealth",this.state.latestWealth)
+														}
+													}
+												);
+											}}
+										>
+											Manual<span className="condense">ly Enter</span> Wealth
+										</Dropdown.Item>
+									</DropdownButton>
+								</InputGroup>
+							</div>
+
+							<InputGroup
+								className="addClassGroup rightGroup"
+								onClick={(e) => {this.setState({showHelpModal: true});}}
+							>
+								<InputGroup.Append className="toBeButton">
+									<InputGroup.Text id="add-class">
+										<span className="helpIcon">
+											<IoMdHelpCircle />
+										</span>
+									</InputGroup.Text>
+								</InputGroup.Append>
+							</InputGroup>
+						</li>
+
+						<hr />
+
 						{/* CHARACTER NAME */}
 						<InputGroup as="li" className="playerInfoGroup">
 							<InputGroup.Prepend>
@@ -625,139 +768,43 @@ class Player extends Component {
 							</InputGroup>
 						</li>
 
-						{/* OPTIONS */}
-						<li className="group optionsLevelWrapper splitGroupWrapper">
+						<hr />
+
+						{/* ACTIONS */}
+						<li className="group actionsWrapper splitGroupWrapper">
 							<InputGroup className="playerInfoGroup leftGroup">
 								<InputGroup.Prepend>
 									<InputGroup.Text id="character-options">
-										Options
+										Actions
 									</InputGroup.Text>
 								</InputGroup.Prepend>
 							</InputGroup>
 
-							<div className="playerInfoOptions middleGroup">
-								{/* set leveling */}
-								<InputGroup className="playerInfoGroup dropdownGroup">
-									<DropdownButton
-										variant="light"
-										title={this.state.tempAutoLeveling ? ("Leveling " + this.state.tempAutoLeveling.toUpperCase().replace(/ /g, "\u00a0")) : "Manual Levels"}
-										alignRight
-									>
-										<Dropdown.Item
-											href="#"
-											eventKey="f"
-											active={this.state.tempAutoLeveling === ""}
-											onSelect={(e) => {this.setState({tempAutoLeveling: ""});}}
-										>
-											Manual<span className="condense">ly&nbsp;Assign</span>&nbsp;Levels
-										</Dropdown.Item>
+							<div className="rightGroup">
+								<Button
+									href="#"
+									variant="secondary"
+									ref={this.cancelButton}
+									disabled={!this.state.isEditing}
+									onClick={this.editInfo.bind(this, true)}
+									onMouseEnter={(e) => {this.cancelButton.current.focus()}}
+									onMouseUp={(e) => {this.cancelButton.current.blur()}}
+								>
+									Cancel
+								</Button>
 
-										<Dropdown.Divider />
-
-										{Object.keys(this.state.tempObj.classes).length === 0 && 
-											<Dropdown.Item
-												href="#"
-												disabled
-											>
-												(create a class<span className="condense"> to auto-level</span>)
-											</Dropdown.Item>
-										}
-
-										{_map(this.state.tempObj.classes, (level, clss) => {
-											return (
-												<Dropdown.Item
-													href="#"
-													key={clss}
-													eventKey={clss}
-													active={this.state.tempAutoLeveling === clss}
-													onSelect={(e) => {this.setState({tempAutoLeveling: clss})}}
-												>
-													Auto-level {clss.toUpperCase().replace(/ /g, "\u00a0")}
-												</Dropdown.Item>
-											);
-										})}
-									</DropdownButton>
-								</InputGroup>
-
-								{/* set tier */}
-								<InputGroup className="playerInfoGroup dropdownGroup">
-									<DropdownButton
-										variant="light"
-										title={this.state.tempTierSetting > 0 ? "Tier " + this.state.tempTierSetting : "Auto Tier"}
-										alignRight
-									>
-										<Dropdown.Item
-											href="#"
-											eventKey="0"
-											active={this.state.tempTierSetting === 0}
-											onSelect={(e) => {this.setState({tempTierSetting: 0});}}
-										>
-											Auto
-										</Dropdown.Item>
-										<Dropdown.Divider />
-										{_map([1,2,3,4], (t) => {
-											return (
-												<Dropdown.Item
-													href="#"
-													key={t}
-													eventKey={t}
-													active={this.state.tempTierSetting === t}
-													onSelect={(e) => {this.setState({tempTierSetting: t});}}
-												>
-													Tier {t}
-												</Dropdown.Item>
-											);
-										})}
-									</DropdownButton>
-								</InputGroup>
-
-								{/* set auto last gold */}
-								<InputGroup className="playerInfoGroup dropdownGroup">
-									<DropdownButton
-										variant="light"
-										title={this.state.tempAutoWealth ? "Auto Wealth" : "Manual Wealth"}
-										alignRight
-									>
-										<Dropdown.Item
-											href="#"
-											eventKey="f"
-											active={this.state.tempAutoWealth === true}
-											onSelect={(e) => {this.setState({tempAutoWealth: true});}}
-										>
-											Auto<span className="condense">matically Enter</span> Wealth
-										</Dropdown.Item>
-										<Dropdown.Item
-											href="#"
-											eventKey="t"
-											active={this.state.tempAutoWealth === false}
-											onSelect={
-												(e) => {this.setState({tempAutoWealth: false},
-													(e) => { 
-														if (this.state.autoWealth) {
-															this.updateTempInfo("wealth",this.state.latestWealth)
-														}
-													}
-												);
-											}}
-										>
-											Manual<span className="condense">ly Enter</span> Wealth
-										</Dropdown.Item>
-									</DropdownButton>
-								</InputGroup>
+								<Button
+									href="#"
+									variant="primary"
+									ref={this.saveButton}
+									disabled={!this.state.isEditing}
+									onClick={this.editInfo.bind(this, false)}
+									onMouseEnter={(e) => {this.saveButton.current.focus()}}
+									onMouseUp={(e) => {this.saveButton.current.blur()}}
+								>
+									Save
+								</Button>
 							</div>
-
-							<InputGroup
-								className="addClassGroup rightGroup"
-								onClick={(e) => {this.setState({showHelpModal: true});}}
-							>
-								<InputGroup.Append className="toBeButton">
-									<InputGroup.Text id="add-class">
-										<span className="helpIcon">
-											<IoMdHelpCircle />
-										</span>
-									</InputGroup.Text>
-								</InputGroup.Append>
-							</InputGroup>
 						</li>
 					</ul>
 				</div>
