@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import * as serviceWorker from "./serviceWorker";
-import { BrowserRouter as Router, Switch, Route, /*Link*/ } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { ToastProvider } from "react-toast-notifications";
 import AdvRecordLog from "AdvRecordLog";
 
