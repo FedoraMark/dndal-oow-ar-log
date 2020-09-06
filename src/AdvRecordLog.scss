@@ -282,8 +282,8 @@ $namePadding: 2px;
             opacity: .5;
             color: $color-active-background;
 
-            @include flex();
             @include transition();
+            @include flex();
 
             &.spin,
             &:hover,
@@ -473,6 +473,10 @@ $namePadding: 2px;
 
             @include flex(center,center,column);
 
+            span.bullet {
+                margin: 0 .5rem;
+            }
+
             li {
                 font-family: $fontFamily-book-normal;
 
@@ -512,14 +516,6 @@ $namePadding: 2px;
                     }
                 }
 
-                &.githubButton {
-                    margin-top: .25rem;
-
-                    span {
-                        @include flex();
-                    }
-                }
-
                 &.kofi {
                     a {
                         color: $color-active-background;
@@ -544,6 +540,14 @@ $namePadding: 2px;
 
                     svg {
                         margin: .25rem 0 0 .35rem;
+                    }
+                }
+
+                .githubButton {
+                    margin: 0;
+
+                    span {
+                        @include flex();
                     }
                 }
             }
@@ -780,10 +784,6 @@ $namePadding: 2px;
 
                 &.bullet {
                     display: initial;
-                }
-
-                &.githubButton {
-                    margin: 0;
                 }
             }
         }

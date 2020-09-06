@@ -870,19 +870,17 @@ class AdvRecordLog extends React.Component {
 				<ul className="bottomInfo">
 					<li>
 						<span>Created&nbsp;by&nbsp;<AiFillGithub />&nbsp;</span><a href="https://github.com/FedoraMark"><span className="fedoram">Fedora</span><span className="fmark">Mark</span></a>
-					</li>
-
-					<li className="bullet">{'\u2022'}</li>
-
-			    	<li className="githubButton">
-						<GitHubButton
-							href="https://github.com/fedoramark/dndal-oow-ar-log/issues"
-							data-icon="octicon-issue-opened"
-							// data-show-count="true"
-							aria-label="Issue fedoramark/dndal-oow-ar-log on GitHub"
-						>
-							Issue
-						</GitHubButton>
+						<span className="bullet">{'\u2022'}</span>
+						<span className="githubButton">
+							<GitHubButton
+								href="https://github.com/fedoramark/dndal-oow-ar-log/issues"
+								data-icon="octicon-issue-opened"
+								// data-show-count="true"
+								aria-label="Issue fedoramark/dndal-oow-ar-log on GitHub"
+							>
+								Issue
+							</GitHubButton>
+						</span>
 					</li>
 					
 					<li className="bullet">{'\u2022'}</li>
