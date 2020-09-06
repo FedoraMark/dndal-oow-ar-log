@@ -31,6 +31,7 @@ import { BiImport, BiExport, BiReset } from "react-icons/bi";
 import { GiPokecog, GiD4 } from "react-icons/gi";
 import { GrSettingsOption } from "react-icons/gr";
 import { ImMenu } from "react-icons/im";
+import { SiKoFi } from "react-icons/si";
 import { RiEditCircleFill } from "react-icons/ri";
 
 import ConfirmationModal from "common/ConfirmationModal";
@@ -38,6 +39,7 @@ import EditButton from "common/EditButton";
 import Player from "common/Player";
 import Summary from "common/Summary";
 import GameLog from "GameLog";
+
 import {
 	fadeIn,
 	getFirstObject,
@@ -869,6 +871,19 @@ class AdvRecordLog extends React.Component {
 					<li>
 						<span>Created&nbsp;by&nbsp;<AiFillGithub />&nbsp;</span><a href="https://github.com/FedoraMark"><span className="fedoram">Fedora</span><span className="fmark">Mark</span></a>
 					</li>
+
+					<li className="bullet">{'\u2022'}</li>
+
+			    	<li className="githubButton">
+						<GitHubButton
+							href="https://github.com/fedoramark/dndal-oow-ar-log/issues"
+							data-icon="octicon-issue-opened"
+							// data-show-count="true"
+							aria-label="Issue fedoramark/dndal-oow-ar-log on GitHub"
+						>
+							Issue
+						</GitHubButton>
+					</li>
 					
 					<li className="bullet">{'\u2022'}</li>
 					
@@ -890,20 +905,14 @@ class AdvRecordLog extends React.Component {
 				    >
 				    	<li className="attrLink">Attributions</li>
 				    </OverlayTrigger>
-
-			    	<li className="bullet">{'\u2022'}</li>
-
-			    	<li className="githubButton">
-						<GitHubButton
-							href="https://github.com/fedoramark/dndal-oow-ar-log/issues"
-							data-icon="octicon-issue-opened"
-							// data-show-count="true"
-							aria-label="Issue fedoramark/dndal-oow-ar-log on GitHub"
-						>
-							Issue
-						</GitHubButton>
-					</li>
 				    
+					<li className="bullet">{'\u2022'}</li>
+
+				    <li className="kofi">
+						<a  as="a" href="https://ko-fi.com/J3J224IVG" target="_blank">
+							Spare some coin? <SiKoFi />
+						</a>
+					</li>
 				</ul>
 			</Jumbotron>
     	);

@@ -14,6 +14,65 @@ $namePadding: 2px;
     }
 }
 
+@-webkit-keyframes swing {
+    20% {
+        -webkit-transform: rotate(15deg);
+                transform: rotate(15deg);
+    }
+
+    40% {
+        -webkit-transform: rotate(-10deg);
+                transform: rotate(-10deg);
+    }
+
+    60% {
+        -webkit-transform: rotate(5deg);
+                transform: rotate(5deg);
+    }
+
+    80% {
+        -webkit-transform: rotate(-5deg);
+                transform: rotate(-5deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+    }
+}
+
+@keyframes swing {
+    20% {
+        -webkit-transform: rotate(15deg);
+            -ms-transform: rotate(15deg);
+                transform: rotate(15deg);
+    }
+
+    40% {
+        -webkit-transform: rotate(-10deg);
+            -ms-transform: rotate(-10deg);
+                transform: rotate(-10deg);
+    }
+
+    60% {
+        -webkit-transform: rotate(5deg);
+            -ms-transform: rotate(5deg);
+                transform: rotate(5deg);
+    }
+
+    80% {
+        -webkit-transform: rotate(-5deg);
+            -ms-transform: rotate(-5deg);
+                transform: rotate(-5deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(0deg);
+            -ms-transform: rotate(0deg);
+                transform: rotate(0deg);
+    }
+}
+
 // STYLES
 .attrList {
     padding-left: 1rem;
@@ -458,6 +517,33 @@ $namePadding: 2px;
 
                     span {
                         @include flex();
+                    }
+                }
+
+                &.kofi {
+                    a {
+                        color: $color-active-background;
+
+                        &:hover,
+                        &:focus {
+                            color: black;
+
+                            svg {
+                                -webkit-transform-origin: top center;
+                                    -ms-transform-origin: top center;
+                                        transform-origin: top center;
+
+                                -webkit-animation-name: swing;
+                                        animation-name: swing;
+                                animation-duration: 1000ms;
+                                animation-timing-function: ease;
+                                animation-iteration-count: infinite;
+                            }
+                        }
+                    }
+
+                    svg {
+                        margin: .25rem 0 0 .35rem;
                     }
                 }
             }
