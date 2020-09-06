@@ -1,9 +1,8 @@
 {
-  "homepage": "http://fedoramark.github.io/dndal-oow-ar-log",
+  "homepage": "http://oracleofwar.games",
   "name": "dndal-oow-ar-log",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://oracleofwar.games",
   "dependencies": {
     "@popperjs/core": "^2.4.4",
     "@testing-library/jest-dom": "^4.2.4",
