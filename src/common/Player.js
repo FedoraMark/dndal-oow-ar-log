@@ -920,6 +920,7 @@ class Player extends Component {
     		<Modal
 				className="helpModal"
 				size={"lg"}
+				scrollable
 				show={this.state.showHelpModal}
 				onHide={(e) => {this.setState({showHelpModal: false});}}
 			>
