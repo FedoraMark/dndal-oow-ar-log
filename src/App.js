@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import { HashRouter, Route } from "react-router-dom";
+import { HashRouter, Route, Link } from "react-router-dom";
 import AdvRecordLog from "AdvRecordLog";
 import { ToastProvider } from "react-toast-notifications";
 
 class App extends Component {
     render() {
         return (
-            <HashRouter basename="/">
+            <HashRouter basename="/log">
 				<Route path="/" component={Log} exact />
 				<Route path="/log" component={Log} />
 			</HashRouter>
