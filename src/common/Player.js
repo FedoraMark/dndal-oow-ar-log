@@ -672,7 +672,7 @@ class Player extends Component {
 													autoComplete={denom === "cp" ? "new-password" : "off"}
 												/>
 												<InputGroup.Append>
-													<InputGroup.Text id={denom}>
+													<InputGroup.Text className="help" id={denom}>
 														<OverlayTrigger
 															placement="top"
 															overlay={

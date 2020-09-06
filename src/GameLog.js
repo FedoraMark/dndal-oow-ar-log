@@ -1176,15 +1176,14 @@ class GameLog extends React.Component {
 					placement="top"
 					overlay={<Tooltip>Unique Idenifier</Tooltip>}
 				>
-					<InputGroup>
-					
+					<InputGroup className="help">
 						<InputGroup.Prepend>
 							<InputGroup.Text className="oswald">
 								Code
 							</InputGroup.Text>
 						</InputGroup.Prepend>
 						<Form.Control
-							className="handwritten"
+							className="typewriter help"
 							value={this.state.data.code}
 							disabled
 						/>

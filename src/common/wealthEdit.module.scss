@@ -11,6 +11,8 @@
 
         font-size: 1rem !important;
 
+        cursor: help;
+
         input,
         span span {
             @include transition();

@@ -123,6 +123,10 @@ body {
     @include blur();
 }
 
+.help {
+    cursor: help;
+}
+
 .flexSpace {
     flex-grow: 1;
 }
@@ -188,6 +192,9 @@ body {
     font-family: $fontFamily-oswald;
 }
 
+.typewriter {
+    font-family: Courier New, monospace;
+}
 
 .modalDiceIcon {
     margin-top: -.3rem;

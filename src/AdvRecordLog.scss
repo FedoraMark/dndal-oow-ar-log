@@ -1,6 +1,9 @@
 // IMPORTS
 @import "./utils/common.scss";
 
+// VARS
+$namePadding: 2px;
+
 // ANIMS
 @keyframes spin {
     from {
@@ -12,6 +15,11 @@
 }
 
 // STYLES
+.attrList {
+    padding-left: 1rem;
+    margin: 0;
+}
+
 .draggableList {
     display: block;
     padding: 0;
@@ -395,7 +403,65 @@
     }
 
     .footer {
+        padding: 1rem 1rem 5rem;
         margin: 0 !important;
+
+        .bottomInfo {
+            padding: 0;
+            margin: 0;
+
+            list-style: none;
+
+            @include flex(center,center,column);
+
+            li {
+                font-family: $fontFamily-book-normal;
+
+                color: $color-active-background;
+
+                @include flex();
+
+                &.bullet {
+                    display: none;
+                    margin: 0 .5rem;
+                }
+
+                a {
+                    display: inline-flex;
+
+                    text-decoration: none;
+
+                    @include transition();
+
+                    .fedoram {
+                        padding-top: $namePadding;
+                    }
+
+                    .fmark {
+                        padding-bottom: $namePadding;
+                    }
+                }
+
+                &.attrLink {
+                    cursor: help !important;
+
+                    color: $color-active-background;
+
+                    &:hover,
+                    &:focus {
+                        color: black;
+                    }
+                }
+
+                &.githubButton {
+                    margin-top: .25rem;
+
+                    span {
+                        @include flex();
+                    }
+                }
+            }
+        }
     }
 
     .activeBarWrapper {
@@ -601,10 +667,6 @@
 
 // Small devices (landscape phones, 576px and up)
 @media (min-width:576px) {
-    .draggableList {
-        width: 85%;
-    }
-
     .log {
         .titleBox {
             h1 {
@@ -618,6 +680,26 @@
 
         .addLogWrapper .customItem .card-body {
             @include flex(center, flex-start);
+        }
+
+        .draggableList {
+            width: 85%;
+        }
+
+        .footer .bottomInfo {
+            flex-direction: row;
+
+            li {
+                margin-bottom: initial;
+
+                &.bullet {
+                    display: initial;
+                }
+
+                &.githubButton {
+                    margin: 0;
+                }
+            }
         }
     }
 }

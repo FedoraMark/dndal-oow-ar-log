@@ -19,13 +19,16 @@ import Fade from "react-bootstrap/Fade";
 import Form from "react-bootstrap/Form";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Modal from "react-bootstrap/Modal";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Popover from "react-bootstrap/Popover";
 import ClickOutside from "react-click-outside";
+import GitHubButton from "react-github-btn";
 import { useToasts } from "react-toast-notifications";
 
-import { AiFillDollarCircle } from "react-icons/ai";
+import { AiFillDollarCircle, AiFillGithub } from "react-icons/ai";
 import { BiImport, BiExport, BiReset } from "react-icons/bi";
 // import { FaDiceD20 } from "react-icons/fa";
-import { GiPokecog, GiD4} from "react-icons/gi";
+import { GiPokecog, GiD4 } from "react-icons/gi";
 import { GrSettingsOption } from "react-icons/gr";
 import { ImMenu } from "react-icons/im";
 import { RiEditCircleFill } from "react-icons/ri";
@@ -90,12 +93,13 @@ class AdvRecordLog extends React.Component {
 	    eventArr: [],
 	    deleteCode: "",
 	    openEditorCode: "",
-	    showReorderModal: false,
 	    finishedMoving: false,
-	    showOptionsModal: false,
 	    changingData: false,
 
-	    confirmReset: false,
+	   	showReorderModal: false,
+	    showOptionsModal: false,
+
+	   	confirmReset: false,
 	    confirmImport: false,
 	};
 
@@ -858,6 +862,53 @@ class AdvRecordLog extends React.Component {
         );
     }
 
+    render_footer = () => {
+    	return (
+    		<Jumbotron className="footer">
+				<ul className="bottomInfo">
+					<li>
+						<span>Created&nbsp;by&nbsp;<AiFillGithub />&nbsp;</span><a href="https://github.com/FedoraMark"><span className="fedoram">Fedora</span><span className="fmark">Mark</span></a>
+					</li>
+					
+					<li className="bullet">{'\u2022'}</li>
+					
+					<OverlayTrigger
+						trigger={["hover","focus","click"]}
+						placement="top"
+						overlay={
+							<Popover id="attrPop">
+								<Popover.Title as="h3">Attributions</Popover.Title>
+								<Popover.Content>
+									<ul className="attrList">
+										<li>Not Affiliated with D&D Adventurers League or Wizards of the Coast</li>
+										<li>Font clones by u/Solbera</li>
+										<li>Icons: BoxIcons, Font Awesome, Game Icons, IcoMoon</li>
+									</ul>
+								</Popover.Content>
+							</Popover>
+						}	
+				    >
+				    	<li className="attrLink">Attributions</li>
+				    </OverlayTrigger>
+
+			    	<li className="bullet">{'\u2022'}</li>
+
+			    	<li className="githubButton">
+						<GitHubButton
+							href="https://github.com/fedoramark/dndal-oow-ar-log/issues"
+							data-icon="octicon-issue-opened"
+							// data-show-count="true"
+							aria-label="Issue fedoramark/dndal-oow-ar-log on GitHub"
+						>
+							Issue
+						</GitHubButton>
+					</li>
+				    
+				</ul>
+			</Jumbotron>
+    	);
+    }
+
 	render() {
 		let willBlur = this.state.confirmReset || this.state.confirmImport ? "blur__5px" : ""; // some pig
 
@@ -906,7 +957,7 @@ class AdvRecordLog extends React.Component {
 						</span>
 					</Fade>
 
-					<Jumbotron className="footer" />
+					{this.render_footer()}
 				</div>
 
 				{this.render_reorderModal()}
