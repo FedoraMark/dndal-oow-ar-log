@@ -30,12 +30,12 @@ import { GrSettingsOption } from "react-icons/gr";
 import { ImMenu } from "react-icons/im";
 import { RiEditCircleFill } from "react-icons/ri";
 
+import ConfirmationModal from "common/ConfirmationModal";
 import EditButton from "common/EditButton";
 import Player from "common/Player";
 import Summary from "common/Summary";
 import GameLog from "GameLog";
 import {
-	fadeInUp,
 	fadeIn,
 	getFirstObject,
 	getFirstKey,
@@ -51,7 +51,6 @@ import "animate.css";
 import "@trendmicro/react-sidenav/dist/react-sidenav.css";
 
 import games_oow from "./data/oowGames.json";
-// import chara_SamPel from "./data/SamPel.json";
 
 const GAME = "game";
 const EPIC = "epic";
@@ -61,7 +60,7 @@ const START = "start";
 
 const GENERIC_CLASS = {Player: 1};
 
-const resetTime = 250; //ms
+const resetTime = 200; //ms
 
 function withToast(Component) {
     return function WrappedComponent(props) {
@@ -95,6 +94,9 @@ class AdvRecordLog extends React.Component {
 	    finishedMoving: false,
 	    showOptionsModal: false,
 	    changingData: false,
+
+	    confirmReset: false,
+	    confirmImport: false,
 	};
 
 	componentDidMount() {
@@ -398,9 +400,6 @@ class AdvRecordLog extends React.Component {
 	}
 
 	importData = (e) => {
-
-	    // TBD: CONFIRMATION
-
 	    let fileData = (e.target.files[0]);
 
 	    let reader = new FileReader();
@@ -465,15 +464,15 @@ class AdvRecordLog extends React.Component {
         }, resetTime);
 	}
 
+	hideConfModal = (stateStr) => {
+		this.setState({[stateStr]: false});
+	}
+
 	//RENDERERS
 	render_gameLogs = (gamesObj) => {
 		return (
 			<Container className="gameList">
 				{_map(gamesObj, (logData, key) => {
-					let delayTime = this.state.loaded ? 0 : 200;
-					let animClass = this.state.loaded ? fadeIn : fadeInUp;
-					animClass = this.state.finishedMoving ? "" : animClass;
-
 					let wasEpic = !!this.state.statusData[key] && !!this.state.statusData[key][logData.code] && !!this.state.statusData[key][logData.code].isForEpic
 						? this.state.statusData[key][logData.code].isForEpic === true
 						: logData.isForEpic;
@@ -491,8 +490,8 @@ class AdvRecordLog extends React.Component {
 							onExited={this.removeLog.bind(this,logData.code)}
 						>
 							<GameLog
-								className={animClass}
-								style={{ animationDelay: delayTime * key + "ms"}}
+								className={this.state.finishedMoving ? "" : fadeIn}
+								style={{ animationDelay: "0ms"}}
 								data={logData}
 								statuses={this.state.statusData[key]}
 								collapse={!this.state.loaded && Object.keys(this.state.gameData).length !== 1}
@@ -518,7 +517,7 @@ class AdvRecordLog extends React.Component {
 		return (
 			<Container className="newRecordWrapper">
 				<Fade
-					in={Object.keys(this.state.gameData).length > 2 || (Object.keys(this.state.gameData).length > 1 && !!first)}
+					in={(Object.keys(this.state.gameData).length > 1 && !!first) || (Object.keys(this.state.gameData).length > 2)}
 					mountOnEnter
 					unmountOnExit
 				>
@@ -692,7 +691,7 @@ class AdvRecordLog extends React.Component {
 	render_dataModal = () => {
 		return (
 			<Modal
-				className="optionsModal"
+				className={classnames("optionsModal", (this.state.confirmReset || this.state.confirmImport) && "darken")}
 				size="lg"
 				centered
 				show={this.state.showOptionsModal}
@@ -705,9 +704,26 @@ class AdvRecordLog extends React.Component {
 				<Modal.Body className="dataOptions">
 					<input type="file" accept=".json" ref={this.inputRef} style={{display: "none"}} onChange={this.importData.bind(this)} />
 					<Button className="oswald" size="lg" variant="info" onClick={this.exportData.bind(this)}>Export&nbsp;<BiExport /></Button>
-					<Button className="oswald" size="lg" variant="info" onClick={() => {this.inputRef.current.click()}}>Import&nbsp;<BiImport /></Button>
-					<Button className="oswald" size="lg" variant="outline-danger" onClick={this.resetData.bind(this,false,false)}>Reset&nbsp;<BiReset /></Button>
+					<Button className="oswald" size="lg" variant="outline-info" onClick={() => {this.setState({confirmImport: true});}}>Import&nbsp;<BiImport /></Button>
+					<Button className="oswald" size="lg" variant="outline-danger" onClick={() => {this.setState({confirmReset: true});}}>Reset&nbsp;<BiReset /></Button>
 				</Modal.Body>
+
+				<ConfirmationModal 
+					show={this.state.confirmReset} 
+					onConfirm={() => {this.hideConfModal("confirmReset"); this.resetData(false,false);}} 
+					onCancel={this.hideConfModal.bind(this,"confirmReset")}
+					title="Confirm reset?"
+				/>
+
+				<ConfirmationModal 
+					show={this.state.confirmImport} 
+					onConfirm={() => {this.hideConfModal("confirmImport"); this.inputRef.current.click()}} 
+					onCancel={this.hideConfModal.bind(this,"confirmImport")}
+					title="Confirm import?"
+					body={<p style={{fontWeight: "bold"}}>This will delete all current logs. Contine importing?</p>}
+					confirmButton="Continue"
+					confirmButtonVariant="outline-info"
+				/>
 			</Modal>
 		);
 	}
@@ -813,6 +829,8 @@ class AdvRecordLog extends React.Component {
 					<Button
 						variant="info"
 						onClick={() => {
+							this.setState({showReorderModal: false});
+
 							if (JSON.stringify([...this.state.gameDataReorder].reverse()) === JSON.stringify(this.state.gameData)) {
 								this.props.addToast("No changes to log order", { appearance: "info" })
 							} else {
@@ -824,7 +842,6 @@ class AdvRecordLog extends React.Component {
 								this.setState(
 									{	
 										finishedMoving: true,
-										showReorderModal: false,
 										gameData: [...this.state.gameDataReorder].reverse(),
 										statusData: [...this.state.statusDataReorder].reverse(),
 										changingData: false,
@@ -841,9 +858,11 @@ class AdvRecordLog extends React.Component {
     }
 
 	render() {
+		let willBlur = this.state.confirmReset || this.state.confirmImport ? "blur__5px" : ""; // some pig
+
 		return (
 			<DragDropContext onDragEnd={this.onDragEnd}>
-				<div className="log">
+				<div className={classnames("log",willBlur)}>
 
 					{this.render_activeEventSideBar()}
 

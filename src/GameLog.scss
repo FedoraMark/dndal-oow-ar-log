@@ -36,7 +36,7 @@ $halfGap: .25rem;
     &.preview {
         margin: 0;
 
-        pointer-events: none;
+        // pointer-events: none;
 
         input {
             visibility: hidden;
@@ -58,6 +58,10 @@ $halfGap: .25rem;
 
         .titleWrapper .title {
             padding: 1rem;
+
+            .name .titleText .code .hyphen {
+                bottom: .45rem;
+            }
         }
     }
 
@@ -126,6 +130,7 @@ $halfGap: .25rem;
             border-top-color: black;
             border-right-color: black;
             border-bottom-width: 1px;
+            border-bottom-color: transparent;
             border-left-color: black;
 
             &,
@@ -213,7 +218,7 @@ $halfGap: .25rem;
 
                         .hyphen {
                             position: relative;
-                            bottom: .45rem;
+                            bottom: .35rem;
 
                             margin: 0 .05rem;
                         }
@@ -984,12 +989,16 @@ $halfGap: .25rem;
             }
 
             .name {
-                .code {
-                    padding-right: .5rem !important;
-                }
-
                 .titleText {
                     flex-wrap: nowrap;
+
+                    .code {
+                        padding-right: .5rem !important;
+
+                        .hyphen {
+                            bottom: .45rem;
+                        }
+                    }
                 }
             }
         }
@@ -1044,14 +1053,17 @@ $halfGap: .25rem;
             }
         }
     }
+
+    .gameBox.preview .titleWrapper .title .name .titleText .code .hyphen {
+        bottom: .55rem;
+    }
 }
 
 // Medium devices (tablets, 768px and up)
 @media (min-width:768px) {
-    .gameBox .twoCol .arCol {
+    .gameBox .content .twoCol .arCol {
         max-width: 50%;
     }
-
 
     .gameBox:not(.preview) {
         .titleWrapper .title {
@@ -1074,7 +1086,7 @@ $halfGap: .25rem;
                     width: auto;
 
                     .hyphen {
-                        bottom: .6rem;
+                        bottom: .55rem;
                     }
                 }
             }
@@ -1310,7 +1322,7 @@ $halfGap: .25rem;
         .titleWrapper .title {
             font-size: 2.25rem;
 
-            .name {
+            .name .titleText {
                 .code {
                     width: auto;
                     padding-right: .5rem;
@@ -1387,15 +1399,15 @@ $halfGap: .25rem;
 
                     font-size: 1.75rem;
                 }
+            }
 
-                .name {
-                    .code {
-                        width: auto;
-                        padding-right: .75rem;
+            .name .titleText {
+                .code {
+                    width: auto;
+                    padding-right: .75rem;
 
-                        .hyphen {
-                            bottom: .75rem;
-                        }
+                    .hyphen {
+                        bottom: .7rem;
                     }
                 }
             }
@@ -1578,7 +1590,7 @@ $halfGap: .25rem;
         .titleWrapper .title {
             font-size: 2.75rem;
 
-            .name {
+            .name .titleText {
                 .code {
                     width: auto;
                     padding-right: .75rem;

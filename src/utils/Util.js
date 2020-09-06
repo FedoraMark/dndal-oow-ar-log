@@ -3,7 +3,6 @@ import _each from "lodash/each";
 // CONSTS
 export const animFaster = "animate__faster";
 export const fadeIn = "animate__animated animate__fadeIn";
-export const fadeInUp = "animate__animated animate__fadeInUp";
 export const bounceIn = "animate__animated animate__bounceIn";
 export const heartBeat = "animate__animated animate__heartBeat";
 
