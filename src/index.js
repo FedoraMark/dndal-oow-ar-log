@@ -11,8 +11,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 ReactDOM.render(
     <React.StrictMode>
 		<HashRouter basename={'/log'}>
-		  <Route path={`${process.env.PUBLIC_URL}/`} component={ Log } exact />
-		  <Route path={`${process.env.PUBLIC_URL}/log`} component={ Log } exact />
+		  <Route path="/" component={ Log } exact />
 		</HashRouter>
 	</React.StrictMode>,
     document.getElementById("root")
