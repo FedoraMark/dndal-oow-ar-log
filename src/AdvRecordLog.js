@@ -384,7 +384,7 @@ class AdvRecordLog extends React.Component {
 
 	// SAVE AND LOAD
 	exportData = () => {
-		// boy I really badly organized this data ...
+		// Boy, I really badly organized this data ...
 		let jsonData = {
 			player: { ...this.state.charData },
 			options: {...this.state.optionsData},
@@ -392,9 +392,10 @@ class AdvRecordLog extends React.Component {
 			statuses: [...this.state.statusData],
 		};
 
-		let fileName = jsonData.player.character.trim() !== "" ? jsonData.player.character.trim() : "unnamed";
+		let fileName = jsonData.player.character.trim() !== "" ? (jsonData.player.character.trim().replace(" ","_") + "_oowar-log.json") : "unnamed";
 
-		downloadjs(JSON.stringify(jsonData), fileName + "_oowar-log.json", "application/json");
+		downloadjs(JSON.stringify(jsonData), fileName, "application/json");
+		this.props.addToast("File \"" + fileName + "\" exported, check your downloads folder", { appearance: "info" })
 
 		this.setState({showOptionsModal: false});
 	}
@@ -411,7 +412,7 @@ class AdvRecordLog extends React.Component {
 
 	    reader.onload = () => {
 	        let jsonResult = JSON.parse(reader.result);
-	        this.props.addToast("Logs successfully loaded from " + fileData.name, { appearance: "warning" })
+	        this.props.addToast("Logs successfully loaded from \"" + fileData.name + "\"", { appearance: "warning" })
 
 	        this.setData(jsonResult.player, jsonResult.options, jsonResult.games, jsonResult.statuses);
 	    };
