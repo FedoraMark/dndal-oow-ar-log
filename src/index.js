@@ -2,16 +2,21 @@ import React from "react";
 import ReactDOM from "react-dom";
 import * as serviceWorker from "./serviceWorker";
 
-import App from "App";
+import AdvRecordLog from "AdvRecordLog";
+import { ToastProvider } from "react-toast-notifications";
+// import App from "App";
 
 import "./index.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 ReactDOM.render(
-    <React.StrictMode>
-		<App />
+	<React.StrictMode>
+		{/* <App /> */}
+		<ToastProvider autoDismiss autoDismissTimeout="3000">
+			<AdvRecordLog />
+		</ToastProvider>
 	</React.StrictMode>,
-    document.getElementById("root")
+	document.getElementById("root")
 );
 
 // If you want your app to work offline and load faster, you can change
