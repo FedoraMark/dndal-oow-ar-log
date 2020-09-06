@@ -1,5 +1,5 @@
 {
-  "homepage": "http://www.oracleofwar.games",
+  "homepage": "http://www.oracleofwar.games/logs",
   "name": "dndal-oow-ar-log",
   "version": "1.0.0",
   "private": true,
@@ -26,6 +26,7 @@
     "react-dom": "^16.13.1",
     "react-github-btn": "^1.2.0",
     "react-icons": "^3.11.0",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.3",
     "react-three-state-checkbox": "^1.3.4",
     "react-toast-notifications": "^2.4.0",
