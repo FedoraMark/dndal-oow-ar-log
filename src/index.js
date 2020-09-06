@@ -24,9 +24,7 @@ ReactDOM.render(
     document.getElementById("root")
 );
 
-// function Home() {
-// 	// TO BE DONE
-// }
+// function Home() {} // TO BE DONE
 
 function Log() {
     return (
