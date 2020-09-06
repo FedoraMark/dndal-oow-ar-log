@@ -27,7 +27,6 @@ import { useToasts } from "react-toast-notifications";
 
 import { AiFillDollarCircle, AiFillGithub } from "react-icons/ai";
 import { BiImport, BiExport, BiReset } from "react-icons/bi";
-// import { FaDiceD20 } from "react-icons/fa";
 import { GiPokecog, GiD4 } from "react-icons/gi";
 import { GrSettingsOption } from "react-icons/gr";
 import { ImMenu } from "react-icons/im";
@@ -800,7 +799,6 @@ class AdvRecordLog extends React.Component {
 													<span style={{textAlign: "center"}}>
 														{[GAME, EPIC].includes(log.record) && <span className="dCode">{log.code.toUpperCase()}</span>}
 														<span className={classnames("dTitle",![NOTES,START].includes(log.record) && "dItalic")}>{titleOverride}</span>
-														{/* {isDm && <FaDiceD20 /> } */}
 													</span>
 													{log.code !== startingWealthLog.code && <ImMenu className="dIcon" />}
 												</li>
