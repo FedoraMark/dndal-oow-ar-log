@@ -946,7 +946,7 @@ class AdvRecordLog extends React.Component {
 					</Jumbotron>
 
 					<Fade in={!this.state.changingData && this.state.loaded} unmountOnExit mountOnEnter>
-							<span className="contentWrapper">
+						<span className="contentWrapper">
 							<Container>
 								<Player 
 									playerObj={this.state.charData}
@@ -963,6 +963,8 @@ class AdvRecordLog extends React.Component {
 							{this.render_gameLogs(this.state.gameData)}
 						</span>
 					</Fade>
+
+					{!(!this.state.changingData && this.state.loaded) && <div style={{flexGrow: 1}} />}
 
 					{this.render_footer()}
 				</div>
