@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import * as serviceWorker from "./serviceWorker";
-import { BrowserRouter as Router, Switch, Route, /*Link*/ } from "react-router-dom";
+import { HashRouter, Route } from "react-router-dom";
 import { ToastProvider } from "react-toast-notifications";
 import AdvRecordLog from "AdvRecordLog";
 
@@ -10,16 +10,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 ReactDOM.render(
     <React.StrictMode>
-		<Router>
-			<Switch>
-				<Route path="/log">
-					<Log />
-				</Route>
-				<Route path="/">
-					<Log />
-				</Route>
-			</Switch>
-		</Router>
+		<HashRouter>
+		  <Route path='/' component={ Log } exact />
+		  <Route path='/log' component={ Log } exact />
+		</HashRouter>
 	</React.StrictMode>,
     document.getElementById("root")
 );
