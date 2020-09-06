@@ -897,7 +897,7 @@ class AdvRecordLog extends React.Component {
 									<ul className="attrList">
 										<li>Not Affiliated with D&D Adventurers League or Wizards of the Coast</li>
 										<li>Font clones by u/Solbera</li>
-										<li>Icons: BoxIcons, Font Awesome, Game Icons, IcoMoon</li>
+										<li>Some icons by: BoxIcons, Font Awesome, Game Icons, IcoMoon</li>
 									</ul>
 								</Popover.Content>
 							</Popover>
