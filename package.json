@@ -1,7 +1,7 @@
 {
-  "homepage": "http://oracleofwar.games",
+  "homepage": "http://www.oracleofwar.games",
   "name": "dndal-oow-ar-log",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "@popperjs/core": "^2.4.4",
