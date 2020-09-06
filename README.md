@@ -10,6 +10,4 @@ Made with React.
 
 ## Demo
 
-***WORK IN PROGRESS***
-
-https://fedoramark.github.io/dndal-oow-ar-log/
+*** COMING SOON ***
