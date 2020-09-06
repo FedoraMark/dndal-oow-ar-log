@@ -96,6 +96,7 @@ class AdvRecordLog extends React.Component {
 	    openEditorCode: "",
 	    finishedMoving: false,
 	    changingData: false,
+	    hasStarted: false,
 
 	   	showReorderModal: false,
 	    showOptionsModal: false,
@@ -136,6 +137,10 @@ class AdvRecordLog extends React.Component {
 	};
 
 	addRecord = (recordObj, openEditor, record) => {
+		if (!this.state.hasStarted) {
+			this.setState({hasStarted: true});
+		}
+
 		var newLogData = {...recordObj};
 		var newLogStatus = {[recordObj.code]: {wealth: this.getPrevEndingWealth()}};
 		var newEditorCode = openEditor ? recordObj.code : -1;
@@ -315,6 +320,10 @@ class AdvRecordLog extends React.Component {
 		let index = this.state.gameData.findIndex((c) => {
 			return c.code === code
 		});
+
+		if (!this.state.hasStarted) {
+			this.setState({hasStarted: true});
+		}
 
 		if (index < 0) {
 			return console.error("WARNING: Code " + code + " not found in game list!");
@@ -694,7 +703,7 @@ class AdvRecordLog extends React.Component {
 		);
 	};
 
-	render_dataModal = () => {
+	render_optionsModal = () => {
 		return (
 			<Modal
 				className={classnames("optionsModal", (this.state.confirmReset || this.state.confirmImport) && "darken")}
@@ -924,11 +933,12 @@ class AdvRecordLog extends React.Component {
 					{this.render_activeEventSideBar()}
 
 					<div className="topNav">
-						<div className="flexSpace" />
+						{!this.state.hasStarted && <div>Import/Export options</div>}
+
 						<Button 
 							variant="link" 
 							className={this.state.showOptionsModal ? "spin" : ""} 
-							onClick={() => {this.setState({showOptionsModal: true});}}
+							onClick={() => {this.setState({showOptionsModal: true, hasStarted: true});}}
 						>
 							<GrSettingsOption />
 						</Button>
@@ -968,7 +978,7 @@ class AdvRecordLog extends React.Component {
 				</div>
 
 				{this.render_reorderModal()}
-				{this.render_dataModal()}
+				{this.render_optionsModal()}
 			</DragDropContext>
 		);
 	}

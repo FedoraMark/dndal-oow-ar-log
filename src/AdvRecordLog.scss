@@ -272,7 +272,13 @@ $namePadding: 2px;
 
         padding: .75rem .75rem .75rem 4.75rem;
 
-        @include flex(stretch,flex-end);
+        @include flex(center,flex-end);
+
+        & > div {
+            margin-right: .5rem;
+
+            opacity: .5;
+        }
 
         button {
             padding: 0;
