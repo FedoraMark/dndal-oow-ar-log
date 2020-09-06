@@ -8,7 +8,7 @@ class App extends Component {
         return (
             <HashRouter basename={'/'}>
 				<Route path="/log" component={Log} />
-				<Route path="/" component={Log} />
+				<Route path="/" component={Log} exact />
 			</HashRouter>
         );
     }
