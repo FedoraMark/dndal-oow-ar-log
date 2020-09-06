@@ -873,7 +873,7 @@ class AdvRecordLog extends React.Component {
 					<li className="bullet">{'\u2022'}</li>
 					
 					<OverlayTrigger
-						trigger={["hover","focus","click"]}
+						trigger={["hover","focus"]}
 						placement="top"
 						overlay={
 							<Popover id="attrPop">
