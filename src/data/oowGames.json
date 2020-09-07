@@ -57,7 +57,7 @@
             "description": "You have made an enemy of the powerful and wealthy salvage broker Irullan Karnach. You find that life has gotten harder and items more expensive. At the end of this adventure, roll a d20 and consult the chart below. You may add your Charisma modifier to the result:",
             "table": [
               "<b>Less than 5:</b> Remove 10 gp from your gold total, as Irullan tells her network of vendors to charge more for your necessities.",
-              "<b>6–13:</b> Remove 5 gp from your gold total, as Irullan tells her network of vendors to charge more for your necessities.",
+              "<b>6 - 13:</b> Remove 5 gp from your gold total, as Irullan tells her network of vendors to charge more for your necessities.",
               "<b>19+:</b> You find vendors in town who don't like Irullan, and they sympathize with you and give you discounts. Add 10 gp to your gold total."
             ]
           }
@@ -73,7 +73,7 @@
       "tier": 1,
       "ordinal": 2,
       "notes": {
-        "game": "You entered the Mournland to track down the Gray Dogs, a missing salvage crew. When you found them, you uncovered a strange relic from a basement in Kalazart—the <i>Oracle of War</i>. This artifact provided tactical assistance that helped your group escape when you were surrounded by warforged outlaws."
+        "game": "You entered the Mournland to track down the Gray Dogs, a missing salvage crew. When you found them, you uncovered a strange relic from a basement in Kalazart--the <i>Oracle of War</i>. This artifact provided tactical assistance that helped your group escape when you were surrounded by warforged outlaws."
       },
       "advancement": {
         "label": "You gain one level for completing this adventure.",
@@ -109,7 +109,7 @@
           },
           {
             "title": "Hard Call",
-            "description": "You angered Kalli Alran (or the NPC friend you created during DDAL-EB-01 <i>The Night Land</i>) by not risking your lives to save her trapped comrade. At the end of this adventure, each surviving member of the Gray Dogs—apart from your friend—slips you 5 gp as thanks."
+            "description": "You angered Kalli Alran (or the NPC friend you created during DDAL-EB-01 <i>The Night Land</i>) by not risking your lives to save her trapped comrade. At the end of this adventure, each surviving member of the Gray Dogs--apart from your friend--slips you 5 gp as thanks."
           },
           {
             "title": "White Rose",
@@ -158,7 +158,7 @@
         "events": [
           {
             "title": "Stolen Artifact",
-            "description": "A group of scavengers stole the <i>Oracle of War</i> from you. If you play DDAL-EB-04 <i>The Third Protocol</i>, you start that adventure without the Oracle. You recover the artifact for Tiers 2–4."
+            "description": "A group of scavengers stole the <i>Oracle of War</i> from you. If you play DDAL-EB-04 <i>The Third Protocol</i>, you start that adventure without the Oracle. You recover the artifact for Tiers 2 - 4."
           },
           {
             "title": "Turned Traitor",
@@ -319,10 +319,10 @@
             "title": "Love Cats",
             "description": "With your assistance, Zell Mar impressed Jia during dinner. At the end of this adventure, you go carousing with Zell and Jia in the bars of Sharn. Roll a d6 and consult the chart below:",
             "table": [
-              "<b>1–2:</b> You got into a fight and made an enemy who may cause trouble for you in the future.",
+              "<b>1 - 2:</b> You got into a fight and made an enemy who may cause trouble for you in the future.",
               "<b>3:</b> You found love! You are now dating someone.",
               "<b>4:</b> You gambled and earned 50 gp.",
-              "<b>5–6:</b> You saved a couple from muggers. Start the next adventure with one extra hero point."
+              "<b>5 - 6:</b> You saved a couple from muggers. Start the next adventure with one extra hero point."
             ]
           },
           {
@@ -404,7 +404,7 @@
       "tier": 2,
       "ordinal": 8,
       "notes": {
-        "game": "You visited Sharn's could district, Skyway, to locate Sky Blue, a thief mentioned in the verse of the Draconic Prophecy spoken by the <i>Oracle of War</i>. You weren't the only ones hunting for her—salvage broker Irullan Karnach had hired a criminal gang to kidnap her. You rescued Sky Blue from the gang and face off against Karnach."
+        "game": "You visited Sharn's could district, Skyway, to locate Sky Blue, a thief mentioned in the verse of the Draconic Prophecy spoken by the <i>Oracle of War</i>. You weren't the only ones hunting for her--salvage broker Irullan Karnach had hired a criminal gang to kidnap her. You rescued Sky Blue from the gang and face off against Karnach."
       },
       "advancement": {
         "label": "You gain one level for completing this adventure.",
@@ -573,7 +573,7 @@
           },
           {
             "title": "Your Face Is Known",
-            "description": "You have brought yourself to the Lord of Blades' attention—as a killer of warforged and an obstacle to his plans to form a warforged nation. Who knowns how far across Khorvaire his reach extends . . .?"
+            "description": "You have brought yourself to the Lord of Blades' attention--as a killer of warforged and an obstacle to his plans to form a warforged nation. Who knowns how far across Khorvaire his reach extends . . .?"
           }
         ]
       }

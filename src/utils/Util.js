@@ -69,6 +69,14 @@ export const strip = (html) => {
     return doc.body.textContent || "";
 };
 
+export const redash = (str) => {
+    return str.replace(" - ","–").replace("--","—");
+}
+
+export const undash = (str) => {
+    return str.replace("–"," - ").replace("—","--");
+}
+
 export const getFirstObject = (obj) => {
     return obj[Object.keys(obj)[0]];
 };

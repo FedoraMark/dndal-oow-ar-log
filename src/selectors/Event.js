@@ -41,15 +41,9 @@ class Event extends Component {
 
     componentWillReceiveProps(newProps) {
         this.setState({
-            // eventObj: newProps.eventObj,
             status: newProps.status,
             isDisabled: newProps.disable,
             isSelected: newProps.isSelected || newProps.status.active,
-            // selectionObj: {[this.props.eventObj[this.props.title]]: {
-            //     ...this.state.selectionObj[this.props.title],
-            //     active: newProps.isSelected || newProps.status.active,
-            //     disabled: newProps.disable
-            // }}
         });
     }
 

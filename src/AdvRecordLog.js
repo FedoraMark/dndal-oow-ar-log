@@ -47,6 +47,7 @@ import {
 	startingWealthLog,
 	startingWealthStatus,
 	getTier,
+	undash,
 } from "utils/Util";
 
 import "AdvRecordLog.scss";
@@ -396,7 +397,7 @@ class AdvRecordLog extends React.Component {
 
 		let fileName = jsonData.player.character.trim() !== "" ? (jsonData.player.character.trim().replace(" ","_") + "_oowar-log.json") : "unnamed";
 
-		downloadjs(JSON.stringify(jsonData), fileName, "application/json");
+		downloadjs(undash(JSON.stringify(jsonData)), fileName, "application/json");
 		this.props.addToast("File \"" + fileName + "\" exported, check your downloads folder", { appearance: "info" })
 
 		this.setState({showOptionsModal: false});

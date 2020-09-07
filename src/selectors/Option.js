@@ -5,6 +5,8 @@ import InputGroup from "react-bootstrap/InputGroup";
 import Fade from "react-bootstrap/Fade";
 import _map from "lodash/map";
 
+import { redash } from "utils/Util";
+
 import "selectors/SelectOption.scss";
 
 class Option extends React.Component {
@@ -94,7 +96,7 @@ class Option extends React.Component {
                                 </InputGroup.Prepend>
                                 <p
                                     className="label bookFont"
-                                    dangerouslySetInnerHTML={{ __html: option }}
+                                    dangerouslySetInnerHTML={{ __html: redash(option)}}
                                 />
                             </div>
                         );

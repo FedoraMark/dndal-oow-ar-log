@@ -4,6 +4,8 @@ import classnames from "classnames";
 import InputGroup from "react-bootstrap/InputGroup";
 import { FiCornerDownRight } from "react-icons/fi";
 
+import { redash } from "utils/Util"
+
 import "selectors/SelectOption.scss";
 
 class Select extends React.Component {
@@ -83,7 +85,7 @@ class Select extends React.Component {
                         </InputGroup.Prepend>
                         <p className={classnames("label bookFont",isBold && "bold")} >
                             {indent && <FiCornerDownRight className="arrow" />}
-                            <span dangerouslySetInnerHTML={{ __html: label }} />
+                            <span dangerouslySetInnerHTML={{ __html: redash(label) }} />
                         </p>
                     </InputGroup>
                 </div>
