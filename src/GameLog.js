@@ -189,7 +189,7 @@ class GameLog extends React.Component {
 
     updateEventHandler = (eventStatus, doActive) => {
         let code = this.state.data.code;
-        var stats = this.state.statusData;
+        var stats = {...this.state.statusData};
 
         if (doActive || getFirstObject(eventStatus).active) {
             // IF ACTIVE

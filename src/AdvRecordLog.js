@@ -225,7 +225,6 @@ class AdvRecordLog extends React.Component {
 			statusArr[changeIndex] = logStatusObj;
 		}
 
-
 		this.setState({ statusData: statusArr });
 	};
 

@@ -71,12 +71,16 @@ class Event extends Component {
     };
 
     eventSelectHandler = (key, val) => {
+        if (!this.state.isSelected) {
+            return;
+        }
+
         let title = this.state.eventObj.title;
 
         var newArray = [...this.state.selectionObj[title].selections];
         if (!val) {
             _pull(newArray, key);
-        } else {
+        } else if (!newArray.includes(key)) {
             newArray.push(key);
         }
 
@@ -141,11 +145,7 @@ class Event extends Component {
                     {"checkboxes" in this.state.eventObj && (
                         <ul
                             className="checkboxes"
-                            onClick={this.setSelect.bind(
-                                this,
-                                true,
-                                this.state.isSelected
-                            )}
+                            onClick={this.setSelect.bind( this, true, this.state.isSelected)}
                         >
                             {_map(
                                 this.state.eventObj.checkboxes, (cell, key) => {
