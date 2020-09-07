@@ -65,25 +65,23 @@ $halfGap: .25rem;
         }
     }
 
-    &:not(.editing) {
-        .sticky:before {
-            content: "";
-            position: absolute;
-            top: -5px;
-            left: -5px;
+    &:not(.editing).sticky:before {
+        content: "";
+        position: absolute;
+        top: -5px;
+        left: -5px;
 
-            width: 1rem;
-            height: 1rem;
+        width: 1rem;
+        height: 1rem;
 
-            pointer-events: none;
+        pointer-events: none;
 
-            transform: rotate(-45deg);
+        transform: rotate(-45deg);
 
-            border: 1px solid white;
-            border-width: 3px 0 0 0;
-            border-radius: 10px;
-            background: transparent;
-        }
+        border: 1px solid white;
+        border-width: 3px 0 0 0;
+        border-radius: 10px;
+        background: transparent;
     }
 
     .stickyCover {
@@ -129,9 +127,8 @@ $halfGap: .25rem;
             border-width: 2px;
             border-top-color: black;
             border-right-color: black;
-            border-bottom-width: 1px;
-            border-bottom-color: transparent;
             border-left-color: black;
+            background: $color-inactive-background;
 
             &,
             h1 {
@@ -909,6 +906,14 @@ $halfGap: .25rem;
 
                 box-sizing: border-box;
             }
+        }
+    }
+
+    &:not(.expanded) {
+        .titleWrapper {
+            border-bottom-width: 0;
+
+            @include transition(border-bottom-width, .25s, cubic-bezier(1,0,1,0));
         }
     }
 
