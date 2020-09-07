@@ -1152,6 +1152,10 @@ $halfGap: .25rem;
             .twoCol {
                 flex-direction: column !important;
 
+                .arCol {
+                    max-width: 100%;
+                }
+
                 .rightCol {
                     margin: 0 !important;
                 }
