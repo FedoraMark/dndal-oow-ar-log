@@ -656,7 +656,10 @@ class GameLog extends React.Component {
 
         var totalPlayed = isNaN(salvageRate) && isNaN(salvageRate) ? 0 : hoursPlayed * salvageRate;
 
+        let levelMission = isSalvageMission ? missionComplete : true;
+
         return (
+
             <Container className="advWrapper wrapper">
 				<h1 className="sectionTitle">Advancement{isSalvageMission && " & Salvage"}</h1>
 				<div className="box">
@@ -678,7 +681,7 @@ class GameLog extends React.Component {
 								type="checkbox"
 								isBold
 								indent={isSalvageMission}
-								isSelected={isSelected}
+								isSelected={isSelected && levelMission}
 								isDisabled={preview || this.state.isEditing || (isSalvageMission && !missionComplete)}
 								selectHandler={this.advancementHandler}
 							/>

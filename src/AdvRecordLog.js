@@ -3,7 +3,6 @@ import classnames from "classnames";
 import SideNav, { NavItem, NavIcon, NavText } from "@trendmicro/react-sidenav";
 import arrayMove from "array-move";
 import downloadjs from "downloadjs";
-import _each from "lodash/each";
 import _filter from "lodash/filter";
 import _find from "lodash/find";
 import _findIndex from "lodash/findIndex";
@@ -156,7 +155,7 @@ class AdvRecordLog extends React.Component {
 				type: displayType,
 				title: displayType + " Log",
 				code: newCode,
-				tier: this.getInfoTier(),
+				tier: getTier(this.state.charData.totLevel),
 			};
 			newLogStatus = {
 				[newCode]: {
@@ -166,7 +165,7 @@ class AdvRecordLog extends React.Component {
 								? "Wealth changes and notes for between sessions."
 								: "Salvage mission notes.",
 					},
-					tier: this.getInfoTier(),
+					tier: getTier(this.state.charData.totLevel),
 					titleOverride: displayType + " Log",
 					wealth: this.getPrevEndingWealth(),
 				},
@@ -183,17 +182,6 @@ class AdvRecordLog extends React.Component {
 		this.setState({ openEditorCode: newEditorCode, gameData: newGameData, statusData: newStatusData});
 		this.toggleAddRecordArea();
 	};
-
-	getInfoTier = () => {
-		if (this.state.charData.tier !== 0) { return this.state.charData.tier};
-
-		var totalLevels = 0;
-		_each(this.state.charData.classes, (lv) => {
-			totalLevels += lv;
-		})
-
-		return getTier(totalLevels);
-	}
 
 	getPrevEndingWealth = () => {
 		var startingWealth = {...emptyLogWealth};
@@ -446,7 +434,8 @@ class AdvRecordLog extends React.Component {
 		        "classes": GENERIC_CLASS,
 		        "tier": 0,
 		        "base": "",
-		        "wealth": emptyWealth
+		        "wealth": emptyWealth,
+		        "totLevel": 1
 		    },
 		    {
 		    	autoLeveling: getFirstKey(GENERIC_CLASS),
@@ -458,11 +447,11 @@ class AdvRecordLog extends React.Component {
 		    [startingWealthStatus],
 		);
 
+		this.setState({showOptionsModal: false});
+
 		if (!suppressToast) {
 			this.props.addToast("Logs have been reset", { appearance: "warning" })
 		}
-
-		this.setState({showOptionsModal: false});
 	}
 
 	setData = (char,opt,game,status) => {
@@ -481,6 +470,10 @@ class AdvRecordLog extends React.Component {
 
 	hideConfModal = (stateStr) => {
 		this.setState({[stateStr]: false});
+	}
+
+	handleTotalLevels = (newTotal) => {
+		this.setState({charData: {...this.state.charData, totLevel: newTotal}});
 	}
 
 	//RENDERERS
@@ -962,6 +955,8 @@ class AdvRecordLog extends React.Component {
 									saveHandler={this.savePlayerDataHandler}
 									totalLevels={this.getTotalLoggedLevels()}
 									latestWealth={this.getlatestWealth()}
+									totalLevelHandler={this.handleTotalLevels}
+									currentTotalLevels={this.state.charData.totLevel}
 								/>
 
 							</Container>

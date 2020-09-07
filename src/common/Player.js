@@ -59,6 +59,8 @@ class Player extends Component {
         saveHandler: PropTypes.func,
         totalLevels: PropTypes.number.isRequired,
         latestWealth: PropTypes.object.isRequired,
+        totalLevelHandler: PropTypes.func.isRequired,
+        currentTotalLevels: PropTypes.node.isRequired
     };
 
     static defaultProps = {
@@ -91,11 +93,11 @@ class Player extends Component {
         tempAutoWealth: this.props.optionsObj.autoWealth,
 
         latestWealth: this.props.latestWealth,
-        currentTotalLevels: 0,
+        currentTotalLevels: this.props.currentTotalLevels,
     };
 
     componentDidMount() {
-    	this.setState({currentTotalLevels: this.getTotalLevel(this.state.totalLevels)});
+    	this.props.totalLevelHandler(this.getTotalLevel(this.props.totalLevels));
     }
 
     componentWillReceiveProps(newProps) {
@@ -108,8 +110,12 @@ class Player extends Component {
             tierSetting: newProps.optionsObj.tierSetting,
             autoWealth: newProps.optionsObj.autoWealth,
         },
-        	(e) => {
-        		this.setState({currentTotalLevels: this.getTotalLevel(this.state.totalLevels)});
+        	() => {
+        		let newLvs = this.getTotalLevel(newProps.totalLevels);
+				if (newProps.currentTotalLevels !== newLvs || newProps.currentTotalLevels !== this.state.currentTotalLevels) {
+					this.props.totalLevelHandler(newLvs);
+					this.setState({currentTotalLevels: newLvs});
+				}
         		if (this.state.tempAutoWealth) {
         			this.updateTempInfo("wealth",this.state.latestWealth)
         		}
@@ -143,7 +149,7 @@ class Player extends Component {
 	            	tierSetting: this.state.tempTierSetting,
 	            	autoWealth: this.state.tempAutoWealth,
 	            }, () => {
-	            	this.setState({currentTotalLevels: this.getTotalLevel(this.state.totalLevels)});
+	            	this.props.totalLevelHandler(this.getTotalLevel(this.state.totalLevels));
             		this.props.saveHandler(
 		            	trimStringsInObjectFlatly({...this.state.tempObj}), 
 		            	{

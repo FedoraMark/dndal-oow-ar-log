@@ -44,6 +44,10 @@ class Select extends React.Component {
                 isExpended: nextProps.isExpended,
             },
         );
+
+        if (nextProps.isSelected !== this.state.isSelected) {
+            this.props.selectHandler(this.props.arrKey, nextProps.isSelected, this.props.title);
+        }
     }
 
     //FUNCTIONS
