@@ -912,6 +912,7 @@ $halfGap: .25rem;
     &:not(.expanded) {
         .titleWrapper {
             border-bottom-width: 0;
+            border-bottom-color: darkgray;
 
             @include transition(border-bottom-width, .25s, cubic-bezier(1,0,1,0));
         }
@@ -919,6 +920,7 @@ $halfGap: .25rem;
 
     &.expanded {
         .titleWrapper {
+            border-bottom-width: 1px;
             border-bottom-color: darkgray;
             border-bottom-right-radius: 0rem;
             border-bottom-left-radius: 0rem;
