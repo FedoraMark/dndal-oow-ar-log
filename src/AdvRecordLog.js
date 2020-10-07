@@ -886,7 +886,7 @@ class AdvRecordLog extends React.Component {
 					<li className="bullet">{'\u2022'}</li>
 
 				    <li className="kofi">
-						<a  as="a" href="https://ko-fi.com/J3J224IVG" target="_blank" rel="noopener noreferrer">
+						<a href="https://ko-fi.com/J3J224IVG" target="_blank" rel="noopener noreferrer">
 							Spare some coin? <SiKoFi />
 						</a>
 					</li>

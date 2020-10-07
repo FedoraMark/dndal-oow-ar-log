@@ -579,11 +579,13 @@ $namePadding: 2px;
                 border-radius: 0 0 50% 0;
                 background: rgba(255, 255, 255, .85);
 
+                @include transition();
+
                 &:hover,
                 &:focus {
                     background: rgba(0, 0, 0, .85);
 
-                    @include transition();
+
 
                     span:not(.number) {
                         color: white !important;
