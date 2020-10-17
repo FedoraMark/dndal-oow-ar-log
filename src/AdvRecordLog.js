@@ -518,24 +518,14 @@ class AdvRecordLog extends React.Component {
 	};
 
 	render_newRecordArea = () => {
-		var first = _find(this.state.gameDataReorder, (log) => {
-			return log.record === START;
-		})
-
 		return (
 			<Container className="newRecordWrapper">
-				<Fade
-					in={(Object.keys(this.state.gameData).length > 1 && !!first) || (Object.keys(this.state.gameData).length > 2)}
-					mountOnEnter
-					unmountOnExit
-				>
-					<EditButton
-						move
-						right
-						className="moveButton"
-						onClick={this.moveModalSetup.bind(this)}
-					/>
-				</Fade>
+				<EditButton
+					move
+					right
+					className="moveButton"
+					onClick={this.moveModalSetup.bind(this)}
+				/>
 
 				<Button
 					className={classnames(
