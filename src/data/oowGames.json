@@ -594,13 +594,13 @@
       },
       "rewards": [
         {
-          "instruction": "You gain the following rewards:",
+          "instructions": "You gain the following reward:",
           "selections": [
             "200 gp from Captain Alain ir'Ranek for carrying out the mission."
           ]
         },
         {
-          "instruction": "Choose ONE bonus reward:",
+          "instructions": "Choose ONE bonus reward:",
           "options": [
             "Flechette's brassbound spellbook for defeating the mage. You gain the Arcane Kinetics legacy event (see Legacy Events).",
             "A silver dagger with a gold knuckle-duster hilt (worth 250 gp) for defeating Zweihander.",
@@ -627,6 +627,51 @@
           {
             "title": "Your Face is Known",
             "description": "You defeated the Lord of Blades' lieutenant in sight of him and lived to tell the tale. Next time you might not be so lucky."
+          }
+        ]
+      }
+    },
+    {
+      "record": "game",
+      "code": "ddal00-13",
+      "title": "Cold Spell in Frostfell",
+      "type": "Adventure Record",
+      "tier": 2,
+      "ordinal": 12,
+      "notes": {
+        "game": "You traveled via magical portal to the arctic region of Everron called the Frostfell. You assisted the Axyaz clan of goliaths in dealing with attacks and magical assault from an ancient temple atop one of the glacial mountains of the Iceworm Peaks. At the top of the mountain within the temple, you traveled to an interdimensional space connecting Eberron to the cold plane of Risia. There, you defeated a creature called Doomever and returned it to Risia, severing its connection to your world."
+      },
+      "advancement": {
+        "label": "You gain one level for completing this adventure.",
+        "footnote": "(If you decline this level, you still record legacy events but cannot claim any rewards or legacy event benefits for this adventure.)"
+      },
+      "rewards": [
+        {
+          "instructions": "You gain the following rewards:",
+          "selections": [
+            "50 gp from Belaluur for escorting Garundah to investigate the happenings in the Mournland.",
+            "An <i>everbright lantern</i> as a gift from the Axyaz clan."
+          ]
+        },
+        {
+          "instructions": "Choose ONE bonus reward:",
+          "options": [
+            "A <i>+2 longbow</i> after defeating the Risian spirits.",
+            "A <i>pearl of power</i> (Lamannian flint) for defeating Doomever.",
+            "A <i>potion of invulnerability</i> and 200 gp."
+          ]
+        }
+      ],
+      "legacy": {
+        "events": [
+          {
+            "title": "Supporting Leerut",
+            "description": "You've brought back to Salvation with you a young goliath warrior named Leerut of Clan Axyaz. While she is strong and capable, her inexperience with the world outside of the Frostfell leaves her vulnerable. You must decide how you are going to help her. Each character must choose for themselves:",
+            "radios": [
+              "<b>No Help.</b> You have brought her back from the Frostfell, but you leave her to her own devices.",
+              "<b>Provide Gold.</b> You give her 25 gp at the end of this adventure, and that helps her get a place to live and the opportunity to maker her own way in Salvation.",
+              "<b>Extended Help.</b> At the end of the next 5 adventures, you give Leerut 10 gp, which gives her the best possible chance of making her way successfully into the tough world of Salvation and the Gray."
+            ]
           }
         ]
       }
