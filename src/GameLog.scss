@@ -106,7 +106,7 @@ $halfGap: .25rem;
     }
 
     .playerNotes {
-        overflow-x: scroll;
+        overflow-x: auto;
     }
 
     .titleWrapper {
@@ -208,8 +208,8 @@ $halfGap: .25rem;
                         display: inline-flex;
                         padding: 0 .25rem 0 0;
 
-                        justify-content: flex-end;
                         align-items: center;
+                        justify-content: flex-end;
 
                         text-transform: uppercase;
 
@@ -857,8 +857,8 @@ $halfGap: .25rem;
                             width: 1.25rem;
                             height: 1.25rem;
 
-                            justify-content: center;
                             align-items: center;
+                            justify-content: center;
 
                             border: 1px solid gray;
                             border-radius: 50%;
@@ -1099,8 +1099,8 @@ $halfGap: .25rem;
             }
 
             .title {
-                justify-content: space-between;
                 align-items: center;
+                justify-content: space-between;
             }
         }
 
@@ -1345,8 +1345,8 @@ $halfGap: .25rem;
             }
 
             .title {
-                justify-content: space-between;
                 align-items: center;
+                justify-content: space-between;
             }
         }
 
