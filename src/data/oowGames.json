@@ -675,6 +675,34 @@
           }
         ]
       }
+    },
+    {
+      "record": "epic",
+      "code": "ddal-ebep-02",
+      "title": "Rolling Thunder",
+      "type": "TBR",
+      "tier": 2,
+      "ordinal": 13,
+      "notes": {
+        "game": ""
+      },
+      "advancement": {
+        "label": "",
+        "footnote": ""
+      },
+      "rewards": [
+        {
+          "instructions": "You gain the following rewards:",
+          "selections": []
+        },
+        {
+          "instructions": "Choose ONE bonus reward:",
+          "options": []
+        }
+      ],
+      "legacy": {
+        "events": []
+      }
     }
   ]
 }

@@ -25,6 +25,7 @@ class Summary extends Component {
 	state = {
 		showModal: false,
 		isDisabled: this.props.disabled,
+		disabledText: this.props.disabledText
 	};
 
 	componentWillReceiveProps(nextProps) {
@@ -85,6 +86,7 @@ class Summary extends Component {
 					<Card.Subtitle className="code">
 						{gameData.code}
 					</Card.Subtitle>
+
 					{/* <Card.Text className="notes bookFont" dangerouslySetInnerHTML={{ __html: gameData.notes.game }} /> */}
 					{/* <Card.Text className="ellipsis">...</Card.Text> */}
 				</Card.Body>

@@ -561,8 +561,10 @@ class AdvRecordLog extends React.Component {
 										<Card.Subtitle>
 											Notes and wealth changes
 										</Card.Subtitle>
-										<Collapse in={_findIndex(this.state.gameData, (log) => {return log.record === START;}) === -1}
-											className="addAsStartLink" >
+										<Collapse 
+											in={_findIndex(this.state.gameData, (log) => {return log.record === START;}) === -1}
+											className="addAsStartLink"
+											>
 											<Card.Link>
 												<Badge
 													pill
@@ -603,7 +605,10 @@ class AdvRecordLog extends React.Component {
 										<Summary
 											gameData={game}
 											handleAdd={this.addRecord}
-											disabled={_findIndex(this.state.gameData,(o) => {return ( o.code === game.code);}) > -1}
+											disabled={
+												_findIndex(this.state.gameData,(o) => {return ( o.code === game.code);}) > -1 || 
+												game.type.toUpperCase() === "TBR"
+											}
 										/>
 									</li>
 								);
