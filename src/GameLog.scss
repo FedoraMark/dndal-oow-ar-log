@@ -749,6 +749,11 @@ $halfGap: .25rem;
 
                                     color: $color-active-background;
                                     background: $color-inactive-background;
+
+
+                                    i {
+                                        display: contents;
+                                    }
                                 }
                             }
 

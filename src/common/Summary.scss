@@ -80,9 +80,9 @@
             padding: 0;
             margin-left: .2rem;
 
+            align-items: center;
             justify-content: center;
             box-sizing: border-box;
-            align-items: center;
 
             color: black;
             border: 1px solid gray;
@@ -170,4 +170,7 @@
 
 // Extra large devices (large desktops, 1200px and up)
 @media (min-width: 1200px) {
+    .previewModal > .modal-content {
+        cursor: auto;
+    }
 }

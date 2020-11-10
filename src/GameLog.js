@@ -58,6 +58,7 @@ const UNSELECTED = 0;
 const ACTIVE = 1;
 
 const GAME = "game";
+const EXTRA = "extra";
 const EPIC = "epic";
 const SALVAGE = "salvage";
 const NOTES = "notes";
@@ -442,6 +443,7 @@ class GameLog extends React.Component {
                 leftIcon = <GiPokecog className="titleIcon leftIcon" />
                 break;
             case GAME:
+            case EXTRA:
             case EPIC:
                 leftIcon = <GiD4 className="titleIcon leftIcon" />
                 break;
@@ -508,7 +510,7 @@ class GameLog extends React.Component {
 								/>
 							)}
 							<span 
-								className={classnames("fauxdesto title", [GAME, EPIC, SALVAGE].includes(this.state.data.record) && "italic")} 
+								className={classnames("fauxdesto title", [GAME, EXTRA, EPIC, SALVAGE].includes(this.state.data.record) && "italic")} 
 								dangerouslySetInnerHTML={{__html: this.fauxdestoHyphenFix(title)}} 
 							/>
 						</div>
@@ -1001,9 +1003,7 @@ class GameLog extends React.Component {
 							return (
 								<InputGroup key={i}>
 									<InputGroup.Prepend className="eventTitle">
-										<InputGroup.Text className="bookFont bold">
-											{event.title}
-										</InputGroup.Text>
+										<InputGroup.Text className="bookFont bold" dangerouslySetInnerHTML={{__html: event.title }} />
 									</InputGroup.Prepend>
 
 									<DropdownButton as={InputGroup.Append} alignRight variant={variant} title={selection} className={selection}>
@@ -1336,7 +1336,7 @@ class GameLog extends React.Component {
 					}
 
 					{/* set isEpic */}
-					{[GAME, EPIC, SALVAGE].includes(this.state.data.record) &&
+					{[GAME, EXTRA, EPIC, SALVAGE].includes(this.state.data.record) &&
 						<InputGroup className="dropdownGroup">
 							<DropdownButton
 								variant="light"
@@ -1364,7 +1364,7 @@ class GameLog extends React.Component {
 					}
 
 					{/* set isDm */}
-					{[GAME, EPIC, SALVAGE].includes(this.state.data.record) &&
+					{[GAME, EXTRA, EPIC, SALVAGE].includes(this.state.data.record) &&
 						<InputGroup className="dropdownGroup">
 							<DropdownButton
 								variant="light"
@@ -1504,7 +1504,7 @@ class GameLog extends React.Component {
 				</Modal.Header>
 				<Modal.Body>
 					<div className="modalBody">
-						{[GAME, EPIC].includes(this.state.data.record) && 
+						{[GAME, EXTRA, EPIC].includes(this.state.data.record) && 
 							<>
 								<div
 									className="fauxdesto nowrap"
@@ -1514,9 +1514,9 @@ class GameLog extends React.Component {
 							</>
 						}
 						<div 
-							className={classnames("fauxdesto", [GAME, EPIC, SALVAGE].includes(this.state.data.record) && "italic")} 
-							style={{fontSize: "2.8rem", lineHeight: "1", marginTop: [GAME, EPIC].includes(this.state.data.record) ? "-.5rem" : "0"}}
-							dangerouslySetInnerHTML={{__html: this.fauxdestoHyphenFix( [GAME, EPIC].includes(this.state.data.record) ? this.state.data.title : this.state.tempTitle) }}
+							className={classnames("fauxdesto", [GAME, EXTRA, EPIC, SALVAGE].includes(this.state.data.record) && "italic")} 
+							style={{fontSize: "2.8rem", lineHeight: "1", marginTop: [GAME, EXTRA, EPIC].includes(this.state.data.record) ? "-.5rem" : "0"}}
+							dangerouslySetInnerHTML={{__html: this.fauxdestoHyphenFix( [GAME, EXTRA, EPIC].includes(this.state.data.record) ? this.state.data.title : this.state.tempTitle) }}
 						/>
 					</div>
 				</Modal.Body>
@@ -1549,8 +1549,8 @@ class GameLog extends React.Component {
         	: null ;
 
 
-        if ([GAME, EPIC].includes(this.state.data.record)) {
-        	// GAME AND EPIC LOG
+        if ([GAME, EXTRA, EPIC].includes(this.state.data.record)) {
+        	// GAME, EXTRA and EPIC log
             return (
                 <Container
 					fluid

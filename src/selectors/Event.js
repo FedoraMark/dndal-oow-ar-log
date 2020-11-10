@@ -133,9 +133,10 @@ class Event extends Component {
                         className="descriptionWrapper"
                         onClick={this.toggleSelect.bind(this)}
                     >
-                        <h1 className="bookFont bold">
-                            {this.state.eventObj.title}.
-                        </h1>
+                        <h1 
+                            className="bookFont bold" 
+                            dangerouslySetInnerHTML={{__html: this.state.eventObj.title + "." }}
+                        />
                         <p
                             className="bookFont"
                             dangerouslySetInnerHTML={{__html: this.state.eventObj.description,}}

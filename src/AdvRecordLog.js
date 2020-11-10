@@ -57,6 +57,7 @@ import "@trendmicro/react-sidenav/dist/react-sidenav.css";
 import games_oow from "./data/oowGames.json";
 
 const GAME = "game";
+const EXTRA = "extra";
 const EPIC = "epic";
 const SALVAGE = "salvage";
 const NOTES = "notes";
@@ -323,8 +324,8 @@ class AdvRecordLog extends React.Component {
 		let statusObj = getFirstObject(_find(newStatusData, (s) => {
 			return getFirstKey(s) === code;
 		}));
-		let displayTitle = [GAME,EPIC].includes(newGameData[index].record) ? (code.toUpperCase() + " ") : "";
-		displayTitle += ![GAME,EPIC].includes(newGameData[index].record) && !!statusObj && !!statusObj.titleOverride ? statusObj.titleOverride : newGameData[index].title;
+		let displayTitle = [GAME,EXTRA,EPIC].includes(newGameData[index].record) ? (code.toUpperCase() + " ") : "";
+		displayTitle += ![GAME,EXTRA,EPIC].includes(newGameData[index].record) && !!statusObj && !!statusObj.titleOverride ? statusObj.titleOverride : newGameData[index].title;
 		
 		newGameData.splice(index, 1);
 		newStatusData.splice(index, 1);						
@@ -653,7 +654,7 @@ class AdvRecordLog extends React.Component {
 								 		<Badge pill variant={statusInfo.expended ? "secondary" : "light"}>&nbsp;</Badge>
 								 	</NavIcon>
 									<NavText>
-										<span className="title text bookFont bold">{statusInfo.title}</span>
+										<span className="title text bookFont bold" dangerouslySetInnerHTML={{__html: statusInfo.title }} />
 									</NavText>
 									<NavItem navitemClassName={classnames("eventInfo", statusInfo.expended && "expended")}>
 										<NavText>
@@ -756,7 +757,7 @@ class AdvRecordLog extends React.Component {
 				backdrop="static"
 			>
 				<Modal.Header closeButton>
-					<Modal.Title>Redorder Logs</Modal.Title>
+					<Modal.Title>Reorder Logs</Modal.Title>
 				</Modal.Header>
 
 				<Modal.Body>
@@ -775,7 +776,7 @@ class AdvRecordLog extends React.Component {
 									if (log.record === START) { return; }
 
 									// let isDm = !!statusObj && !!statusObj.dungeonMaster && statusObj.dungeonMaster.isDm;
-									let titleOverride = ![GAME,EPIC].includes(log.record) && !!statusObj && !!statusObj.titleOverride ? statusObj.titleOverride : log.title;
+									let titleOverride = ![GAME,EXTRA,EPIC].includes(log.record) && !!statusObj && !!statusObj.titleOverride ? statusObj.titleOverride : log.title;
 									
 									return (
 										<Draggable 
@@ -792,9 +793,9 @@ class AdvRecordLog extends React.Component {
 												>
 													{log.record === SALVAGE && <GiPokecog className="dTypeIcon" /> }
 													{log.record === NOTES && <RiEditCircleFill className="dTypeIcon" /> }
-													{[GAME, EPIC].includes(log.record) && <GiD4 className="dTypeIcon" /> }
+													{[GAME,EXTRA,EPIC].includes(log.record) && <GiD4 className="dTypeIcon" /> }
 													<span style={{textAlign: "center"}}>
-														{[GAME, EPIC].includes(log.record) && <span className="dCode">{log.code.toUpperCase()}</span>}
+														{[GAME,EXTRA,EPIC].includes(log.record) && <span className="dCode">{log.code.toUpperCase()}</span>}
 														<span className={classnames("dTitle",![NOTES,START].includes(log.record) && "dItalic")}>{titleOverride}</span>
 													</span>
 													{log.code !== startingWealthLog.code && <ImMenu className="dIcon" />}

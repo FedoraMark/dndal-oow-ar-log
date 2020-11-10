@@ -80,6 +80,19 @@ class Summary extends Component {
 								<span className="dot fauxdesto">E</span>
 							</OverlayTrigger>
 						)}
+
+						{gameData.record.toUpperCase() === "EXTRA" && (
+							<OverlayTrigger
+								placement="bottom-end"
+								overlay={
+									<Tooltip className="dotTooltip">
+										<strong>Supplement</strong>
+									</Tooltip>
+								}
+							>
+								<span className="dot fauxdesto">S</span>
+							</OverlayTrigger>
+						)}
 					</div>
 
 					<Card.Title className="title">{gameData.title}</Card.Title>

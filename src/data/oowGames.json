@@ -632,14 +632,15 @@
       }
     },
     {
-      "record": "game",
+      "record": "extra",
       "code": "ddal00-13",
       "title": "Cold Spell in Frostfell",
       "type": "Adventure Record",
       "tier": 2,
       "ordinal": 12,
       "notes": {
-        "game": "You traveled via magical portal to the arctic region of Everron called the Frostfell. You assisted the Axyaz clan of goliaths in dealing with attacks and magical assault from an ancient temple atop one of the glacial mountains of the Iceworm Peaks. At the top of the mountain within the temple, you traveled to an interdimensional space connecting Eberron to the cold plane of Risia. There, you defeated a creature called Doomever and returned it to Risia, severing its connection to your world."
+        "game": "You traveled via magical portal to the arctic region of Everron called the Frostfell. You assisted the Axyaz clan of goliaths in dealing with attacks and magical assault from an ancient temple atop one of the glacial mountains of the Iceworm Peaks. At the top of the mountain within the temple, you traveled to an interdimensional space connecting Eberron to the cold plane of Risia. There, you defeated a creature called Doomever and returned it to Risia, severing its connection to your world.",
+        "player": "This adventure appears in DDAL00-13 \"Knuckleheads & Other Such Curiosities: A Travelers' Guide to Icewind Dale\"."
       },
       "advancement": {
         "label": "You gain one level for completing this adventure.",
@@ -680,28 +681,55 @@
       "record": "epic",
       "code": "ddal-ebep-02",
       "title": "Rolling Thunder",
-      "type": "TBR",
+      "type": "Adventure Record",
       "tier": 2,
       "ordinal": 13,
       "notes": {
-        "game": ""
+        "game": "Working alongside the thief Sky Blue and her awakened seagull companion Earl, you raided the royal lightning rail train <i>Excelsior</i> to steal a top-secret government intelligence dossier on the <i>Oracle of War</i>. If you were successful, your comrades double-crossed you at the last moment and stole the train's entire vault carriage for themselves, yet provided you with the dossier after the event."
       },
       "advancement": {
-        "label": "",
-        "footnote": ""
+        "label": "You gain one level for completing this adventure.",
+        "footnote": "(<b>Important:</b> If you forgo advancement from an EPIC, you still gain all the following rewards.)"
       },
       "rewards": [
         {
           "instructions": "You gain the following rewards:",
-          "selections": []
+          "selections": [
+          	"500 gp for carrying out the mission, paid from the treasure Sky Blue and Earl stole from you. You do not gain this reward if you failed the heist."
+          ]
         },
         {
           "instructions": "Choose ONE bonus reward:",
-          "options": []
+          "options": [
+          	"A <i>hat of disguise</i>",
+          	"A <i>stone of good luck (luckstone)</i>",
+          	"<i>Boots of speed</i>"
+          ]
         }
       ],
       "legacy": {
-        "events": []
+        "events": [
+        	{
+        		"title": "Death is a Door",
+        		"description": "You died while trying to rob the royal lightning rail train <i>Excelsior</i>. Mysterious forces brought you back to life, but you don't know who or what they are."
+        	},
+        	{
+        		"title": "Mournland Dossier",
+        		"description": "You stole a dossier of intelligence on the Mournland, which Sky is convinced can help her find her missing father."
+        	},
+        	{
+        		"title": "<i>Oracle </i>Dossier",
+        		"description": "You stole a file of top secret intelligence on the <i>Oracle of War</i>. The information held within is encoded and can't be decrypted until you play EB-11: <i>My Undying Heart</i>. While you have this legacy event marked, Sky Blue and Earl cannot appear in EB-08, EB-09, or EB-10."
+        	},
+        	{
+        		"title": "Regicide",
+        		"description": "Lord Kor ir'Wynarn, the \"King in Green\", brother to King Boranel of Breland, is dead. This event is sure to foment trouble later in the campaign!"
+        	},
+        	{
+        		"title": "Swords of Liberty",
+        		"description": "You identified the Swords of Liberty as being responsible for the attack on Lord Kor. You may be able to use this information to your advantage in the future."
+        	}
+        ]
       }
     }
   ]
