@@ -694,40 +694,84 @@
         {
           "instructions": "You gain the following rewards:",
           "selections": [
-          	"500 gp for carrying out the mission, paid from the treasure Sky Blue and Earl stole from you. You do not gain this reward if you failed the heist."
+            "500 gp for carrying out the mission, paid from the treasure Sky Blue and Earl stole from you. You do not gain this reward if you failed the heist."
           ]
         },
         {
           "instructions": "Choose ONE bonus reward:",
           "options": [
-          	"A <i>hat of disguise</i>",
-          	"A <i>stone of good luck (luckstone)</i>",
-          	"<i>Boots of speed</i>"
+            "A <i>hat of disguise</i>",
+            "A <i>stone of good luck (luckstone)</i>",
+            "<i>Boots of speed</i>"
           ]
         }
       ],
       "legacy": {
         "events": [
-        	{
-        		"title": "Death is a Door",
-        		"description": "You died while trying to rob the royal lightning rail train <i>Excelsior</i>. Mysterious forces brought you back to life, but you don't know who or what they are."
-        	},
-        	{
-        		"title": "Mournland Dossier",
-        		"description": "You stole a dossier of intelligence on the Mournland, which Sky is convinced can help her find her missing father."
-        	},
-        	{
-        		"title": "<i>Oracle </i>Dossier",
-        		"description": "You stole a file of top secret intelligence on the <i>Oracle of War</i>. The information held within is encoded and can't be decrypted until you play EB-11: <i>My Undying Heart</i>. While you have this legacy event marked, Sky Blue and Earl cannot appear in EB-08, EB-09, or EB-10."
-        	},
-        	{
-        		"title": "Regicide",
-        		"description": "Lord Kor ir'Wynarn, the \"King in Green\", brother to King Boranel of Breland, is dead. This event is sure to foment trouble later in the campaign!"
-        	},
-        	{
-        		"title": "Swords of Liberty",
-        		"description": "You identified the Swords of Liberty as being responsible for the attack on Lord Kor. You may be able to use this information to your advantage in the future."
-        	}
+          {
+            "title": "Death is a Door",
+            "description": "You died while trying to rob the royal lightning rail train <i>Excelsior</i>. Mysterious forces brought you back to life, but you don't know who or what they are."
+          },
+          {
+            "title": "Mournland Dossier",
+            "description": "You stole a dossier of intelligence on the Mournland, which Sky is convinced can help her find her missing father."
+          },
+          {
+            "title": "<i>Oracle </i>Dossier",
+            "description": "You stole a file of top secret intelligence on the <i>Oracle of War</i>. The information held within is encoded and can't be decrypted until you play EB-11: <i>My Undying Heart</i>. While you have this legacy event marked, Sky Blue and Earl cannot appear in EB-08, EB-09, or EB-10."
+          },
+          {
+            "title": "Regicide",
+            "description": "Lord Kor ir'Wynarn, the \"King in Green\", brother to King Boranel of Breland, is dead. This event is sure to foment trouble later in the campaign!"
+          },
+          {
+            "title": "Swords of Liberty",
+            "description": "You identified the Swords of Liberty as being responsible for the attack on Lord Kor. You may be able to use this information to your advantage in the future."
+          }
+        ]
+      }
+    },
+    {
+      "record": "game",
+      "code": "ddal-eb-11",
+      "title": "My Undying Heart",
+      "type": "Adventure Record",
+      "tier": 3,
+      "ordinal": 14,
+      "notes": {
+        "game": "You presented the <i>Oracle of War</i> to the Institute of the Twelve, where it revealed a troubling new verse from the Draconic Prophecy. To learn more, the Twelve sent you to infiltrate an Order of the emerald Claw enclave and capture its leader, the vampire Widmund. Inside the enclave, you discovered evidence that the Emerald Claw were tracking the movements of the Cairdal Knot, a pair of Undying paladins. The paladins plan to unleash a network of sleeper agents known as Stonefire in an effor to steal the <i>Oracle of War</i>. . . ."
+      },
+      "advancement": {
+        "label": "You gain one level for completing this adventure.",
+        "footnote": "(If you decline this level, you still record legacy events but cannot claim any rewards or legacy event benefits for this adventure.)"
+      },
+      "rewards": [
+        {
+          "instructions": "You gain the following reward:",
+          "selections": [
+            "<i>+1 armor</i> or <i>+1 barding</i> from the Twelve for completing the mission."
+          ]
+        },
+        {
+          "instructions": "Choose ONE bonus reward:",
+          "options": [
+            "The <i>crystal skull</i> for defeating Widmund.",
+            "400 gp and a <i>potion of resistance (fire)</i> for defeating Widmund.",
+            "A <i>relic of whispered alarm</i> from the Skull Chamber.",
+            "A <i>scroll of protection (undead)</i> for bringing Saal Dreadstroke or his accomplices before the Twelve."
+          ]
+        }
+      ],
+      "legacy": {
+        "events": [
+          {
+            "title": "Crystal Skull",
+            "description": "Irullan Karnach confessed that she delivered a crystal skull with the power to bring the dead back to life to the Order of the Emerald Claw."
+          },
+          {
+            "title": "Rescued Agent",
+            "description": "You freed Leelle d'Jorasco from captivity in the Emerald Claw enclave. She promises to aid you again in the future."
+          }
         ]
       }
     }

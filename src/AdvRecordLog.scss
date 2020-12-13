@@ -288,8 +288,8 @@ $namePadding: 2px;
             opacity: .5;
             color: $color-active-background;
 
-            @include transition();
             @include flex();
+            @include transition();
 
             &.spin,
             &:hover,
@@ -564,7 +564,7 @@ $namePadding: 2px;
         position: fixed;
 
         width: 0;
-        overflow-y: scroll;
+        overflow-y: auto;
 
         background: rgba(0, 0, 0, 0);
 
