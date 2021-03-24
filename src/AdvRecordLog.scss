@@ -642,8 +642,11 @@ $namePadding: 2px;
         }
 
         .title {
+            display: block;
+
             font-size: 1.1rem;
-            line-height: 3.1;
+
+            white-space: normal;
         }
 
         .eventItem,
@@ -667,14 +670,28 @@ $namePadding: 2px;
             }
         }
 
-        .eventItem {
+        div.eventItem {
+            height: auto;
+            min-height: 50px;
             margin-top: 3px;
+
+            @include flex(center, flex-start);
 
             & + div > div {
                 &:after,
                 &:before {
                     display: none !important;
                 }
+            }
+
+            div:nth-of-type(1) {
+                flex-shrink: 0;
+            }
+
+            div:nth-of-type(2) {
+                width: 100% !important;
+
+                @include flex(center, flex-start);
             }
         }
 
@@ -685,6 +702,8 @@ $namePadding: 2px;
             cursor: auto !important;
 
             background-color: rgba(0, 0, 0, .25) !important;
+
+
 
             .code {
                 font-weight: bold;
