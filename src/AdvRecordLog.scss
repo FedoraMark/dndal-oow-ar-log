@@ -693,6 +693,10 @@ $namePadding: 2px;
 
                 @include flex(center, flex-start);
             }
+
+            span.title.text {
+                min-width: 292px;
+            }
         }
 
         .eventInfo {
