@@ -104,7 +104,7 @@
             "description": "You listened to Kalli Alran (or the NPC friend you created during DDAL-EB-01 <i>The Night Land</i> and went back to save her trapped comrade. At the end of this adventure, choose one of the following benefits:",
             "radios": [
               "Your friend applies a temporary enhancement to your armor, granting you +1 AC for the duration of your next adventure.",
-              "Your firend gives you a <i>potion of healing<i>."
+              "Your friend gives you a <i>potion of healing<i>."
             ]
           },
           {
@@ -130,7 +130,7 @@
       "tier": 1,
       "ordinal": 3,
       "notes": {
-        "game": "You were traveling back through the Mournland with the Gray Dogs, a rescued salvage crew, when you were ambushed by a large force of undead and forced to seek refuge in an abandoned cottage. During the siege, the strage artifact known as the <i>Oracle of War</i> malfunctioned and revealed a verse from the Draconic Prophecy. Realizing the value of the device, the Gray Dogs tried to steal it from under your noses."
+        "game": "You were traveling back through the Mournland with the Gray Dogs, a rescued salvage crew, when you were ambushed by a large force of undead and forced to seek refuge in an abandoned cottage. During the siege, the strange artifact known as the <i>Oracle of War</i> malfunctioned and revealed a verse from the Draconic Prophecy. Realizing the value of the device, the Gray Dogs tried to steal it from under your noses."
       },
       "advancement": {
         "label": "You gain one level for completing this adventure.",
@@ -352,7 +352,7 @@
       "tier": 2,
       "ordinal": 7,
       "notes": {
-        "game": "The sphinx  Flamewind deciphered the prophecy spoken by the <i>Oracle of War</i> and sent you to Wroat to foil a Thranish spy's strike against the King's Dark Lanterns. You infiltrated a royal armistice ball to idenify the spy and uncover their mission."
+        "game": "The sphinx  Flamewind deciphered the prophecy spoken by the <i>Oracle of War</i> and sent you to Wroat to foil a Thranish spy's strike against the King's Dark Lanterns. You infiltrated a royal armistice ball to identify the spy and uncover their mission."
       },
       "advancement": {
         "label": "You gain one level for completing this adventure.",
