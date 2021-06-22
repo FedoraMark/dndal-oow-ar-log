@@ -1025,6 +1025,60 @@
           }
         ]
       }
+    },
+    {
+      "record": "epic",
+      "isForEpic": true,
+      "code": "ddal-ebep-03",
+      "title": "The Rising City",
+      "type": "Adventure Record",
+      "tier": 3,
+      "ordinal": 20,
+      "notes": {
+        "game": "You conspired with an enigmatic salvage broker, the Scraplord, to gather rare items from the ruins of Metrol. In return, they promised to lure the Emerald Claw forces away from Metrol Station so you could break into the Creeping Nave beneath the city!"
+      },
+      "advancement": {
+        "label": "You gain one level for completing this adventure.",
+        "footnote": "(<b>Important:</b> If you forgo advancement from an EPIC, you still gain all of the following rewards.)"
+      },
+      "rewards": [
+        {
+          "instructions": "You gain the following rewards:",
+          "selections": [
+            "1,000 gp for checking off all the items on your wishlist (even if paid with salvage or completed via Riddle's Gambit).",
+            "Salvage earned during this adventure:"
+          ]
+        },
+        {
+          "instructions": "Choose ONE bonus reward:",
+          "options": [
+            "A <i>+3 wand</i> of the war mage from the necromancer in Metrol Station.",
+            "A <i>wand of binding</i> from the necromancer in Metrol Station.",
+            "A <i>tome of clear thought</i> from the necromancer in Metrol Station.",
+            "A <i>manual of gainful exercise</i> from the necromancer in Metrol Station.",
+            "A <i>ring of X-ray vision</i> from the necromancer in Metrol Station.",
+            "A climbing kit, a signal whistle, 200 ft. of unbreakable silk rope, and a grappling hook from Glamerweave Mill (area M5B).",
+            "Five <i>potions of fire breath</i> from the reflection of the <i>Excellence</i>'s armory (area M10).",
+            "A <i>docent</i> (only if you gained the Riddle's Gambit legacy event)."
+          ]
+        }
+      ],
+      "legacy": {
+        "events": [
+          {
+            "title": "Death is a Door",
+            "description": "You died within the ruins of Metrol. Mysterious forces brought you back to life, but you don't know who or what they are."
+          },
+          {
+            "title": "Riddle's Gambit",
+            "description": "Riddle's Gambit. You betrayed the Scraplord by siding with the <i>docent</i> inside the warforged colossus Norr, preventing Norr from being used for future warfare. The <i>docent</i> now accompanies your group."
+          },
+          {
+            "title": "Rise of the Colossus",
+            "description": "The Scraplord raised the warforged colossus Norr from the ruins of Metrol, creating a diversion for you to sneak into the Creeping Nave. You'll find fewer defenses inside!"
+          }
+        ]
+      }
     }
   ]
 }
