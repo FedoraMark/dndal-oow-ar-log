@@ -832,7 +832,7 @@
       },
       "advancement": {
         "label": "You gain one level for completing this adventure.",
-        "footnote": "(If you decline this level, you still record legacy events but cannot claim any rewards or legacy event benefits for this adventure.)"
+        "footnote": ""
       },
       "rewards": [
         {
@@ -883,7 +883,7 @@
       },
       "advancement": {
         "label": "You gain one level for completing this adventure.",
-        "footnote": "(If you decline this level, you still record legacy events but cannot claim any rewards or legacy event benefits for this adventure.)"
+        "footnote": "(If you decline this level, you still record legacy events and <b>can</b> claim all eligible rewards and legacy event benefits for this adventure.)"
       },
       "rewards": [
         {
@@ -941,7 +941,7 @@
       },
       "advancement": {
         "label": "You gain one level for completing this adventure.",
-        "footnote": "(If you decline this level, you still record legacy events but cannot claim any rewards or legacy event benefits for this adventure.)"
+        "footnote": "(If you decline this level, you still record legacy events and <b>can</b> claim all eligible rewards and legacy event benefits for this adventure.)"
       },
       "rewards": [
         {
@@ -989,7 +989,7 @@
       },
       "advancement": {
         "label": "You gain one level for completing this adventure.",
-        "footnote": "(If you decline this level, you still record legacy events but cannot claim any rewards or legacy event benefits for this adventure.)"
+        "footnote": "(If you decline this level, you still record legacy events and <b>can</b> claim all eligible rewards and legacy event benefits for this adventure.)"
       },
       "rewards": [
         {
@@ -1076,6 +1076,53 @@
           {
             "title": "Rise of the Colossus",
             "description": "The Scraplord raised the warforged colossus Norr from the ruins of Metrol, creating a diversion for you to sneak into the Creeping Nave. You'll find fewer defenses inside!"
+          }
+        ]
+      }
+    },
+    {
+      "record": "game",
+      "code": "ddal-eb-17",
+      "title": "The Final Tribute",
+      "type": "Adventure Record",
+      "tier": 4,
+      "ordinal": 21,
+      "notes": {
+        "game": "King Boranel of Breland sent you to troubled New Cyre to obtain the location of House Cannith's secret creation forge from Prince Oargev. After meeting the prince, your companion, Breland's ambassador, was murdered. Investigating the murder, you uncovered evidence that the killer was the green dragon Vyndescille, who had been masquerading as the prince's adviser, Diraz d'Jorasco, and was also behind New Cyre's recent misfortunes. You revealed this information to the prince, leading to a battle with Vyndescille in the gardens of the prince's villa. After the battle, you learned that the creation forge, the Lifespark Foundry, is located in the Coterminous Cradle under Making."
+      },
+      "advancement": {
+        "label": "You gain one level for completing this adventure.",
+        "footnote": "(If you decline this level, you still record legacy events and <b>can</b> claim all eligible rewards and legacy event benefits for this adventure.)"
+      },
+      "rewards": [
+        {
+          "instructions": "You gain the following rewards:",
+          "selections": [
+            "1,200 gp from King Boranel for undertaking the mission."
+          ]
+        },
+        {
+          "instructions": "Choose ONE bonus reward:",
+          "options": [
+            "A <i>ring of mind shielding</i> for defeating Vyndescille.",
+            "<i>Bracers of defense</i> for defeating Valxoria.",
+            "A <i>+2 greatsword</i> for defeating Vyndescille's half-dragon champions.",
+            "A <i>crystal ball of telepathy</i> found in the grotto.",
+            "1,200 gp in gems and jewelry found in the grotto.",
+            "A <i>potion of heroism</i> for informing King Boranel about the creation forge in Making.",
+            "<i>Pipes of the sewers</i> surrendered by the goblin musicians."
+          ]
+        }
+      ],
+      "legacy": {
+        "events": [
+          {
+            "title": "Green in Tooth and Claw",
+            "description": "The green dragon Vyndescille escaped! Surely it won't be long before he returns to enact his terrible revenge?"
+          },
+          {
+            "title": "Prince's Favor",
+            "description": "You exposed Vyndescille’s corruption and earned the gratitude of Prince Oargev. The prince sends New Cyre's soldiers to join the attack on the Lordof Blades."
           }
         ]
       }
