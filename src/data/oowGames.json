@@ -1126,6 +1126,54 @@
           }
         ]
       }
+    },
+    {
+      "record": "game",
+      "code": "ddal-eb-18",
+      "title": "Scales of War",
+      "type": "Adventure Record",
+      "tier": 4,
+      "ordinal": 22,
+      "notes": {
+        "game": "The Battle of Broken Tower was merely the backdrop for two momentous events: the revelation that the Lord of Blades is using the Crucible in Making to create new warforged, and the terrible betrayal of the Five Nations by Narcy of Xandrar, the once-trusted archmage, who had been a secret member of the Chamber the whole time. Karrnslayer, warforged colossus WX-31, was released from repair in Broken Tower and rained destruction upon the field of Ruins, and Gaarvin ir Gelios-a half-warforged, half-human acolyte of Aaren d'Cannith—made contact to deliver an urgent message: travel to the Crucible in Making, save Aaren, and save your world!"
+      },
+      "advancement": {
+        "label": "You gain one level for completing this adventure.",
+        "footnote": "(If you decline this level, you still record legacy events and <b>can</b> claim all eligible rewards and legacy event benefits for this adventure.)"
+      },
+      "rewards": [
+        {
+          "instructions": "You gain the following rewards:",
+          "selections": [
+            "2,400 gp from the Five Nations for participating in the Battle of Broken Tower."
+          ]
+        },
+        {
+          "instructions": "Choose ONE bonus reward:",
+          "options": [
+            "A <i>+3 weapon</i> flecked with dark green dragonshards, recovered from the battlefield.",
+            "A box of <i>Nolzur's marvelous pigments</i> recovered from the dragon Goryphael. A magic carving on the lid is tracking the arrival of a visitor from Argonnessen.",
+            "A <i>potion of heroism</i> for choosing to fortify locations on the battlefield.",
+            "A <i>potion of cloud giant strength</i> for carrying out a targeted assault on an enemy army."
+          ]
+        }
+      ],
+      "legacy": {
+        "events": [
+          {
+            "title": "Draconic Lineage",
+            "description": "You captured the gold dragon Goryphael. She has been bound in chains and is guarded by alliance soldiers."
+          },
+          {
+            "title": "Heroic Victory",
+            "description": "The Battle of Broken Tower showed the true might of the Five Nations. The Lord of Blades' armies were driven back. Morale is high and supplies are plentiful across the Field of Ruins."
+          },
+          {
+            "title": "",
+            "description": "The Lord of Blades' warforged armies claimed more victories than the Five Nations did during the Battle of Broken Tower. The alliance won, but the costs were steep, and morale and supplies are strained."
+          }
+        ]
+      }
     }
   ]
 }
