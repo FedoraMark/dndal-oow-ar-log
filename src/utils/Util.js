@@ -55,7 +55,7 @@ export const startingWealthStatus = {
     [startingWealthLog.code]: {
         notes: {
             player:
-                "Hail and well met!\n\nBegin your Oracle of War campaign by entering your starting wealth and any important notes into this log.\n\nWhen done, click the gear in the top-right corner to safe your data.",
+                "Hail and well met!\n\nBegin your Oracle of War campaign by entering your starting wealth and any important notes into this log.\n\nWhen done, click the gear in the top-right corner to save your data.",
         },
     },
 };
