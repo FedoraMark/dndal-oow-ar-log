@@ -678,6 +678,7 @@
     },
     {
       "record": "epic",
+      "isForEpic": true,
       "code": "ddal-ebep-02",
       "title": "Rolling Thunder",
       "type": "Adventure Record",
@@ -1222,6 +1223,55 @@
           {
             "title": "Cannith Scion",
             "description": "You rescued the smith Demery d'Cannith, who was being held prisoner by the Lord of Blades. When you return to civilization, he has promised you a reward from his house."
+          }
+        ]
+      }
+    },
+    {
+      "record": "epic",
+      "isForEpic": true,
+      "code": "ddal-ebep-04",
+      "title": "The War",
+      "type": "Adventure Record",
+      "tier": 4,
+      "ordinal": 24,
+      "notes": {
+        "game": "You traveled back in time to the front lines of the Battle of Kalazart, where you acquired an arcane codex from the <i>Oracle of War</i>'s test team. With the codex in your possession, you can finally unlock all the secrets of the mysterious device!"
+      },
+      "advancement": {
+        "label": "You gain one level for completing this adventure.",
+        "footnote": "(<b>Important:</b> If you decline this level, you still record legacy events and can claim all eligible rewards and legacy event benefits for this adventure.)"
+      },
+      "rewards": [
+        {
+          "instructions": "You gain the following rewards:",
+          "selections": [
+            "The Lamannian Triune casts a <i>wish</i> spell on your behalf for completing your mission."
+          ]
+        },
+        {
+          "instructions": "Choose ONE bonus reward:",
+          "options": [
+            "3,000 gp for robbing the Karrnathi war chest.",
+            "A <i>cape of the mountebank</i> for capturing Rumeo d'Cannith.",
+            "A <i>scarab of protection</i> for capturing Rumeo d'Cannith.",
+            "A <i>wand of binding</i> for capturing Rumeo d'Cannith."
+          ]
+        }
+      ],
+      "legacy": {
+        "events": [
+          {
+            "title": "Deathly Redeption",
+            "description": "You engineered a way to reunite Irullan Karnach with her dead sister, hopefully bringing peace to her troubled soul. You can catch up with Irullan when you return from the Mournland."
+          },
+          {
+            "title": "First Prophecy",
+            "description": "You learned the first prophecy the <i>Oracle of War</i> spoke, which occurred the moment you appeared in the past. Its words could be useful to you in the final episode of the campaign:<br /><pre><i>When rebel blades strike against a king,</i><br /><i>A thief leaves their prize in a high tower,</i><br /><i>And dragons burn by night.</i></pre>"
+          },
+          {
+            "title": "Harbringers",
+            "description": "You met Cyran champion Cicero ir Magrize, and helped him escape the Day of Mourning. If you meet him again, he might recognize you."
           }
         ]
       }

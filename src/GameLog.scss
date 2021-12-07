@@ -507,8 +507,8 @@ $halfGap: .25rem;
                     display: grid;
                     padding: calc(.25rem + 1px) .5rem .1rem;
 
-                    grid-template-columns: 1fr 2fr;
                     grid-template-rows: repeat(4, auto);
+                    grid-template-columns: 1fr 2fr;
 
                     &.startingOnly {
                         padding: calc(.25rem + 1px) .5rem;
@@ -1318,9 +1318,9 @@ $halfGap: .25rem;
                     .flexRow {
                         display: grid !important;
 
-                        grid-template-columns: repeat(2, 1fr);
                         grid-gap: .5rem;
                         grid-auto-rows: 1fr;
+                        grid-template-columns: repeat(2, 1fr);
 
                         @include flex(stretch, flex-start, row);
 

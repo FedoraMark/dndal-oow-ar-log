@@ -11,3 +11,11 @@ body {
 code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
+
+pre {
+    margin: .5rem 0 0 1rem !important;
+
+    font-size: inherit !important;
+
+    color: inherit !important;
+}
