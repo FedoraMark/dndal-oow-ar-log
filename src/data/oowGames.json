@@ -1275,6 +1275,32 @@
           }
         ]
       }
+    },
+    {
+      "record": "game",
+      "code": "ddal-eb-20",
+      "title": "Old Scores",
+      "type": "Adventure Record",
+      "tier": 4,
+      "ordinal": 25,
+      "notes": {
+        "game": "On your return to Salvation, the Lamannian Triune revealed the truth of the <i>Oracle of War</i>'s creation and beseeched you to rescue their stolen child from the clutches of Sulring Mroranon, chair of the Aurum's secret Shadow Cabinet, who was inbound to Salvation on the royal lightning train <i>Excellence</i>. Back in Salvation, you confronted the dragons of the Chamber and brought an end to the <i>Oracle of War</i>'s story."
+      },
+      "advancement": {
+        "label": "You gain one level for completing this adventure.<br />(Unless you are 20th level already.)",
+        "footnote": "(If you decline this level, you still record legacy events and <b>can</b> claim all eligible rewards and legacy event benefits for this adventure.)"
+      },
+      "rewards": [
+        {
+          "instructions": "You gain the following rewards:",
+          "selections": [
+            "Retirement in the manner of your choosing! (20th-level characters only)"
+          ]
+        }
+      ],
+      "legacy": {
+        "events": []
+      }
     }
   ]
 }
