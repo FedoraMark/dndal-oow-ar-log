@@ -2,7 +2,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## App
 
-www.oracleofwar.games
+OLD: www.oracleofwar.games
 
 
 ## Adventure Records Log for Oracle of War
