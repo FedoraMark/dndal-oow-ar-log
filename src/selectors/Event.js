@@ -6,10 +6,10 @@ import _pull from "lodash/pull";
 import classnames from "classnames";
 import Statebox from "react-three-state-checkbox";
 
-import Select from "selectors/Select";
-import Option from "selectors/Option";
+import Select from "./Select";
+import Option from "./Option";
 
-import "selectors/Event.scss";
+import "./Event.scss";
 
 class Event extends Component {
     static propTypes = {

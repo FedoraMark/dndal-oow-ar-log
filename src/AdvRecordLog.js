@@ -32,11 +32,11 @@ import { ImMenu } from "react-icons/im";
 import { SiKoFi } from "react-icons/si";
 import { RiEditCircleFill } from "react-icons/ri";
 
-import ConfirmationModal from "common/ConfirmationModal";
-import EditButton from "common/EditButton";
-import Player from "common/Player";
-import Summary from "common/Summary";
-import GameLog from "GameLog";
+import ConfirmationModal from "./common/ConfirmationModal";
+import EditButton from "./common/EditButton";
+import Player from "./common/Player";
+import Summary from "./common/Summary";
+import GameLog from "./GameLog";
 
 import {
 	fadeIn,
@@ -48,9 +48,9 @@ import {
 	startingWealthStatus,
 	getTier,
 	undash,
-} from "utils/Util";
+} from "./utils/Util";
 
-import "AdvRecordLog.scss";
+import "./AdvRecordLog.scss";
 import "animate.css";
 import "@trendmicro/react-sidenav/dist/react-sidenav.css";
 

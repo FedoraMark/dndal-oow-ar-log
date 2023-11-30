@@ -26,12 +26,12 @@ import { GiPokecog, GiD4} from "react-icons/gi";
 import { IoIosCalculator } from "react-icons/io";
 import { RiEditCircleFill } from "react-icons/ri";
 
-import EditButton from "common/EditButton";
-import Wealth from "common/Wealth";
-import WealthEdit from "common/WealthEdit";
-import Event from "selectors/Event";
-import Option from "selectors/Option";
-import Select from "selectors/Select";
+import EditButton from "./common/EditButton";
+import Wealth from "./common/Wealth";
+import WealthEdit from "./common/WealthEdit";
+import Event from "./selectors/Event";
+import Option from "./selectors/Option";
+import Select from "./selectors/Select";
 import {
 	animFaster,
     heartBeat,
@@ -48,10 +48,10 @@ import {
     // salvageLevelFootnote,
     salvagePerHour,
     excludeInWealth
-} from "utils/Util";
+} from "./utils/Util";
 
 import "animate.css";
-import "GameLog.scss";
+import "./GameLog.scss";
 
 const EXPENDED = -1;
 const UNSELECTED = 0;

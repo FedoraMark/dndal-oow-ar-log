@@ -5,9 +5,9 @@ import InputGroup from "react-bootstrap/InputGroup";
 import Fade from "react-bootstrap/Fade";
 import _map from "lodash/map";
 
-import { redash } from "utils/Util";
+import { redash } from "../utils/Util";
 
-import "selectors/SelectOption.scss";
+import "./SelectOption.scss";
 
 class Option extends React.Component {
     static propTypes = {

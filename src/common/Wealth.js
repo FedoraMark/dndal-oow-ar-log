@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from "classnames";
 
-import "common/Wealth.scss";
+import "./Wealth.scss";
 
 class Wealth extends React.Component {
 

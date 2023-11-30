@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import * as serviceWorker from "./serviceWorker";
 
-import AdvRecordLog from "AdvRecordLog";
+import AdvRecordLog from "./AdvRecordLog";
 import { ToastProvider } from "react-toast-notifications";
 // import App from "App";
 

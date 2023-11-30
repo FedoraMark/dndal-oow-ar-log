@@ -20,8 +20,8 @@ import { FaSave } from "react-icons/fa";
 import { HiPlusCircle } from "react-icons/hi";
 import { IoIosCalculator, IoMdHelpCircle } from "react-icons/io";
 
-import Wealth from "common/Wealth";
-import EditButton from "common/EditButton";
+import Wealth from "./Wealth";
+import EditButton from "./EditButton";
 
 import {
     animFaster,
@@ -35,7 +35,7 @@ import {
     excludeInWealth,
     getFirstKey,
     getTier,
-} from "utils/Util";
+} from "../utils/Util";
 
 import "./Player.scss";
 

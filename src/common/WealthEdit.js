@@ -9,7 +9,7 @@ import Tooltip from "react-bootstrap/Tooltip";
 
 import style from "./WealthEdit.module.scss";
 
-import { excludeInWealth } from "utils/Util"
+import { excludeInWealth } from "../utils/Util"
 
 const denominations = ["pp", "gp", "ep", "sp", "cp"];
 const conversion = [

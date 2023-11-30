@@ -4,9 +4,9 @@ import classnames from "classnames";
 import InputGroup from "react-bootstrap/InputGroup";
 import { FiCornerDownRight } from "react-icons/fi";
 
-import { redash } from "utils/Util"
+import { redash } from "../utils/Util"
 
-import "selectors/SelectOption.scss";
+import "./SelectOption.scss";
 
 class Select extends React.Component {
     static propTypes = {
