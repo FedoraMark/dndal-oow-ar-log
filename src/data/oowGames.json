@@ -352,7 +352,7 @@
       "tier": 2,
       "ordinal": 7,
       "notes": {
-        "game": "The sphinx  Flamewind deciphered the prophecy spoken by the <i>Oracle of War</i> and sent you to Wroat to foil a Thranish spy's strike against the King's Dark Lanterns. You infiltrated a royal armistice ball to identify the spy and uncover their mission."
+        "game": "The sphinx Flamewind deciphered the prophecy spoken by the <i>Oracle of War</i> and sent you to Wroat to foil a Thranish spy's strike against the King's Dark Lanterns. You infiltrated a royal armistice ball to identify the spy and uncover their mission."
       },
       "advancement": {
         "label": "You gain one level for completing this adventure.",
@@ -383,7 +383,7 @@
           },
           {
             "title": "Silver Torch Extinguished",
-            "description": "Oliviér ir'Volett was exposed during the ball as a spy and assassin and paid the ultimate price. As the authorities trace his steps, word spreads that the nation of Thrane could be responsible for the killing. This event has repercussions later in the campaign."
+            "description": "Olivi&eacute;r ir'Volett was exposed during the ball as a spy and assassin and paid the ultimate price. As the authorities trace his steps, word spreads that the nation of Thrane could be responsible for the killing. This event has repercussions later in the campaign."
           },
           {
             "title": "Runaway Lovers",
