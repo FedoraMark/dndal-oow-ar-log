@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/dndal-oow-ar-log/static/css/main.56076f2a.css",
-    "main.js": "/dndal-oow-ar-log/static/js/main.a816ca22.js",
+    "main.css": "/dndal-oow-ar-log/static/css/main.45243f4e.css",
+    "main.js": "/dndal-oow-ar-log/static/js/main.402891e2.js",
     "static/media/Bookinsanity-BoldItalic.otf": "/dndal-oow-ar-log/static/media/Bookinsanity-BoldItalic.a2eccb3f42f727c690d4.otf",
     "static/media/Bookinsanity-Italic.otf": "/dndal-oow-ar-log/static/media/Bookinsanity-Italic.23cd8889205fc33be963.otf",
     "static/media/Bookinsanity-Bold.otf": "/dndal-oow-ar-log/static/media/Bookinsanity-Bold.32613f02d0e401cdf5ec.otf",
@@ -9,11 +9,11 @@
     "static/media/Nodesto-Caps-Condensed-Italic.otf": "/dndal-oow-ar-log/static/media/Nodesto-Caps-Condensed-Italic.15c6864d82714b39d6ab.otf",
     "static/media/Nodesto-Caps-Condensed.otf": "/dndal-oow-ar-log/static/media/Nodesto-Caps-Condensed.9aa71abb91cd1f57360c.otf",
     "index.html": "/dndal-oow-ar-log/index.html",
-    "main.56076f2a.css.map": "/dndal-oow-ar-log/static/css/main.56076f2a.css.map",
-    "main.a816ca22.js.map": "/dndal-oow-ar-log/static/js/main.a816ca22.js.map"
+    "main.45243f4e.css.map": "/dndal-oow-ar-log/static/css/main.45243f4e.css.map",
+    "main.402891e2.js.map": "/dndal-oow-ar-log/static/js/main.402891e2.js.map"
   },
   "entrypoints": [
-    "static/css/main.56076f2a.css",
-    "static/js/main.a816ca22.js"
+    "static/css/main.45243f4e.css",
+    "static/js/main.402891e2.js"
   ]
 }
