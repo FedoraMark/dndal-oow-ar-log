@@ -109,6 +109,7 @@ class Event extends Component {
     //RENDERERS
     render() {
         let disableSubOptions = this.state.isDisabled || !this.state.isSelected || this.state.status.expended;
+        let cleanDescription = this.state.eventObj.description.replaceAll('Olivi�r',"Olivi&eacute;r");
 
         return (
             <Container
@@ -139,14 +140,14 @@ class Event extends Component {
                         />
                         <p
                             className="bookFont"
-                            dangerouslySetInnerHTML={{__html: this.state.eventObj.description,}}
+                            dangerouslySetInnerHTML={{__html: cleanDescription}}
                         />
                     </div>
 
                     {"checkboxes" in this.state.eventObj && (
                         <ul
                             className="checkboxes"
-                            onClick={this.setSelect.bind( this, true, this.state.isSelected)}
+                            onClick={this.setSelect.bind(this, true, this.state.isSelected)}
                         >
                             {_map(
                                 this.state.eventObj.checkboxes, (cell, key) => {
